@@ -1,0 +1,13 @@
+<div class="container-fluid" ng-app="challengesApp" ng-controller="codeBlocksCtrl">
+
+  <ul class="nav nav-tabs">
+     <li ng-repeat="(id,block) in codeBlocks" ng-class="{ active: isCodeBlockActive(id) }"><a  data-toggle="tab" data-target="#menu{{$index}}" href="">{{block.name}}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div ng-repeat="(id,block) in codeBlocks" id="menu{{$index}}" class="tab-pane fade ng-class:{'in active': isCodeBlockActive(id)}"> 
+      <br>
+      <div ng-include="block.description"></div>
+
+    </div>
+  </div>
+</div>

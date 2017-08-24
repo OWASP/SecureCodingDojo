@@ -1,0 +1,15 @@
+<p>This secure coding practice prevents overflow attacks such as:
+    <ul>
+        <li>Integer Overflow or Wraparound</li>
+        <li>Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')</li>
+        <li>Incorrect Calculation of Buffer Size </li>
+    </ul>
+</p>
+<p>
+Whenever user input is received developers should check that the input cannot be used to influence overflows on boundaries, whether it is MAX_INT or whether it is the maximum size allocated for a buffer.
+</p>
+<p>A simple comparison against a known limit constant can go a long way to prevent serious logical attacks.</p>
+<p>Interesting fact, Boeing had to fix a Integer Overflow in the 787 Dreamliner which could cause it's electrical system to fail according to 
+    <a taget="_blank" href="https://www.engadget.com/2015/05/01/boeing-787-dreamliner-software-bug/">Engadget</a>.</p>
+
+

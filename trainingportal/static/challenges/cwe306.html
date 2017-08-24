@@ -1,0 +1,65 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: 'Missing Authentication for Critical Function'.
+<br><br>
+
+  <blockquote>
+    <p>
+         <i>The software does not perform any authentication for functionality that requires a provable user identity or consumes a significant amount of resources.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/306.html">CWE 306</a></footer>
+  </blockquote>
+
+    The developer of the vulnerable application has implemented a logged in page but has forgotten to add an important check. Find a way to bypass the login page and extract the secret code.
+<br><br>
+    You have the vulnerable code below. See if you can spot the programming error.
+</p>
+<br>
+<pre>
+/**
+ * Servlet implementation class Ch1Loggedin
+ */
+@WebServlet("/Ch1Loggedin")
+public class Ch1Loggedin extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    /**
+    * Verifies if the user is authenticated
+    * @param request
+    * @return
+    */
+    protected boolean isAuthenticated(HttpServletRequest request){
+        String authToken = (String) request.getSession().getAttribute("authToken");
+        Cookie[] cookies = request.getCookies();
+        boolean isAuth = false;
+        if(cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                Cookie cookie=cookies[i];
+                String cookieName = cookie.getName();
+                String cookieValue = cookie.getValue();
+                if(cookieName.equals("authToken") &amp;&amp; cookieValue.equals(authToken)) return true;
+            }
+        }
+        return isAuth;
+    }
+
+
+    /**
+    * @see HttpServlet#HttpServlet()
+    */
+    public Ch1Loggedin() {
+        super();
+    }
+
+    /**
+    * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+    */
+    @SuppressWarnings("unused")
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().println("You're logged in");
+    }
+}
+
+ </pre>
+
+
+

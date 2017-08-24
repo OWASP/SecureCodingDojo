@@ -1,0 +1,34 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: 'Use of a One-Way Hash without a Salt'. 
+<br><br>
+
+  <blockquote>
+    <p>
+         <i>The software uses a one-way cryptographic hash against an input that should not be reversible, such as a password, but the software does not also use a salt as part of the input.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/759.html">CWE 759</a></footer>
+  </blockquote>
+<p>
+    This is the same vulnerable application from the previous challenge, still with missing authorization on the admin page where you can see the users and their passwords. 
+    The developers are now hashing the user password with an algorithm considered safe but is it enough? 
+</p>
+<p>
+    Did you know that the site <a target="_blank" href="https://crackstation.net/">CrackStation.net</a> maintains a list of known hashes for numbers and dictionary words, also known as a 
+  <a target="_blank" href="https://en.wikipedia.org/wiki/Rainbow_table">'Rainbow Table'</a>?
+</p>
+<p>
+    Obtain the password for <code>user</code> and login to solve the challenge.
+    See if you can spot the problem in the code below.
+</p>
+<br>
+<pre class="pre-scrollable">
+&lt;!--contents of administration page cwe759admin.jsp--&gt;
+...
+byte [] hash = Crypto.getInstance().getHash(tmpPwd,"SHA256");
+tmpPwd = Util.bytesToHex(hash);
+...
+
+</pre>
+
+
+

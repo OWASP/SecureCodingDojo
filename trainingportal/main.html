@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Secure Coding Dojo - Challenges</title>
+
+<script src="public/jquery.min.js"></script>
+<script src="public/angular.min.js"></script>
+<script src="public/angular-route.min.js"></script>
+<script src="public/bootstrap/js/bootstrap.min.js"></script>
+<script src="static/main-app.js"></script>
+<script src="static/leaderboardCtrl.js"></script>
+<script src="static/submitCodeCtrl.js"></script>
+<script src="static/codeBlocksCtrl.js"></script>
+
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<script>
+    window.sessionStorage.setItem('XSRF_TOKEN','%XSRF_TOKEN%');
+    window.getAjaxOpts = function(){
+       var opts =  {
+           headers:{
+               "xsrfToken":window.sessionStorage.getItem("XSRF_TOKEN")
+           }
+       }
+       return opts;
+    }
+</script>
+
+</head>
+<body>
+
+    <div ng-app="challengesApp" ng-controller="mainCtrl">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Secure Coding Dojo</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li ng-class="{ active: isActive('/')}"><a href="#!">Challenges</a></li>
+                    <li ng-class="{ active: isActive('/codeBlocks')}"><a href="#!codeBlocks/inputWhitelisting">Code Blocks</a></li>
+                    <li ng-class="{ active: isActive('/leaderboard')}"><a href="#!leaderboard">Leaderboard</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="" data-toggle="modal" data-target="#teamModal"><span class="glyphicon glyphicon-user"></span> My Team</a></li>
+                    <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout {{fullName}}</a></li>
+                </ul>
+            </div>
+        </nav>
+            
+
+            <div class="alert alert-warning" id="teamAlert" ng-if="user.teamId==null || user.teamId==0">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                You have not joined a team yet! <a href="#" class="alert-link" data-toggle="modal" data-target="#teamModal">Join an existing team or create a team for yourself.</a>
+            </div>
+       
+             <!-- This is where the main view goes -->
+            <div ng-view></div>
+
+
+
+            <!-- Team configuration -->
+            <div id="teamModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Team configuration UI -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Team Selection</h4>
+                        </div>
+                        <div class="modal-body">
+                            
+                            <div id="editContainer" ng-if="ownedTeam==null">
+                                <label for="existingTeamSelect">Pick existing team:</label>
+                                <select class="form-control" id="existingTeamSelect" autocomplete="off">
+                                    <option value=0>Select a team</option>
+                                    <option ng-repeat="team in teamList" value="{{team.id}}" ng-selected="team.id==user.teamId">{{team.name}}</option>
+                                    
+                                </select>
+                            
+                                <br><br>
+                                <label for="newTeamName">Create new team:</label>
+                                <input type="text" class="form-control" id="newTeamName">
+                            </div>
+                            <div id="ownerContainer" ng-if="ownedTeam!=null">
+                                <p>You manage the team <strong>'{{ownedTeam.name}}'</strong>
+                                <a href="#" ng-click="deleteOwnedTeam()">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+                                </p>
+                            </div>
+                        
+                            
+                        </div>
+                        <div class="alert alert-danger" id="teamErrorMessage" ng-if="isTeamSaveError">
+                                <button type="button" class="close" ng-click="hideTeamSaveError()">&times;</button>
+                                {{teamSaveErrorMessage}}
+                        </div>
+                        <div class="alert alert-success" id="teamSuccessMessage" ng-if="isTeamSaveSuccess">
+                                <button type="button" class="close" ng-click="hideTeamSaveSuccess()">&times;</button>
+                                {{teamSaveSuccessMessage}}
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <button type="button" class="btn btn-default" ng-click="saveTeamSettings()" ng-if="ownedTeam==null">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="hideMessages()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+    </div> 
+    
+    
+
+    <script>
+   
+    </script> 
+</body>
+</html>

@@ -1,0 +1,27 @@
+<p>Follow this set of secure coding practices to prevent memory attacks.</p>
+<h5>Use functions that limit the input size</h5>
+<p> fgets(…) allows limits the size of the input; <code>fgets(userPass, 16, stdin)</code>. 
+Other such functions are strncpy, snprintf and strncmp.
+</p>
+<h5>Check that the size of the input matches the size of the allocated memory.</h5>
+<p>
+Even with the use of a "safe function" buffer overflow can still occur if the size argument is larger than the size of the buffer.
+</p>
+<h5>Do not allow input as format string arguments.</h5>
+<p>
+If the user input is used in the format string portion of format string arguments this can lead to data leakage and even altering of memory integrity.
+</p>
+<h5>Safe releasing memory</h5>
+<p>
+    Memory issues don't only occur when allocating and constructing buffers. They also occur if memory is released unsafely.
+    Use-after-free is another type of flaw where one portion of the code frees the memory and allocates it to a new variable
+    however a different area of the code still uses that variable. This can lead to data leakage and crashes.
+</p>
+<h5>
+    Safe compiler flags
+</h5>
+<p>Some versions of Linux enforce stack protection by default others don't. 
+    In our challenge the flag <mark>-fno-stack-protector</mark> was explicitly set to off to demonstrate a very insecure practice.
+    Note that even if it was set to on it still wouldn't have prevented the issue. It would just prevent stack smashing.
+Windows does not always enforce Address Space Layout Randomization if software is not built for it.
+</p>

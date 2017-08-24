@@ -1,0 +1,66 @@
+<p>
+    The purpose of this challenge is to demonstrate the following MITRE Top 25 programming flaw: 'Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')'
+
+     
+  <blockquote>
+    <p>
+         <i>The software constructs all or part of an SQL command using externally-influenced input from an upstream component, 
+           but it does not neutralize or incorrectly neutralizes special elements that could modify the intended SQL command when it is sent to a downstream component.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/89.html">CWE 89</a></footer>
+  </blockquote>
+
+<h5>About SQL Injection</h5>
+<p>
+  SQL Injection is listed as the most dangerous Software flaw on both SANS 25 and OWASP Top 10 list. 
+  It is the reason for most large user data breaches of this century: the Rock You breach, the Heartland Payment Systems data breach to name a few.
+</p>
+<p>
+SQL injection is possible when database statements are constructed dynamically, through concatenation of SQL Commands and user input.
+The following Java EE code demonstrates SQL injection through concatenation.
+</p>
+<pre>
+    String usr = req.getParameter("usr");
+    String pwd = req.getParameter("pwd");
+    <strong>String query = "SELECT * FROM users WHERE usr =<mark>'"+ usr + "'" + "</mark> AND pwd=<mark>'" + pwd + "'"</mark>;</strong>
+    Statement stmt = connection.createStatement();
+    ResultSet rs = stmt.executeQuery(query);
+</pre>
+<p>
+This code is vulnerable to SQL Injection because an attacker can bypass authentication by simply entering <code>admin'--</code> in the user name.
+The -- are SQL comments. The actual statement now becomes:
+<div class="alert alert-danger">SELECT * FROM users WHERE usr='<code>admin'</code></div>
+</p>
+<p>Another common method of attack is <mark>tautology</mark>. This involves manipulating the WHERE clause to make it become true.</p>
+
+<br>
+<h5>About the Challenge</h5>
+<p>
+  After so many unauthorized access events the admin has finally changed their password. They have made it extra difficult so it can't be cracked.
+</p>
+<p>
+  The developers of the site, store the user names and passwords in a database. 
+  Here is the application code that executes during login. See if you can spot the problem.
+  Thre's some blacklisting involved so the payload above <mark>won't work</mark>. You will have to find another way.
+</p>
+<pre class="pre-scrollable">
+usr = usr.replace("-","");
+pwd = pwd.replace("-","");
+Connection conn = db.getConn();
+int count=0;
+try{
+  Statement stmt = conn.createStatement();
+  String query = String.format("select * from users where usr='%s' and pwd='%s'",usr,pwd);
+  ResultSet rs = stmt.executeQuery(query);
+    while (rs.next()) {
+        count++;
+    }
+}
+catch(SQLException ex){
+  exMessage = String.format("&lt;pre&gt;%s&lt;/pre&gt;",ex);
+}
+alertVisibility="";
+if(count==1){
+  session.setAttribute("cwe89loggedin",true)
+</pre>
+<br>

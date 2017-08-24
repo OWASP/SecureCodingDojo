@@ -1,0 +1,36 @@
+<p>This code block protects against software weaknesses such as <strong>Download of Code without Integrity Check</strong></p>
+
+<p>
+Most communication protocols have some level of integrity checks built in, primarily to account for data degradation or corruption. 
+These mechanism vary from simple checksums, to MD5 or SHA digests. Git, for example, implements a SHA-1 mechanism to identify commits.
+</p>
+<p>
+When security is involved developers should be concerned with attackers potentially intercepting update packages and replacing them with malware. 
+This should be an expecially high concern for security software which are used to fight malware. The absence of integrity checks allows the manipulation of update packages.
+</p>
+<p>
+Simple checksums and digests can be bypassed through <mark>collisions</mark>. MD5 collisions can be identified in 1 day while 
+SHA-1 collisions can be identified in 1 year <a target="_blank" href="http://shattered.io/">as disclosed by Google researchers in 2017</a>.
+</p>
+<p>
+The importance of the Google discovery is significant since many SSL certificates are signed with SHA-1 hashes for integrity. 
+This means that man-in-the-middle attackers with sufficient computing power could potentially create fake SSL certificates using a different public key and break secure communications.
+</p>
+<p>
+Algorithms in the <strong>SHA-2</strong> class such as SHA-256 still remain safe until more computing power can break them. 
+However even with SHA-256 there still remains the problem of transmitting the hashes to the receiving party. If the hashes are transmitted through a separate channel this channel should be secure.
+</p>
+<p>
+   An approach that attempts to resolve this problem is using RSA signatures in a similar way TLS communication works. Here is the process at a high level:
+       <ul>
+        <li>The software update site provides a certificate which can be verified by a public authority such as Verisign</li>
+        <li>The private key for this certificate is closely guarded and never shared with consumers of the software</li>
+        <li>When new software is released the update package is hashed using a strong algorithm (SHA-256+)</li>
+        <li>The hash is in turn encrypted with the private key that only the software provider knows</li>
+        <li>The software signing certificate containing the public key is packaged along with the software and the encrypted hash</li>
+        <li>When the software consumer downloads the package it first checks that the certificate is valid (using the trusted Certificate authority)</li>
+        <li>Next the consumer uses the public key to decrypt the hash and verifies that it matches the update contents. 
+            Since RSA is an asymmetric encryption algorithm only the signer can generate a valid encrypted hash.</li>
+    </ul>
+</p>
+<p>The following tutorial covers digital signatures in Java: <a target="_blank" href="https://docs.oracle.com/javase/tutorial/security/apisign/">Generating and Verifying Signatures</a> </p>

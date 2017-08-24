@@ -1,0 +1,34 @@
+<p>
+    The purpose of this challenge is to demonstrate password guessing attacks.
+    <These></These> are made possible by MITRE Top 25 programming flaws such as: 
+    <ul>
+      <li>CWE 307 - Improper Restriction of Excessive Authentication Attempts</li>
+        <blockquote>
+          <i>The software does not implement sufficient measures to prevent multiple failed authentication attempts within in a short time frame, making it more susceptible to brute force attacks.</i>
+          <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/307.html">CWE 307</a></footer>
+        </blockquote>
+      <li>CWE-798 - Use of Hard-coded Credentials</li>
+      <blockquote>
+        <p>
+            <i>The software contains hard-coded credentials, such as a password or cryptographic key, which it uses for its own inbound authentication, 
+              outbound communication to external components, or encryption of internal data.</i>
+        </p>
+        <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/798.html">CWE 798</a></footer>
+      </blockquote>
+    </ul>
+    
+
+<p>Password guessing attacks are very simple and don't require security knowledge. In fact the first Guccifer, Marcel Lehel,
+  was an unemployed taxi driver and ended up breaking into the accounts of high ranking US politicians.</p>
+<p>Password guessing is also featured in many movies when the main character finds themselves in front of a locked computer screen and
+  uses information from their surroundings to try to break in.
+</p>
+
+<br>
+
+<h4>About the Challenge</h4>
+  <p>
+    The developers of the application have created an administration account to manage different configurations of the application.
+    For convenience the password was hard-coded in the JSP file.
+    The password for the <code>admin</code> user also happens to be an insecure password. One of the top 10 most insecure passwords.
+  </p>

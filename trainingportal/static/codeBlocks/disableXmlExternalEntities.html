@@ -1,0 +1,73 @@
+<p>This secure coding practice blocks <strong>XML External Entity attacks</strong>
+</p>
+<p>
+Unfortunately Java EE applications have a real problem with disabling XML External Entities. 
+They are turned on by default in the default <mark>DocumentBuilder</mark> and all other XML related capabilities: schema verification, transformation, etc.
+</p>
+<p>
+There is also a multitude of open source parsers which have different configuration settings for turning off entities. 
+These parsers may be required by other open source components.
+</p>
+<p>
+Best approach is to disable all known resolving properties as seen below . The project should have a single XML DocumentBuilder constructor that turns off XXE and gets used everywhere.
+</p> 
+<br>
+<pre class="pre-scrollable">  
+public static final Collection<String> XML_FEATURES_TO_DISABLE = Collections.unmodifiableList(Arrays.asList(
+    XMLConstants.ACCESS_EXTERNAL_DTD,
+    XMLConstants.ACCESS_EXTERNAL_SCHEMA,
+    XMLConstants.ACCESS_EXTERNAL_STYLESHEET,
+    // https://xerces.apache.org/xerces-j/features.html
+    "http://xml.org/sax/features/external-general-entities",
+    "http://xml.org/sax/features/external-parameter-entities",
+    "http://apache.org/xml/features/validation/schema",
+    "http://apache.org/xml/features/nonvalidating/load-dtd-grammar",
+    "http://apache.org/xml/features/nonvalidating/load-external-dtd",
+    // https://xerces.apache.org/xerces2-j/features.html
+    "http://apache.org/xml/features/xinclude/fixup-base-uris"
+));
+
+factory.setExpandEntityReferences(false);
+
+// Set the validating off because it can be mis-used to pull a validation document
+// that is malicious or from the local machine
+factory.setValidating(false);
+
+factory.setXIncludeAware(false);
+try {
+    factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+} catch (ParserConfigurationException e) {
+    throw new IllegalStateException("Could not set secure processing feature", e);
+}
+
+for (String feature : XML_FEATURES_TO_DISABLE) {
+    try {
+        factory.setFeature(feature, false);
+    } catch (ParserConfigurationException e) {
+        log.debug("Could not disable processing feature " + feature);
+    }
+}
+
+if (!allowDTD) {
+    try {
+        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+    } catch (ParserConfigurationException e) {
+        log.debug("Could not disallow doctype declaration", e);
+    }
+}
+
+// Next create a new document builder
+DocumentBuilder db;
+try {
+    db = factory.newDocumentBuilder();
+} catch (ParserConfigurationException e) {
+    // this represents a fatal programming error in the code above
+    throw new IllegalStateException(e);
+}
+
+// Overwrite the entity resolver. This prevents injection from local machine like:
+
+db.setEntityResolver(new NoOpEntityResolver());
+
+</pre>
+

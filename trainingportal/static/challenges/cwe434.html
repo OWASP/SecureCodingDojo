@@ -1,0 +1,47 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: "Unrestricted Upload of File with Dangerous Type".
+  <blockquote>
+    <p>
+         <i>The software allows the attacker to upload or transfer files of dangerous types 
+           that can be automatically processed within the product's environment.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/434.html">CWE 434</a></footer>
+  </blockquote>
+  
+  
+<p>To prevent the Cross-Site Request forgery demonstrated in the previous challenge, as well as the inclusion of files from untrusted domains, 
+  the developers are now only allowing users to <mark>upload</mark> avatars.
+</p>
+<p>
+    They are restricting the file types to SVG as shown in the code below. 
+    They are then saving the files on the system and loading them into the page via &lt;img&gt; references. Do you see any problem with that?
+    Upload a file that could be used to execute code if it got uploaded to the Web directory of a Java web application. Like in this case the
+    <mark>WebContent/public/</mark> directory.
+</p>
+<p><strong>Tip: </strong>You need to upload some "server pages".</p>
+<pre class="scrollable">
+Part avatarPart = request.getPart("avatar");
+final String fileName = getFileName(avatarPart);
+if(!fileName.equals("") &amp;&amp; fileName.indexOf(".svg") == -1){
+    response.getWriter().println("Invalid file type");
+    return;
+}
+		
+//...
+
+try{
+//...
+    if(fileName.equals("")) fileName="avatar.png";
+    fileName="public/"+fileName;
+//...
+    if(avatarPart!=null)  avatarData = Util.getStringFromInputStream(avatarPart.getInputStream());
+    request.getSession().setAttribute("cwe434avatarData",avatarData);
+    try(PrintWriter out = new PrintWriter(fileName)){ //note we're not really doing this :) it's a simulation
+      out.println(avatarData);
+    }
+}
+catch(Exception ex){
+    response.getWriter().println(ex.getMessage());
+}
+</pre>
+<br>

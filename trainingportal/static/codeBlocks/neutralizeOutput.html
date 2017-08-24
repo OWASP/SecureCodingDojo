@@ -1,0 +1,72 @@
+<p>This software defense prevents the many flavours of <strong>Cross-Site Scripting</strong></p>
+<p>First if you want to get an idea of the challenges associated with fixing XSS, watch the following public video: 
+<a target="_blank" href="https://youtu.be/FGr6gGqM4f0">How Fixing Cross-Site Scripting is Like Playing Whack-A-Mole</a> </p>
+
+<p>There are several proven ways to ensure the user input doesn't "pop". </p>
+<h5>Output Encoding</h5>
+<p>
+    This technique is best fit for pages that are generated on the server side, like in the case of JSP, PHP or ASP.
+    The <mark>HTML Encoding</mark> example below shows how HTML markup is neutralized by replacing special characters with their corresponding HTML Entities.
+</p>
+<div class="container">
+<label>User input:</label>
+<div class="alert alert-danger">&#39;&quot;/&gt;&lt;script&gt;alert(1)&lt;/script&gt;</div>
+<label>Java EE using Apache Commons Lang<small> - notice additional escaping was added for single quote since &amp;apos; is not yet considered a valid entity</small></label>
+<pre>
+StringEscapeUtils.escapeHtml4(request.getParameter("userId")).replace("'", "&amp;#39;");
+</pre>
+<label>Html source:</label>
+<pre>&amp;#39;&amp;quot;/&amp;gt;&amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</pre>
+<label>Rendered page:</label>
+<div class="alert alert-success">&#39;&quot;/&gt;&lt;script&gt;alert(1)&lt;/script&gt;</div>
+</div>
+
+<h5>
+Enforce the UTF8 charset
+</h5>
+<p>
+The output encoding countermeasure can be bypassed through alternate encoding attacks.
+Enforcing the charset prevents such attacks. 
+If the charset of the page is not set, the browser will default to auto detect and strings that would normally be harmless would become executable. 
+</p>
+<p>
+The example below shows how the charset can be enforced using an HTTP header.
+</p>
+<pre>
+    Content-type: text/html; charset=UTF8.
+</pre>
+
+<h5>Safe DOM Updates</h5>
+<p>
+Modern applications have moved the UI handling to client side technologies such as React, Angular or JQuery, which have become very popular.
+</p>
+<p>
+In such applications the danger lies in dynamic updates of the innerHTML attribute. The contentText/innerText attribute should be used instead, like in the case of using the 
+<a target="_blank" href="http://api.jquery.com/text/">.text(text)</a> function in jQuery.
+A better approach to UI design in modern applications is using widgets or <mark>templates</mark>. 
+<br><br>
+The example below is from this page, which uses AngularJS.
+
+<pre class="pre-scrollable" ng-non-bindable>
+&lt;h3&gt;Hi &#123;&#123;firstName&#125;&#125;! Your level is: &apos;&#123;&#123;userLevelString&#125;&#125;&apos; &lt;/h3&gt;&#10;&lt;p&gt;
+Complete the challenges below to advance to the next level. Click on the challenge name to get more info.&lt;/p&gt;&#10;
+</pre>
+</p>
+<h5>
+Avoid Unsafe JavaScript functions
+</h5>
+<p>Don't use <code>eval()</code>. Avoid <code>setTimeout/setInterval</code>. Do not construct JavaScript function names dynamically. </p>
+
+
+<h5>Mitigations</h5>
+
+<p>
+These measures can reduce the impact of a XSS attack.
+<ul>
+    <li><pre>X-XSS-Protection: 1; mode=block</pre> enforces the browser XSS filter, not supported by all browsers</li>
+    <li><pre>Content-Security-Policy: script-src ‘self’</pre> prevents the loading of external scripts, requiring the attacker to use large inline payloads.
+    When possible the header is also an effective mitigation against: "Inclusion of Functionality from Untrusted Control Sphere" when possible.
+    </li>
+</ul>
+</p>
+<br>

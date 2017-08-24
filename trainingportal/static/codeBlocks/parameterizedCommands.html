@@ -1,0 +1,48 @@
+<p>This code block protects against Injection weaknesses such as <strong>OS Command Injection</strong> and <strong>SQL Injection</strong></p>
+
+<p>
+The most common types of commands used by software are OS Commands and SQL Commands. 
+Parameterizing a command involves passing user input as command arguments rather than constructing a literal statement.
+</p>
+<p>
+The unsafe way of constructing a command is by concatenating user input. <mark>Concatenation allows injection</mark>.
+</p>
+
+<h5>Parameterized SQL Commands</h5>
+
+<p>
+Here is the correct way of executing a database query using prepared statements.
+<pre>
+    <strong>String query = "SELECT * FROM users WHERE usr =<mark>?</mark> AND pwd=<mark>?</mark>";</strong>
+    PreparedStatement ps = conn.preparedStatement(query);
+    stmt.setString(1, usr); 
+    stmt.setString(2, pwd); 
+    ResultSet rs = ps.executeQuery(query);
+</pre>
+<b>Note:</b> Prepared statements will not protect against situations when the input is being again concatenated in an SQL Procedure. 
+Input validation or moving the SQL logic into the middleware can prevent against those cases.
+</p>
+
+
+<h5>Parameterized OS Commands</h5>
+
+<p>Java conveniently offers a safe way to execute commands. The following example shows executing the <code>ping</code> utility with arguments.
+<pre>
+    String server = req.getParameter("server");
+    String [] commandArgs = {"-c","1",server};
+    Process p = Runtime.getRuntime().exec("ping",commandArgs);
+</pre>
+
+Keep in mind that this safe method won't protect from situations where the arguments are passed as an argument to the shell. 
+This type of code below should be avoided.
+
+<pre>
+    String server = req.getParameter("server");
+    String [] commandArgs = {"-c", String.format("ping -c 1 %s",server)};
+    Process p = Runtime.getRuntime().exec("<mark>/bin/sh</mark>",commandArgs);
+</pre>
+
+Also the method will be useless when shell scripts, python, perl etc are called with the arguments. The injection may occur in the shell script. <b>Input Whitelisting</b> can prevent those situations.
+
+</p>
+<br>

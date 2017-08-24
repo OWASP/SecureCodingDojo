@@ -1,0 +1,68 @@
+{
+    
+    "inputWhitelisting":{
+        "name":"Input Whitelisting",
+        "description":"/static/codeBlocks/inputWhitelisting.html"
+    },
+    "neutralizeOutput":{
+        "name":"Neutralize Output",
+        "description":"/static/codeBlocks/neutralizeOutput.html"
+    },
+    "parameterizedCommands":{
+        "name":"Use Parameterized Commands",
+        "description":"/static/codeBlocks/parameterizedCommands.html"
+    },
+    "useStrongDataEncryption":{
+        "name":"Use Strong Data Encryption",
+        "description":"/static/codeBlocks/useStrongDataEncryption.html"
+    },
+    "indirectObjectReferences":{
+        "name":"Indirect Object References",
+        "description":"/static/codeBlocks/indirectObjectReferences.html"
+    },
+    "authenticationByDefault":{
+        "name":"Authenticated by Default",
+        "description":"/static/codeBlocks/authenticationByDefault.html"
+    },
+    "requestForgeryPrevention":{
+        "name":"Forgery Prevention Token",
+        "description":"/static/codeBlocks/requestForgeryPrevention.html"
+    },
+    "safeMemoryManagement":{
+        "name":"Safe Memory Management",
+        "description":"/static/codeBlocks/safeMemoryManagement.html"
+    },
+    "principleOfLeastPrivilege":{
+        "name":"Principle of Least Privilege",
+        "description":"/static/codeBlocks/principleOfLeastPrivilege.html"
+    },
+    "serverSideValidation":{
+        "name":"Server Side Validation",
+        "description":"/static/codeBlocks/serverSideValidation.html"
+    },
+    "resourceSeparation":{
+        "name":"Resource Separation and Access Control",
+        "description":"/static/codeBlocks/resourceSeparation.html"
+    },
+    "loginBestPractices":{
+        "name":"Strong Login Verification",
+        "description":"/static/codeBlocks/loginBestPractices.html"
+    },
+    "integrityVerification":{
+        "name":"Integrity Verification",
+        "description":"/static/codeBlocks/integrityVerification.html"
+    },
+    "disableXmlExternalEntities":{
+        "name":"Disable XML External Entities",
+        "description":"/static/codeBlocks/disableXmlExternalEntities.html"
+    },
+    "checkBoundaries":{
+        "name":"Check Boundaries",
+        "description":"/static/codeBlocks/checkBoundaries.html"
+    },
+    "displayGenericErrorMessages":{
+        "name":"Display Generic Error Messages",
+        "description":"/static/codeBlocks/displayGenericErrorMessages.html"
+    }
+
+}

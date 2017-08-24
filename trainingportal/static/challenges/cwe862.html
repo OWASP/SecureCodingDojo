@@ -1,0 +1,33 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: 'Missing Authorization'.
+<br><br>
+
+  <blockquote>
+    <p>
+         <i>The software does not perform an authorization check when an actor attempts to access a resource or perform an action.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/862.html">CWE 862</a></footer>
+  </blockquote>
+    The developer of the vulnerable application has simply not implemented authorization checks.
+    You have the vulnerable code below. See if you can spot the programming error.
+</p>
+<br>
+<pre class="pre-scrollable">
+&lt;!--contents of administration page cwe862admin.jsp--&gt;
+&lt;%
+
+if(session.getAttribute("cwe862loggedin")==null || !(boolean)session.getAttribute("cwe862loggedin")){
+	response.sendRedirect("cwe862.jsp?loggedin=false");
+}
+
+
+%&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+&lt;title&gt;CWE862 - Missing Authorization - Admin&lt;/title&gt;
+</pre>
+
+
+

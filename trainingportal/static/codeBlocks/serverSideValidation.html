@@ -1,0 +1,41 @@
+<p>This code block protects against software weaknesses such as Reliance on Untrusted Input in a Security Decision</p>
+
+
+  <blockquote>
+    <p><i>
+        "Developers may assume that inputs such as cookies, environment variables, and hidden form fields cannot be modified. 
+        However, an attacker could change these inputs using customized clients or other attacks. This change might not be detected. 
+        When security decisions such as authentication and authorization are made based on the values of these inputs, attackers can bypass the security of the software.
+        Without sufficient encryption, integrity checking, or other mechanism, any input that originates from an outsider cannot be trusted."</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/807.html">CWE 807</a></footer>
+  </blockquote>
+
+<p>
+All validation code should be stored on the server side. Client side validation, even if it seems to work within the UI, can be easily bypassed by 
+navigating directly to the unprotected resources or manipulating network traffic.
+</p>
+<p>
+In Java EE applications, a convenient way to store information about the current user, is the session variable. The information is stored in the server memory
+and is retrieved for each request and passed to the servlet or JSP code.
+
+The example below shows the proper way to validate a user role based on the information stored in the session rather than the HTTP request parameters.
+
+</p>
+<pre class="pre-scrollable">
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%@ page import=&quot;inc.insecure.*&quot; %&gt;
+&lt;%
+
+if(session.getAttribute("ch2loggedin")==null || !(boolean)session.getAttribute("ch2loggedin")){
+	response.sendRedirect("ch2.jsp?loggedin=false");
+}
+else{
+	boolean isAdmin=(boolean)session.getAttribute("isAdmin"); //notice this time the session variable is used to obtain information about the user role
+	if(isAdmin){
+        //administration page logic here
+        //...
+    }
+}
+</pre>

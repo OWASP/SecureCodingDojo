@@ -1,0 +1,40 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming error: <strong>Integer Overflow or Wraparound</strong>
+        <blockquote>
+          <i>The software performs a calculation that can produce an integer overflow or wraparound, when the logic assumes that the resulting value will always be larger than the original value. 
+            This can introduce other weaknesses when the calculation is used for resource management or execution control.</i>
+          <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/190.html">CWE 190</a></footer>
+        </blockquote>
+    
+
+
+<p>
+  You were able to guess the password but an account lockout mechanism has been enabled and the account is now locked out. 
+   However the lockout mechanism has a flaw.
+</p>
+<p>
+  You have the vulnerable code below. See if you can detect the issue and exploit it to login. Use the same password from the brute force challenge.
+</p>
+<pre class="pre-scrollable">
+  if(usr!=null &amp;&amp; pwd!=null){ 
+	if(session.getAttribute("cwe190tries")!=null){
+		tries = (short)session.getAttribute("cwe190tries");
+	}
+	boolean isLockedOut = tries > 5;
+	if(isLockedOut) lockoutVisibility = "";
+	
+	if(usr.equals("admin") &amp;&amp; pwd.equals(Crypto.getInstance().decrypt("****EDITED***"))){
+		String code = "";
+		if(!isLockedOut){
+			//....
+			response.sendRedirect(Constants.LOGIN_PAGE);
+		}
+	}
+	else{
+		tries++;
+		alertVisibility="";
+	}
+
+	session.setAttribute("cwe190tries",tries);
+}
+</pre>

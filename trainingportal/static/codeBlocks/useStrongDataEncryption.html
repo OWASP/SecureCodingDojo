@@ -1,0 +1,127 @@
+<p>This code block protects against software weaknesses such as</p>
+<ul>
+    <li>Missing Encryption of Sensitive Data</li>
+    <li>Use of a Broken or Risky Cryptographic Algorithm</li>
+    <li>Use of a One-Way Hash without a Salt</li>
+</ul>
+
+
+  <blockquote>
+    <p><i>
+       "When there is a need to <mark>store</mark> or <mark>transmit</mark> sensitive data, use strong, up-to-date cryptographic algorithms to encrypt that data. 
+       Select a well-vetted algorithm that is currently considered to be strong by experts in the field, and use well-tested implementations. 
+       <br>
+       ...
+       <br>
+        Do not develop custom or private cryptographic algorithms. They will likely be exposed to attacks that are well-understood by cryptographers. 
+        Reverse engineering techniques are mature. If the algorithm can be compromised if attackers find out how it works, then it is especially weak.
+        Periodically ensure that the cryptography has not become obsolete. Some older algorithms, once thought to require a billion years of computing time, can now be broken in days or hours. 
+        This includes MD4, MD5, SHA1, DES, and other algorithms that were once regarded as strong."</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/327.html">CWE 327</a></footer>
+  </blockquote>
+<h5>Encryption of data at rest</h5>
+<p>
+Sensitive data stored locally should be encrypted to prevent both against physical theft and data leakage attacks. Sensitive data includes but not limited to: personally identifiable information (PII),
+passwords, confidential business information.
+</p>
+<p>
+The industry standard is to consider all passwords and encryption keys sensitive data. 
+User passwords should stored irreversible and be hashed using a salted adaptive algorithm. 
+</p>
+<p>
+System passwords such as passwords to a database or LDAP server should be encrypted with a strong cryptographic algorithm and using a dynamically generated key or a key obtained from a Hardware Security Module.
+Same approach should be taken for other data such as PII or confidential information.
+</p>
+<p>The table below lists approved algorithms for various types of data</p>
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Type of data</th>
+            <th>Approved algorithm</th>
+            <th class="table-success">Preferred algorithm</th>
+            <th class="table-danger" >DO NOT USE</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>User passwords</td>
+            <td>Salted SHA-2 class (SHA256 and up)</td>
+            <td class="table-success">Salted PBKDF2 with large number of rounds</td>
+            <td class="table-danger">MD5, SHA1, Unsalted</td>
+        </tr>
+        <tr>
+            <td>Reversible sensitive data</td>
+            <td>Symmetric - AES256 CBC with dynamic key/iv (HSM), Asymmetric - RSA 2048 <small>-- RSA claims that 1024 bit keys, no longer safe</small></td>
+            <td class="table-success">Symmetric - AES256 CTR or stronger with dynamic key (HSM), Asymmetric - RSA 4096</td>
+            <td class="table-danger">{xor},DES,AES 256 ECB for large data, hardcoded keys</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Sample hashing of a password using PBKDF2</p>
+
+<pre class="pre-scrollable">
+/**
+* Generates the PBKDF hash for the string
+* @param password The password to be hashed
+* @param salt The salt used to make the password unknown to password cracking dictionaries
+* @param iterations The number of times to repeat the hashing algorithm on the resulting digest. Used to increase the time required to crack a passwords. The higher the number the longer the time required to crack.
+* @param derivedKeyLength The length of the resulting hash for example 64
+* @return
+* @throws NoSuchAlgorithmException
+* @throws InvalidKeySpecException
+*/
+public static String getEncryptedPassword(String password, byte[] salt,  int iterations,  int derivedKeyLength) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, derivedKeyLength * 8);
+
+    SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+
+    byte[] hashBytes f.generateSecret(spec).getEncoded();
+
+    return Base64.getEncoder().encodeToString(hashBytes);
+}
+</pre>
+
+<h5>Encryption of data in transit</h5>
+<p>
+It has become an industry standard to secure all communications. It is considered a vulnerability to send data in clear text (like in the case of the http:// urls). Other vulnerabilities
+include using flawed protocols or ciphers in the communication.
+
+It is also a vulnerability to ignore invalid server certificates.
+
+Here is a list of the few notable vulnerablity disclosures in SSL/TLS protocols and ciphers over the past few years.
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Bacronym</th>
+            <th>Vulnerable Protocol or Cipher</th>
+            <th>Reference</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>POODLE</td>
+            <td>SSLv3</td>
+            <td><a target="_blank" href="https://en.wikipedia.org/wiki/POODLE">Wikipedia article</a></td>
+        </tr>
+        <tr>
+            <td>FREAK</td>
+            <td>RSA_EXPORT keys</td>
+            <td><a target="_blank" href="https://en.wikipedia.org/wiki/FREAK">Wikipedia article</a></td>
+        </tr>
+        <tr>
+            <td>Logjam</td>
+            <td>Diffie-Hellman key exchange</td>
+            <td><a target="_blank" href="https://en.wikipedia.org/wiki/Logjam_(computer_security)">Wikipedia article</a></td>
+        </tr>
+    </tbody>
+</table>
+
+Protocol and cipher issues are addressed in the server configuration and the configuration of communication clients.
+
+The public site <a href="https://www.ssllabs.com/ssltest/">SSLLabs</a> allows users to test any public server for secure communication issues.
+</p>
+<br>

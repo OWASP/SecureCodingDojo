@@ -1,0 +1,28 @@
+{
+  "name": "securecodingdojo",
+  "version": "1.0.0",
+  "description": "Training platform for building security in development.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Paul Ionescu",
+  "license": "ISC",
+  "dependencies": {
+    "atob": "^2.0.3",
+    "body-parser": "^1.17.2",
+    "btoa": "^1.1.2",
+    "cookie-parser": "^1.4.3",
+    "crypto": "0.0.3",
+    "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "mysql": "^2.13.0",
+    "node-truncate": "^0.1.0",
+    "passport": "^0.3.2",
+    "passport-google-oauth20": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "passport-slack": "0.0.7",
+    "uid-safe": "^2.1.4",
+    "validator": "^7.0.0"
+  }
+}

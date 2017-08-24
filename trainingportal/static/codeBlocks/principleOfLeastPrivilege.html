@@ -1,0 +1,26 @@
+<p>This code block protects against software weaknesses such as <strong>Execution with Unnecessary Privileges</strong>,
+<strong>Incorrect Permission Assignment for Critical Resource</strong>
+ and <strong>Incorrect Authorization</strong></p>
+
+<p>
+The principle of least privilege says that users in a system should only be given neccesary access or roles to complete their function. 
+</p>
+<p>
+Giving the user higher privileges by default exposes the application to logical attacks where the application fails to reach the block of 
+code that drops privileges and the privileges remain elevated.
+</p>
+<p>
+Examples of such incorrect behavior are running processes as root/system or giving a user admin roles by default before performing an authorization check.
+</p>
+<p>Execution with Unnecessary Privileges and Incorrect Permission Assignment for Critical Resource <i>add insult to injury</i> when another security flaw exists:
+<ul>
+    <li>Path Traversal and XML External Entity <small>- read system files: <mark>/etc/shadow</mark></small></li>
+    <li>OS Command Injection<small>- from significant to total access to the system</small></li>
+</ul>
+
+Even when software is not running as root if the user is given sudo rights it's just the same.
+</p>
+<p>
+<strong>Note:</strong> The principle of least privilege will not prevent authorization attacks if authorization decisions are not carefully reviewed.
+The principle of least privilege will also not prevent horizontal privilege escalation attacks where a user attacks another.
+</p>

@@ -1,0 +1,48 @@
+<p>
+    This countermeasure primarily prevents <strong>Cross-Site Request Forgery</strong> attacks but can also mitigate several other client side attacks.
+    <ul>
+        <li>Open Redirect</li>
+        <li>"Reflected" XSS</li>
+        <li>Clickjacking</li>
+    </ul>
+</p>
+<p>
+    The primary goal of the software defense is to cause the http requests to become unique to the user. 
+    This is usually done through a request authentication token <mark>separate from cookies and platform authentication headers</mark>.
+</p>
+<p>
+    The example below shows an HTTP request protected against CSRF. It is one of the requests from this site.
+</p>
+<pre>
+GET /api/teams HTTP/1.1
+Host: localhost:8081
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:53.0) Gecko/20100101 Firefox/53.0
+Accept: application/json, text/plain, */*
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: http://localhost:8081/main
+<mark>xsrfToken: EITPDAj48qzt2z5J6wE4uPn6iC3ggw8imBdIeeBwknWybC-SnPCmlTdmDIPM1XRJjgXv9Gfd1RSV1RbDkaRU1w</mark>
+Cookie: connect.sid=s%3AieghQmy09PUrMqYqMBlfKSW5cA4RRsLE.90RDCtrG6aJoFC74R4OfuJYXKPiZEVLtHpfP6dMNQXs
+Connection: keep-alive
+
+</pre>
+
+<p>
+The xsrfToken will be different for each user and an attacker will not be able to store the request in an external site because they won't know it.
+Even if they knew the token they could only target a single user and the request would expire with the session limiting the ammount of time for the attack.
+
+</p>
+
+<p>
+    The countermeasure works for any other attacks where the attacker would have to manipulate a request and e-mail it to a victim or store a request in an external site.
+</p>
+
+<p>
+    A few CSRF token best practices:
+    <ul>
+        <li>The token should be sufficiently long and unpredictable.</li>
+        <li>It should not be transmitted as a query parameter. It's a bad practice to send tokens in the URL.</li>
+        <li>It's best for the token to be different than the value of the cookies.</li>
+        <li>Best location is as an extra header. This way all API requests (GET|POST|PUT|DELETE) can benefit from it.</li>
+    </ul>
+</p>

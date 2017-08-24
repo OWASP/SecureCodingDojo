@@ -1,0 +1,35 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: 'Reliance on Untrusted Inputs in a Security Decision'.
+<br><br>
+
+  <blockquote>
+    <p>
+         <i>The application uses a protection mechanism that relies on the existence or values of an input, but the input can be modified by an untrusted actor in a way that bypasses the protection mechanism.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/807.html">CWE 807</a></footer>
+  </blockquote>
+    The developer of the vulnerable application uses a flawed authorization mechanism allowing the user to control administrative access.
+<br><br>
+    You have the vulnerable code below. See if you can spot the programming error.
+</p>
+<br>
+<pre class="pre-scrollable">
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%@ page import=&quot;inc.insecure.*&quot; %&gt;
+&lt;%
+
+if(session.getAttribute("ch2loggedin")==null || !(boolean)session.getAttribute("ch2loggedin")){
+	response.sendRedirect("ch2.jsp?loggedin=false");
+}
+else{
+	String isAdmin=request.getParameter("isAdmin");
+	if(isAdmin!=null &amp;&amp; isAdmin.toLowerCase().equals("true")){
+        //administration page logic here
+        //...
+    }
+}
+</pre>
+
+
+

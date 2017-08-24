@@ -1,0 +1,24 @@
+<p>This code block makes weaknesses such as <strong>XML External Entity</strong> or <strong>SQL Injection</strong> harder to exploit</p>
+
+<p>
+While it should never be considered as an effective countermeasure in itself, displaying generic error messages can increase the 
+level of sophistication required to exploit a programming flaw, because the attacker must conduct the exploit <mark>blindly</mark>, without 
+relying on the application output.
+</p>
+<br>
+<p>
+For example an SQL Injection attack may be a bit harder to detect and to exploit if the application only displays the message: <pre>An error has ocurred</pre> 
+</p>
+<br>
+<p>
+Obviously if the application displays the message below, it is much easier to exploit because the attacker has the exact query and 
+does not need to do any guessing.
+  <pre>java.sql.SQLSyntaxErrorException: Syntax error: Encountered "\'" at line 1, column 49.
+Query:select * from users where usr='admin' and pwd='''</pre>
+</p>
+<br>
+<p>
+Displaying detailed error messages is a vulnerability in itself although not one of the top Sans 25 or OWASP Top 10. 
+Many times such messages may reveal information about the system being attacked such as file paths or exception call stacks. 
+These errors make the attacker's life much easier.
+</p>

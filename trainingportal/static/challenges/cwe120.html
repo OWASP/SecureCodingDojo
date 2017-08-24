@@ -1,0 +1,124 @@
+<p>
+    The purpose of this challenge is to demonstrate several memory management issues specific to C/C++ applications. 
+    It specifically demonstrates the following two CWEs.
+    <ul>
+      <li>Buffer Copy without Checking Size of Input ('Classic Buffer Overflow')
+        <blockquote>
+          <i>The program copies an input buffer to an output buffer without verifying that the size of 
+            the input buffer is less than the size of the output buffer, leading to a buffer overflow.</i>    
+          <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/120.html">CWE 120</a></footer>
+        </blockquote>
+      </li>
+      <li>Use of Potentially Dangerous Function
+        <blockquote>
+          <i>The program invokes a potentially dangerous function that could introduce a vulnerability if it is used incorrectly, 
+            but the function can also be used safely.</i>    
+          <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/676.html">CWE 676</a></footer>
+        </blockquote>
+      </li>
+    </ul>
+<p>
+  The following MITRE TOP 25 programming flaws that are similar in concept with the above.
+  <ul>
+      <li>Incorrect Calculation of Buffer Size 
+        <blockquote>
+          <i>The software does not correctly calculate the size to be used when allocating a buffer, which could lead to a buffer overflow.</i>    
+          <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/131.html">CWE 131</a></footer>
+        </blockquote>
+      </li>
+      <li>Use of Externally-Controlled Format String
+        <blockquote>
+          <i>The software uses a function that accepts a format string as an argument, but the format string originates from an external source</i>    
+          <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/134.html">CWE 134</a></footer>
+        </blockquote>
+      </li>
+
+    </ul>
+</p>
+
+<h4>A Bit About Memory Flaws</h4>
+<p>
+Buffer Overflow types of attacks are extremely powerful and highly prized and seeked by cyber-criminals as well as intelligence agencies. 
+Memory vulnerabilities account for many of the 0-days disclosed in web browsers and commonly used software such as Adobe Reader or Flash Player.
+</p>
+<p>The reason they are so powerful is because they allow the attacker to execute arbitrary commands on the affected software. 
+  If that software happens to run with elevated privileges that is even better for the attacker, 
+  however 0-days are often chained together to give the attacker full system access.</p>
+
+<p>Here is how memory flaws allow arbitrary code execution.</p>
+<p>
+Imagine the program uses two variables <code>a</code> and <code>b</code>. 
+The contents and length of variable <code>b</code> are controlled by the user.
+
+The variables are stored in the memory as seen in the simplistic example below. Each buffer may be reserved 16 bytes in a real program.
+</p>
+<div class="container">
+
+<table class="table">
+  <tr><th>Variable</th><th>Address</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
+  <tr><th><mark>b</mark></th><td>0x0000</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+  <tr><th>a</th><td>0x0004</td><td>H</td><td>I</td><td>!</td><td>0</td></tr>
+  <tr><th>instruction</th><td>0xd32a</td><td>5</td><td>$</td><td>x</td><td>1</td></tr>
+</table>
+
+</div>
+<p>
+If the user enters the string <code>AAAAA</code> the following will happen.
+</p>
+<div class="container">
+<table class="table">
+  <tr><th>Variable</th><th>Address</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
+  <tr><th><mark>b</mark></th><td>0x0000</td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td></tr>
+  <tr><th>a</th><td>0x0004</td><td><code>A</code></td><td>i</td><td>!</td><td>0</td></tr>
+  <tr><th>instruction</th><td>0xd32a</td><td>5</td><td>$</td><td>x</td><td>1</td></tr>
+</table>
+</div>
+<p>
+The value of <code>b</code> will be <mark>AAAAAi!</mark> while the value of <code>a</code> will become <mark>Ai!</mark>. 
+If the program outputs the value of <code>b</code> then the attacker will be able to know tke value of <code>a</code> which is known as a <mark>memory leak</mark>.
+</p>
+<p>
+If the user enters a sufficiently long value they will hit the instruction area and be able to execute code.
+</p>
+<div class="container">
+<table class="table">
+  <tr><th>Variable</th><th>Address</th><th>0</th><th>1</th><th>2</th><th>3</th></tr>
+  <tr><th><mark>b</mark></th><td>0x0000</td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td></tr>
+  <tr><th>a</th><td>0x0004</td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td><td><code>A</code></td></tr>
+  <tr><th>instruction</th><td>0xd32a</td><td><code>A</code></td><td><code>A</code></td><td>x</td><td>1</td></tr>
+</table>
+</div>
+
+<br>
+<h4>About the Challenge</h4>
+<p>
+  You found a page which is asking for a master password. 
+  It seems to be compiling and executing a C++ program under the covers. Bypass the simple hard-coded authentication below to solve the challenge.
+</p>
+<p><strong>Tip:</strong> To send <code>\0</code> (a null byte) in a url use <code>%00</code>.</p>
+<p>
+  Also here is the master password program code. See if you can spot the problems.
+</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(){
+	char MASTER_PASSWORD[9]="**REMOVED**";
+	char userPass[9];
+
+	printf("Enter the master password:\n");
+	<mark>gets</mark>(userPass);
+
+	if(strcmp(userPass,MASTER_PASSWORD)==0){
+		printf("PASSWORD VERIFIED\n");
+	}
+	else{
+		printf("Invalid password!\n");
+	}
+	return 0;
+}
+
+</pre>
+<br>

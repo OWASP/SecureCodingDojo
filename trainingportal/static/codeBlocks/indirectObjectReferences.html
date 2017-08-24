@@ -1,0 +1,50 @@
+<p>This code block can prevent several issues from the MITRE Top 25 list.
+    <ul>
+        <li>URL Redirection to Untrusted Site ('Open Redirect')</li>
+        <li>Unrestricted Upload of File with Dangerous Type</li>
+        <li>Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')</li>
+    </ul>
+
+</p>
+<p>Using <strong>indirect object references</strong> (as opposed to direct object references) means that the user input is manipulated
+on the server side and compared to a list or a hashmap. The example below shows a hashmap of file resources for a server containing documents.
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Resource ID</th>
+            <th>File Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>2543626326753473534754334347753434573</td>
+            <td>/var/www/myapp/files/docs/accounts.xls</td>
+        </tr>
+        <tr>
+            <td>9789694693274976937629462958605603862</td>
+            <td>/var/www/myappfiles/docs/proposal.doc</td>
+        </tr>
+    </tbody>
+</table>
+
+When the application retrieves the file rather than using the actual file name, it uses the resource id and keeps the actual file location secret and immutable.
+If the user attempts to manipulate the resource id it will have no effect.
+</p>
+
+<pre>
+    String resourceId = Util.SafeGetParameter(request,"resourceId",ValidatorConstant.NUMERIC);
+    if(resourceId!=null){
+        BufferedReader fileReader = FileManager.mapResourceIdToFile(resourceId);
+    }
+</pre>
+
+<p>During file upload, the application should ignore the file name provided by the user and replace it with a GUID. 
+    This mitigates against both Path Traversal and Upload of Dangerous File Types. </p>
+<p>If the user provided file name must be maintained, like in the case of unzipping, 
+    then the application should validate that the <mark>absolute file name</mark> resolves to an allowed directory.</p>
+
+<p>
+    In a similar way indirect object references can be used for URL redirects either by maintaining a hashmap or by manipulation on the server side that will neutralize
+    any non relative URLs.
+</p>

@@ -1,0 +1,86 @@
+<p>In order to avoid mistakes the software should be designed in such a way that new fuctionality is 
+    automatically protected by authentication.
+</p>
+<p>
+Framework or server provided authentication should be used where possible while custom authentication should be avoided. 
+</p>
+<p>
+In Java EE application configurations it is possible to protect resources using URL regular expression patterns by defining a &lt;security-constraint&gt; in the web.xml file. 
+When this approach is taken you should be careful to not place any sensitive resources outside the protected folders.
+</p>
+<p>
+Another approach in Java EE is to use request filters which allow processing authentication on every single request. 
+When implementing an authentication filter everything should be authenticated by default and authentication logic should only be ignored on exception.
+This will ensure that when a new resource is added it should benefit from authentication by default.
+
+<br><br>
+<strong>Example authentication filter</strong>
+<pre class="pre-scrollable">  
+/**
+web.xml definition
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;AuthenticationFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+*/
+
+public class AuthenticationFilter implements Filter {
+	/* (non-Java-doc)
+	 * @see java.lang.Object#Object()
+	 */
+	public AuthenticationFilter() {
+		super();
+	}
+
+	/* (non-Java-doc)
+	 * @see javax.servlet.Filter#init(FilterConfig arg0)
+	 */
+	public void init(FilterConfig arg0) throws ServletException {
+		// TODO Auto-generated method stub
+	}
+
+	/* (non-Java-doc)
+	 * @see javax.servlet.Filter#doFilter(ServletRequest arg0, ServletResponse arg1, FilterChain arg2)
+	 */
+	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+        if (req instanceof HttpServletRequest){           
+            HttpServletRequest request = (HttpServletRequest)req;
+
+            if(isPublic(request)==false){ //isPublic runs the current request against a list of requests paths where authentication doesn't need to occur
+                String authToken = (String) request.getSession().getAttribute("authToken");
+                //do some cookie validation here
+                Cookie[] cookies = request.getCookies();
+                boolean loggedIn = false;
+                if(cookies != null) {
+                    for (int i = 0; i &lt; cookies.length; i++) {
+                        Cookie cookie=cookies[i];
+                        String cookieName = cookie.getName();
+                        String cookieValue = cookie.getValue();
+                        if(cookieName.equals("authToken") &amp;&amp; cookieValue.equals(authToken)) loggedIn = true;
+                    }
+                }
+
+                if (!loggedIn){
+                    ((HttpServletResponse)resp).sendRedirect(request.getContextPath()+"/login.jsp");
+                    return;
+                }
+            }
+        }
+        chain.doFilter(req, resp);
+	}
+
+	/* (non-Java-doc)
+	 * @see javax.servlet.Filter#destroy()
+	 */
+	public void destroy() {
+		// TODO Auto-generated method stub
+	}
+
+}
+</pre>
+
+</p>
+<p>
+If neither of the options above can be implemented resources such as Servlet classes should inherit from an AuthenticatedServlet class which contains the authentication logic
+and executes it on every single request. This is more error prone but still better than performing authentication logic within the code for each individual resource.
+</p>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Secure Coding Dojo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
+<script src="/public/jquery.min.js"></script>
+<script src="/public/bootstrap/js/bootstrap.min.js"></script>
+<style>
+body {
+    position: relative; 
+}
+
+.section{    
+    padding-left: 75px;
+    min-height: 400px;
+}
+.section .p{
+  font-size: 50px;
+}
+
+#about {
+  color: #fff; 
+  background-size:cover;
+  background-image: linear-gradient(
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0.5) 
+  ), url('/public/banner.jpg')
+}
+#blocks {color: #fff; background-color: black;}
+    
+.transparent {
+    background-color: transparent;
+}
+
+#attacks{
+    color: #fff;
+    background: darkred; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(darkred, black); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(darkred, black); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(darkred, black); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(darkred, black); /* Standard syntax */
+}
+#rules{
+    color: #fff;
+    background: darkred; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(black, darkslateblue); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(black, darkslateblue); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(black, darkslateblue); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(black, darkslateblue); /* Standard syntax */
+}
+</style>
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="50">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#about">Secure Coding Dojo</a>
+    </div>
+    <div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="#attacks">Attacks</a></li>
+          <li><a href="#blocks">Blocks</a></li>
+          <li><a href="#rules">Rules</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="/public/provider/slack"><span class="glyphicon glyphicon-log-in"></span> Login with Slack</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>    
+
+
+<div id="about" class="container-fluid section">
+    <div class="jumbotron transparent">
+        <h1>Welcome to the &lt;Secure Coding Dojo/&gt;</h1> 
+        <p>Hackers are after finding holes in your software. 
+        Are you up to the challenge? Can you find the next security bug? 
+        Can you implement the software defenses that will prevent the next 
+        cyber-attack on your application? Be prepared! Join the Dojo! </p>
+    </div>
+</div>
+<div id="attacks" class="container-fluid section">
+  <div class="jumbotron transparent">
+  <h2>Attacks</h2>
+  <p>In order to know how to defend you must first learn what you need to defend against.</p>
+  <p>Attacks on software are conducted by taking advantage of software weaknesses or misconfigurations. 
+    The most dangerous software weaknesses are known as the SANS Top 25. </p>
+  <p>To advance your training you will have to complete challenges that involve identifying and attacking SANS Top 25 weaknesses. 
+    This will help you get into the attacker mindset and 'put your hacker hat on'. </p>
+    <p>
+    Thinking like an attacker will help you avoid vulnerabilities when designing software, a process known as 'Threat Modeling'.
+
+    It will also help you test your code for vulnerabilities once the software has been built.
+  </p>
+  </div>
+</div>
+<div id="blocks" class="container-fluid section">
+  <div class="jumbotron transparent">
+    <h2>Blocks</h2>  
+    <p>In martial arts you learn various blocking techniques. Each block defends against one or more types of attacks.</p>
+    <p>In a similar way software can be defended through 'code blocks'. They are also more widely known as 'secure coding practices'. 
+      Code blocks include practices like: 'whitelisting user input' 
+      or 'using strong cryptographic algorithms'. </p>
+    <p>After you complete a challenge you will have the opportunity to review the 'code blocks' that could have prevented the attacks.
+    </p>
+    <p>
+      Knowing the basic 'code blocks' will help you prevent the attacks while you are writing your code. 
+      It will also help you identify software weaknesses during code review.
+    </p>
+  </div>
+</div>
+<div id="rules" class="container-fluid section">
+  <div class="jumbotron transparent">
+    <h2>Rules</h2>       
+    <p>Just like in Karate you can never use the skills you learn here to attack someone. 
+      You are only participating in this training to learn how to defend your software.</p>
+
+    <p>Even when you are conducting security testing to find the security bugs so they can be fixed, 
+      it has to be fully authorized.</p>
+
+    <p>Any unauthorized testing, even when conducted for good, is a criminal offense so be sure to check you have authorization
+      before you touch any applications outside this challenge</p>   
+
+    <p>You are fully authorized to conduct testing on the target applications provided for the challenges, the 'Insecure Inc.' site, 
+      however you are not authorized to conduct disruptive testing, load testing, automated scanning or intentionally alter the integrity 
+      of the target applications.
+    </p>
+        
+    <p>
+      You are not authorized to conduct any testing on this page, or the authenticated portion of this site, 
+      try to bypass the challenges, steal challenge codes, impersonate any users or otherwise try to
+      break the leaderboard application. If you happen to notice anything you get bonus points for reporting it to the organizers.
+    </p>
+    
+  <p>
+      Don't get too intimidated by the rules, though :), have fun and enjoy the learning experience. Sign in below to get started.
+  </p>
+  <br>
+
+      <button type="button" class="btn btn-default" onclick="window.location='/public/provider/slack'">Sign in with Slack</button>
+
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: 'URL Redirection to Untrusted Site ('Open Redirect')'.
+<br><br>
+
+  <blockquote>
+    <p>
+         <i>A web application accepts a user-controlled input that specifies a link to an external site, and uses that link in a Redirect. This simplifies phishing attacks. </i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/601.html">CWE 601</a></footer>
+  </blockquote>
+  <p>
+    Open Redirect is a very dangerous vulnerability. Attackers will manipulate legitimate urls to do their bidding.
+    First the attacker would make the url very long would some 'bogus' parameters which will be ignored.
+  </p>
+  <p>
+    Example:
+    <mark>https://www.mybank.com/login?bogus1=956292465974632954923659245692456&amp;bogus2=93524956934756923435634796534295634&amp;bogus3=965532974534257935647923567495679562347965234975642397562397566345629465956542945739563975349&amp;redirectUrl=</mark><code>http://www-1.mybank.com/fakelogin</code>
+  </p>
+  <p>The victim will examine the first portion of the url and then give up. They will trust the URL since it's a valid url to 'www.mybank.com' and navigate to it.</p>
+  <br>
+  <h5>About the vulnerable application</h5>
+  <p>
+    The developer of the vulnerable application has received a requirement to automatically redirect the users back to the page they were on, before the session expired and they were logged out.
+  </p>
+<p>
+    Here's how the feature was implemented:
+    <ul>
+      <li>When the session expires the authentication filter obtains the current relative resource path </li>
+      <li>The authentication filter then takes the url of the login page and appends the current relative resource path to it as a redirect parameter </li>
+      <li>The authentication filter then redirects to the newly constructed login page URL</li>
+      <li>The login page validates the user credentials and then obtains the value of the redirect parameter and redirects to it, without doing any verification of the URL</li>
+    </ul>
+</p>
+<p>
+    Your task is to construct a URL that you can then send in a phishing e-mail to trick the admin into navigating to a malicious page and providing their credentials. 
+</p>
+<p>
+    You must redirect the user to: <code>http://evil.bad</code> Simply navigate to the evil url that you end up making to complete the challenge.
+  </p>
+<p>
+  You have some of the application code below. See if you can spot the issue.
+</p>
+<pre class="pre-scrollable">
+&lt;!--Code of the login form JSP--&gt;
+
+&lt;form action="cwe601.jsp?redirect=&lt;%=request.getParameter(redirect)%&gt;&gt;" autocomplete="off" method="POST"&gt;
+&lt;div class="form-group"&gt;
+  &lt;label for="usr"&gt;Name:&lt;/label&gt;
+  &lt;input type="text" class="form-control" id="usr" name="usr" value="admin"&gt;
+&lt;/div&gt;
+&lt;!-- disables autocomplete --&gt;&lt;input type="text" style="display:none"&gt;
+&lt;div class="form-group"&gt;
+  &lt;label for="pwd"&gt;Password:&lt;/label&gt;
+  &lt;input type="password" class="form-control" id="pwd" name="pwd"&gt;
+</pre>
+
+<pre class="pre-scrollable">
+//code of login form jsp
+if(valid(request.getParameter("usr"),request.getParameter("pwd"))) response.sendRedirect(request.getParameter("redirect"));
+</pre>

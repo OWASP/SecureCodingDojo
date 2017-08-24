@@ -1,0 +1,39 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: "Cross-Site Request Forgery (CSRF)".
+  <blockquote>
+    <p>
+         <i>The web application does not, or can not, sufficiently verify whether a well-formed, 
+             valid, consistent request was intentionally provided by the user who submitted the request.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/352.html">CWE 352</a></footer>
+  </blockquote>
+  
+  <h5>A Bit About CSRF</h5>
+  <p>
+    CSRF and XSS are related. They are both part of a category of attacks known as Client Side attacks. 
+    They are called this way because they occur in the browser and usually have the target the user of the application rather than the server.
+  </p>
+<p>
+If an application only relies on cookies to validate the authentication of a request, it allows CSRF.
+</p>
+<p>
+Consider the following attack scenario.
+<ul>
+    <li>You are browsing the Internet, in one tab you have your banking site while in another you have your favorite discussion board. </li>
+    <li>One of the users of the board has replaced their avatar with an HTTP request to your bank transferring $100 to an overseas account.</li>
+    <li>When your browser loads the discussion board, it will automatically send the request 
+        that was stored in the attacker's avatar using the active cookies from the bank tab</li>
+</ul>
+ 
+</p>
+<br>
+<h5>About the Challenge</h5> 
+<p>Just like in the challenge before you have to exploit the social networking feature where users can see each others profiles. 
+</p>
+
+<p>
+    Use CSRF to cause any user that sees your profile to change their Display Name to <code>Banjo</code>
+</p>
+<p>PS: The developers have introduced a feature to filter out tags and prevent the XSS seen in the previous challenge. 
+  You will have to figure out how to send the request to update other users profiles without using HTML markup.
+</p>

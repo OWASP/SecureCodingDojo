@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <p>Below is the list of teams that are participating in the challenge and the members that attained a particular level.</p>
+
+    <p>The 'Master' level can only be achieved by a team creator when all the members of the team reach 'Black Belt' level.</p>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Teams vs. Levels</th>
+            <th ng-repeat="level in challengeDefinitions">{{level.name}}</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="team in teamList">
+                <td>{{team.name}}</td>
+                <td ng-repeat="level in team.challengeDefinitions">
+                    <div ng-repeat="user in level.members">{{user.givenName}} {{user.familyName}}</div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

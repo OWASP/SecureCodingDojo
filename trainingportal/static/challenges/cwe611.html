@@ -1,0 +1,49 @@
+<p>
+    The purpose of this challenge is to demonstrate the programming flaw: "Improper Restriction of XML External Entity Reference ('XXE')".
+</p>
+
+  <blockquote>
+    <p>
+         <i>The software processes an XML document that can contain XML entities with URIs that resolve to documents outside of the intended sphere of control, 
+             causing the product to embed incorrect documents into its output.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/611.html">CWE 611</a></footer>
+  </blockquote>
+<p>
+    This is a "bonus" challenge. This weakness is not on the SANS 25 list, but it is becoming a big problem, especially for Java EE applications. 
+</p>
+<br>
+<h5>About XXE</h5>
+<p>
+    XML External Entity is exploited through DTDs (Document Type Definitions).
+</p>
+<p>
+    DTDs allow the creation of XML entities. XML Entities are variables that can be assigned a string value when the XML document gets processed.
+</p>
+<p>
+    The entity values could be configured with values <mark>external</mark> to the document, such as in the example below. This is where the <code>XML External Entity</code> name comes from.
+    <pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&#10;&lt;!DOCTYPE svg [ &lt;!ENTITY xxe SYSTEM &quot;file:///var/www/myapp/welcome.txt&quot;&gt;]&gt;&#10;&lt;svg width=&quot;100&quot; height=&quot;100&quot;&gt;&lt;text x=&quot;10&quot; y=&quot;20&quot; fill=&quot;red&quot;&gt;&amp;xxe;&lt;/text&gt;&lt;/svg&gt;&#10;
+</pre>
+</p>
+
+<br>
+<h5>About the Challenge</h5>
+
+<p>To prevent users from uploading malicious files as demonstrated in the previous challenge the developers are now saving the files to a database and rendering them into the page.
+    Plus they also parse them to make sure they are valid XML. Your task is to get the avatar to display the contents of the <code>/etc/passwd</code> file.
+</p>
+<p>Here's the code that parses the SVG:</p>
+<pre>
+public static Document parseXML(String xml) throws SAXException, IOException, ParserConfigurationException {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    
+    Document doc = builder.parse(new StringBufferInputStream(xml));
+    doc.getDocumentElement().normalize();
+    
+    return doc;
+}
+</pre>
+<br>

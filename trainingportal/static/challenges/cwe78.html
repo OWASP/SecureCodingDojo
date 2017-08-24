@@ -1,0 +1,69 @@
+<p>
+    The purpose of this challenge is to demonstrate the #2 MITRE Top 25 programming flaw:
+    <strong>Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')</strong>
+    <blockquote>
+         <i>The software constructs all or part of an OS command using externally-influenced input from an upstream component, 
+           but it does not neutralize or incorrectly neutralizes special elements that could modify the intended OS command 
+           when it is sent to a downstream component.</i>
+        <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/78.html">CWE 78</a></footer>
+        </blockquote>
+
+    The following two other Top 25 weaknesses are related two Command Injection since they usually require some ability to 
+    execute arbitrary commands in order to be exploitable.
+    However if these issues exist they amplify the magnitude of the problem.
+    <ul>
+      <li>Execution with Unnecessary Privileges</li>
+      <blockquote>
+         <i>The software performs an operation at a privilege level that is higher than the minimum level required, 
+           which creates new weaknesses or amplifies the consequences of other weaknesses.</i>
+        <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/250.html">CWE 250</a></footer>
+      </blockquote>
+      <li>Incorrect Permission Assignment for Critical Resource</li>
+      <blockquote>
+         <i>The software specifies permissions for a security-critical resource in a way that allows 
+           that resource to be read or modified by unintended actors.</i>
+        <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/732.html">CWE 732</a></footer>
+      </blockquote>
+    </ul>
+<br>
+<h4>About the Flaws</h4>
+<p>OS command injection happens when the software executes a command line passing in unsanitized user input as command line arguments.
+</p>
+<p>An attacker can add to the command executed through <mark>injection</mark> techniques, such as piping the output of the original command into another command
+  <mark>ping host.com</mark><code>|cat /etc/shadow</code>
+</p>
+<p>If the program is running with <strong>root</strong> privileges then it will output the contents of the shadow file and 
+potentially expose the root password. In that case the "Execution with Unnecessary Privileges" of the program as root would make the problem worse.
+In fact if that was the case the attacker wouldn't even need to obtain the shadow file since they could pipe in a command to change the root password.</p>
+<p>If the program was running with limited privileges but it had write access to a critical file such as <code>/etc/sudoers</code> then it could add itself
+there and change root's password with sudo. In that case the "Incorrect Permission Assignment for Critical Resource" would make the problem worse.</p>
+<br>
+<h4>About the Challenge</h4>
+<p>
+  In one of the previous challenges you were able to login in the admin's account and change the address of the updates server. 
+  That functionality has been enhanced to perform a connectivity check, in order to avoid mistakes when doing setting changes.
+</p>
+<p>
+  Rather than implementing the check in Java the developers are 'shelling out' and calling the ping command. 
+  They put in some sort of input validation/sanitization to prevent addition of commands other than ping. See if you can bypass it.
+
+</p>
+<p>
+  Your task is to get the contents of the <code>/etc/passwd</code> file. You can use either the <mark>cat</mark> or the <mark>less</mark> command to do so.
+</p>
+<p>
+  Here is the application code. See if you can spot the problem.
+</p>
+<pre class="pre-scrollable">
+	updateServer = request.getParameter("updateServer");
+	if(updateServer!=null){
+		updateServer = updateServer.replace("'","").replace("\"","").replace("`", "").replace("&amp;", "").replace("|", "");
+		boolean isValidServer = Util.isValidServerName(updateServer);
+		String output = null;
+		if(isValidServer){
+			//ping the update server
+			String [] commandArgs = {"/bin/sh", "-c", String.format("ping -c 4 %s",updateServer)};
+			output = Util.exec(commandArgs);
+		}
+</pre>
+<br>

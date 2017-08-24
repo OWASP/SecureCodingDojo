@@ -1,0 +1,55 @@
+<p>
+    The purpose of this challenge is to demonstrate the <strong>Use of Externally-Controlled Format String</strong>, MITRE Top 25 vulnerability.
+    <ul>
+      <li>Use of Externally-Controlled Format String
+        <blockquote>
+          <i>The software uses a function that accepts a format string as an argument, but the format string originates from an external source</i>    
+          <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/134.html">CWE 134</a></footer>
+        </blockquote>
+      </li>
+
+    </ul>
+</p>
+<br>
+<h4>A Bit About Format String Injection</h4>
+<p>
+Format string injection vulnerabilities happen when user input is passed into printf and the user can insert a format construct in the input.
+</p>
+<p>
+For example if <code>userInput="%s"</code> and the code is <pre>printf(userInput)</pre> the printf function will attempt to print a string from the stack, where normally you would find a variable address.
+</p>
+<p>Format string attacks are difficult to exploit in modern operating systems however they can still be very dangerous and at least crash the software by causing a segfault.</p>
+
+<br>
+<h4>About the Challenge</h4>
+<p>
+  The developers of the master password app have implemented the safe function <mark>fgets</mark> so buffer overflow is no longer possible. 
+  However you may be able to obtain data from the memory. You don't need to get the password, just some memory values are enough to pass the challenge.
+</p>
+
+<p>
+  Here is the master password program code. See if you can spot the problems.
+</p>
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(){
+	char MASTER_PASSWORD[9]="***EDITED***";
+	char userPass[9];
+	int x=2;
+	printf("Enter the master password:\n");
+	fgets(userPass,9,stdin);
+
+	if(strcmp(userPass,MASTER_PASSWORD)==0){
+		printf("PASSWORD VERIFIED\n");
+	}
+	else{
+		printf("Invalid password:");
+		printf(userPass);
+	}
+	return 0;
+}
+
+</pre>
+<br>

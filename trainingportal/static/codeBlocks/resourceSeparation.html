@@ -1,0 +1,25 @@
+<p>This code block protects against software weaknesses such as <strong>Missing/Incorrect Authorization</strong></p>
+
+<p>
+Resource separation/segmentation minimizes the impact of an unauthorized access by limiting the resources that a certain user or role has access to.
+</p>
+<p>
+Resources can be network resources such as LANs or data resources such as different customer databases used in a SaaS offering.
+</p>
+<p>
+If an attacker obtains access to the account of an administrator for one of the resources they do not have access to the other resources in the system.
+</p>
+<p>
+    Same approach can be applied to software development where URLs and other server resources can be segmented based on access.
+</p>
+<p>
+This approach also avoids logical attacks. For example if an application defines a class of servlets that can only be accessed by administrators, 
+this reduces the risk of logical flaws being introduced because the authorization logic can be simplified and declared in a base class.</p>
+<blockquote>
+    <p><i>
+        "Divide the software into anonymous, normal, privileged, and administrative areas. Reduce the attack surface by carefully mapping roles with data and functionality. 
+        Use role-based access control (RBAC) [R.862.1] to enforce the roles at the appropriate boundaries.
+Note that this approach may not protect against horizontal authorization, i.e., it will not protect a user from attacking others with the same role."</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/862.html">CWE 862</a></footer>
+  </blockquote>

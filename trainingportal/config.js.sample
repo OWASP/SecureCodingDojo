@@ -1,0 +1,31 @@
+//rename to config.js and populate accordingly
+var config = {};
+config.dojoUrl = process.env.DOJO_URL;
+config.dojoTargetUrl = process.env.DOJO_TARGET_URL;
+config.isSecure = config.dojoUrl.startsWith("https");
+config.dbHost = process.env.DOJO_DB_HOST;
+config.dbName = '';
+config.dbUser = '';
+config.encDbPass = ''; //use aescrypto to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption
+config.googleClientId = '';
+config.encGoogleClientSecret = '';
+
+
+
+config.encExpressSessionSecret = ''; //generate a strong session secret and encrypt it
+config.googleOauthCallbackUrl = config.dojoUrl+"/public/google/callback";
+config.slackOauthCallbackUrl = config.dojoUrl+"/public/slack/callback";
+
+config.slackClientId = '';
+config.slackTeamId = '';
+config.encSlackClientSecret = '';
+
+module.exports = config;
+
+/*
+
+See aescrypto for a script to encrypt secrets and passwords
+
+
+
+*/

@@ -1,0 +1,23 @@
+<p>These code blocks protect against software weaknesses such as <strong>Improper Restriction of Excessive Authentication Attempts</strong></p>
+<h5>Two Factor Authentication (2FA)</h5>
+<p>
+Using a secondary authentication mechanism such as an RSA ID or mobile token prevents a wide range of login attacks from Spoofing and Brute Force categories .</p>
+<h5>Account Lockout</h5>
+<p>
+The user account should become locked after more than 10 invalid login attempts at a minimum. 
+The event should be logged and the user should be automatically notified by e-mail of invalid activity to their account.
+</p>
+<h5>Strong Passwords Requirements</h5>
+<p>
+Weak passwords such as <code>admin</code> or <code>123456</code> should not be allowed. Passwords should be minimum eight characters should contain at least one upppercase letter,
+ at least one lowercase letter, at least one number and at least one symbol.
+</p>
+<h5>Password Expiry</h5>
+<p>
+Passwords should expire after less than three months to limit the amount of time they could be brute forced through an online brute force or offline cracking.
+</p>
+<h5>Never hard-code passwords</h5>
+<p>
+A hard-coded password cannot benefit from expiry, reset or lockout.
+</p>
+

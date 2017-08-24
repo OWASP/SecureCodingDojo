@@ -1,0 +1,53 @@
+<div class="container" ng-app="challengesApp" ng-controller="submitCodeCtrl">
+    <div class="alert alert-danger" id="codeError" ng-if="isCodeErrorMessage">
+        <button type="button" class="close" ng-click="hideError()">&times;</button>
+        {{codeErrorMessage}}
+    </div>
+    <h4>Nice! You solved a challenge. Take the salt below and obtain the code.</h4>
+    <br>
+    <div class="form-group">
+        <label for="salt">Salt:</label>  
+        <code>{{salt}}</code>
+        <br>
+        <label for="challengeCode">Challenge code:</label>
+        <input type="text" class="form-control" id="challengeCode">
+        <br>                     
+        <button class="btn btn-success" ng-click="submitAnswer()">Submit</button>
+
+    </div>
+
+            <!-- Code Block Dialog -->
+            <div id="codeBlocksModal" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-lg">
+
+                    <!-- Team configuration UI -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Challenge passed</h4>
+                        </div>
+                        <div class="modal-body">
+                            
+                            <div class="alert alert-success" id="teamSuccessMessage" ng-if="isCodeSuccessMessage">
+                                {{codeSuccessMessage}}
+                            </div>
+                            
+                            <p ng-if="challengeCodeBlocks.length>0">Read about the secure coding best practices ('code blocks') that can prevent attackers from exploiting this type of security flaw.</p>
+                            
+                            <div class="pre-scrollable">
+                                <span ng-repeat="block in challengeCodeBlocks">
+                                    <h4>{{block.name}}</h4>
+                                    <div ng-include="block.description"></div>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+</div>
+

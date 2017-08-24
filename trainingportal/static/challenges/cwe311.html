@@ -1,0 +1,25 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: 'Missing Encryption of Sensitive Data'. 
+<br><br>
+
+  <blockquote>
+    <p>
+         <i>The software does not encrypt sensitive or critical information before storage or transmission.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/311.html">CWE 311</a></footer>
+  </blockquote>
+    This is the same vulnerable application from the previous challenge. Now the administration page actually displays some data only intended for the admin's eyes.
+    Obtain the password for <code>user</code> and login to solve the challenge.
+    See if you can spot the problem in the code below.
+</p>
+<br>
+<pre class="pre-scrollable">
+&lt;!--contents of administration page cwe311admin.jsp--&gt;
+...
+tmpPwd = Base64.getEncoder().encodeToString(tmpPwd.getBytes("UTF-8"));
+...
+
+</pre>
+
+
+

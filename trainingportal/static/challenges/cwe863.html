@@ -1,0 +1,48 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: 'Incorrect Authorization'.
+<br><br>
+
+  <blockquote>
+    <p>
+         <i>The software performs an authorization check when an actor attempts to access a resource or perform an action, but it does not correctly perform the check. 
+         This allows attackers to bypass intended access restrictions.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/863.html">CWE 863</a></footer>
+  </blockquote>
+    The developer of the vulnerable application has finally implemented authorization for the admin page. 
+	Both admin and user pages are handled by the same JSP.
+    You have the vulnerable code below. See if you can spot the programming error.
+</p>
+<br>
+<pre class="pre-scrollable">
+if(session.getAttribute("ch3loggedin")==null || !(boolean)session.getAttribute("ch863loggedin")){
+	response.sendRedirect("ch863.jsp?loggedin=false");
+}
+else{
+
+	boolean isAdmin = true;
+	boolean stop = false;
+	String logoutParameter = request.getParameter("logout");
+	
+	if(logoutParameter!=null){
+		if(logoutParameter.equals("true")){
+			response.sendRedirect("ch863.jsp?loggedin=false");	
+			stop = true;
+		}
+	}
+	else{
+		String isAdminVal = (String)session.getAttribute("<mark>isAdmin</mark>");
+		isAdmin = isAdminVal != null &amp;&amp; isAdminVal.equals("true");
+	}		
+	
+	
+	if(!stop &amp;&amp; isAdmin){
+		 //administration page logic here
+        //...
+	}
+		
+}
+</pre>
+
+
+

