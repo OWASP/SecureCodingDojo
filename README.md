@@ -7,6 +7,10 @@ The training portal can be easily setup in the cloud and instructions for AWS EL
 # Screenshots
 Check out the screenshots dir to get a look and feel of the training portal and the Insecure.Inc application.
 
+![Alt text](/screenshots/frontpage.png?raw=true "Training Portal Front Page")
+
+
+
 # Why Another Security Training Site?
 While open source training sites to teach secure coding training are not new the target audience for these sites has been pen-testers and ethical hackers. 
 The Secure Coding Dojo is primarily intended as a delivery platform for developers and here's why:
