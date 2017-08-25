@@ -47,13 +47,13 @@ Install MySQL and create a DB and credentials for that DB. Note your user name a
 # Encryption Key Seeds and Environment Variables
 You will have to setup four seeds for encryption keys as OS environment variables. On *nix/mac modify .bash_profile as follows
 
-export ENC_KEY="put something random here"
-export ENC_KEY_IV="put something random here"
-export CHALLENGE_KEY="put something random here"
-export CHALLENGE_KEY_IV="put something random here"
-export DOJO_DB_HOST="localhost"
-export DOJO_URL="http://localhost:8081"
-export DOJO_TARGET_URL="http://localhost:8080/InsecureInc"
+    export ENC_KEY="put something random here"
+    export ENC_KEY_IV="put something random here"
+    export CHALLENGE_KEY="put something random here"
+    export CHALLENGE_KEY_IV="put something random here"
+    export DOJO_DB_HOST="localhost"
+    export DOJO_URL="http://localhost:8081"
+    export DOJO_TARGET_URL="http://localhost:8080/InsecureInc"
 
 
 # Dev Setup Instructions
@@ -78,23 +78,24 @@ Insecure.Inc
 - Debug on server
 - The Insecure.Inc website will be running on http://localhost:8080/InsecureInc
 
-#Building
+# Building
+Training portal
+- N/A
 
-Training portal - NA
 Insecure.Inc 
 - Right click on the project to export as a .war file and import it on your Java EE server
 
 
-#Hosting Insecure.Inc
+# Hosting Insecure.Inc
 Setup a Tomcat 8 server. Tomcat will ignore environment variables so you will have to configure the challenge key in /opt/tomcat/bin/setenv.sh
 (or wherever you had tomcat installed) like so:
 
-export CHALLENGE_KEY="our challenge key seed"
-export CHALLENGE_KEY_IV="your challenge key iv seed"
+    export CHALLENGE_KEY="our challenge key seed"
+    export CHALLENGE_KEY_IV="your challenge key iv seed"
 
 Note: Don't put Insecure.Inc on a publicly facing server or in AWS since activity against it may trigger IPS alarms, etc. 
 
-#Deploying the Training Portal on AWS ELB
+# Deploying the Training Portal on AWS ELB
 AWS ELB setup is pretty standard. Configure the RDS DB separately because once you setup the environment you can't easily switch or delete databases.
 
 Training portal
@@ -103,23 +104,25 @@ Training portal
 - Create an ELB environment using node
 - When creating the environment choose to define environment variables as below
 
-ENC_KEY="your enc key seed"
-ENC_KEY_IV="your enc iv seed"
-CHALLENGE_KEY="your challenge key seed"
-CHALLENGE_KEY_IV="your challenge key iv seed"
-DOJO_DB_HOST="your AWS RDS mysql host"
-DOJO_URL="https://elburl"
-DOJO_TARGET_URL="http://internalhost:8080/InsecureInc"
+        ENC_KEY="your enc key seed"
+        ENC_KEY_IV="your enc iv seed"
+        CHALLENGE_KEY="your challenge key seed"
+        CHALLENGE_KEY_IV="your challenge key iv seed"
+        DOJO_DB_HOST="your AWS RDS mysql host"
+        DOJO_URL="https://elburl"
+        DOJO_TARGET_URL="http://internalhost:8080/InsecureInc"
 
 
-#Extending the Secure Coding Dojo
+# Extending the Secure Coding Dojo
+## Challenges 
 Challenges are defined in ./trainingportal/static/challenges
 The file challengeDefinitions.json points to the corresponding html challenge description, play link and corresponding code blocks.
 Follow the already defined examples to create a new one.
 
+## Code Blocks 
 Code Blocks are defined in  ./trainingportal/static/codeBlocks. This folder has a similar structure with a definition json and a bunch of html files for each challenge.
 
-Challenge codes
+## Challenge codes
 Simply add a new challenge code line in challengeSecrets.json and use the sample code in encryptConfigs.js to encrypt it
 You can create a new jsp in the Insecure.Inc app by copying an existing one, make the challenges harder or slightly modify them or create your own site.
 See how the codes are hashed and salted for transmission to the training portal leaderboard in Java Resources > src > inc.insecure > GetCode.java
