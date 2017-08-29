@@ -6,7 +6,7 @@ config.isSecure = config.dojoUrl.startsWith("https");
 config.dbHost = process.env.DOJO_DB_HOST;
 config.dbName = '';
 config.dbUser = '';
-config.encDbPass = ''; //use aescrypto to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption
+config.encDbPass = ''; //use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption
 config.googleClientId = '';
 config.encGoogleClientSecret = '';
 
@@ -24,7 +24,7 @@ module.exports = config;
 
 /*
 
-See aescrypto for a script to encrypt secrets and passwords
+See encryptConfigs.js for a script to encrypt secrets and passwords
 
 
 
