@@ -20,7 +20,7 @@ if(pwd!=null){
 	else{
 		String output = Util.executeMasterPwd(pwd,"inc/insecure/bufferoverflow.c");
 		outputPre = String.format(OUTPUT_PRE_FORMAT,output);
-		if(outputPre.contains("PASSWORD VERIFIED")){
+		if(outputPre.contains("PASSWORD VERIFIED") && !pwd.equals("59563376")){
 			String code = "";
 			try {
 				code = CodeLoader.getInstance().getCode("cwe120");
@@ -35,6 +35,10 @@ if(pwd!=null){
 			if(Util.isMatch(pwd, "\0")){
 				feedbackVisibility = "";
 				feedback = "You got the correct character. Maybe you just need more of it and none of others? You must make both values empty strings ;)";
+			}
+			if(pwd.equals("59563376")){
+				feedbackVisibility = "";
+				feedback = "Thanks for checking our github repo :) but you're going to have to break the program logic through buffer overflow";
 			}
 			else if(pwd.length()>9){
 				feedbackVisibility = "";
