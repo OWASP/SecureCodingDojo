@@ -22,7 +22,8 @@ else{
 		displayName = displayName
 		.replace("onload","on****")
 		.replace("onclick","on****")
-		.replace("onmouseover","on****");
+		.replace("onmouseover","on****")
+		.replace("script","*****");
 		
 		session.setAttribute("cwe79displayName",displayName);
 		if(Util.hasXSS(displayName)){ //challenge completed
