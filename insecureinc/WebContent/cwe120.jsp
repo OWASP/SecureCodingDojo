@@ -14,7 +14,7 @@ String feedbackVisibility="hidden";
 String feedback="";
 
 if(pwd!=null){ 
-	if(pwd.length()>20){
+	if(pwd.length()>255){
 		alert="<div class='alert alert-danger'>Password too long! No shellcode please.</div>";
 	}
 	else{
@@ -38,11 +38,15 @@ if(pwd!=null){
 			}
 			if(pwd.equals("59563376")){
 				feedbackVisibility = "";
-				feedback = "Thanks for checking our github repo :) but you're going to have to break the program logic through buffer overflow";
+				feedback = "You're going to have to break the program logic through buffer overflow";
 			}
-			else if(pwd.length()>9){
+			else if(pwd.length()>9 && !Util.isMatch(pwd, "\0")){
 				feedbackVisibility = "";
 				feedback = "That's right you need lots of characters to overflow the buffer. However strcmp will only stop comparison at the string terminator. See if you can insert a string terminator in the url.";
+			}
+			else{
+				feedbackVisibility = "";
+				feedback = "That's right you need lots of characters to overflow the buffer. Keep going!";
 			}
 		}
 	}
