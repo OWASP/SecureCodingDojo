@@ -6,7 +6,7 @@ The training portal can be easily setup in the cloud and instructions for AWS EL
 
 # Demo
 
-Check out the [demo](/demo/Secure Coding Dojo Demo.mp4) to get a look and feel of the training portal and the Insecure.Inc application.
+Download the [demo](https://github.com/trendmicro/SecureCodingDojo/blob/master/demo/Secure%20Coding%20Dojo%20Demo.mp4) to get a look and feel of the training portal and the Insecure.Inc application.
 
 Also take a look in /screenshots
 ![Alt text](/screenshots/frontpage.png?raw=true "Secure Coding Dojo Training Portal Front Page")
