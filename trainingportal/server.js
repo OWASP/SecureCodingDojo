@@ -46,7 +46,6 @@ app.get('/public/provider/:provider', (req,res) => {
   auth.logoutAndKillSession(req, res, redirect);
 });
 
-/*
 
 app.get('/public/google',
   passport.authenticate('google', { scope: 
@@ -58,7 +57,7 @@ app.get( '/public/google/callback', passport.authenticate( 'google', {
 		successRedirect: '/main',
 		failureRedirect: '/public/authFailure'
 }));
-*/
+
 
 // path for slack authj
 app.get('/public/slack', passport.authenticate('slack'));

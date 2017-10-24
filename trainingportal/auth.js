@@ -92,7 +92,7 @@ getSlackStrategy = function () {
 
 //init passport
 exports.getPassport = function (){
-    //passport.use(getGoogleStrategy());
+    passport.use(getGoogleStrategy());
     passport.use(getSlackStrategy());
 
     // serialize and deserialize

@@ -46,6 +46,13 @@ You will need to create a Slack app for authentication.
 - Once your app is created you will be able to get your App Credentials to configure your config.js
 - Configure redirect urls under OAuth & Permissions. For example for a localhost setup the redirect url would be: http://localhost:8081/public/slack/callback
 
+
+# Google Setup Instruction
+Google authentication can also be configured in config.js. You will need a Google developer account and obtain the OAuth credentials from the Google API console: https://console.developers.google.com
+
+In the same place you will setup your domain and authorized redirect URIs. For example for a localhost setup the redirect url would be: http://localhost:8081/public/google/callback
+
+
 # DB Setup Instructions
 Install MySQL and create a DB and credentials for that DB. Note your user name and password you will need them for later.
 
@@ -76,10 +83,7 @@ Training portal
 - Copy ./insecureinc/src/inc/insecure/code.properties.sample to ./insecureinc/src/inc/insecure/code.properties
 - Open ./trainingportal/encryptConfigs.js, fill in db password; etc. and debug the script in VSCode to generate encrypted configuration settings in the Console.
 - Copy the Console output to each corresponding file.
-- Delete passwords from the encryptConfigs.js
-
-NOTE: Google authentication is also available but commented out, see server.js if you want to enable it instead and encrypt google oauth secret correspondingly 
-
+- Delete passwords from the encryptConfigs.
 - Open ./trainingportal/server.js and debug it in VSCode (at the first run the DB tables will get created)
 - The trainingportal server will be running on http://localhost:8081/ 
 
