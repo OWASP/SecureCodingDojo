@@ -1,4 +1,4 @@
 *node_modules*
-*challengeSecrets.json*
+challengeSecrets.json
 *.DS_Store
 config.js
