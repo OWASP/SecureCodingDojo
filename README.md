@@ -62,6 +62,8 @@ You will have to setup four seeds for encryption keys as OS environment variable
 
     export ENC_KEY="put something random here"
     export ENC_KEY_IV="put something random here"
+
+The following two are optional but recommended. They will cause the challenge secrets to be stored encrypted on the hard drive.
     export CHALLENGE_KEY="put something random here"
     export CHALLENGE_KEY_IV="put something random here"
 
@@ -72,7 +74,7 @@ You will also have to configure environmental settings such as the below
     export DOJO_TARGET_URL="http://localhost:8080/InsecureInc"
 
 
-# Dev Environment Setup Instructions
+# Environment Setup Instructions
 Training portal
 - Change directory to ./trainingportal
 - Run npm install (to download all necessary dependencies)
@@ -81,7 +83,9 @@ Training portal
 - Copy ./trainingportal/config.js.sample to ./trainingportal/config.js
 - Copy ./trainingportal/challengeSecrets.json.sample to ./trainingportal/challengeSecrets.json
 - Copy ./insecureinc/src/inc/insecure/code.properties.sample to ./insecureinc/src/inc/insecure/code.properties
-- Open ./trainingportal/encryptConfigs.js, fill in db password; etc. and debug the script in VSCode to generate encrypted configuration settings in the Console.
+- Open ./trainingportal/encryptConfigs.js, fill in db password, the Slack OAuth secret, the Google OAuth secret; etc. 
+- Change the value of the regenerateSecrets variable to true, to generate new challenge secrets. Otherwise the sample values will be used and people may be able to cheat.
+- Debug the script in VSCode to generate encrypted configuration settings in the Console.
 - Copy the Console output to each corresponding file.
 - Delete passwords from the encryptConfigs.
 - Open ./trainingportal/server.js and debug it in VSCode (at the first run the DB tables will get created)
@@ -102,13 +106,18 @@ Insecure.Inc
 
 
 # Hosting Insecure.Inc
-Setup a Tomcat 8 server. Tomcat will ignore environment variables so you will have to configure the challenge key in /opt/tomcat/bin/setenv.sh
+Note: Don't put Insecure.Inc on a publicly facing server or in AWS since activity against it may trigger IPS alarms, etc. 
+
+Setup a Tomcat 8 server.
+
+If you configured a key for storing the challenge secrets encrypted you need to perform the following step.
+
+Tomcat will ignore environment variables so you will have to configure the challenge key in /opt/tomcat/bin/setenv.sh
 (or wherever you had tomcat installed) like so:
 
     export CHALLENGE_KEY="our challenge key seed"
     export CHALLENGE_KEY_IV="your challenge key iv seed"
 
-Note: Don't put Insecure.Inc on a publicly facing server or in AWS since activity against it may trigger IPS alarms, etc. 
 
 # Deploying the Training Portal on AWS ELB
 AWS ELB setup is pretty standard. Configure the RDS DB separately because once you setup the environment you can't easily switch or delete databases.

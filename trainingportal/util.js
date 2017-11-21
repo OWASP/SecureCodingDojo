@@ -1,3 +1,8 @@
+exports.hasKey = function(){
+  var hasKey = typeof process.env.CHALLENGE_KEY !== 'undefined' && process.env.CHALLENGE_KEY!=null;
+  return hasKey;
+}
+
 exports.apiResponse = function(req, res, statusCode, message, result){
   if(statusCode!=200){
     //log the error

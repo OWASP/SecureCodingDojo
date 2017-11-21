@@ -6,10 +6,10 @@
 String alertVisibility="hidden";
 String usr = request.getParameter("usr");
 String pwd = request.getParameter("pwd");
-
+String pwdHash = Crypto.getInstance().getHashString(pwd+"PucMfDDfkG7jVOaaK51AjQ");
 if(usr!=null && pwd!=null){ 
 	alertVisibility="";
-	if(usr.equals("admin") && pwd.equals(CodeLoader.getInstance().getCode("cwe307pass"))){
+	if(usr.equals("admin") && pwdHash.equals("6lvOg9Sb1U8XIo2pNifNw+S3+Kk82+vX0E7CcqttkYU=")){
 		String code = "";
 		try {
 			code = CodeLoader.getInstance().getCode("cwe307");

@@ -44,18 +44,23 @@ public class Crypto {
 	 * @throws NoSuchAlgorithmException 
 	 */
 	private Crypto() throws UnsupportedEncodingException, NoSuchAlgorithmException{
-		String keyString = System.getenv("CHALLENGE_KEY");
-		String ivString = System.getenv("CHALLENGE_KEY_IV");
-		byte [] ivBytes = new byte[16];
-		byte [] ivStringBytes = getHash(ivString,HASH_ALG);
-		for(int i=0;i<ivBytes.length && i<ivStringBytes.length; i++){
-			ivBytes[i] = ivStringBytes[i];
+		try{
+			String keyString = System.getenv("CHALLENGE_KEY");
+			String ivString = System.getenv("CHALLENGE_KEY_IV");
+			byte [] ivBytes = new byte[16];
+			byte [] ivStringBytes = getHash(ivString,HASH_ALG);
+			for(int i=0;i<ivBytes.length && i<ivStringBytes.length; i++){
+				ivBytes[i] = ivStringBytes[i];
+			}
+			
+			byte[] keyHash = getHash(keyString, HASH_ALG);
+			
+			key = new SecretKeySpec(keyHash, "AES");
+			iv = new IvParameterSpec(ivBytes);
 		}
-		
-		byte[] keyHash = getHash(keyString, HASH_ALG);
-		
-		key = new SecretKeySpec(keyHash, "AES");
-		iv = new IvParameterSpec(ivBytes);
+		catch(Exception ex){
+			System.out.println("Could not initialize keys. Make sure CHALLENGE_KEY and CHALLENGE_KEY_IV are set in /opt/tomcat/bin/setenv.sh");
+		}
 	}
 
 
@@ -83,6 +88,8 @@ public class Crypto {
 	public String encrypt(String value) {
         try {
 
+        	if(key==null) return value;
+        	
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.ENCRYPT_MODE, key, iv);
 
@@ -106,6 +113,8 @@ public class Crypto {
     public String decrypt( String encrypted) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         try {
         
+        	if(key==null) return encrypted;
+        	
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, key, iv);
 

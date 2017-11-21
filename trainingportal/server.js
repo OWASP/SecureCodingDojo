@@ -174,8 +174,9 @@ app.post('/api/user/challengeCode', (req, res) => {
     var secretEntry = challengeSecrets[challengeId];
     if(secretEntry==null) return util.apiResponse(req, res, 404, "Challenge id not found.");
     
-    secretEntry = aescrypto.decrypt(secretEntry,process.env.CHALLENGE_KEY,process.env.CHALLENGE_KEY_IV);
-
+    if(util.hasKey())
+      secretEntry = aescrypto.decrypt(secretEntry,process.env.CHALLENGE_KEY,process.env.CHALLENGE_KEY_IV);
+  
     //calculate the hash
     var verificationHash = crypto.createHash('sha256').update(secretEntry+req.user.codeSalt).digest('base64');
     if(verificationHash!==challengeCode){
