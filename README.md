@@ -103,7 +103,7 @@ Training portal
 - N/A
 
 Insecure.Inc 
-- Right click on the project to export as a .war file and import it on your Java EE server
+- Right click on the project to export as a .war file and drop it into the /webapps folder of your Tomcat 8 installation.
 
 NOTE: You can download a pre-built version of insecureinc.war from /build however make sure you change and encrypt the values in WEB-INF/classes/inc/insecure/codes.properties after deployment with encryptConfigs.js. 
 
