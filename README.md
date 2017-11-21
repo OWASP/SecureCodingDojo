@@ -64,6 +64,7 @@ You will have to setup four seeds for encryption keys as OS environment variable
     export ENC_KEY_IV="put something random here"
 
 The following two are optional but recommended. They will cause the challenge secrets to be stored encrypted on the hard drive.
+
     export CHALLENGE_KEY="put something random here"
     export CHALLENGE_KEY_IV="put something random here"
 
@@ -127,7 +128,7 @@ Training portal
 - Setup the RDS DB and credentials first
     * Use the encryptConfigs.js script to generate new encrypted db password config.js if different then your local environment
 - Create an ELB environment using node
-- When creating the environment choose to define environment variables as below
+- When creating the environment choose to define environment properties, under Software Configuration, as below
 
         ENC_KEY="your enc key seed"
         ENC_KEY_IV="your enc iv seed"
