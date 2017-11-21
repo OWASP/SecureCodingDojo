@@ -104,6 +104,7 @@ Training portal
 Insecure.Inc 
 - Right click on the project to export as a .war file and import it on your Java EE server
 
+NOTE: You can download a pre-built version of insecureinc.war from /build however make sure you change and encrypt the values in WEB-INF/classes/inc/insecure/codes.properties after deployment with encryptConfigs.js. 
 
 # Hosting Insecure.Inc
 Note: Don't put Insecure.Inc on a publicly facing server or in AWS since activity against it may trigger IPS alarms, etc. 
