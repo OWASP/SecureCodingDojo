@@ -7,6 +7,18 @@
 <link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
 <script src="/public/jquery.min.js"></script>
 <script src="/public/bootstrap/js/bootstrap.min.js"></script>
+<script src="angular.min.js"></script>
+
+<script>
+    var app = angular.module("homeApp", []);
+    app.controller("homeCtrl", function($scope) {
+      $.getJSON("/public/providers",function(json){
+        $scope.authProviders = json;
+        $scope.$apply();
+      });
+    });
+</script>
+
 <style>
 body {
     position: relative; 
@@ -52,7 +64,7 @@ body {
 }
 </style>
 </head>
-<body data-spy="scroll" data-target=".navbar" data-offset="50">
+<body data-spy="scroll" data-target=".navbar" data-offset="50" ng-app="homeApp" ng-controller="homeCtrl">
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
@@ -77,8 +89,8 @@ body {
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-log-in"></span> Login
                 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="/public/provider/slack">Slack</a></li>
-                  <li><a href="/public/provider/google">Google</a></li>
+                  <li ng-repeat="prov in authProviders"><a href="{{prov.url}}">{{prov.name}}</a></li>
+                 
                 </ul>
               </li>
         </ul>
@@ -151,16 +163,11 @@ body {
     </p>
     
   <p>
-      Don't get too intimidated by the rules, though :), have fun and enjoy the learning experience. Sign in below to get started.
+      Don't get too intimidated by the rules, though :), have fun and enjoy the learning experience. Sign in the top corner to get started.
   </p>
-  <br>
-
-      <button type="button" class="btn btn-default" onclick="window.location='/public/provider/slack'">Sign in with Slack</button>
-      <button type="button" class="btn btn-default" onclick="window.location='/public/provider/google'">Sign in with Google</button>
-
+  
   <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
   </div>
 </div>
-
 </body>
 </html>

@@ -14,12 +14,14 @@ const crypto = require('crypto');
 const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const uid = require('uid-safe');
 const validator = require('validator');
+
 //INIT
 
 
 app.use('/public',express.static(path.join(__dirname, 'public')));
 
 
+app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(auth.getSession());
@@ -38,11 +40,21 @@ app.get("/",(req,res) => {
     res.redirect('/public/index.html');
 });
 
+app.get("/public/providers",(req,res) => {
+  var providers = [];
+  if("googleClientId" in config) providers.push({"name":"Google","url":"/public/provider/google"});
+  if("slackClientId" in config) providers.push({"name":"Slack","url":"/public/provider/slack"});
+  if("localUsersPath" in config) providers.push({"name":"Local","url":"/public/provider/local"});
+
+  res.send(providers);
+});
+
 app.get('/public/provider/:provider', (req,res) => {
   //invalidate any active session
   var redirect = '';
   if(req.params.provider == 'slack') redirect = '/public/slack';
   else if(req.params.provider == 'google') redirect = '/public/google';
+  else if(req.params.provider == 'local') redirect = '/public/locallogin';
   auth.logoutAndKillSession(req, res, redirect);
 });
 
@@ -68,6 +80,15 @@ app.get( '/public/slack/callback', passport.authenticate( 'slack', {
 		failureRedirect: '/public/authFailure'
 }));
  
+
+app.get('/public/locallogin', (req, res) => {
+   res.redirect('/public/locallogin.html');
+});
+
+app.post('/public/locallogin', passport.authenticate('local', { failureRedirect: '/public/authFailure' }),
+function(req, res) {
+  res.redirect('/main');
+});
 
 app.get("/public/authFailure",(req,res) => {
     res.send('Unable to login');
@@ -330,8 +351,5 @@ db.init();
 app.listen(8081,function(){
     util.log('Listening on 8081');
     util.log('Configured url:'+config.dojoUrl);
-    util.log('Is secure:'+config.isSecure);
-
-
-    
+    util.log('Is secure:'+config.isSecure); 
 });

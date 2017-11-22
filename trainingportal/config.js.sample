@@ -7,16 +7,16 @@ config.dbHost = process.env.DOJO_DB_HOST;
 config.dbName = '';
 config.dbUser = '';
 config.encDbPass = ''; //use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption
-config.googleClientId = '';
+//config.googleClientId = ''; //enable to configure Google authentication
 config.encGoogleClientSecret = '';
-
+//config.localUsersPath = 'localUsers.json';//authentication using a password file containing users and hashed passwords, no lockout
 
 
 config.encExpressSessionSecret = ''; //generate a strong session secret and encrypt it
 config.googleOauthCallbackUrl = config.dojoUrl+"/public/google/callback";
 config.slackOauthCallbackUrl = config.dojoUrl+"/public/slack/callback";
 
-config.slackClientId = '';
+//config.slackClientId = '';//enable to configure Slack authentication
 config.slackTeamId = '';
 config.encSlackClientSecret = '';
 

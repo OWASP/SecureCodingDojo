@@ -1,5 +1,6 @@
 const path = require('path');
 const config = require(path.join(__dirname, 'config'));
+const crypto = require('crypto');
 const aesCrypto = require(path.join(__dirname, 'aescrypto'));
 const session = require('express-session');
 const passport = require('passport');
@@ -7,9 +8,18 @@ const uid = require('uid-safe');
 
 const db = require(path.join(__dirname, 'db'));
 const util = require(path.join(__dirname, 'util'));
+var localUsers = null;
+try{
+  if(typeof config.localUsersPath !== 'undefined' && config.localUsersPath!=null)
+     localUsers = Object.freeze(require(path.join(__dirname, config.localUsersPath)));
+}
+catch(ex){/*Do nothing*/}
+
+
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var SlackStrategy = require('passport-slack').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 
 
 exports.isAuthenticated = function (req){
@@ -44,6 +54,24 @@ processAuthCallback = function (profileId, givenName, familyName, cb) {
     }
     });
 
+}
+
+//Returns the google strategy settings
+getLocalStrategy = function () {
+    return new LocalStrategy((username, password, cb) => {
+       if(localUsers != null && username in localUsers){
+        var user = localUsers[username];
+        var saltString =user.passSalt ;
+        var salt = new Buffer(saltString,'base64');
+        var passwordHash = crypto.pbkdf2Sync(password, salt, 10000, 64, "SHA512").toString('base64');
+        if(user.passHash === passwordHash){
+            return processAuthCallback(username,user.givenName, user.familyName, cb);
+        }
+       }
+
+       return cb(null,false);
+
+    });
 }
 
 //Returns the google strategy settings
@@ -92,8 +120,9 @@ getSlackStrategy = function () {
 
 //init passport
 exports.getPassport = function (){
-    passport.use(getGoogleStrategy());
-    passport.use(getSlackStrategy());
+    if("googleClientId" in config) passport.use(getGoogleStrategy());
+    if("slackClientId" in config) passport.use(getSlackStrategy());
+    if("localUsersPath" in config) passport.use(getLocalStrategy());
 
     // serialize and deserialize
     passport.serializeUser((user, done) => {

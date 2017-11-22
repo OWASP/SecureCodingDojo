@@ -1,4 +1,5 @@
 const path = require('path');
+const crypto = require('crypto');
 const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const util = require(path.join(__dirname, 'util'));
 
@@ -21,10 +22,22 @@ console.log('config.encSlackClientSecret="'+aescrypto.encrypt(slackSecret)+'"');
 console.log('config.encGoogleClientSecret="'+aescrypto.encrypt(googleSecret)+'"');
 console.log('config.encExpressSessionSecret="'+aescrypto.encrypt(sessionSecret)+'"');
 
+/**
+ * Use this function to generate the properties for a local user
+ */
+function genLocalUser(username, givenName, familyName, password){
+    
+    var saltString = crypto.randomBytes(16).toString('base64').toString();
+    var salt = new Buffer(saltString,'base64');
+    var passwordHash = crypto.pbkdf2Sync(password, salt, 10000, 64, "SHA512").toString('base64');
+    
+    var user = {"givenName":givenName,"familyName":familyName,"passHash":passwordHash,"passSalt":saltString};
+    console.log(username+":"+JSON.stringify(user));
+}
 
+//genLocalUser("organizer","Organizer","","<enter your password here>");//DELETE ME WHEN DONE
 
-//use this code to generate challenge secrets with a new key
-
+//use the following code to generate challenge secrets
 for(var key in challengeSecrets){
     if(challengeSecrets[key]==="" || regenerateSecrets)
         challengeSecrets[key] = uid.sync(16);

@@ -47,15 +47,26 @@ You will need to create a Slack app for authentication.
 - Configure redirect urls under OAuth & Permissions. For example for a localhost setup the redirect url would be: http://localhost:8081/public/slack/callback
 
 
-# Google Setup Instruction
+# Google Setup Instructions
 Google authentication can also be configured in config.js. You will need a Google developer account and obtain the OAuth credentials from the Google API console: https://console.developers.google.com
 
 In the same place you will setup your domain and authorized redirect URIs. For example for a localhost setup the redirect url would be: http://localhost:8081/public/google/callback
 
+# Local Authentication Setup Instructions
+For small teams or pre-configured images Slack or Google authentication may not be an option. For this scenario you can configure authentication working with a local flat file.
+
+- Copy localUsers.json.sample to localUsers.json
+- Un-comment the line in config.js which specifies the localUsersPath
+- Un-comment the line in encryptConfigs.js that calls the genLocalUser function and fill in accordingly. 
+- Copy paste the line as needed for all the users you need to create
+
+        genLocalUser("organizer","Organizer","","<enter your password here>");//DELETE ME WHEN DONE
+
+- After running encryptConfigs.js copy paste the generated line in localUsers.json
+- There are several caveats with local authentication such as users not being able to change their own passwords, missing account lockout, password expiration etc.
 
 # DB Setup Instructions
 Install MySQL and create a DB and credentials for that DB. Note your user name and password you will need them for later.
-
 
 # Encryption Key Seeds and Environment Variables
 You will have to setup four seeds for encryption keys as OS environment variables. On *nix/mac modify .bash_profile as follows
