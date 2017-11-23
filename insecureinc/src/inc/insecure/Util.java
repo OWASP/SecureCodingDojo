@@ -10,9 +10,11 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringBufferInputStream;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -33,6 +35,19 @@ import org.xml.sax.SAXException;
 import com.sun.xml.internal.fastinfoset.stax.events.XMLConstants;
 
 public class Util {
+	
+	/**
+	 * Checks the admin pass against a hard-coded hash
+	 * @param pwd
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 * @throws NoSuchAlgorithmException 
+	 */
+	public static boolean isAdminPassOk(String pwd) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+		if(pwd==null) return false;
+		String passHash = Crypto.getInstance().getHashString(pwd+"PucMfDDfkG7jVOaaK51AjQ");
+		return passHash.equals("6lvOg9Sb1U8XIo2pNifNw+S3+Kk82+vX0E7CcqttkYU=");
+	}
 	
 	/**
 	 * Executes a command and returns the output

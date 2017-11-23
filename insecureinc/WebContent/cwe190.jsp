@@ -19,7 +19,7 @@ if(usr!=null && pwd!=null){
 	boolean isLockedOut = tries > 5;
 	if(isLockedOut) lockoutVisibility = "";
 	
-	if(usr.equals("admin") && pwd.equals(Crypto.getInstance().decrypt("vTINriBpx+Xo7oGtlAPqTA=="))){
+	if(usr.equals("admin") && Util.isAdminPassOk(pwd)){
 		String code = "";
 		if(!isLockedOut){
 			try {

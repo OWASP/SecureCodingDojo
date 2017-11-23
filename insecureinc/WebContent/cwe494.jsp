@@ -9,7 +9,7 @@ String pwd = request.getParameter("pwd");
 
 if(usr!=null && pwd!=null){ 
 	alertVisibility="";
-	if(usr.equals("admin") && pwd.equals(Crypto.getInstance().decrypt("vTINriBpx+Xo7oGtlAPqTA=="))){
+	if(usr.equals("admin") && Util.isAdminPassOk(pwd)){
 		
 		session.setAttribute("cwe494loggedin",true);
 		response.sendRedirect("cwe494admin.jsp");
