@@ -1,6 +1,17 @@
+const crypto = require('crypto');
+
 exports.hasKey = function(){
   var hasKey = typeof process.env.CHALLENGE_KEY !== 'undefined' && process.env.CHALLENGE_KEY!=null;
   return hasKey;
+}
+
+/**
+ * Creates a pbkdf2 salted hash
+ */
+exports.hashPassword = function (password, saltString){
+  var salt = new Buffer(saltString,'base64');
+  var passwordHash = crypto.pbkdf2Sync(password, salt, 10000, 64, "SHA512").toString('base64');
+  return passwordHash;  
 }
 
 exports.apiResponse = function(req, res, statusCode, message, result){

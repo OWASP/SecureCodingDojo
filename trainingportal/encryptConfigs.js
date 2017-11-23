@@ -28,8 +28,7 @@ console.log('config.encExpressSessionSecret="'+aescrypto.encrypt(sessionSecret)+
 function genLocalUser(username, givenName, familyName, password){
     
     var saltString = crypto.randomBytes(16).toString('base64').toString();
-    var salt = new Buffer(saltString,'base64');
-    var passwordHash = crypto.pbkdf2Sync(password, salt, 10000, 64, "SHA512").toString('base64');
+    var passwordHash = util.hashPassword(password,saltString);
     
     var user = {"givenName":givenName,"familyName":familyName,"passHash":passwordHash,"passSalt":saltString};
     console.log(username+":"+JSON.stringify(user));

@@ -4,14 +4,18 @@ const crypto = require('crypto');
 const aesCrypto = require(path.join(__dirname, 'aescrypto'));
 const session = require('express-session');
 const passport = require('passport');
+const validator = require('validator');
 const uid = require('uid-safe');
 
 const db = require(path.join(__dirname, 'db'));
 const util = require(path.join(__dirname, 'util'));
+const captchapng = require('captchapng');
+const fs = require('fs');
+
 var localUsers = null;
 try{
   if(typeof config.localUsersPath !== 'undefined' && config.localUsersPath!=null)
-     localUsers = Object.freeze(require(path.join(__dirname, config.localUsersPath)));
+     localUsers = require(path.join(__dirname, config.localUsersPath));
 }
 catch(ex){/*Do nothing*/}
 
@@ -25,6 +29,95 @@ var LocalStrategy = require('passport-local').Strategy;
 exports.isAuthenticated = function (req){
     return !util.isNullOrUndefined(req) && !util.isNullOrUndefined(req.user) && !util.isNullOrUndefined(req.user.id) && req.isAuthenticated();
 }
+
+exports.getCaptcha = function(req,res){
+    
+      var val = parseInt(Math.random()*9000+1000);
+      
+      var p = new captchapng(80,30,val); // width,height,numeric captcha 
+      req.session.captcha=val.toString();
+      req.session.save();
+    
+      p.color(0, 0, 0, 0);  
+      p.color(80, 80, 80, 255); 
+    
+      var img = p.getBase64();
+      var imgbase64 = new Buffer(img,'base64');
+      res.writeHead(200, {
+          'Content-Type': 'image/png',
+          'Cache-Control': 'no-cache, must-revalidate'
+      });
+      res.end(imgbase64);
+}
+
+
+/**
+ * Registers a user in the local directory
+ * 
+ */
+exports.registerLocalUser = function(req,res){
+    //check if local auth is enabled
+    if(localUsers == null){
+        return util.apiResponse(req, res, 400, "Local authentication is not enabled");
+    }
+    
+    var newUser = req.body.newUser;
+
+    if(util.isNullOrUndefined(newUser)){
+        return util.apiResponse(req, res, 400, "Invalid request.'newUser' not defined.");
+    }
+    var username = newUser.username;
+    if(util.isNullOrUndefined(username) || validator.isAlphanumeric(username,'en-US')===false){
+        return util.apiResponse(req, res, 400, "Invalid username.");
+    }
+
+    if(username in localUsers){
+        return util.apiResponse(req, res, 400, "Username already taken.");
+    }
+
+    var password = newUser.password;
+    if(util.isNullOrUndefined(password)){
+        return util.apiResponse(req, res, 400, "Invalid request. 'password' not defined.");
+    }
+
+    if(validator.matches(password,/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)==false){
+        return util.apiResponse(req, res, 400, "Password too weak.");
+    }
+
+    var givenName = newUser.givenName;
+    if(util.isNullOrUndefined(givenName) || validator.matches(givenName,/^[A-Z'\-\s]+$/i)===false){
+        return util.apiResponse(req, res, 400, "Invalid givenName.");
+    }
+    var familyName = newUser.familyName;
+    if(util.isNullOrUndefined(familyName) || validator.matches(familyName,/^[A-Z'\-\s]+$/i)===false){
+        return util.apiResponse(req, res, 400, "Invalid familyName.");
+    }
+
+    var captcha = newUser.captcha;
+    var vfyCatpcha = req.session.captcha;
+    
+    //clear the captcha 
+    req.session.captcha = uid.sync(6);
+    req.session.save();
+    
+    if(util.isNullOrUndefined(captcha) || vfyCatpcha !== captcha){
+        return util.apiResponse(req, res, 400, "Invalid captcha.");
+    }
+
+    //create user
+    var saltString = crypto.randomBytes(16).toString('base64').toString();
+    var passwordHash = util.hashPassword(password,saltString);
+    
+    var user = {"givenName":givenName,"familyName":familyName,"passHash":passwordHash,"passSalt":saltString};
+    localUsers[username] = user;
+    //save to disk
+    var json = JSON.stringify(localUsers, null, "\t");
+    fs.writeFile(path.join(__dirname, config.localUsersPath), json, 'utf8');
+
+    return util.apiResponse(req, res, 200, "User created.");
+}
+
+
 
 processAuthCallback = function (profileId, givenName, familyName, cb) {
     //try to get a user from the database
@@ -62,10 +155,10 @@ getLocalStrategy = function () {
        if(localUsers != null && username in localUsers){
         var user = localUsers[username];
         var saltString =user.passSalt ;
-        var salt = new Buffer(saltString,'base64');
-        var passwordHash = crypto.pbkdf2Sync(password, salt, 10000, 64, "SHA512").toString('base64');
+
+        var passwordHash = util.hashPassword(password,saltString);
         if(user.passHash === passwordHash){
-            return processAuthCallback(username,user.givenName, user.familyName, cb);
+            return processAuthCallback("Local_"+username, user.givenName, user.familyName, cb);
         }
        }
 

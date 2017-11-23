@@ -1,16 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Secure Coding Dojo - Local Login</title>
+  <title>Secure Coding Dojo &gt; Local Login</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
 <script src="/public/jquery.min.js"></script>
 <script src="/public/bootstrap/js/bootstrap.min.js"></script>
+<script src="angular.min.js"></script>
 
+<script>
+    var app = angular.module("localLoginApp", []);
+    app.controller("localLoginCtrl", function($scope, $http) {
+      
+      $scope.refresh = function() {
+        captchaImg.src = '';
+        captchaImg.src = 'captcha.png#' + new Date().getTime();
+      }
+
+      $scope.register = function (){
+        var newUser = {};
+        newUser.username = registerUserName.value.trim();
+        newUser.password = registerPassword.value;
+        newUser.givenName = givenName.value.trim();
+        newUser.familyName = familyName.value.trim();
+        newUser.captcha = captcha.value.trim();
+
+        //verifications
+        $scope.isError = false;    
+        $scope.isSuccess = false;    
+        $scope.registerErrorMessage = "";  
+        if(newUser.username === ""){
+          $scope.isError = true;    
+          $scope.registerErrorMessage += "User name cannot be empty. ";
+        }
+
+        if(newUser.password === ""){
+          $scope.isError = true;    
+          $scope.registerErrorMessage += "Password cannot be empty. ";
+        }
+
+        if(newUser.password !== vfyPassword.value){
+          $scope.isError = true;    
+          $scope.registerErrorMessage += "Verification password doesn't match. ";
+        }
+
+        if(newUser.givenName === ""){
+          $scope.isError = true;    
+          $scope.registerErrorMessage += "Given name cannot be empty. ";
+        }
+
+        if(newUser.familyName === ""){
+          $scope.isError = true;    
+          $scope.registerErrorMessage += "Family name cannot be empty. ";
+        }
+
+        if(newUser.captcha === ""){
+          $scope.isError = true;    
+          $scope.registerErrorMessage += "Captcha cannot be empty. ";
+        }
+
+        if($scope.isError){
+          return;
+        }
+        
+        //client checks are fine proceed with the server checks
+        $http.post("/public/register",{newUser:newUser})
+          .then(function(response) {
+              if(response != null && response.data != null){
+                  if(response.data.status == 200){
+                      $scope.isSuccess = true;
+                  }
+                  else{
+                      $scope.isError = true;
+                      $scope.registerErrorMessage = response.data.statusMessage;
+                  }
+
+              }
+          },function(errorResponse){
+              $scope.isError = true;
+              $scope.registerErrorMessage = "A http error has occurred.";
+              
+          });
+
+     }
+    });
+</script>
 </head>
 
-<body data-offset="50">
+<body data-offset="50" ng-app="localLoginApp" ng-controller="localLoginCtrl">
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid"> 
@@ -20,7 +98,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="/">Secure Coding Dojo - Local Login</a>
+      <a class="navbar-brand" href="/">Secure Coding Dojo &gt; Local Login</a>
     </div>
   </div>
 </nav>    
@@ -40,7 +118,68 @@
     </div>
     
     <button type="submit" class="btn btn-default">Submit</button>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#registerModal">Register</button>
   </form>
+</div>
+
+
+<!-- Register UI -->
+<div id="registerModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Register</h4>
+        </div>
+        <div class="modal-body">      
+            <div class="alert alert-success" id="registerSuccessMessage" ng-if="isSuccess">
+                Registration successful.
+            </div>
+            
+            <div class="alert alert-danger" id="registerErrorMessage" ng-if="isError">
+                {{registerErrorMessage}}
+            </div>
+
+            <div class="form-group">
+              <label for="registerUserName">User name:</label>
+              <input type="text" class="form-control" id="registerUserName">
+            </div>
+            <div class="form-group">
+              <label for="registerPassword">Password:</label>
+              <input type="password" class="form-control" id="registerPassword" >
+            </div>
+            <div class="form-group">
+                <label for="vfyPassword">Verify password:</label>
+                <input type="password" class="form-control" id="vfyPassword">
+            </div>
+            <div class="form-group">
+                <label for="givenName">Given name(s):</label>
+                <input type="text" class="form-control" id="givenName">
+            </div>
+            <div class="form-group">
+                <label for="familyName">Family name:</label>
+                <input type="text" class="form-control" id="familyName">
+            </div>
+            <div class="form-group">
+                <label for="captchaImg">Captcha image:</label>
+                <img src="captcha.png" id="captchaImg"/>
+                <a href="#">
+                    <span class="glyphicon glyphicon-refresh" ng-click="refresh()"></span>
+                 </a>
+            </div>
+            
+            <div class="form-group">
+                <label for="captcha">Captcha value:</label>
+                <input type="captcha" class="form-control" id="captcha" name="captcha">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="register()">Submit</button>
+        </div>
+
+    </div>
+  </div>
 </div>
 
 </body>

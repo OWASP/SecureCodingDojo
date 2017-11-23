@@ -15,6 +15,8 @@ const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const uid = require('uid-safe');
 const validator = require('validator');
 
+
+
 //INIT
 
 
@@ -49,6 +51,11 @@ app.get("/public/providers",(req,res) => {
   res.send(providers);
 });
 
+app.get("/public/captcha.png", auth.getCaptcha);
+
+app.post("/public/register", auth.registerLocalUser);
+
+
 app.get('/public/provider/:provider', (req,res) => {
   //invalidate any active session
   var redirect = '';
@@ -67,7 +74,7 @@ app.get('/public/google',
 
 app.get( '/public/google/callback', passport.authenticate( 'google', { 
 		successRedirect: '/main',
-		failureRedirect: '/public/authFailure'
+		failureRedirect: '/public/authFail.html'
 }));
 
 
@@ -77,7 +84,7 @@ app.get('/public/slack', passport.authenticate('slack'));
 // OAuth callback url 
 app.get( '/public/slack/callback', passport.authenticate( 'slack', { 
 		successRedirect: '/main',
-		failureRedirect: '/public/authFailure'
+		failureRedirect: '/public/authFail.html'
 }));
  
 
@@ -85,7 +92,7 @@ app.get('/public/locallogin', (req, res) => {
    res.redirect('/public/locallogin.html');
 });
 
-app.post('/public/locallogin', passport.authenticate('local', { failureRedirect: '/public/authFailure' }),
+app.post('/public/locallogin', passport.authenticate('local', { failureRedirect: '/public/authFail.html' }),
 function(req, res) {
   res.redirect('/main');
 });
