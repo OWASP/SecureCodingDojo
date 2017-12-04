@@ -46,5 +46,7 @@ exports.log = function(message,user,req){
     finalMessage+=" - " + req.originalUrl;
   }
 
+  //remove new lines to prevent log forging
+  finalMessage = finalMessage.replace(/[\r\n]/g," ");
   console.log(finalMessage);
 }

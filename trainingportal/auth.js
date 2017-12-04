@@ -157,14 +157,25 @@ processAuthCallback = function (profileId, givenName, familyName, cb) {
 //Returns the google strategy settings
 getLocalStrategy = function () {
     return new LocalStrategy((username, password, cb) => {
-       if(localUsers != null && username in localUsers){
-        var user = localUsers[username];
-        var saltString =user.passSalt ;
+       if(localUsers === null){
+            util.log("Local authentication is not configured"); 
+            return cb(null,false);
+       } 
 
-        var passwordHash = util.hashPassword(password,saltString);
-        if(user.passHash === passwordHash){
-            return processAuthCallback("Local_"+username, user.givenName, user.familyName, cb);
-        }
+       if(username in localUsers){
+            var user = localUsers[username];
+            var saltString =user.passSalt ;
+
+            var passwordHash = util.hashPassword(password,saltString);
+            if(user.passHash === passwordHash){
+                return processAuthCallback("Local_"+username, user.givenName, user.familyName, cb);
+            }
+            else{
+                util.log("Authentication failure for user: "+username);
+            }
+       }
+       else{
+            util.log("User '"+username+"' not found.");
        }
 
        return cb(null,false);
