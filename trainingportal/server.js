@@ -23,7 +23,7 @@ const validator = require('validator');
 app.use('/public',express.static(path.join(__dirname, 'public')));
 
 
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(auth.getSession());
