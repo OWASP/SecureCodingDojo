@@ -80,7 +80,12 @@ exports.registerLocalUser = function(req,res){
         return util.apiResponse(req, res, 400, "Invalid request. 'password' not defined.");
     }
 
-    if(validator.matches(password,/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)==false){
+    var isStrongPass = validator.matches(password,/.{8,}/)==true &&
+    validator.matches(password,/[a-z]/)==true &&
+    validator.matches(password,/[A-Z]/)==true &&
+    validator.matches(password,/[\d]/)==true;
+
+    if(!isStrongPass){
         return util.apiResponse(req, res, 400, "Password too weak.");
     }
 
