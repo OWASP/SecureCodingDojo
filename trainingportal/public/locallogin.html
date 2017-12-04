@@ -15,7 +15,7 @@
       
       $scope.refresh = function() {
         captchaImg.src = '';
-        captchaImg.src = 'captcha.png#' + new Date().getTime();
+        captchaImg.src = 'captcha.png?' + new Date().getTime();
       }
 
       $scope.register = function (){
