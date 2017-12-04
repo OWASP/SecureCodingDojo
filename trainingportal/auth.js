@@ -338,11 +338,13 @@ exports.addSecurityHeaders = function (req, res, next) {
         res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
         res.header('Expires', '-1');
         res.header('Pragma', 'no-cache');
-        
+           
     }
-    res.header('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval';");
+    res.header('Content-Security-Policy', "script-src 'self' 'unsafe-inline' 'unsafe-eval';");
     res.header('X-Frame-Options', 'SAMEORIGIN');
+    res.header('X-XSS-Protection', '1');
     res.header('Strict-Transport-Security', 'max-age=31536000');
+    res.header('X-Content-Type-Options', 'nosniff'); 
 
     next();
 }

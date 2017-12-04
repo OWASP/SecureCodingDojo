@@ -15,14 +15,7 @@ const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const uid = require('uid-safe');
 const validator = require('validator');
 
-
-
 //INIT
-
-
-app.use('/public',express.static(path.join(__dirname, 'public')));
-
-
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -34,6 +27,7 @@ app.use(passport.session());
 
 app.use(auth.authenticationByDefault);
 app.use(auth.addSecurityHeaders);
+app.use('/public',express.static(path.join(__dirname, 'public')));
 app.use('/static',express.static(path.join(__dirname, 'static')));
 
 //ROUTES
