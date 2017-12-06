@@ -414,3 +414,26 @@ exports.levelUpTeamLead = function(teamId,level,errCb,doneCb){
     });
   });
 }
+
+/**
+ * Fetches the list of challenge entries in descending order, practically the activity
+ * @param {*} errCb 
+ * @param {*} doneCb 
+ */
+exports.fetchActivity = function(errCb,doneCb){
+  var con = getConn(errCb,doneCb);
+  con.connect(function(err) {
+    if(err){
+       con.handleErr(err);
+       return;
+    }
+
+    var sql = "SELECT challengeEntries.challengeId, users.givenName, users.familyName, users.level, users.teamId  FROM challengeEntries INNER JOIN users on users.id=challengeEntries.userId order by challengeEntries.id desc";
+    con.query(sql, function (err, result) {
+       if(err) con.handleErr(err);
+       else{
+         con.handleDone(result);
+      }
+    });
+  });
+}

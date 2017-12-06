@@ -278,6 +278,14 @@ app.get('/api/teams',  (req, res) => {
    })
 });
 
+//get the activity
+app.get('/api/activity',  (req, res) => {
+  db.fetchActivity(null,function(activityList){
+    res.send(activityList);
+  })
+});
+
+
 //get all the users
 app.get('/api/users',  (req, res) => {
    db.fetchUsers(null, function(users){

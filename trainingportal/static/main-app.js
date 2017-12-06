@@ -17,6 +17,9 @@ app.config(function($routeProvider) {
     .when("/leaderboard", {
         templateUrl : "static/leaderboard.html",
         controller: "leaderboardCtrl"
+    }).when("/activity", {
+        templateUrl : "static/activity.html",
+        controller: "activityCtrl"
     });
 });
 
@@ -84,9 +87,14 @@ app.controller('mainCtrl', function($scope, $http, $location) {
         $http.get("/api/teams",window.getAjaxOpts())
             .then(function(response) {
                 if(response != null && response.data != null){
+                    $scope.teamNames = {};
                     var teamList = response.data;
                     var teamListCount = teamList.length;
-             
+                    //create a map of team names to team ids
+                    for(var tIdx=0;tIdx<teamListCount; tIdx++){
+                        var team = teamList[tIdx];
+                        $scope.teamNames[team.id] = team.name;
+                    }
                     $http.get("/api/users",window.getAjaxOpts())
                     .then(function(response) {
                         if(response != null && response.data != null){
@@ -208,6 +216,8 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                 $http.get("static/challenges/challengeDefinitions.json")
                 .then(function(response) {
                     if(response != null && response.data != null){
+                        $scope.challengeTitles = {};
+                        $scope.levelNames = {};
                         var challengeDefinitions = response.data;
                         if(challengeDefinitions.length >= 1){
                             if($scope.user.level == null){
@@ -218,10 +228,16 @@ app.controller('mainCtrl', function($scope, $http, $location) {
 
                             //update the challenge definitions to include the current user's passed challenges
                             for(var lIdx=0;lIdx<challengeDefinitions.length;lIdx++){
-                                var challenges = challengeDefinitions[lIdx].challenges;
+                                var level = challengeDefinitions[lIdx];
+                                $scope.levelNames[lIdx] = level.name;
+
+                                var challenges = level.challenges;
+                                
                                 if(challenges!=null){
                                     for(var cIdx=0;cIdx<challenges.length;cIdx++){
                                         var ch = challenges[cIdx];
+                                        //if update the challenge titles object
+                                        $scope.challengeTitles[ch.id] = ch.name;
                                         var passed = $scope.user.passedChallenges;
                                         if(passed!=null){
                                             for(var uIdx=0; uIdx < passed.length; uIdx++){

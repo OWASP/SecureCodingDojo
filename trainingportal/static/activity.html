@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <p>The table below lists the participant activity, with most recent entries at the top. Hit <a href="#!activity" ng-click="fetchActivity()">refresh</a> to update the table.</p>
+
+      <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Team</th>
+            <th>Current Level</th>
+            <th>Challenge</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="activityEntry in activityList">
+                <td>{{activityEntry.givenName}} {{activityEntry.familyName}}</td>
+                <td>{{teamNames[activityEntry.teamId]}}</td>
+                <td>{{levelNames[activityEntry.level]}}</td>
+                <td>{{challengeTitles[activityEntry.challengeId]}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
