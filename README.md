@@ -4,6 +4,8 @@ While it comes with its own vulnerable training application (the Insecure.Inc we
 The strength of the platform is its extensibility and the integration with the commonly used development collaboration platform Slack.
 The training portal can be easily setup in the cloud and instructions for AWS ELB setup are available below.
 
+Be sure to also check the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki) for more details on deploying and installing the Dojo.
+
 # Demo
 
 Download the [demo](https://github.com/trendmicro/SecureCodingDojo/blob/master/demo/Secure%20Coding%20Dojo%20Demo.mp4) to get a look and feel of the training portal and the Insecure.Inc application.
