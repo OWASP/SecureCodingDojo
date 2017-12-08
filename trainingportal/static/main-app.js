@@ -31,7 +31,7 @@ app.controller('mainCtrl', function($scope, $http, $location) {
     //whether the menu is active
     $scope.isActive = function (viewLocation) { 
         if(viewLocation==="/") return $location.path()===viewLocation;
-        $location.path().indexOf(viewLocation)==0;
+        return $location.path().indexOf(viewLocation)==0;
     };
 
     $scope.hasCodeBlocks = function(challenge){
