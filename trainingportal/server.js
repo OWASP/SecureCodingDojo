@@ -280,7 +280,14 @@ app.get('/api/teams',  (req, res) => {
 
 //get the activity
 app.get('/api/activity',  (req, res) => {
-  db.fetchActivity(null,function(activityList){
+  var query = req.query.query;
+  if(util.isNullOrUndefined(query)) query = "";
+  query = query.trim();
+  if(query !== "" && !validator.matches(query,/^[A-Z'\-\s]+$/i)){
+    return util.apiResponse(req,res,400,"Invalid query");
+  }
+  
+  db.fetchActivity(query,null,function(activityList){
     res.send(activityList);
   })
 });

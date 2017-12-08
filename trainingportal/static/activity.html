@@ -1,7 +1,15 @@
 <div class="container-fluid">
-    <p>The table below lists the participant activity, with most recent entries at the top. Hit <a href="#!activity" ng-click="fetchActivity()">refresh</a> to update the table.</p>
+    <p>The table below lists the most recent participant activity.</p>
+    <form ng-submit="fetchActivity()">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Filter by name" id="nameFilter">
+            <div class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="fetchActivity()"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+        </div>
+    </form>
 
-      <table class="table table-striped">
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>User</th>

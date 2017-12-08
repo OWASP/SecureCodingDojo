@@ -420,16 +420,26 @@ exports.levelUpTeamLead = function(teamId,level,errCb,doneCb){
  * @param {*} errCb 
  * @param {*} doneCb 
  */
-exports.fetchActivity = function(errCb,doneCb){
+exports.fetchActivity = function(query,errCb,doneCb){
   var con = getConn(errCb,doneCb);
   con.connect(function(err) {
     if(err){
        con.handleErr(err);
        return;
     }
-
-    var sql = "SELECT challengeEntries.challengeId, users.givenName, users.familyName, users.level, users.teamId  FROM challengeEntries INNER JOIN users on users.id=challengeEntries.userId order by challengeEntries.id desc";
-    con.query(sql, function (err, result) {
+    
+    var sql = "";
+    if(query !== ""){
+      query = "%"+query+"%";
+      sql = "SELECT challengeEntries.challengeId, users.givenName, users.familyName, users.level, users.teamId "+
+        " FROM challengeEntries INNER JOIN users on users.id=challengeEntries.userId "+
+        "WHERE CONCAT(users.givenName, ' ', users.familyName) LIKE ? order by challengeEntries.id desc LIMIT 100";
+    }
+    else{
+      sql = "SELECT challengeEntries.challengeId, users.givenName, users.familyName, users.level, users.teamId "+
+      " FROM challengeEntries INNER JOIN users on users.id=challengeEntries.userId order by challengeEntries.id desc LIMIT 100";
+    }
+    con.query(sql,[query], function (err, result) {
        if(err) con.handleErr(err);
        else{
          con.handleDone(result);
