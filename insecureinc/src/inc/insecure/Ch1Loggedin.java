@@ -26,7 +26,7 @@ public class Ch1Loggedin extends HttpServlet {
 	protected boolean isAuthenticated(HttpServletRequest request){
         String authToken = (String) request.getSession().getAttribute("authToken");
         Cookie[] cookies = request.getCookies();
-        boolean isAuth = true;
+        boolean isAuth = false;
         if(cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
                 Cookie cookie=cookies[i];
