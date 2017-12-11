@@ -278,6 +278,9 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                         $scope.challengeDefinitions = challengeDefinitions;
 
                         $scope.fetchTeams();
+                        
+                        //do the first activity heartbeat
+                        $scope.activityHeartBeat();
                     }
                 });
                 //get the code blocks definitions
@@ -296,8 +299,7 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                     }
                 });
 
-                //do the first activity heartbeat
-                $scope.activityHeartBeat();
+                
             }
         });
     }
