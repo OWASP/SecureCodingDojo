@@ -54,6 +54,11 @@
                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 You have not joined a team yet! <a href="#" class="alert-link" data-toggle="modal" data-target="#teamModal">Join an existing team or create a team for yourself.</a>
             </div>
+
+            <div class="alert alert-info" id="activityAlert" ng-if="showActivityMessage">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <b>Last activity:</b> {{latestActivityMessage}}
+            </div>
        
              <!-- This is where the main view goes -->
             <div ng-view></div>

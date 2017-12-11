@@ -26,10 +26,21 @@ exports.apiResponse = function(req, res, statusCode, message, result){
   });
 }
 
+/**
+ * Whether the variable is null or undefined
+ * @param {*} val 
+ */
 exports.isNullOrUndefined = function(val){
   return val == null || typeof val === 'undefined';
 }
 
+/**
+ * Whether the value is null or empty
+ * @param {*String} val 
+ */
+exports.isNullOrEmpty = function(val){
+  return exports.isNullOrUndefined(val) || val.trim() === "";
+}
 /**
  * Logs the message including date
  */

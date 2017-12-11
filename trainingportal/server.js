@@ -287,9 +287,16 @@ app.get('/api/activity',  (req, res) => {
     return util.apiResponse(req,res,400,"Invalid query");
   }
   
-  db.fetchActivity(query,null,function(activityList){
+  db.fetchActivity(query,100,null,function(activityList){
     res.send(activityList);
-  })
+  });
+});
+
+//get the activity
+app.get('/api/activity/heartbeat',  (req, res) => {
+  db.fetchActivity(null,1,null,function(activityList){
+    res.send(activityList);
+  });
 });
 
 
