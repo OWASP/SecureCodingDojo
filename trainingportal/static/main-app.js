@@ -31,14 +31,17 @@ app.controller('mainCtrl', function($scope, $http, $location) {
     $scope.activityHeartBeat = function(){
         $http.get("/api/activity/heartbeat",window.getAjaxOpts())
             .then(function(response) {
-                if(response != null && response.data != null && response.status === 200 && response.data.length > 0){
-                    
-                    var activity = response.data[0];
-                    var message = activity.givenName + " " + activity.familyName + " has solved '" +
-                    $scope.challengeTitles[activity.challengeId] + "'";
-                    $scope.showActivityMessage = $scope.latestActivityMessage !== message;
-                    $scope.latestActivityMessage = message;              
-                    
+                if(response != null && response.data != null && response.status === 200){
+                    if(response.data.length > 0){
+                        var activity = response.data[0];
+                        var message = activity.givenName + " " + activity.familyName + " has solved '" +
+                        $scope.challengeTitles[activity.challengeId] + "'";
+                        $scope.showActivityMessage = $scope.latestActivityMessage !== message;
+                        $scope.latestActivityMessage = message;  
+                    }            
+                    else if(response.data.status===401){
+                        window.location = "/"; 
+                    }
                 }
                 else{
                     window.location = "/";    
