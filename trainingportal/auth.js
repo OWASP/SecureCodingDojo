@@ -124,12 +124,13 @@ exports.registerLocalUser = function(req,res){
 
 
 
-processAuthCallback = function (profileId, givenName, familyName, cb) {
+processAuthCallback = function (profileId, givenName, familyName, email, cb) {
     //try to get a user from the database
     db.getUser(profileId, null, (user) => {
     if(user){
         //the user exists return this user
         util.log("User logged in.", user);
+        user.email = email;
         if(cb) return cb(null, user);
     }
     else{
@@ -146,6 +147,7 @@ processAuthCallback = function (profileId, givenName, familyName, cb) {
             //on success retrive the user record to store it into the session
             db.getUser(profileId, null, (user) => {
                 util.log("New user created.", user);
+                user.email = email;
                 if(cb) return cb(null, user);
             });
         })
@@ -168,7 +170,7 @@ getLocalStrategy = function () {
 
             var passwordHash = util.hashPassword(password,saltString);
             if(user.passHash === passwordHash){
-                return processAuthCallback("Local_"+username, user.givenName, user.familyName, cb);
+                return processAuthCallback("Local_"+username, user.givenName, user.familyName, null, cb);
             }
             else{
                 util.log("Authentication failure for user: "+username);
@@ -190,7 +192,12 @@ getGoogleStrategy = function () {
         clientSecret: aesCrypto.decrypt(config.encGoogleClientSecret),
         callbackURL: config.googleOauthCallbackUrl
     }, (accessToken, refreshToken, profile, cb) => {
-        processAuthCallback(profile.id, profile.name.givenName, profile.name.familyName, cb);
+        var email = null;
+        if(profile.emails !== null && profile.emails.length > 0){
+            //use the first e-mail in the list
+            email = profile.emails[0].value;
+        }
+        processAuthCallback(profile.id, profile.name.givenName, profile.name.familyName, email, cb);
     });
 }
 
@@ -206,6 +213,7 @@ getSlackStrategy = function () {
             var splitName = profile.user.name.split(" ");
             var givenName = "";
             var familyName = "";
+            var email = profile.user.email;
 
             if(profile.team.id !== config.slackTeamId){
             util.log("Invalid team id");
@@ -215,7 +223,7 @@ getSlackStrategy = function () {
             if(splitName.length >= 1) givenName = splitName[0];
             if(splitName.length >= 2) familyName = splitName[1];
 
-            processAuthCallback(profile.id, givenName, familyName, cb);
+            processAuthCallback(profile.id, givenName, familyName, email, cb);
         }
         else{
             //some error occured

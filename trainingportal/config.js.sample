@@ -20,6 +20,8 @@ config.slackOauthCallbackUrl = config.dojoUrl+"/public/slack/callback";
 config.slackTeamId = '';
 config.encSlackClientSecret = '';
 
+config.encBadgrToken = ''; //configure to enable Badgr.io integration to issue Open Badges for challenge completion; see https://api.badgr.io
+
 module.exports = config;
 
 /*

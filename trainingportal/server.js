@@ -14,6 +14,7 @@ const crypto = require('crypto');
 const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const uid = require('uid-safe');
 const validator = require('validator');
+const https = require('https');
 
 //INIT
 app.use(bodyParser.urlencoded({extended:true}));
@@ -150,7 +151,47 @@ app.post('/api/user/team',  (req, res) => {
    
 });
 
+function badgrCall(curChallengeObj, user){
+  //check if the challenge has a Open Badge configuration and the Badgr integration has been configured
+  if(!util.isNullOrUndefined(curChallengeObj.badgrInfo) && !util.isNullOrUndefined(config.encBadgrToken)){
+    if(user.email===null){
+      util.log("Cannot issue badge for this user. E-mail is null.", user);
+    }
+    else{
+      var token = aescrypto.decrypt(config.encBadgrToken);
+      var badgrInfo = Object.assign({}, curChallengeObj.badgrInfo);
+      badgrInfo.recipient_identifier = user.email;
+      badgrInfo.narrative+=" Awarded to "+user.givenName+" "+user.familyName+".";
+      var postData = JSON.stringify(badgrInfo);
+      var postOptions = {
+        host: 'api.badgr.io',
+        port: '443',
+        path: '/v1/issuer/issuers/'+badgrInfo.issuer+'/badges/'+badgrInfo.badge_class+'/assertions',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postData),
+            'Authorization':'Token '+token
+        }
+      
+      }
 
+      // Set up the request
+      var postReq = https.request(postOptions, function(res) {
+          if(res!==null && !util.isNullOrUndefined(res.statusCode) && res.statusCode === 201){
+            util.log("Badgr Open Badge issued successfully.");
+          }
+          else{
+            util.log("Badgr Open Badge could not be issued.");
+          } 
+      });
+
+      // post the data
+      postReq.write(postData);
+      postReq.end();
+    }
+  }
+}
 
 //allows updating the current user team
 app.post('/api/user/challengeCode', (req, res) => {
@@ -255,6 +296,8 @@ app.post('/api/user/challengeCode', (req, res) => {
                 util.log("User has solved the challenge "+curChallengeObj.name+"!", req.user);
                 util.apiResponse(req, res, 200, "Congratulations you solved the challenge!", curChallengeObj)
               }
+
+              badgrCall(curChallengeObj,req.user);
             
           }
 

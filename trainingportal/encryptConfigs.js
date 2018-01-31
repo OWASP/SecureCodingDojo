@@ -12,15 +12,16 @@ var googleSecret="<google secret>";//DELETE ME WHEN DONE
 var sessionSecret=uid.sync(64);
 
 var regenerateSecrets = false; //change to regenerate challenge secrets every time
-
+var badgrToken = "<badgr token>";
 
 console.log("======= config.js ==========");
 
 //You can use the following script from  when you update your key to a new value
-console.log('config.encDbPass="'+aescrypto.encrypt(dbPass)+'"');
-console.log('config.encSlackClientSecret="'+aescrypto.encrypt(slackSecret)+'"');
-console.log('config.encGoogleClientSecret="'+aescrypto.encrypt(googleSecret)+'"');
-console.log('config.encExpressSessionSecret="'+aescrypto.encrypt(sessionSecret)+'"');
+console.log('config.encDbPass="'+aescrypto.encrypt(dbPass)+'";');
+console.log('config.encSlackClientSecret="'+aescrypto.encrypt(slackSecret)+'";');
+console.log('config.encGoogleClientSecret="'+aescrypto.encrypt(googleSecret)+'";');
+console.log('config.encExpressSessionSecret="'+aescrypto.encrypt(sessionSecret)+'";');
+console.log('config.encBadgrToken="'+aescrypto.encrypt(badgrToken)+'";');
 
 /**
  * Use this function to generate the properties for a local user
