@@ -200,6 +200,16 @@ public class Util {
 		return result;
 	}
 	
+	public static String getUnlockCode(){
+		String unlockCode = System.getenv("UNLOCK_CODE");
+		
+		if(unlockCode==null){
+			//try to get the key pairs with System.getProperty
+			unlockCode = System.getProperty("UNLOCK_CODE");
+		}
+		return unlockCode;
+	}
+	
 	public static String executeMasterPwd(String userPwd,String sourceFile) throws IOException, InterruptedException{
 		StringBuilder consoleOutput = new StringBuilder();
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
