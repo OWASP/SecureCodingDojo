@@ -23,7 +23,7 @@ function unlock(){
 			var codeDiv = $("#messageDiv")[0];
 			codeDiv.style.display = "";
 			var message = $("#message")[0];
-			message.contentText = code.innerText = data;
+			message.contentText = message.innerText = data;
 		}
 		else{
 			window.location = "SetUnlockCode"; 

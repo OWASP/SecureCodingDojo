@@ -37,7 +37,7 @@ public class SetUnlockCode extends HttpServlet {
 			response.getWriter().print("OK");
 		}
 		else{
-			response.getWriter().print("Invalid code.");
+			response.getWriter().print("Invalid unlock code.");
 		}
 	}
 	
