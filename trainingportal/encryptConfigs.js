@@ -12,6 +12,7 @@ var googleSecret="<google secret>";//DELETE ME WHEN DONE
 var sessionSecret=uid.sync(64);
 
 var regenerateSecrets = false; //change to regenerate challenge secrets every time
+var encryptChallengeSecrets = false;
 var badgrToken = "<badgr token>";
 
 console.log("======= config.js ==========");
@@ -45,11 +46,11 @@ for(var key in challengeSecrets){
 
 console.log("======= challengeSecrets.json ==========");
 var hasKey = util.hasKey();
-if(!hasKey)
+if(!hasKey && encryptChallengeSecrets)
     console.log("Configure the CHALLENGE_KEY and CHALLENGE_KEY_IV environment variables to store the secrets encrypted!");
 
 for(var key in challengeSecrets){
-    if(hasKey)
+    if(hasKey && encryptChallengeSecrets)
         console.log('"'+key+'":"'+aescrypto.encrypt(challengeSecrets[key],process.env.CHALLENGE_KEY,process.env.CHALLENGE_KEY_IV)+'",');
     else
         console.log('"'+key+'":"'+challengeSecrets[key]+'",');
@@ -59,7 +60,7 @@ console.log("======= insecureinc/src/inc/insecure/code.properties ==========");
 
 //this bit is for the insecure app, put in the codes.properties file
 for(var key in challengeSecrets){
-    if(hasKey)
+    if(hasKey && encryptChallengeSecrets)
         console.log(key+'='+aescrypto.encrypt(challengeSecrets[key],process.env.CHALLENGE_KEY,process.env.CHALLENGE_KEY_IV));
     else
         console.log(key+'='+challengeSecrets[key]);
