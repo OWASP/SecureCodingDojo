@@ -47,6 +47,18 @@ public class Crypto {
 		try{
 			String keyString = System.getenv("CHALLENGE_KEY");
 			String ivString = System.getenv("CHALLENGE_KEY_IV");
+			if(keyString==null||ivString==null){
+				//try to get the key pairs with System.getProperty
+				keyString = System.getProperty("CHALLENGE_KEY");
+				ivString = System.getProperty("CHALLENGE_KEY_IV");
+			}
+			//if we can't get the keys
+			if(keyString==null||ivString==null){
+				System.out.println("Could not initialize keys. Make sure CHALLENGE_KEY and CHALLENGE_KEY_IV are set in /opt/tomcat/bin/setenv.sh");
+				return;
+			}
+			
+			
 			byte [] ivBytes = new byte[16];
 			byte [] ivStringBytes = getHash(ivString,HASH_ALG);
 			for(int i=0;i<ivBytes.length && i<ivStringBytes.length; i++){
@@ -59,7 +71,7 @@ public class Crypto {
 			iv = new IvParameterSpec(ivBytes);
 		}
 		catch(Exception ex){
-			System.out.println("Could not initialize keys. Make sure CHALLENGE_KEY and CHALLENGE_KEY_IV are set in /opt/tomcat/bin/setenv.sh");
+			System.out.println("Could not initialize keys."+ex.getMessage());
 		}
 	}
 
