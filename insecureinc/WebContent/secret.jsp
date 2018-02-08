@@ -41,7 +41,7 @@ function getCode(){
 </nav>
 <div class="container"> 
 <h1>Congratulations!!!</h1>
-<p>You solved the challenge. To validate your challenge, go to the leaderboard site and click the corresponding submit code button. 
+<p>You solved the challenge. To validate your challenge, go to the training portal site and click the corresponding submit code button. 
 You will be given a salt which you can enter below. Then provide the resulting code on the leaderboard site.</p>
 <div class="form-group">
   <label for="salt">Salt:</label>

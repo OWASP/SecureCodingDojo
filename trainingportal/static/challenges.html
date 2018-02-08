@@ -16,7 +16,7 @@
                         </a>
                     </h4>
                 </div>
-                <div id="collapse{{challenge.id}}" class="panel-collapse collapse">
+                <div id="collapse{{challenge.id}}" class="panel-collapse collapse"  ng-class="{'in':!challenge.passed}">
                     <div class="panel-body">
                         <h4>Play Link and Instructions</h4>
                         <p>Navigate to the <a href="{{targetUrl}}{{challenge.playLink}}" target="_blank">vulnerable app</a>. 
