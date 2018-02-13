@@ -3,3 +3,4 @@ challengeSecrets.json
 *.DS_Store
 config.js
 localUsers.json
+*privacy.html
