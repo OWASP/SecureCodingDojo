@@ -432,14 +432,16 @@ app.get('/api/report',  (req, res) => {
           if(member.name.indexOf(dbUser.givenName)===0 && member.name.indexOf(dbUser.familyName) > 0){
             //check the level
             if(dbUser.level>0){
-              if(dbUser.level>=lastLevel){
-                member.status="Complete";
-                team.completed++;
-                reportUsers.completeMembers++;
-              }
-              else{
-                member.status="In Progress";
-                reportUsers.inProgressMembers++;
+              if(member.status==="Not Started"){
+                if(dbUser.level>=lastLevel){
+                    member.status="Complete";
+                    team.completed++;
+                    reportUsers.completeMembers++;
+                }
+                else{
+                  member.status="In Progress";
+                  reportUsers.inProgressMembers++;
+                }
               }
             }
           }
