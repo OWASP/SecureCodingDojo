@@ -1,0 +1,33 @@
+<div class="container-fluid">
+
+<table class="table table-striped">
+    <tr>
+        <th>Total Members</th>
+        <th>Completed</th>
+        <th>In Progress</th>
+        <th>Percent Complete</th>
+    </tr>
+    <tr>
+        <td>{{reportUsers.totalMembers}}</td>
+        <td>{{reportUsers.completeMembers}}</td>
+        <td>{{reportUsers.inProgressMembers}}</td>
+        <td>{{reportUsers.percentComplete}}%</td>
+    </tr>
+</table>
+<p>
+<h4>Member details:</h4>
+<table class="table table-bordered">
+    <tr ng-repeat="team in reportUsers.teamList">
+        <th>{{team.team}} ({{team.percentComplete}}%)</th>
+        <td ng-repeat="member in team.members" 
+            ng-class="{'bg-success': member.status==='Complete','bg-warning': member.status==='In Progress','bg-danger': member.status==='Not Started'}">
+                    {{member.name}}
+        </td>
+    </tr>
+</table>
+</p>
+
+<br><br><br>
+
+
+</div>

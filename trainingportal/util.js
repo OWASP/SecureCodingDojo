@@ -1,4 +1,7 @@
 const crypto = require('crypto');
+const fs = require('fs');
+const path = require('path'); 
+
 
 exports.hasKey = function(){
   var hasKey = typeof process.env.CHALLENGE_KEY !== 'undefined' && process.env.CHALLENGE_KEY!=null;
@@ -60,4 +63,41 @@ exports.log = function(message,user,req){
   //remove new lines to prevent log forging
   finalMessage = finalMessage.replace(/[\r\n]/g," ");
   console.log(finalMessage);
+}
+
+exports.loadReportCSV = function(reportCSVPath){
+  if(exports.isNullOrUndefined(reportCSVPath)) return null;
+  var reportUsers = null;
+  //load the CSV
+  var csvText = fs.readFileSync(path.join(__dirname, reportCSVPath), 'utf8');
+  if(!exports.isNullOrUndefined(csvText)){
+    //split the csv into lines
+    reportUsers = {"totalMembers":0,"inProgressMembers":0,"completeMembers":0,"teamList":[]};
+    var lines = csvText.split("\n");
+    var linesCount = lines.length;
+    if(linesCount > 1){
+      var teams = lines[0].trimRight().split(",");
+      var teamsCount = teams.length;
+      if(teamsCount>=1){
+        
+        for(var idx=0; idx<teamsCount; idx++){
+          reportUsers.teamList[idx]={"team":teams[idx], "completed": 0, "members": []};
+        }
+
+        for(var idx1=1;idx1<linesCount;idx1++){
+          var rowMembers = lines[idx1].trimRight().split(",");
+
+          for(var idx2=0; idx2<teamsCount; idx2++){
+            
+            if(rowMembers[idx2].length>0){
+              reportUsers.teamList[idx2].members.push({"name":rowMembers[idx2].trim(),"status":"Not Started"});
+              reportUsers.totalMembers++;
+             
+            }
+          }
+        }
+      }
+    }
+  }
+  return reportUsers;
 }

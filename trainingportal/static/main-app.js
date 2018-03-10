@@ -20,6 +20,9 @@ app.config(function($routeProvider) {
     }).when("/activity", {
         templateUrl : "static/activity.html",
         controller: "activityCtrl"
+    }).when("/report", {
+        templateUrl : "static/report.html",
+        controller: "reportCtrl"
     });
 });
 
@@ -53,6 +56,19 @@ app.controller('mainCtrl', function($scope, $http, $location) {
 
     setInterval($scope.activityHeartBeat,10*1000);
     
+    $scope.loadUserReport = function(){
+        $http.get("/api/report",window.getAjaxOpts())
+            .then(function(response) {
+                if(response != null && response.data != null && response.status === 200){
+                    
+                    $scope.reportUsers = response.data;
+                    $scope.reportAvailable = true;
+                            
+                }
+            },function(){
+               
+            });
+    }
 
     //whether the menu is active
     $scope.isActive = function (viewLocation) { 
@@ -302,7 +318,8 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                     }
                 });
 
-                
+                //load the user report
+                $scope.loadUserReport();
             }
         });
     }

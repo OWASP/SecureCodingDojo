@@ -13,6 +13,7 @@
 <script src="static/submitCodeCtrl.js"></script>
 <script src="static/codeBlocksCtrl.js"></script>
 <script src="static/activityCtrl.js"></script>
+<script src="static/reportCtrl.js"></script>
 
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <script>
@@ -41,6 +42,7 @@
                     <li ng-class="{ active: isActive('/codeBlocks')}"><a href="#!codeBlocks/inputWhitelisting">Code Blocks</a></li>
                     <li ng-class="{ active: isActive('/leaderboard')}"><a href="#!leaderboard">Leaderboard</a></li>
                     <li ng-class="{ active: isActive('/activity')}"><a href="#!activity">Activity</a></li>
+                    <li ng-class="{ active: isActive('/report')}" ng-if="reportAvailable"><a href="#!report">Report</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="" data-toggle="modal" data-target="#teamModal"><span class="glyphicon glyphicon-user"></span> My Team</a></li>

@@ -15,6 +15,7 @@ const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const uid = require('uid-safe');
 const validator = require('validator');
 const https = require('https');
+var reportUsers = util.loadReportCSV(config.reportCSV);
 
 //INIT
 app.use(bodyParser.urlencoded({extended:true}));
@@ -410,6 +411,45 @@ app.delete('/api/user/team',  (req, res) => {
 app.get('/api/salt',  (req, res) => {
   req.user.codeSalt = uid.sync(8);
   res.send(req.user.codeSalt);
+});
+
+//get a salt for the challenge code
+app.get('/api/report',  (req, res) => {
+  if(util.isNullOrUndefined(reportUsers===null)){
+    return util.apiResponse(req,res,501,"User report is not configured");
+  }
+  var lastLevel = challengeDefinitions[challengeDefinitions.length-2].level;
+  //update the user status based on the users in the database
+  reportUsers.completeMembers = 0;
+  reportUsers.inProgressMembers = 0;
+  db.fetchUsers(null, function(dbUsers){
+    reportUsers.teamList.forEach(function(team){
+      team.completed = 0;
+      team.percentComplete = 0;
+      team.members.forEach(function(member){
+        dbUsers.forEach(function(dbUser){
+          //check if the dbUser name matches
+          if(member.name.indexOf(dbUser.givenName)===0 && member.name.indexOf(dbUser.familyName) > 0){
+            //check the level
+            if(dbUser.level>0){
+              if(dbUser.level>=lastLevel){
+                member.status="Complete";
+                team.completed++;
+                reportUsers.completeMembers++;
+              }
+              else{
+                member.status="In Progress";
+                reportUsers.inProgressMembers++;
+              }
+            }
+          }
+        });
+      });
+      team.percentComplete = Math.round((team.completed/team.members.length) * 100);
+    });
+    reportUsers.percentComplete = Math.round((reportUsers.completeMembers/reportUsers.totalMembers) * 100);
+    res.send(reportUsers);
+  })
 });
 
 db.init();
