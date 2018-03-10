@@ -2,7 +2,7 @@
 
 <table class="table table-striped">
     <tr>
-        <th>Total Members</th>
+        <th>Total Users</th>
         <th>Completed</th>
         <th>In Progress</th>
         <th>Percent Complete</th>
@@ -15,13 +15,13 @@
     </tr>
 </table>
 <p>
-<h4>Member details:</h4>
-<table class="table table-bordered">
+<h5>Report details:</h5>
+<table class="table table-condensed small">
     <tr ng-repeat="team in reportUsers.teamList">
         <th>{{team.team}} ({{team.percentComplete}}%)</th>
         <td ng-repeat="member in team.members" 
             ng-class="{'bg-success': member.status==='Complete','bg-warning': member.status==='In Progress','bg-danger': member.status==='Not Started'}">
-                    {{member.name}}
+                {{member.name}}
         </td>
     </tr>
 </table>
