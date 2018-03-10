@@ -11,11 +11,17 @@
 
 <script>
     var app = angular.module("homeApp", []);
-    app.controller("homeCtrl", function($scope) {
+    app.controller("homeCtrl", function($scope, $location) {
       $.getJSON("/public/providers",function(json){
         $scope.authProviders = json;
         $scope.$apply();
       });
+
+      var path = $location.path();
+      if(path!==""){
+        window.sessionStorage.setItem("redirectPath",path);
+      }
+
     });
 </script>
 

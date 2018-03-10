@@ -29,7 +29,14 @@ app.config(function($routeProvider) {
 
 app.controller('mainCtrl', function($scope, $http, $location) {
     
-  
+
+    //redirect the user to the previous page if they got logged out
+    var redirectPath = window.sessionStorage.getItem("redirectPath");
+    if(redirectPath!=null && redirectPath!=="" && redirectPath.indexOf("/")===0){
+        //clear the session storage
+        window.sessionStorage.removeItem("redirectPath");
+        $location.url(redirectPath);
+    }
     
     $scope.activityHeartBeat = function(){
         $http.get("/api/activity/heartbeat",window.getAjaxOpts())
