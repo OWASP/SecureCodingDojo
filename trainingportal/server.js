@@ -427,6 +427,7 @@ app.get('/api/report',  (req, res) => {
       team.completed = 0;
       team.percentComplete = 0;
       team.members.forEach(function(member){
+        member.status="Not Started";
         dbUsers.forEach(function(dbUser){
           //check if the dbUser name matches
           if(member.name.indexOf(dbUser.givenName)===0 && member.name.indexOf(dbUser.familyName) > 0){
