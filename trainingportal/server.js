@@ -415,7 +415,7 @@ app.get('/api/salt',  (req, res) => {
 
 //get a salt for the challenge code
 app.get('/api/report',  (req, res) => {
-  if(util.isNullOrUndefined(reportUsers===null)){
+  if(util.isNullOrUndefined(reportUsers)){
     return util.apiResponse(req,res,501,"User report is not configured");
   }
   var lastLevel = challengeDefinitions[challengeDefinitions.length-2].level;
@@ -452,6 +452,7 @@ app.get('/api/report',  (req, res) => {
       team.percentComplete = Math.round((team.completed/team.members.length) * 100);
     });
     reportUsers.percentComplete = Math.round((reportUsers.completeMembers/reportUsers.totalMembers) * 100);
+    reportUsers.status = 200;
     res.send(reportUsers);
   })
 });

@@ -66,7 +66,9 @@ app.controller('mainCtrl', function($scope, $http, $location) {
     $scope.loadUserReport = function(){
         $http.get("/api/report",window.getAjaxOpts())
             .then(function(response) {
-                if(response != null && response.data != null && response.status === 200){
+                if(response != null && response.data != null
+                     && response.status === 200 && 
+                    response.data.status===200){
                     
                     $scope.reportUsers = response.data;
                     $scope.reportAvailable = true;
