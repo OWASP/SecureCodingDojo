@@ -430,8 +430,8 @@ app.get('/api/report',  (req, res) => {
         member.status="Not Started";
         dbUsers.forEach(function(dbUser){
           //check if the dbUser name matches
-          if(member.name.toLowerCase().indexOf(dbUser.givenName.toLowerCase())===0 
-          && member.name.toLowerCase().indexOf(dbUser.familyName.toLowerCase()) > 0){
+          if(member.name.toLowerCase().trim().indexOf(dbUser.givenName.toLowerCase().trim())===0 
+          && member.name.toLowerCase().trim().indexOf(dbUser.familyName.toLowerCase().trim()) >= 0){
             //check the level
             if(dbUser.level>0){
               if(member.status==="Not Started"){
