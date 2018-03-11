@@ -100,7 +100,7 @@ app.get("/public/authFailure",(req,res) => {
 app.get('/logout', auth.logout);
 
 app.get('/main', (req, res) => {
-  var mainHtml = fs.readFileSync(path.join(__dirname, 'main.html'),'utf8');
+  var mainHtml = fs.readFileSync(path.join(__dirname, 'static/main.html'),'utf8');
   mainHtml = auth.addCsrfToken(req, mainHtml);
   res.send(mainHtml);
 });
