@@ -254,6 +254,41 @@ app.controller('mainCtrl', function($scope, $http, $location) {
 
     }
 
+    $scope.updateLocalUser = function(){
+        $scope.isProfileSaveError = false;
+        $scope.isProfileSaveSuccess = false;
+        $scope.profileSaveErrorMessage = "";
+        profileInfo = {};
+        profileInfo.curPassword = currentPassword.value.trim();
+        profileInfo.newPassword = newPassword.value.trim();
+        
+        if(vfyPassword.value.trim()!==profileInfo.newPassword){
+            $scope.isProfileSaveError = true;
+            $scope.profileSaveErrorMessage = "New password and verification password do not match";
+            return;
+        }
+
+        $http.post("/api/localUser/updateUser",{"profileInfo":profileInfo},window.getAjaxOpts())
+        .then(function(response) {
+            if(response !== null && response.data !== null){
+                if(response.data.status == 200){
+                    $scope.isProfileSaveSuccess = true;
+                    $scope.profileSaveSuccessMessage = "User updated.";
+                }
+                else{
+                    $scope.isProfileSaveError = true;
+                    $scope.profileSaveErrorMessage = response.data.statusMessage;
+                }
+
+            }
+        },function(errorResponse){
+            $scope.isProfileSaveError = true;
+            $scope.profileSaveErrorMessage = "A http error has occurred.";
+            
+        });
+    }
+
+
     $scope.loadData = function(){
         $http.get("/api/user",window.getAjaxOpts())
         .then(function(response) {

@@ -72,21 +72,13 @@ exports.registerLocalUser = function(req,res){
     }
 
     if(username in localUsers){
-        return util.apiResponse(req, res, 400, "Username already taken.");
+        return util.apiResponse(req, res, 400, "Invalid username.");
     }
 
     var password = newUser.password;
+    
     if(util.isNullOrUndefined(password)){
         return util.apiResponse(req, res, 400, "Invalid request. 'password' not defined.");
-    }
-
-    var isStrongPass = validator.matches(password,/.{8,}/)==true &&
-    validator.matches(password,/[a-z]/)==true &&
-    validator.matches(password,/[A-Z]/)==true &&
-    validator.matches(password,/[\d]/)==true;
-
-    if(!isStrongPass){
-        return util.apiResponse(req, res, 400, "Password too weak.");
     }
 
     var givenName = newUser.givenName;
@@ -109,19 +101,105 @@ exports.registerLocalUser = function(req,res){
         return util.apiResponse(req, res, 400, "Invalid captcha.");
     }
 
-    //create user
-    var saltString = crypto.randomBytes(16).toString('base64').toString();
-    var passwordHash = util.hashPassword(password,saltString);
+    var localUser = {"givenName":givenName,"familyName":familyName};
     
-    var user = {"givenName":givenName,"familyName":familyName,"passHash":passwordHash,"passSalt":saltString};
-    localUsers[username] = user;
+    exports.createUpdateUser(req, res, username, localUser, password);
+}
+
+exports.createUpdateUser = function(req, res, username, localUser, password){
+    
+    var isStrongPass = validator.matches(password,/.{8,}/)==true &&
+    validator.matches(password,/[a-z]/)==true &&
+    validator.matches(password,/[A-Z]/)==true &&
+    validator.matches(password,/[\d]/)==true;
+
+    if(!isStrongPass){
+        return util.apiResponse(req, res, 400, "Password too weak.");
+    }
+    //create user
+    localUser.passSalt = crypto.randomBytes(16).toString('base64').toString();
+    localUser.passHash = util.hashPassword(password,localUser.passSalt);
+
+    localUsers[username] = localUser;
     //save to disk
     var json = JSON.stringify(localUsers, null, "\t");
     fs.writeFile(path.join(__dirname, config.localUsersPath), json, 'utf8');
 
-    return util.apiResponse(req, res, 200, "User created.");
+    return util.apiResponse(req, res, 200, "User created/modified.");
 }
 
+
+exports.verifyLocalUserPassword = function(username,password){
+    if(localUsers === null){
+        util.log("Local authentication is not configured"); 
+        return null;
+   } 
+
+   if(username in localUsers){
+        var user = localUsers[username];
+        var saltString =user.passSalt ;
+
+        var passwordHash = util.hashPassword(password,saltString);
+        if(user.passHash === passwordHash){
+            return user;
+        }
+        else{
+            util.log("Authentication failure for user: "+username);
+        }
+   }
+   else{
+        util.log("User '"+username+"' not found.");
+   }
+
+   return null;
+}
+
+exports.updateLocalUser = function(req,res){
+    //check if local auth is enabled
+    if(localUsers === null){
+        return util.apiResponse(req, res, 400, "Local authentication is not enabled");
+    }
+
+    if(util.isNullOrUndefined(req.user)){
+        return util.apiResponse(req, res, 500, "Inconsistent session state");
+    }
+
+    if(req.user.accountId.indexOf("Local_") !== 0){
+        return util.apiResponse(req, res, 400, "Current user not a local user");
+    }
+
+    var username = req.user.accountId.substring("Local_".length);
+    var localUser = localUsers[username];
+
+    if(util.isNullOrUndefined(localUser)){
+        return util.apiResponse(req, res, 400, "Current user not in local users");
+    }
+
+    var profileInfo = req.body.profileInfo;
+
+    if(util.isNullOrUndefined(profileInfo)){
+        return util.apiResponse(req, res, 400, "Invalid request.'profileInfo' not defined.");
+    }
+
+    var curPassword = profileInfo.curPassword;
+    
+    if(util.isNullOrUndefined(curPassword)){
+        return util.apiResponse(req, res, 400, "Invalid request. 'curPassword' not defined.");
+    }
+
+    var newPassword = profileInfo.newPassword;
+    
+    if(util.isNullOrUndefined(newPassword)){
+        return util.apiResponse(req, res, 400, "Invalid request. 'newPassword' not defined.");
+    }
+
+    if(exports.verifyLocalUserPassword(username,curPassword)===null){
+        return util.apiResponse(req, res, 400, "Current password doesn't match or user does not exist.");
+    }
+
+    exports.createUpdateUser(req, res, username, localUser, newPassword);
+
+}
 
 
 processAuthCallback = function (profileId, givenName, familyName, email, cb) {
@@ -159,28 +237,12 @@ processAuthCallback = function (profileId, givenName, familyName, email, cb) {
 //Returns the google strategy settings
 getLocalStrategy = function () {
     return new LocalStrategy((username, password, cb) => {
-       if(localUsers === null){
-            util.log("Local authentication is not configured"); 
-            return cb(null,false);
-       } 
-
-       if(username in localUsers){
-            var user = localUsers[username];
-            var saltString =user.passSalt ;
-
-            var passwordHash = util.hashPassword(password,saltString);
-            if(user.passHash === passwordHash){
-                return processAuthCallback("Local_"+username, user.givenName, user.familyName, null, cb);
-            }
-            else{
-                util.log("Authentication failure for user: "+username);
-            }
-       }
-       else{
-            util.log("User '"+username+"' not found.");
-       }
-
-       return cb(null,false);
+        var user = exports.verifyLocalUserPassword(username, password)
+        if(user!==null){
+            return processAuthCallback("Local_"+username, user.givenName, user.familyName, null, cb);
+        }
+        
+        return cb(null,false);
 
     });
 }

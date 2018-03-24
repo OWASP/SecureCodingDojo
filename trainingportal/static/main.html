@@ -46,6 +46,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="" data-toggle="modal" data-target="#teamModal"><span class="glyphicon glyphicon-user"></span> My Team</a></li>
+                    <li ng-if="user.accountId.indexOf('Local_')===0"><a href="" data-toggle="modal" data-target="#profileModal"><span class="glyphicon glyphicon-lock"></span> My Profile</a></li>
                     <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout {{fullName}}</a></li>
                 </ul>
             </div>
@@ -113,6 +114,51 @@
                             
                             <button type="button" class="btn btn-default" ng-click="saveTeamSettings()" ng-if="ownedTeam==null">Save</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="hideMessages()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+             <!-- Profile configuration -->
+             <div id="profileModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Profile configuration UI -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">User Profile</h4>
+                        </div>
+                        <div class="modal-body">
+                        
+                            <div class="form-group">
+                                <label for="currentPassword">Current Password:</label>
+                                <input type="password" class="form-control" id="currentPassword" autocomplete="off" >
+                            </div>
+                            <div class="form-group">
+                                    <label for="newPassword">New Password:</label>
+                                    <input type="password" class="form-control" id="newPassword" autocomplete="off" >
+                            </div>
+                            <div class="form-group">
+                                <label for="vfyPassword">Verify password:</label>
+                                <input type="password" class="form-control" id="vfyPassword" autocomplete="off">
+                            </div>
+                             
+                            
+                        </div>
+                        <div class="alert alert-danger" id="teamErrorMessage" ng-if="isProfileSaveError">
+                                <button type="button" class="close" ng-click="hideProfileSaveError()">&times;</button>
+                                {{profileSaveErrorMessage}}
+                        </div>
+                        <div class="alert alert-success" id="teamSuccessMessage" ng-if="isProfileSaveSuccess">
+                                <button type="button" class="close" ng-click="hideProfileSaveSuccess()">&times;</button>
+                                {{profileSaveSuccessMessage}}
+                        </div>
+                        <div class="modal-footer">
+                            
+                            <button type="button" class="btn btn-default" ng-click="updateLocalUser()">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>

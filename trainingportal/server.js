@@ -51,6 +51,9 @@ app.get("/public/captcha.png", auth.getCaptcha);
 
 app.post("/public/register", auth.registerLocalUser);
 
+//this one is an authenticated request because is under /api
+app.post("/api/localUser/updateUser", auth.updateLocalUser);
+
 
 app.get('/public/provider/:provider', (req,res) => {
   //invalidate any active session
