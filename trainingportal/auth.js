@@ -50,6 +50,33 @@ exports.getCaptcha = function(req,res){
       res.end(imgbase64);
 }
 
+exports.isValidCaptcha = function(req,captcha){
+    var vfyCatpcha = req.session.captcha;
+    
+    //clear the captcha 
+    req.session.captcha = uid.sync(6);
+    req.session.save();
+    
+    if(util.isNullOrUndefined(captcha) || vfyCatpcha !== captcha){
+        return false;
+    }
+
+    return true;
+}
+
+exports.checkCaptchaOnLogin = function(req,res,next){
+    var captcha = req.body.loginCaptcha;
+    if(util.isNullOrUndefined(captcha)){
+        util.log("Missing captcha on login request");
+        return res.redirect("/public/authFail.html");
+    }
+    if(!exports.isValidCaptcha(req, captcha)){
+        util.log("Invalid captcha on login request");
+        return res.redirect("/public/authFail.html");
+    }
+    next();
+}
+
 
 /**
  * Registers a user in the local directory
@@ -91,19 +118,14 @@ exports.registerLocalUser = function(req,res){
     }
 
     var captcha = newUser.captcha;
-    var vfyCatpcha = req.session.captcha;
-    
-    //clear the captcha 
-    req.session.captcha = uid.sync(6);
-    req.session.save();
-    
-    if(util.isNullOrUndefined(captcha) || vfyCatpcha !== captcha){
+    if(!exports.isValidCaptcha(req,captcha)){
         return util.apiResponse(req, res, 400, "Invalid captcha.");
     }
 
     var localUser = {"givenName":givenName,"familyName":familyName};
-    
+
     exports.createUpdateUser(req, res, username, localUser, password);
+    
 }
 
 exports.createUpdateUser = function(req, res, username, localUser, password){

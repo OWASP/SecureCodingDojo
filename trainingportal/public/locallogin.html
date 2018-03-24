@@ -13,9 +13,10 @@
     var app = angular.module("localLoginApp", []);
     app.controller("localLoginCtrl", function($scope, $http) {
       
-      $scope.refresh = function() {
-        captchaImg.src = '';
-        captchaImg.src = 'captcha.png?' + new Date().getTime();
+      $scope.refresh = function(id) {
+        var img = document.getElementById(id);
+        img.src = '';
+        img.src = 'captcha.png?' + new Date().getTime();
       }
 
       $scope.register = function (){
@@ -70,6 +71,8 @@
               if(response != null && response.data != null){
                   if(response.data.status == 200){
                       $scope.isSuccess = true;
+                      username.value = newUser.username;
+                      $scope.refresh('loginCaptchaImg');
                   }
                   else{
                       $scope.isError = true;
@@ -115,6 +118,17 @@
     <div class="form-group">
       <label for="password">Password:</label>
       <input type="password" class="form-control" id="password" name="password" autocomplete="off">
+    </div>
+    <div class="form-group">
+        <label for="captchaImg">Captcha image:</label>
+        <img src="captcha.png" id="loginCaptchaImg"/>
+        <a href="#">
+            <span class="glyphicon glyphicon-refresh" ng-click="refresh('loginCaptchaImg')"></span>
+         </a>
+    </div>
+    <div class="form-group">
+        <label for="captcha">Captcha value:</label>
+        <input type="captcha" class="form-control" id="loginCaptcha" name="loginCaptcha">
     </div>
     
     <button type="submit" class="btn btn-default">Submit</button>
@@ -164,7 +178,7 @@
                 <label for="captchaImg">Captcha image:</label>
                 <img src="captcha.png" id="captchaImg"/>
                 <a href="#">
-                    <span class="glyphicon glyphicon-refresh" ng-click="refresh()"></span>
+                    <span class="glyphicon glyphicon-refresh" ng-click="refresh('captchaImg')"></span>
                  </a>
             </div>
             

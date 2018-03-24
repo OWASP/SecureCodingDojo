@@ -91,7 +91,10 @@ app.get('/public/locallogin', (req, res) => {
    res.redirect('/public/locallogin.html');
 });
 
-app.post('/public/locallogin', passport.authenticate('local', { failureRedirect: '/public/authFail.html' }),
+app.post('/public/locallogin', [
+  auth.checkCaptchaOnLogin,
+  passport.authenticate('local', { failureRedirect: '/public/authFail.html' })
+],
 function(req, res) {
   res.redirect('/main');
 });
