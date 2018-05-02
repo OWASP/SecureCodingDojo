@@ -130,13 +130,11 @@ exports.registerLocalUser = function(req,res){
 
 exports.createUpdateUser = function(req, res, username, localUser, password){
     
-    var isStrongPass = validator.matches(password,/.{8,}/)==true &&
-    validator.matches(password,/[a-z]/)==true &&
-    validator.matches(password,/[A-Z]/)==true &&
-    validator.matches(password,/[\d]/)==true;
+    var isStrongPass = validator.matches(password,/.{16,}/)==true &&
+    validator.matches(password,/[a-z]/)==true;
 
     if(!isStrongPass){
-        return util.apiResponse(req, res, 400, "Password too weak.");
+        return util.apiResponse(req, res, 400, "Select a password that is made up from three or more words (16 or more characters)");
     }
     //create user
     localUser.passSalt = crypto.randomBytes(16).toString('base64').toString();
