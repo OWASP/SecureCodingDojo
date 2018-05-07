@@ -42,6 +42,7 @@ app.get("/public/providers",(req,res) => {
   var providers = [];
   if("googleClientId" in config) providers.push({"name":"Google","url":"/public/provider/google"});
   if("slackClientId" in config) providers.push({"name":"Slack","url":"/public/provider/slack"});
+  if("samlCert" in config) providers.push({"name":"ADFS SAML","url":"/public/provider/saml"});
   if("localUsersPath" in config) providers.push({"name":"Local","url":"/public/provider/local"});
 
   res.send(providers);
@@ -60,6 +61,7 @@ app.get('/public/provider/:provider', (req,res) => {
   var redirect = '';
   if(req.params.provider == 'slack') redirect = '/public/slack';
   else if(req.params.provider == 'google') redirect = '/public/google';
+  else if(req.params.provider == 'saml') redirect = '/public/saml';
   else if(req.params.provider == 'local') redirect = '/public/locallogin';
   auth.logoutAndKillSession(req, res, redirect);
 });
@@ -77,11 +79,20 @@ app.get( '/public/google/callback', passport.authenticate( 'google', {
 }));
 
 
-// path for slack authj
+// path for slack auth
 app.get('/public/slack', passport.authenticate('slack'));
  
 // OAuth callback url 
 app.get( '/public/slack/callback', passport.authenticate( 'slack', { 
+		successRedirect: '/main',
+		failureRedirect: '/public/authFail.html'
+}));
+
+// path for saml auth
+app.get('/public/saml', passport.authenticate('saml'));
+ 
+// saml callback url 
+app.get( '/public/saml/callback', passport.authenticate( 'saml', { 
 		successRedirect: '/main',
 		failureRedirect: '/public/authFail.html'
 }));

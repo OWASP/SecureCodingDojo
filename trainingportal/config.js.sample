@@ -15,6 +15,10 @@ config.encGoogleClientSecret = '';
 config.encExpressSessionSecret = ''; //generate a strong session secret and encrypt it
 config.googleOauthCallbackUrl = config.dojoUrl+"/public/google/callback";
 config.slackOauthCallbackUrl = config.dojoUrl+"/public/slack/callback";
+config.samlCallbackUrl = config.dojoUrl+"/public/saml/callback";
+config.samlEntryPoint = 'https://ad.example.net/adfs/ls/';
+config.samlCert = 'MIICizCCAfQCCQCY8tKaMc0BMjANBgkqh ... W==';
+config.samPrivateCertFilePath = 'samlPrivateCert.pem';
 
 //config.slackClientId = '';//enable to configure Slack authentication
 config.slackTeamId = '';

@@ -24,7 +24,7 @@ catch(ex){/*Do nothing*/}
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var SlackStrategy = require('passport-slack').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
-
+var SamlStrategy = require('passport-saml').Strategy;
 
 exports.isAuthenticated = function (req){
     return !util.isNullOrUndefined(req) && !util.isNullOrUndefined(req.user) && !util.isNullOrUndefined(req.user.id) && req.isAuthenticated();
@@ -283,6 +283,29 @@ getGoogleStrategy = function () {
     });
 }
 
+getSamlStrategy = function () {
+    return new SamlStrategy({
+        entryPoint: config.samlEntryPoint,
+        issuer: config.samlCallbackUrl,
+        callbackUrl: config.samlCallbackUrl,
+        authnRequestBinding : 'HTTP-POST',
+        skipRequestCompression: true,
+        signatureAlgorithm: 'sha256',
+        cert: config.samlCert,
+        privateCert : fs.readFileSync(path.join(__dirname, config.samPrivateCertFilePath), 'utf-8'),
+        authnContext: 'http://schemas.microsoft.com/ws/2008/06/identity/authenticationmethod/windows',
+        identifierFormat: null
+      }, (accessToken, refreshToken, profile, cb) => {
+        var email = null;
+        if(profile.emails !== null && profile.emails.length > 0){
+            //use the first e-mail in the list
+            email = profile.emails[0].value;
+        }
+        processAuthCallback(profile.id, profile.name.givenName, profile.name.familyName, email, cb);
+    });
+}
+
+
 //Returns the google strategy settings
 getSlackStrategy = function () {
     return new SlackStrategy({
@@ -322,6 +345,7 @@ exports.getPassport = function (){
     if("googleClientId" in config) passport.use(getGoogleStrategy());
     if("slackClientId" in config) passport.use(getSlackStrategy());
     if("localUsersPath" in config) passport.use(getLocalStrategy());
+    if("samlCert" in config) passport.use(getSamlStrategy());
 
     // serialize and deserialize
     passport.serializeUser((user, done) => {
