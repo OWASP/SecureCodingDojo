@@ -48,14 +48,6 @@ app.get("/public/providers",(req,res) => {
   res.send(providers);
 });
 
-app.get("/public/captcha.png", auth.getCaptcha);
-
-app.post("/public/register", auth.registerLocalUser);
-
-//this one is an authenticated request because is under /api
-app.post("/api/localUser/updateUser", auth.updateLocalUser);
-
-
 app.get('/public/provider/:provider', (req,res) => {
   //invalidate any active session
   var redirect = '';
@@ -65,6 +57,15 @@ app.get('/public/provider/:provider', (req,res) => {
   else if(req.params.provider == 'local') redirect = '/public/locallogin';
   auth.logoutAndKillSession(req, res, redirect);
 });
+
+
+app.get("/public/captcha.png", auth.getCaptcha);
+
+app.post("/public/register", auth.registerLocalUser);
+
+//this one is an authenticated request because is under /api
+app.post("/api/localUser/updateUser", auth.updateLocalUser);
+
 
 
 app.get('/public/google',

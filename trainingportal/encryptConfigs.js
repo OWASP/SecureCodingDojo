@@ -15,6 +15,9 @@ var regenerateSecrets = false; //change to regenerate challenge secrets every ti
 var encryptChallengeSecrets = false;
 var badgrToken = "<badgr token>";
 
+const config = require(path.join(__dirname, 'config'));
+const fs = require('fs');
+
 console.log("======= config.js ==========");
 
 //You can use the following script from  when you update your key to a new value
@@ -23,6 +26,14 @@ console.log('config.encSlackClientSecret="'+aescrypto.encrypt(slackSecret)+'";')
 console.log('config.encGoogleClientSecret="'+aescrypto.encrypt(googleSecret)+'";');
 console.log('config.encExpressSessionSecret="'+aescrypto.encrypt(sessionSecret)+'";');
 console.log('config.encBadgrToken="'+aescrypto.encrypt(badgrToken)+'";');
+
+
+if(!util.isNullOrUndefined(config.samlProviderPvkFilePath)){
+    var samlProviderPvk = fs.readFileSync(path.join(__dirname, config.samlProviderPvkFilePath), 'utf-8');
+    var encSamlProviderPvk = aescrypto.encrypt(samlProviderPvk);
+    console.log(encSamlProviderPvk);
+} 
+
 
 /**
  * Use this function to generate the properties for a local user

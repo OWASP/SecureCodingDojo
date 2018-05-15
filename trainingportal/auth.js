@@ -12,7 +12,19 @@ const util = require(path.join(__dirname, 'util'));
 const captchapng = require('captchapng');
 const fs = require('fs');
 
+
 var localUsers = null;
+
+if(!util.isNullOrUndefined(config.samlProviderCertFilePath)){
+    var samlProviderCert = fs.readFileSync(path.join(__dirname, config.samlProviderCertFilePath), 'utf-8');
+} 
+if(!util.isNullOrUndefined(config.encSamlProviderPvkFilePath)){
+    var encSamlProviderPvk = fs.readFileSync(path.join(__dirname, config.encSamlProviderPvkFilePath), 'utf-8');
+    var samlProviderPvk = aesCrypto.decrypt(encSamlProviderPvk);
+} 
+
+
+
 try{
   if(typeof config.localUsersPath !== 'undefined' && config.localUsersPath!=null)
      localUsers = require(path.join(__dirname, config.localUsersPath));
@@ -292,7 +304,8 @@ getSamlStrategy = function () {
         skipRequestCompression: true,
         signatureAlgorithm: 'sha256',
         cert: config.samlCert,
-        privateCert : fs.readFileSync(path.join(__dirname, config.samPrivateCertFilePath), 'utf-8'),
+        decryptionPvk: samlProviderPvk,
+        privateCert: samlProviderPvk,
         authnContext: 'http://schemas.microsoft.com/ws/2008/06/identity/authenticationmethod/windows',
         identifierFormat: null
       }, (accessToken, refreshToken, profile, cb) => {
@@ -345,6 +358,10 @@ exports.getPassport = function (){
     if("googleClientId" in config) passport.use(getGoogleStrategy());
     if("slackClientId" in config) passport.use(getSlackStrategy());
     if("localUsersPath" in config) passport.use(getLocalStrategy());
+    var samlStrategy = getSamlStrategy();
+    if(config.samlLogProviderMetadata){
+        console.log(samlStrategy.generateServiceProviderMetadata(samlProviderCert));
+    }
     if("samlCert" in config) passport.use(getSamlStrategy());
 
     // serialize and deserialize
