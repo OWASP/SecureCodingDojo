@@ -47,6 +47,9 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                         var message = activity.givenName + " " + activity.familyName + " has solved '" +
                         $scope.challengeTitles[activity.challengeId] + "'";
                         $scope.showActivityMessage = $scope.latestActivityMessage !== message;
+                        if($scope.showActivityMessage && $scope.fetchActivity){
+                            $scope.fetchActivity();
+                        }
                         $scope.latestActivityMessage = message;  
                     }            
                     else if(response.data.status===401){
@@ -59,6 +62,19 @@ app.controller('mainCtrl', function($scope, $http, $location) {
             },function(){
                 window.location = "/";
             });
+    }
+
+    $scope.fetchActivity = function(){
+        var filter = "";
+        if(typeof nameFilter !== 'undefined'){
+            filter=nameFilter.value;
+        }
+        $http.get("/api/activity?query="+filter,window.getAjaxOpts())
+            .then(function(response) {
+                if(response != null && response.data != null){
+                    $scope.activityList = response.data;
+                }
+            })
     }
 
     setInterval($scope.activityHeartBeat,10*1000);
