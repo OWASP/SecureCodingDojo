@@ -14,7 +14,9 @@
             <tr ng-repeat="team in teamList">
                 <td>{{team.name}}</td>
                 <td ng-repeat="level in team.challengeDefinitions">
-                    <div ng-repeat="user in level.members">{{user.givenName}} {{user.familyName}}</div>
+                    <div style="height: 35px; overflow-y: auto">
+                        <div ng-repeat="user in level.members" >{{user.givenName}} {{user.familyName}}</div>
+                    </div>
                 </td>
             </tr>
         </tbody>
