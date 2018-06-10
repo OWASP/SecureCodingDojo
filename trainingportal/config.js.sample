@@ -3,6 +3,8 @@ var config = {};
 config.dojoUrl = process.env.DOJO_URL;
 config.dojoTargetUrl = process.env.DOJO_TARGET_URL;
 config.isSecure = config.dojoUrl.startsWith("https");
+//for those cases when absolute links are specific to your environment
+config.playLinks = [{"challengeid":"links"}];
 config.dbHost = process.env.DOJO_DB_HOST;
 config.dbName = '';
 config.dbUser = '';

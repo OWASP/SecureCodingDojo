@@ -30,6 +30,13 @@ app.use(passport.session());
 app.use(auth.authenticationByDefault);
 app.use(auth.addSecurityHeaders);
 app.use('/public',express.static(path.join(__dirname, 'public')));
+app.use('/static', (req, res, next) => {
+    var result = req.url.match(/challengeDefinitions.json/)
+    if (result) {
+      return res.status(403).end('403 Forbidden')
+    }
+  next()
+})
 app.use('/static',express.static(path.join(__dirname, 'static')));
 
 //ROUTES
@@ -121,6 +128,27 @@ app.get('/main', (req, res) => {
   var mainHtml = fs.readFileSync(path.join(__dirname, 'static/main.html'),'utf8');
   mainHtml = auth.addCsrfToken(req, mainHtml);
   res.send(mainHtml);
+});
+
+app.get('/challengeDefinitions.json', (req, res) => {
+  //construct the challenge secrets loaded on the client side based on the users level
+  var returnChallenges = [];
+  var permittedLevel = req.user.level+1;
+  challengeDefinitions.forEach(function(level){
+    if(permittedLevel >= level.level){ 
+      level.challenges.forEach(function(challenge){
+        //update the play link if it exists
+        if(!util.isNullOrUndefined(config.playLinks)){
+          var playLink = config.playLinks[challenge.id];
+          if(!util.isNullOrUndefined(playLink)){
+            challenge.playLink = playLink;
+          }
+        }
+      });
+      returnChallenges.push(level);
+    }
+  });
+  res.send(returnChallenges);
 });
 
 app.get('/api/user', (req, res) => {

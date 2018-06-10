@@ -315,7 +315,7 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                 $scope.fullName = user.givenName + ' ' + user.familyName;
                 $scope.firstName = user.givenName;
                 
-                $http.get("static/challenges/challengeDefinitions.json")
+                $http.get("/challengeDefinitions.json")
                 .then(function(response) {
                     if(response != null && response.data != null){
                         $scope.challengeTitles = {};

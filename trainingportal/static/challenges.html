@@ -19,9 +19,15 @@
                 <div id="collapse{{challenge.id}}" class="panel-collapse collapse"  ng-class="{'in':!challenge.passed}">
                     <div class="panel-body">
                         <h4>Play Link and Instructions</h4>
-                        <p>Navigate to the <a href="{{targetUrl}}{{challenge.playLink}}" target="_blank">vulnerable app</a>. 
-                        You should be able to complete the challenge only by using a browser. 
-                        Once you were able to exploit the vulnerability you can generate a secret code which you can submit above.</p>
+                        <p ng-if="challenge.playLink">Navigate to the 
+                            <a ng-if="challenge.playLink.indexOf('http')===0" href="{{challenge.playLink}}" target="_blank">play link</a>
+                            <a ng-if="challenge.playLink.indexOf('/')===0" href="{{targetUrl}}{{challenge.playLink}}" target="_blank">play link</a>
+                        . </p>
+                        <p ng-if="!challenge.playLink">
+                            The play link has been provided to you when solving the previous challenge. 
+                            If you have missed it read the challenge description carefully and try to figure out what it is.
+                        </p>
+                        <p>Once you were able to exploit the vulnerability you can generate a secret code which you can submit above.</p>
                         <br>
                         <span ng-if="hasCodeBlocks(challenge)">
                         <h4>Code Blocks Associated with the Challenge</h4>
