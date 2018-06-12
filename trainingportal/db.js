@@ -371,50 +371,6 @@ exports.fetchChallengeEntriesForUser = function(user,errCb,doneCb){
 
 
 
-
-//when a user levels up check that the team lead can level up to master
-exports.levelUpTeamLead = function(teamId,level,errCb,doneCb){
-  var con = getConn(errCb,doneCb);
-  con.connect(function(err) {
-    if(err){
-       con.handleErr(err);
-       return;
-    }
-
-    var sql = "SELECT id FROM users WHERE teamId = ? and level = ?";
-    con.query(sql, [teamId, level], function (err, result) {
-       if(err) con.handleErr(err);
-       else if(result != null  && result.length > 1){
-
-          //there are several members in this team that have achieved the level more than the current user
-          //check if there are any members that still did not achieve it
-          //there must be more than one member in the team
-          var sql = "SELECT id FROM users WHERE teamId = ? and level < ?";
-          con.query(sql, [teamId, level], function (err, result) {
-            if(err) con.handleErr(err);
-            else if(result!=null && result.length == 0){
-              //there are no other users left so all the users are on the same level (level up the team owner )
-              var sql = "UPDATE users SET level=? WHERE id in (SELECT ownerId FROM teams WHERE teamId = ?)";
-              con.query(sql, [level+1, teamId] , function (err, result) {
-                if(err) con.handleErr(err);
-                else{
-                  util.log("Leveled up creator for team id: "+teamId);
-                  con.handleDone(result);
-                }
-              });
-            }
-            else{
-              con.handleDone(result);
-            }
-          });
-       }
-       else{
-         con.handleDone(result);
-      }
-    });
-  });
-}
-
 /**
  * Fetches the list of challenge entries in descending order, practically the activity
  * @param {*} errCb 

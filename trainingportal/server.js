@@ -328,14 +328,8 @@ app.post('/api/user/challengeCode', (req, res) => {
                   function(){
                     util.apiResponse(req, res, 500, "Failed to update user level. Please try again.");
                   },function(){
-                    //check if it's the last level before master level
-                    if(req.user.level === challengeDefinitions[challengeDefinitions.length-2].level){
-                      //update the team lead async
-                      db.levelUpTeamLead(req.user.teamId, req.user.level, null, null);
-                    }
                     util.log("User has solved the challenge "+curChallengeObj.name+" and leveled up!", req.user);
-                    util.apiResponse(req, res, 200, "Congratulations you solved the challenge and leveled up!", curChallengeObj)
-                    
+                    util.apiResponse(req, res, 200, "Congratulations you solved the challenge and leveled up!", curChallengeObj);                
                   });
                 
               }
