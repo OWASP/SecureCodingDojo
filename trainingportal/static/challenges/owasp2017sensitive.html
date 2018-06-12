@@ -1,0 +1,27 @@
+
+
+<hr>
+<h5>About the vulnerabilities: Sensitive Data Exposure</h5>
+<p>
+   Massive data breaches in the past years as well as governments regulations such as GDPR make handling 
+   of user data a critical aspect of an application's operation.
+</p>
+
+<blockquote>
+<p>
+    <i>Over the last few years, this has been the most common impactful attack. 
+        The most common flaw is simply not encrypting sensitive data. When crypto is employed, weak key generation and management,
+         and weak algorithm, protocol and cipher usage is common, particularly for weak password hashing storage techniques. 
+        For data in transit, server side weaknesses are mainly easy to detect, but hard for data at rest..</i>
+</p>
+<footer>From OWASP <a target="_blank" href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure">A3-Sensitive Data Exposure</a></footer>
+</blockquote>
+<h5>Challenge Tips and Tricks</h5>
+<p>
+    Along with the 'secret' file you will find many other files in the bucket including the html for a chat application that the hackers use. 
+    The users file for the application can be found in the same bucket and the passwords are stored as unsalted SHA-1 hashes.
+    <br>
+    The users of the system have strong passwords but the test account not so much. 
+    Crack the test account password and login into the chat to pass this challenge.
+
+</p>

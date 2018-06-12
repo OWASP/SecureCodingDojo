@@ -1,0 +1,66 @@
+
+
+<hr>
+<h5>About the vulnerabilities</h5>
+<p>
+   <strong>Broken Authentication</strong>
+   is the failure of an authentication mechanism to correctly identify a user. Spoofing 
+   attacks to session identifiers, missing cookie headers and brute force attacks on passwords are part of this category.<br>
+   
+   <strong>Broken Access Control</strong>
+   is the failure of an application to restrict access to resources. Authorization flaws, 
+    privilege escalation, reliance on client side and path traversal facilitate attacks in this category.<br>
+</p>
+
+<blockquote>
+<p>
+    <i>Attackers have access to hundreds of millions of valid username and password combinations for credential stuffing, 
+        default administrative account lists, automated brute force, and dictionary attack tools. 
+        Session management attacks are well understood, particularly in relation to unexpired session tokens.</i>
+</p>
+<footer>From OWASP <a target="_blank" href="https://www.owasp.org/index.php/Top_10-2017_A2-Broken_Authentication">A2-Broken Authentication</a></footer>
+</blockquote>
+<blockquote>
+<p>
+    <i>Access control weaknesses are common due to the lack of automated detection, and lack of effective functional testing by application developers.
+            Access control detection is not typically amenable to automated static or dynamic testing...</i>
+</p>
+<footer>From OWASP <a target="_blank" href="https://www.owasp.org/index.php/Top_10-2017_A5-Broken_Access_Control">A5-Broken Access Control</a></footer>
+</blockquote>
+<h5>Challenge Tips and Tricks</h5>
+<p>
+    In the previous challenge you have broken into the test account. In this challenge you must perform an authorization attack by changing
+     from the test account to one of the hackers' accounts. You can achieve that by attacking the session identifier (which is a case of 
+     broken authentication). The JWT token is stored in the browser session storage.
+     <br> <br>
+     The application is using JWT for authentication. JWT contains a JSON object signed with a secret or RSA private key in the best cases.
+     Getting a hold of the JWT secret can proove devastating because attackers can impersonate anyone and can generate 'eternal' session identifiers
+     (which never expire).
+     The JWT secret in this case is very weak so you can easily crack it by writing a script that tries some of the most insecure passwords.
+     <br> <br>
+     In Node.JS you can use a script like this to verify a bunch of secrets:
+     <pre class="pre-scrollable">
+             const jwt = require('jsonwebtoken');
+             var secrets = ["passw0rd","secret","1234"];
+             secrets.forEach(function(secret)){
+
+                jwt.verify(token, secret, function(err, decoded) {
+                    if (err) {
+                        console.log('failed jwt verify: ', err);
+                    } else {
+                        console.log('authorized:', decoded);
+                    }
+                });
+
+            });
+     </pre>
+    <br>
+    In Node.JS you can generate JWT tokens with a script like this:
+    <pre class="pre-scrollable">
+            const jwt = require('jsonwebtoken');
+            var token = jwt.sign({"sub": "username","name": "User Name"}, "SECRET");
+            console.log(token);
+    </pre>
+    Once you impersonate one of the attackers, you will also notice that one of the messages points to the location of the code for the entire infrastructure, including lambdas, malware and control application.
+
+</p>

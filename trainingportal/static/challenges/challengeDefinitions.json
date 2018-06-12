@@ -204,7 +204,51 @@
     },
     {
         "level":8,
-        "name":"Master",
-        "challenges":[]
+        "name":"Second Degree Black Belt",
+        "challenges":[
+            {
+                "id":"owasp2017misconfig",
+                "name":"Security Misconfiguration", 
+                "playLink":"",
+                "description": "/static/challenges/owasp2017misconfig.html",
+                "codeBlockIds":["enforceSafeConfig"]
+            },
+            {
+                "id":"owasp2017sensitive",
+                "name":"Sensitive Data Exposure", 
+                "description": "/static/challenges/owasp2017sensitive.html",
+                "codeBlockIds":["useStrongDataEncryption"]
+            },
+            {
+                "id":"owasp2017brokenauth",
+                "name":"Broken Authentication & Broken Access Control", 
+                "description": "/static/challenges/owasp2017brokenauth.html",
+                "codeBlockIds":["loginBestPractices","principleOfLeastPrivilege","serverSideValidation"]
+            },
+            {
+                "id":"owasp2017xss",
+                "name":"Cross-Site Scripting", 
+                "description": "/static/challenges/owasp2017xss.html",
+                "codeBlockIds":["neutralizeOutput","inputWhitelisting","requestForgeryPrevention"]
+            },
+            {
+                "id":"owasp2017injection",
+                "name":"Injection", 
+                "description": "/static/challenges/owasp2017injection.html",
+                "codeBlockIds":["parameterizedCommands","inputWhitelisting","principleOfLeastPrivilege"]
+            },
+            {
+                "id":"owasp2017xxe",
+                "name":"XML External Entities", 
+                "description": "/static/challenges/owasp2017xxe.html",
+                "codeBlockIds":["disableXmlExternalEntities","principleOfLeastPrivilege"]
+            },
+            {
+                "id":"owasp2017deserialization",
+                "name":"Using Components with Known Vulnerabilities & Insecure Deserialization", 
+                "description": "/static/challenges/owasp2017deserialization.html",
+                "codeBlockIds":["enforceSafeDeserialization","keep3rdPartyUpToDate"]
+            }
+        ]
     }
 ]

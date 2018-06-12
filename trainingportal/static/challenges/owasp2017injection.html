@@ -1,0 +1,33 @@
+
+
+<hr>
+<h5>About the vulnerabilities: Injection</h5>
+<p>
+  Injection is discussed and demonstrated in detail under
+   <strong>Brown Belt: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection') and related flaws</strong>
+    and under
+    <strong>Brown Belt: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')</strong>
+    <br>Please review those sections to refresh your memory and also the OWASP link below.
+</p>
+
+<blockquote>
+<p>
+    <i>Injection flaws are very prevalent, particularly in legacy code. Injection vulnerabilities are often found in SQL, LDAP, XPath, or NoSQL queries,
+         OS commands, XML parsers, SMTP headers, expression languages, and ORM queries.</i>
+</p>
+<footer>From OWASP <a target="_blank" href="https://www.owasp.org/index.php/Top_10-2017_A1-Injection">A1-Injection</a></footer>
+</blockquote>
+<p>
+    For those interested in learning more about Injection you can watch the following OWASP Ottawa "Deep Dive" presentation.
+</p>
+<iframe width="300" height="169" src="https://www.youtube.com/embed/mpx3r5aCj5w" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<h5>Challenge Tips and Tricks</h5>
+<p>
+    The attackers have built in a proxy service that can execute requests from the CnC environment, such as a ping request. 
+    Very similar to the challenge under brown belt, the host name here allows more than it should. 
+    Look for the 'secret' file on the file system of the 'pinger' host.
+<br>
+PS: Besides the 'secret' file you will find the coordinates of an internal application that is used to control the bots. 
+The pinger will become your "beachhead" in interacting with this application.
+</p>

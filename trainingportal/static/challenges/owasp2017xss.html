@@ -1,0 +1,32 @@
+
+
+<hr>
+<h5>About the vulnerabilities: Cross-Site Scripting</h5>
+<p>
+  Cross-Site Scripting is discussed and demonstrated in detail under Purple Belt: Improper Neutralization of Input During Web Page Generation 
+  ('Cross-site Scripting'). Please review that section to refresh your memory and also the OWASP link below.
+</p>
+
+<blockquote>
+<p>
+    <i>XSS is the second most prevalent issue in the OWASP Top 10, and is found in around two thirds of all applications.</i>
+</p>
+<footer>From OWASP <a target="_blank" href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">A7-Cross-Site Scripting (XSS)</a></footer>
+</blockquote>
+<p>
+    For those interested in learning more about XSS you can watch the following OWASP Ottawa "Deep Dive" presentation.
+</p>
+<iframe width="300" height="169" src="https://www.youtube.com/embed/lA02ipAXPlM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<h5>Challenge Tips and Tricks</h5>
+<p>
+    Reveal the source ip of the chat users by storing a hidden image into the chat messages on that page.
+It must be <strong>exactly</strong> this html snippet <code>&lt;img src='https://gov.logger.good' width='0px'&gt;</code> . 
+You will find out that you can inject more than just images, but only that particular html snippet will unlock the challenge.
+<br><br>
+Analyze the source of the page carefully. You'll notice that XSS is mostly prevented by using Angular templates except for one particular case.
+<br><br>
+There's also some handy utilities for you in that page to help you out, and don't forget your browser debugger.
+<br><br>
+PS: The JS Encrypt project has a handy page that can help you generate private/public key pairs to use <a href="http://travistidwell.com/jsencrypt/demo/index.html">here</a>
+</p>

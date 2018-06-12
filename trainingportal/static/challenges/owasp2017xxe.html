@@ -1,0 +1,30 @@
+
+
+<hr>
+<h5>About the vulnerabilities: Xml External Entities</h5>
+<p>
+  XML External Entities is discussed in detail under 
+   <strong>Blue Belt : Improper Restriction of XML External Entity Reference ('XXE')</strong>
+    <br>Please review that sections to refresh your memory and also the OWASP link below.
+</p>
+
+<blockquote>
+<p>
+    <i>Attackers can exploit vulnerable XML processors if they can upload XML or include hostile content in an XML document, exploiting vulnerable code, dependencies or integrations.</i>
+</p>
+<footer>From OWASP <a target="_blank" href="https://www.owasp.org/index.php/Top_10-2017_A4-XML_External_Entities_(XXE)">A4-XML External Entities (XXE)</a></footer>
+</blockquote>
+
+
+<h5>Challenge Tips and Tricks</h5>
+<p>
+    The internal application controlling all the bots uses an XML authentication document. 
+    You will have to leverage the Command injection in the pinger host in order to send a specially crafted XML and exfiltrate information from the system.
+<br>
+The CURL command that you can use to send the document looks like this:
+<pre class="pre-scrollable">
+curl '_COMMAND_PROC_HOST_LOGIN_PAGE_' -H 'Content-Type: multipart/form-data; boundary=----123' --data-binary '------123\r\nContent-Disposition: form-data; name=\"document\"\r\n\r\n&lt;?xml version=\"1.0\"?&gt;&lt;credentials&gt;&lt;user&gt;admin&lt;/user&gt;&lt;password&gt;&lt;/password&gt;&lt;/credentials&gt;\r\n------123--\r\n' -i -L
+</pre>
+You can also save the response of the login page to an HTML file to see how it looks.
+Once you get the password copy the JSESSIONID returned after a successful login and add it as a header like this <code>-H 'Cookie:JSESSIONID=_VALUE_'</code>
+</p>

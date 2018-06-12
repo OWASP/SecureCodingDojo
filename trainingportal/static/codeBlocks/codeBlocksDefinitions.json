@@ -63,6 +63,18 @@
     "displayGenericErrorMessages":{
         "name":"Display Generic Error Messages",
         "description":"/static/codeBlocks/displayGenericErrorMessages.html"
+    },
+    "enforceSafeConfig":{
+        "name":"Enforce a Safe Configuration",
+        "description":"/static/codeBlocks/enforceSafeConfig.html"
+    },
+    "enforceSafeDeserialization":{
+        "name":"Enforce Safe Deserialization",
+        "description":"/static/codeBlocks/enforceSafeDeserialization.html"
+    },
+    "keep3rdPartyUpToDate":{
+        "name":"Keep 3rd Party Components up to Date",
+        "description":"/static/codeBlocks/keep3rdPartyUpToDate.html"
     }
 
 }
