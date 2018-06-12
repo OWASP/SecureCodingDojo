@@ -1,0 +1,15 @@
+[{
+    "type": "userMessage",
+    "user": "stinkyfish",
+    "message": "aGkgdGhlcmUgYnJvdGhlcgo=",
+    "date": "6/6/2018, 5:12:36 PM"
+}, {
+    "type": "botMessage",
+    "date": "6/6/2018, 9:13:10 PM",
+    "message": "A new bot was added: 8F47643DB6AA83075F5E71AD85E0E8B5D9C32B5A47DC173EDB54D2E7F5C88807"
+}, {
+    "type": "userMessage",
+    "user": "badspaghetti",
+    "message": "Я поместил весь код в foobarcode bucket",
+    "date": "6/9/2018, 2:14:59 PM"
+}]

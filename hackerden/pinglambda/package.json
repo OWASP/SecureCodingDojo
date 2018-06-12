@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "jsonwebtoken": "^8.2.2",
+    "simple-ssh": "^1.0.0"
+  }
+}

@@ -1,0 +1,267 @@
+<html>
+
+<head>
+  <title>Foobar Chat</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="cncChat.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/sha256.js"></script>
+
+</head>
+<body>
+  
+  <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <a class="navbar-brand" href="#">Foobar Chat</a>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+              <li><a href="#login" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-out"></span> Chat Login</a></li>
+          </ul>
+      </div>
+  </nav>
+  
+  <div ng-app="chatApp" ng-controller="chatCtrl">
+    <div class="container-fluid">
+      <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog">
+          <div class="loginmodal-container">
+            <h1>Login to Your Account</h1><br>
+            <form>
+                <div class="form-group">
+                    <label for="usr">Name:</label>
+                    <input type="text" class="form-control" id="usr" name="usr">
+                  </div>
+                <div class="form-group">
+                  <label for="pwd">Password:</label>
+                  <input type="password" class="form-control" id="pwd" name="pwd">
+                </div>
+                 <button type="button" class="btn btn-success" id="loginModalSubmit" ng-click="login()">Login</button>
+            </form>
+            <div class="alert alert-danger" ng-if="loginError" id="loginErrDiv">Login failed!</div>
+            <div class="login-help">
+            <a href="#">Register</a> - <a href="#">Forgot Password</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="chat" ng-if="showChat" class="panel panel-default">
+        <div class="panel-heading">
+            <h4>Foobar Chat Messages</h4> 
+            <p>
+                <strong>Current user:</strong> <span id="userName">{{userNameText}}</span> ( <a id="challengeCodeUrl" href="{{challengeCodeUrl}}" target="_blank">{{challengeCodeUrl}}</a>)
+            </p>
+            <hr>
+            <form>
+                <div class="form-group">
+                    <label for="message">Say something:</label>
+                    <input type="text" class="form-control" id="messageInput" name="messageInput">
+                    <br>
+                    <button type="button" class="btn btn-success" id="sendSubmit" ng-click="send()">Send</button>
+                    <button type="button" class="btn btn-success" id="load" ng-click="getChatMessages()">Load</button>
+                </div>
+            </form>
+        </div>
+        <div class="panel-body">
+            <div class="alert alert-danger" ng-if="chatError" id="chatErrorDiv">Unable to get chat messages for current user.</div>
+            <div class="alert alert-danger" style="display:none"  ng-model="chatAlertDiv" id="chatAlertDiv"></div>
+            <div class="alert alert-success" ng-if="messageSuccess">
+                <p>Wow you got it, check the Network tab in the debugger!</p>
+                <p>Here's your challenge code url: <a href="{{xssChallengeCodeUrl}}" target="_blank">{{xssChallengeCodeUrl}}</a>
+                </p>
+
+            </div>
+            <div class="alert alert-success" ng-if="messageSuccess">Here's your next challenge: {{nextChallenge}}</div>
+            <div class=="panel-group">
+                <div ng-repeat="message in chatMessages | reverse" ng-if="message.type!=='encMessage'" ng-class="{'panel panel-primary': message.type === 'userMessage','panel panel-success': message.type !== 'userMessage'}">
+                    <div class="panel panel-heading">{{message.date}} - <strong>{{message.user}}</strong> says:</div>
+                    <div class="panel panel-body">{{message.message}}</div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script type="text/javascript">
+    var encrypt = new JSEncrypt();
+
+    encryptText=function(messageText){
+        var pubKey = window.sessionStorage.getItem("pubKey");
+        if(pubKey){
+            encrypt.setPublicKey(pubKey);
+            var messageObj = {
+                "type":"encMessage",
+                "encMess":encrypt.encrypt(messageText),
+                "pubKey":pubKey,
+                "date":new Date().toLocaleString(),
+                "integrity":CryptoJS.SHA256(messageText+pubKey).toString()
+            }
+            return messageObj;
+        }
+        else{
+            console.log("You forgot the public key");
+        }
+    }
+
+    decryptText=function(messageCipher){
+        var privKey = window.sessionStorage.getItem("privKey");
+        if(privKey){
+            encrypt.setPublicKey(privKey);
+            return encrypt.decrypt(messageCipher);
+        }
+        else{
+            console.log("You forgot the private key");
+        }
+    }
+
+
+
+    window.getAjaxOpts = function(){
+       var opts =  {
+           headers:{
+               "Authorization":'Bearer '+window.sessionStorage.getItem("token")
+           }
+       }
+       return opts;
+    }
+
+
+    var app = angular.module('chatApp',[]);
+    app.filter('reverse', function() {
+        return function(items) {
+            return items.slice().reverse();
+        };
+    });
+    app.controller('chatCtrl', function($scope, $http){
+
+        $scope.showChat=false;
+
+        $scope.getCurrentUser = function(){
+            $('#loginModal').modal('show');
+            
+            $http.get("currentuser",window.getAjaxOpts()).then(
+                function(response){
+                    if(response && response.data && response.data.id){
+                        $('#loginModal').modal('hide');
+                        $scope.userNameText = response.data.name;
+                        $scope.userId = response.data.id;
+                        if(response.data.challengeCodeUrl){
+                            $scope.challengeCodeUrl = response.data.challengeCodeUrl;
+                        }    
+                        $scope.showChat=true;
+                    }
+                    else{
+                        $('#loginModal').modal('show');
+                    }
+                    
+                    $scope.getChatMessages();
+                });
+        }
+        
+
+        $scope.getChatMessages = function(){
+
+            if(typeof $scope.chatMessages==='undefined'){
+                $scope.chatMessages=[];
+            }
+      
+            $http.get("messages.json?"+Math.random(),window.getAjaxOpts()).then(
+                function(response){
+                    if(response && response.data){
+                       if($scope.chatMessages.length<response.data.length){
+                        
+                            if($scope.chatError){
+                                $scope.chatError = false;   
+                                return $scope.getCurrentUser();
+                            }
+                            else{
+                                $scope.chatMessages = response.data;
+                            }
+                            
+
+                            $scope.chatMessages.forEach(function(message) {
+                                if(message.type==='encMessage' && message.encMess){
+                                    chatAlertDiv.style.display="none";
+                                    var text = decryptText(message.encMess);
+                                    if(typeof text !== 'undefined' && text!==null && text!==false){
+                                        chatAlertDiv.style.display="";
+                                        chatAlertDiv.innerHTML = text;
+                                        if(message.challengeCodeUrl && message.challengeCodeUrl.length > 0){
+                                            $scope.messageSuccess = true;
+                                            //construct the challenge code url
+                                            decUrl = "";
+                                            message.challengeCodeUrl.forEach(function(part){
+                                                decUrl+=decryptText(part);
+                                            })
+                                            $scope.xssChallengeCodeUrl = decUrl;
+                                            $scope.nextChallenge = decryptText(message.nextChallenge);
+                                        }
+                                    }
+                                   
+                                }
+                            });
+                       }
+                    }
+                    else{
+                        $scope.chatError = true;
+                    }
+                },function(err){
+                    $scope.chatError = true;
+                });
+        }
+
+        $scope.login=function(){
+            $scope.loginError=false;
+            $http.post('auth',{
+                "userName":usr.value,
+                "userPass":pwd.value
+            }).then(
+                function(response){
+                    if(response && response.data && response.data.token){
+                        window.sessionStorage.setItem('token',response.data.token);
+                        $scope.getCurrentUser();
+                    }
+                    else{
+                        $scope.loginError=true;
+                    }
+                });
+        }
+
+
+        $scope.send=function(){
+            $scope.loginError=false;
+            $http.put(Math.random()+".mes",{
+                "type":"userMessage",
+                "user":$scope.userId,
+                "message":messageInput.value,
+                "date":new Date().toLocaleString()
+            },window.getAjaxOpts()).then(
+                function(response){
+                    messageInput.value="";    
+                    setTimeout($scope.getChatMessages,3*1000);               
+                });
+        }
+
+
+        $scope.getCurrentUser();
+
+    });
+
+    
+    
+  </script>
+  
+</body>
+</html>
+

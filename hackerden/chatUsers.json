@@ -1,0 +1,15 @@
+{
+    "test": {
+        "name":"Test Account",
+        "passHash":"df0ca472d75639dbc8d7b1978d0145c914c3418b"
+    },
+    "badspaghetti": {
+        "name":"8@d 5p@ghett!",
+        "passHash":"bff2d9cd4aa3631d67b9976782f81d72abc71033"
+    },
+    "stinkyfish": {
+        "name":"st!nky",
+        "passHash":"cda22c2f6bf9c94dcfd75ab911bbc893ea6bd116"
+    }
+
+}
