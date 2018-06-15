@@ -1,4 +1,4 @@
-![Alt text](/serialcat/WebContent/cat.png?raw=true "Serial Cat logo" =192x166)
+![](/serialcat/WebContent/cat.png?raw=true =192x166)
 
 Serial Cat is a little application that allows deserialization attacks including a bunch of insecure libraries on the class path.
 
