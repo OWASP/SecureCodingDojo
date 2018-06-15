@@ -15,7 +15,7 @@
 <div class="container">
   	<div class="jumbotron">
 		<h1>Serial Cat
-		<img width="10%" height="10%" src="cat.png">
+		<img src="cat.png">
 		</h1>
 		<p>A Java app that is vulnerable to RCE through deserialization attacks</p>
 	</div>
