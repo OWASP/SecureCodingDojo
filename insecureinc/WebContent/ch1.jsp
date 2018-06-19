@@ -30,7 +30,7 @@ if(request.getParameter("usr")!=null) alertVisibility="";
   </div>
 </nav>
 <div class="container"> 
-<form action="ch1.jsp?redirect=/insecureinc/Ch1Loggedin" autocomplete="off" method="POST">
+<form action="ch1.jsp?redirect=<%=request.getRequestURI().replace("ch1.jsp","Ch1Loggedin")%>" autocomplete="off" method="POST">
 <div class="form-group">
   <label for="usr">Name:</label>
   <input type="text" class="form-control" id="usr" name="usr">
