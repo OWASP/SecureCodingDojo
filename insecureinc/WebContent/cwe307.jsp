@@ -21,9 +21,6 @@ if(usr!=null && pwd!=null){
 		response.sendRedirect(Constants.SECRET_PAGE);
 	}
 }
-else{
-	session.invalidate();
-}
 
 
 %>

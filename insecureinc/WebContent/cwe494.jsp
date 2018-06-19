@@ -15,9 +15,6 @@ if(usr!=null && pwd!=null){
 		response.sendRedirect("cwe494admin.jsp");
 	}
 }
-else{
-	session.invalidate();
-}
 
 
 %>

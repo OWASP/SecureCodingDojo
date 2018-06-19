@@ -39,9 +39,7 @@ if(usr!=null && pwd!=null){
 
 	session.setAttribute("cwe190tries",tries);
 }
-else{
-	session.invalidate();
-}
+
 
 
 
