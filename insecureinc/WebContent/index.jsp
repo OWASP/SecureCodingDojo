@@ -74,6 +74,7 @@ body {
 		          <li><a href="cwe863.jsp">Incorrect Authorization</a></li>
 		          <li><a href="cwe22.jsp">Path Traversal</a></li>
 		          <li><a href="cwe78.jsp">OS Command Injection</a></li>
+		          <li><a href="cwe509.jsp">Deserialization of Untrusted Input</a></li>
 		          <li><a href="cwe89.jsp">SQL Injection</a></li>
 		          <li><a href="cwe120.jsp">Buffer Overflow</a></li>
 		          <li><a href="cwe134.jsp">Uncontrolled Format String</a></li>
