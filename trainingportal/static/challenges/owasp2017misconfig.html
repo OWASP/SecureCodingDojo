@@ -23,15 +23,18 @@
     This older version has been deactivated using a kill switch so you can’t figure out the address of the CnC just by intercepting network traffic. 
     You have to reverse the code. It is a Windows .Net application so you can decompile it easily. 
     Once you decompile it you can analyze the code to figure out where to get started.
+    <br></br>
+    You don't absolutely need a decompiler, you can just use the <code>strings</code> linux command, and see what strings your can find and how they are 'encoded'.
         
 </p>
 <hr>
 <h5>Before you begin</h5>
 <p>
 Install the following if you don't have them already:
-<br>- DotPeek from JetBrains (Windows) or another .Net decompiler of your choice
+<br>- DotPeek from JetBrains (Windows) - optional
+<br>- Bash or Git Bash
 <br>- NodeJS 
-<br>- VS Code
+<br>- VS Code - optional
 <br>- OWASP ZAP Proxy or if you prefer Burp or Postman 
 <br>- OpenSSL
 <br>- Ysoserial (pen-test tool for deserialization attacks)
@@ -52,7 +55,7 @@ Install the following if you don't have them already:
 </blockquote>
 <h5>Challenge Tips and Tricks</h5>
 <p>
-    After decompiling and decrypting the malware you will find that each bot registers with the CnC by putting a message into a S3 bucket.
+    After decompiling the malware you will find that each bot registers with the CnC by putting a message into a S3 bucket.
     <br> <br>
     The hackers are not so naive to leave their S3 buckets public. However they have chosen to build some quick online services using API Gateway
      S3 integrations. They simply followed the tutorial on integrating API Gateway with S3 located at this link: 
