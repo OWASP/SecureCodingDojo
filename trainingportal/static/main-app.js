@@ -8,11 +8,10 @@ app.config(function($routeProvider) {
     .when("/submitCode/:challengeId", {
         templateUrl : "static/submitCode.html",
         controller: "submitCodeCtrl"
-
     })
     .when("/codeBlocks/:codeBlockId", {
         templateUrl : "static/codeBlocks.html",
-        controller: "submitCodeCtrl"
+        controller: "codeBlocksCtrl"
     })
     .when("/leaderboard", {
         templateUrl : "static/leaderboard.html",
@@ -23,6 +22,9 @@ app.config(function($routeProvider) {
     }).when("/report", {
         templateUrl : "static/report.html",
         controller: "reportCtrl"
+    }).when("/solution/:challengeId", {
+        templateUrl : "static/solution.html",
+        controller: "solutionCtrl"
     });
 });
 

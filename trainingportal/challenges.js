@@ -16,15 +16,20 @@ limitations under the License.
 
  */
 const path = require('path');
+const fs = require('fs');
+const markdown = require('markdown').markdown;
 const util = require(path.join(__dirname, 'util'));
 const challengeDefinitions = Object.freeze(require(path.join(__dirname, 'static/challenges/challengeDefinitions.json')));
 const challengeSecrets = Object.freeze(require(path.join(__dirname, 'challengeSecrets.json')));
 const config = require(path.join(__dirname, 'config'));
 
+
 var challengeNames = [];
+var solutions = [];
 challengeDefinitions.forEach(function(level){
   level.challenges.forEach(function(challenge){
     challengeNames[challenge.id] = challenge.name;
+    solutions[challenge.id] = challenge.solution;
   })
 });
 
@@ -44,10 +49,10 @@ exports.getChallengeDefinitionsForUser = function (user) {
             level.challenges.forEach(function (challenge) {
                 //update the play link if it exists
                 if (!util.isNullOrUndefined(config.playLinks)) {
-                var playLink = config.playLinks[challenge.id];
-                if (!util.isNullOrUndefined(playLink)) {
-                    challenge.playLink = playLink;
-                }
+                    var playLink = config.playLinks[challenge.id];
+                    if (!util.isNullOrUndefined(playLink)) {
+                        challenge.playLink = playLink;
+                    }
                 }
             });
             returnChallenges.push(level);
@@ -57,4 +62,19 @@ exports.getChallengeDefinitionsForUser = function (user) {
         }
     });
     return returnChallenges;
+}
+
+/**
+ * Returns the solution html (converted from markdown)
+ * @param {The challenge id} challengeId 
+ */
+exports.getSolution = function (challengeId) {
+    var solution = solutions[challengeId];
+    var solutionHtml = "";
+    if(!util.isNullOrUndefined(solution)){
+        var solutionMarkDown = fs.readFileSync(path.join(__dirname, solution),'utf8');
+        solutionHtml = markdown.toHTML(solutionMarkDown);
+    }
+
+    return solutionHtml;
 }
