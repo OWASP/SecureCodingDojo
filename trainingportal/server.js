@@ -9,6 +9,14 @@ const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
 const config = require(path.join(__dirname, 'config'));
 const challengeDefinitions = Object.freeze(require(path.join(__dirname, 'static/challenges/challengeDefinitions.json')));
+
+var challengeNames = [];
+challengeDefinitions.forEach(function(level){
+  level.challenges.forEach(function(challenge){
+    challengeNames[challenge.id] = challenge.name;
+  })
+})
+
 const challengeSecrets = Object.freeze(require(path.join(__dirname, 'challengeSecrets.json')));
 const crypto = require('crypto');
 const aescrypto = require(path.join(__dirname, 'aescrypto'));
@@ -362,6 +370,13 @@ app.get('/api/teams',  (req, res) => {
    })
 });
 
+var returnActivityList = function(res,activityList){
+  activityList.forEach(function(activity){
+    activity.challengeName = challengeNames[activity.challengeId];
+  });
+  res.send(activityList);
+}
+
 //get the activity
 app.get('/api/activity',  (req, res) => {
   var query = req.query.query;
@@ -372,14 +387,14 @@ app.get('/api/activity',  (req, res) => {
   }
   
   db.fetchActivity(query,100,null,function(activityList){
-    res.send(activityList);
+    returnActivityList(res,activityList);
   });
 });
 
 //get the activity
 app.get('/api/activity/heartbeat',  (req, res) => {
   db.fetchActivity(null,1,null,function(activityList){
-    res.send(activityList);
+    returnActivityList(res,activityList);
   });
 });
 

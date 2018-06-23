@@ -45,7 +45,7 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                     if(response.data.length > 0){
                         var activity = response.data[0];
                         var message = activity.givenName + " " + activity.familyName + " has solved '" +
-                        $scope.challengeTitles[activity.challengeId] + "'";
+                        activity.challengeName + "'";
                         $scope.showActivityMessage = $scope.latestActivityMessage !== message;
                         if($scope.showActivityMessage && $scope.fetchActivity){
                             $scope.fetchActivity();
@@ -318,7 +318,6 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                 $http.get("/challengeDefinitions.json")
                 .then(function(response) {
                     if(response != null && response.data != null){
-                        $scope.challengeTitles = {};
                         $scope.levelNames = {};
                         var challengeDefinitions = response.data;
                         if(challengeDefinitions.length >= 1){
@@ -338,8 +337,6 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                                 if(challenges!=null){
                                     for(var cIdx=0;cIdx<challenges.length;cIdx++){
                                         var ch = challenges[cIdx];
-                                        //if update the challenge titles object
-                                        $scope.challengeTitles[ch.id] = ch.name;
                                         var passed = $scope.user.passedChallenges;
                                         if(passed!=null){
                                             for(var uIdx=0; uIdx < passed.length; uIdx++){
