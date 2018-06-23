@@ -12,6 +12,7 @@
                 "id":"cwe306",
                 "name":"Missing Authentication for Critical Function", 
                 "description": "/static/challenges/cwe306.html",
+                "solution":"/static/challenges/cwe306.sol.md",
                 "playLink":"/ch1.jsp",
                 "codeBlockIds":["authenticationByDefault"],
                 "badgrInfo":{

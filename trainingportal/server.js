@@ -151,6 +151,16 @@ app.get('/challengeDefinitions.json', (req, res) => {
   res.send(returnChallenges);
 });
 
+app.get('/challenges/solutions/:challengeId', (req,res) => {
+  var challengeId = req.params.challengeId;
+  if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) == false){
+    return util.apiResponse(req, res, 400, "Invalid challenge id."); 
+  }
+  var solutionHtml = challenges.getSolution(challengeId);
+  res.send(solutionHtml);
+});
+
+
 app.get('/api/user', (req, res) => {
    db.fetchChallengeEntriesForUser(req.user,function(){
       res.send(req.user);

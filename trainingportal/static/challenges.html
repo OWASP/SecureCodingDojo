@@ -9,10 +9,14 @@
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{challenge.id}}" href="">
                             
-                            
                             {{level.name}} : {{challenge.name}} 
-                            <a href="#!submitCode/{{challenge.id}}" class="btn btn-info pull-right btn-xs" ng-if="!challenge.passed" role="button">Submit Code</a>
-                            <span class="glyphicon glyphicon-check pull-right" ng-if="challenge.passed"></span>
+
+                                <span class="glyphicon glyphicon-check pull-right" ng-if="challenge.passed"></span>
+                                <span class="pull-right" ng-if="challenge.passed">&nbsp;</span>
+                                <a href="#!submitCode/{{challenge.id}}" class="btn btn-info pull-right btn-xs" ng-if="!challenge.passed" role="button"> Submit Code</a>
+                                <span class="pull-right" ng-if="!challenge.passed">&nbsp;</span>
+                                <a href="#!solution/{{challenge.id}}" class="btn btn-success pull-right btn-xs" ng-if="challenge.solution" role="button">View Solution</a>
+
                         </a>
                     </h4>
                 </div>
