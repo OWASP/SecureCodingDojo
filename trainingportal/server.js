@@ -155,6 +155,9 @@ app.get('/challengeDefinitions.json', (req, res) => {
       });
       returnChallenges.push(level);
     }
+    else{
+      returnChallenges.push({"level":level.level,"name":level.name,"challenges":[]});
+    }
   });
   res.send(returnChallenges);
 });
