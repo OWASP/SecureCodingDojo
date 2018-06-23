@@ -1,3 +1,20 @@
+/**
+
+Copyright 2017-2018 Trend Micro
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this work except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+ */
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -8,16 +25,7 @@ const db = require(path.join(__dirname, 'db'));
 const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
 const config = require(path.join(__dirname, 'config'));
-const challengeDefinitions = Object.freeze(require(path.join(__dirname, 'static/challenges/challengeDefinitions.json')));
-
-var challengeNames = [];
-challengeDefinitions.forEach(function(level){
-  level.challenges.forEach(function(challenge){
-    challengeNames[challenge.id] = challenge.name;
-  })
-})
-
-const challengeSecrets = Object.freeze(require(path.join(__dirname, 'challengeSecrets.json')));
+const challenges = require(path.join(__dirname, 'challenges'));
 const crypto = require('crypto');
 const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const uid = require('uid-safe');
@@ -139,26 +147,7 @@ app.get('/main', (req, res) => {
 });
 
 app.get('/challengeDefinitions.json', (req, res) => {
-  //construct the challenge secrets loaded on the client side based on the users level
-  var returnChallenges = [];
-  var permittedLevel = req.user.level+1;
-  challengeDefinitions.forEach(function(level){
-    if(permittedLevel >= level.level){ 
-      level.challenges.forEach(function(challenge){
-        //update the play link if it exists
-        if(!util.isNullOrUndefined(config.playLinks)){
-          var playLink = config.playLinks[challenge.id];
-          if(!util.isNullOrUndefined(playLink)){
-            challenge.playLink = playLink;
-          }
-        }
-      });
-      returnChallenges.push(level);
-    }
-    else{
-      returnChallenges.push({"level":level.level,"name":level.name,"challenges":[]});
-    }
-  });
+  var returnChallenges = challenges.getChallengeDefinitionsForUser(req.user);
   res.send(returnChallenges);
 });
 
@@ -208,6 +197,7 @@ app.post('/api/user/team',  (req, res) => {
    })
    
 });
+
 
 function badgrCall(curChallengeObj, user){
   //check if the challenge has a Open Badge configuration and the Badgr integration has been configured
@@ -272,6 +262,7 @@ app.post('/api/user/challengeCode', (req, res) => {
     if(req.user.level === null) req.user.level = 0;
 
     //identify the current challenge object and also the available challenges for the current user level
+    var challengeDefinitions = challenges.getChallengeDefinitions();
     for(var idx=0;idx<challengeDefinitions.length;idx++){
       var levelObj = challengeDefinitions[idx];
       var levelChallenges = levelObj.challenges;
@@ -291,7 +282,7 @@ app.post('/api/user/challengeCode', (req, res) => {
     }
     
     if(curChallengeObj==null) return util.apiResponse(req, res, 404, "Challenge not found for the current user level");
-
+    var challengeSecrets = challenges.getChallengeSecrets();
     var secretEntry = challengeSecrets[challengeId];
     if(secretEntry==null) return util.apiResponse(req, res, 404, "Challenge id not found.");
     
@@ -374,6 +365,7 @@ app.get('/api/teams',  (req, res) => {
 });
 
 var returnActivityList = function(res,activityList){
+  var challengeNames = challenges.getChallengeNames();
   activityList.forEach(function(activity){
     activity.challengeName = challengeNames[activity.challengeId];
   });
@@ -476,7 +468,8 @@ app.get('/api/report',  (req, res) => {
   if(util.isNullOrUndefined(reportUsers)){
     return util.apiResponse(req,res,501,"User report is not configured");
   }
-  var lastLevel = challengeDefinitions[challengeDefinitions.length-2].level;
+
+  var lastLevel = config.reportLevel;
   //update the user status based on the users in the database
   reportUsers.completeMembers = 0;
   reportUsers.inProgressMembers = 0;
