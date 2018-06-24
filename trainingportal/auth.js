@@ -13,7 +13,7 @@ const captchapng = require('captchapng');
 const fs = require('fs');
 
 
-var localUsers = null;
+
 
 if(!util.isNullOrUndefined(config.samlProviderCertFilePath)){
     var samlProviderCert = fs.readFileSync(path.join(__dirname, config.samlProviderCertFilePath), 'utf-8');
@@ -24,13 +24,21 @@ if(!util.isNullOrUndefined(config.encSamlProviderPvkFilePath)){
 } 
 
 
-
+var localUsers = null;
 try{
   if(typeof config.localUsersPath !== 'undefined' && config.localUsersPath!=null)
      localUsers = require(path.join(__dirname, config.localUsersPath));
 }
 catch(ex){/*Do nothing*/}
 
+
+var accountWhitelist = null;
+try{
+    if(!util.isNullOrUndefined(config.accountWhitelist)){
+        accountWhitelist = require(path.join(__dirname, config.accountWhitelist));
+    }
+}
+catch(ex){/*Do nothing*/}
 
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -235,6 +243,18 @@ exports.updateLocalUser = function(req,res){
 
 
 processAuthCallback = function (profileId, givenName, familyName, email, cb) {
+    //if allowed account pattern or an account whitelist are not configured all users are allowed
+    var isAllowed = util.isNullOrUndefined(config.allowedAccountPattern) && accountWhitelist==null;
+    //check the allowed pattern if defined
+    if(!isAllowed && !util.isNullOrUndefined(config.allowedAccountPattern)) isAllowed = profileId.match(config.allowedAccountPattern);
+    //check the whitelist if defined
+    if(!isAllowed && accountWhitelist!=null) isAllowed = accountWhitelist.indexOf(profileId) > -1;
+    //if still not allowed stop here
+    if(!isAllowed){
+        util.log("Profile id not allowed:"+profileId);
+        return cb();
+    }
+    
     //try to get a user from the database
     db.getUser(profileId, null, (user) => {
     if(user){

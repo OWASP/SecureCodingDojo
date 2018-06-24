@@ -9,6 +9,11 @@ config.dbHost = process.env.DOJO_DB_HOST;
 config.dbName = '';
 config.dbUser = '';
 config.encDbPass = ''; //use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption
+
+//account id whitelisting rules, if undefined all accounts are allowed
+//config.allowedAccountPattern = /^(U\w|Local_)/; //use in conjunction with account whitelist to enable accounts matching the pattern e.g. Local_
+//config.accountWhitelist = 'accountWhitelist.json' //enable to only allow certain accounts to join
+
 //config.googleClientId = ''; //enable to configure Google authentication
 config.encGoogleClientSecret = '';
 //config.localUsersPath = 'localUsers.json';//authentication using a password file containing users and hashed passwords, no lockout
