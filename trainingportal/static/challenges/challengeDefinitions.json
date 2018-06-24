@@ -29,6 +29,7 @@
                 "id":"cwe807",
                 "name":"Reliance on Untrusted Inputs in a Security Decision", 
                 "description": "/static/challenges/cwe807.html",
+                "solution":"/static/challenges/cwe807.sol.md",
                 "playLink":"/ch2.jsp",
                 "codeBlockIds":["serverSideValidation"]
             },
@@ -36,6 +37,7 @@
                 "id":"cwe862",
                 "name":"Missing Authorization", 
                 "description": "/static/challenges/cwe862.html",
+                "solution":"/static/challenges/cwe862.sol.md",
                 "playLink":"/cwe862.jsp",
                 "codeBlockIds":["resourceSeparation"]
             }
@@ -49,6 +51,7 @@
                 "id":"cwe311",
                 "name":"Missing Encryption of Sensitive Data", 
                 "description": "/static/challenges/cwe311.html",
+                "solution":"/static/challenges/cwe311.sol.md",
                 "playLink":"/cwe311.jsp",
                 "codeBlockIds":["useStrongDataEncryption"]
             },
@@ -56,6 +59,7 @@
                 "id":"cwe327",
                 "name":"Use of a Broken or Risky Cryptographic Algorithm", 
                 "description": "/static/challenges/cwe327.html",
+                "solution":"/static/challenges/cwe327.sol.md",
                 "playLink":"/cwe327.jsp",
                 "codeBlockIds":["useStrongDataEncryption"]
             },
@@ -63,6 +67,7 @@
                 "id":"cwe759",
                 "name":"Use of a One-Way Hash without a Salt", 
                 "description": "/static/challenges/cwe759.html",
+                "solution":"/static/challenges/cwe759.sol.md",
                 "playLink":"/cwe759.jsp",
                 "codeBlockIds":["useStrongDataEncryption"]
             }  
