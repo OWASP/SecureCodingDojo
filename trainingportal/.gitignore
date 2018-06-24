@@ -5,3 +5,4 @@ config.js
 localUsers.json
 *privacy.html
 *.csv
+accountWhitelist.json
