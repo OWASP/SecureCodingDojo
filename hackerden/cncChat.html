@@ -107,7 +107,7 @@
                 "date":new Date().toLocaleString(),
                 "integrity":CryptoJS.SHA256(messageText+pubKey).toString()
             }
-            return messageObj;
+            return JSON.stringify(messageObj);
         }
         else{
             console.log("You forgot the public key");
