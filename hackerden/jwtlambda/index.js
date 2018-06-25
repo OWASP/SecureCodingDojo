@@ -25,13 +25,15 @@ exports.foobarAuthorizer = function(event, context) {
         if(event.methodArn.indexOf("GET/foobarcampaign-messages/currentuser")>-1){
           action="Allow";
         }
-        if(event.methodArn.indexOf("PUT/foobarcampaign-messages")>-1 && event.path.endsWith(".mes")){
+        
+        //handle updates
+        if(event.methodArn.indexOf("PUT/foobarcampaign-messages")>-1){
+          if(event.path.endsWith(".mes")) action="Allow";
+        }
+        else if(decoded.sub==="badspaghetti" || decoded.sub==="stinkyfish"){
           action="Allow";
         }
-        //some methods are allowed for specific users only
-        if(decoded.sub==="badspaghetti"||decoded.sub==="stinkyfish"){
-          action="Allow";
-        }
+        
         return context.succeed(generatePolicy(decoded.sub, action, event.methodArn));
       }
     });

@@ -59,41 +59,51 @@ exports.processS3Put = function(challengeCodeUrl, context, srcBucket, srcKey){
             if(err){
                 return context.fail(err);
             }
-            var curObject;
-            if(response.ContentType==='application/json'){
-                curObject = JSON.parse(response.Body.toString('utf-8'));
-            }
-            else{
-                curObject = response.Body.toString('utf-8');
-            }
-
-            if(curObject.type==='encMessage'){
-                curObject = exports.validateCurrentObject(curObject, challengeCodeUrl);
-            }
-
-            if(curObject.type==='userMessage'|| curObject.type==='encMessage'){
-                messages.push(curObject);
-            }
-            else{
-                messages.push({
-                    "type":"botMessage",
-                    "date": new Date().toLocaleString(),
-                    "message":"A new bot was added: "+curObject
-                })
-            }
-
-            // Stream the transformed image to a different S3 bucket.
-            s3.putObject({
-                    Bucket: 'foobarcampaign-messages',
-                    Key: 'messages.json',
-                    Body: JSON.stringify(messages),
-                    ContentType: 'application/json'
-                },
-            function(err,data){
-                if(err){
-                    context.fail(err);
+            
+            try{
+                var curObject;
+                if(response.ContentType==='application/json'){
+                    curObject = JSON.parse(response.Body.toString('utf-8'));
                 }
-            });
+                else{
+                    curObject = response.Body.toString('utf-8');
+                }
+    
+                if(curObject.type==='encMessage'){
+                    curObject = exports.validateCurrentObject(curObject, challengeCodeUrl);
+                }
+    
+                if(curObject.type==='userMessage'|| curObject.type==='encMessage'){
+                    messages.push(curObject);
+                }
+                else{
+                    messages.push({
+                        "type":"botMessage",
+                        "date": new Date().toLocaleString(),
+                        "message":"A new bot was added: "+curObject
+                    })
+                }
+            
+
+                // Stream the transformed image to a different S3 bucket.
+                s3.putObject({
+                        Bucket: 'foobarcampaign-messages',
+                        Key: 'messages.json',
+                        Body: JSON.stringify(messages),
+                        ContentType: 'application/json'
+                    },
+                function(err,data){
+                    if(err){
+                        context.fail(err);
+                    }
+                    else{
+                        context.succeed(data);
+                    }
+                });
+            }
+            catch(err){
+                context.fail(err.message);
+            }
         });
     });
 }
