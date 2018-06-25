@@ -41,8 +41,10 @@
      In Node.JS you can use a script like this to verify a bunch of secrets:
      <pre class="pre-scrollable">
              const jwt = require('jsonwebtoken');
+             var token = "ENTER_THE_TOKEN";
              var secrets = ["passw0rd","secret","1234"];
-             secrets.forEach(function(secret)){
+             //if you're looking for secrets there's a good list here: https://www.theregister.co.uk/2010/01/21/lame_passwords_exposed_by_rockyou_hack/
+             secrets.forEach(function(secret){
 
                 jwt.verify(token, secret, function(err, decoded) {
                     if (err) {
