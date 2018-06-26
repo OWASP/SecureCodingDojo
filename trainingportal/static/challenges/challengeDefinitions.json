@@ -81,6 +81,7 @@
                 "id":"cwe307",
                 "name":"Password Guessing Attack", 
                 "description": "/static/challenges/cwe307.html",
+                "solution":"/static/challenges/cwe307.sol.md",
                 "playLink":"/cwe307.jsp",
                 "codeBlockIds":["loginBestPractices"]
             },
@@ -88,6 +89,7 @@
                 "id":"cwe190",
                 "name":"Integer Overflow or Wraparound", 
                 "description": "/static/challenges/cwe190.html",
+                "solution":"/static/challenges/cwe190.sol.md",
                 "playLink":"/cwe190.jsp",
                 "codeBlockIds":["checkBoundaries"]
             },
@@ -95,6 +97,7 @@
                 "id":"cwe494",
                 "name":"Download of Code Without Integrity Check", 
                 "description": "/static/challenges/cwe494.html",
+                "solution":"/static/challenges/cwe494.sol.md",
                 "playLink":"/cwe494.jsp",
                 "codeBlockIds":["integrityVerification","useStrongDataEncryption"]
             }
