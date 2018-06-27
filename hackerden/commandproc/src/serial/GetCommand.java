@@ -74,7 +74,7 @@ public class GetCommand extends HttpServlet {
 				c.setType(type);
 				c.setAuthCode(Base64.decodeBase64(authCode));
 				c.setTarget(target);
-				c.setTarget(argument);
+				c.setArgument(argument);
 				obj = c;
 			} catch (Exception e) {
 				e.printStackTrace();
