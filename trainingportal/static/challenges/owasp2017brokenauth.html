@@ -63,6 +63,10 @@
             var token = jwt.sign({"sub": "username","name": "User Name"}, "SECRET");
             console.log(token);
     </pre>
-    Once you impersonate one of the attackers, you will also notice that one of the messages points to the location of the code for the entire infrastructure, including lambdas, malware and control application.
+    Once you impersonate one of the attackers, you will also notice that 
+    one of the messages points to the location of the code for the entire infrastructure, including lambdas,
+     malware and control application.
+
+    API Gateway will break the binary content however you can get the content via an S3 url once you figure out the file names ;)
 
 </p>
