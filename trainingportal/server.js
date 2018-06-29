@@ -67,6 +67,7 @@ app.get("/public/providers",(req,res) => {
   if("slackClientId" in config) providers.push({"name":"Slack","url":"/public/provider/slack"});
   if("samlCert" in config) providers.push({"name":"ADFS SAML","url":"/public/provider/saml"});
   if("localUsersPath" in config) providers.push({"name":"Local","url":"/public/provider/local"});
+  if("ldapServer" in config) providers.push({"name":"LDAP","url":"/public/provider/ldap"});
 
   res.send(providers);
 });
@@ -77,7 +78,8 @@ app.get('/public/provider/:provider', (req,res) => {
   if(req.params.provider == 'slack') redirect = '/public/slack';
   else if(req.params.provider == 'google') redirect = '/public/google';
   else if(req.params.provider == 'saml') redirect = '/public/saml';
-  else if(req.params.provider == 'local') redirect = '/public/locallogin';
+  else if(req.params.provider == 'local') redirect = '/public/locallogin.html';
+  else if(req.params.provider == 'ldap') redirect = '/public/ldaplogin.html';
   auth.logoutAndKillSession(req, res, redirect);
 });
 
@@ -122,14 +124,15 @@ app.get( '/public/saml/callback', passport.authenticate( 'saml', {
 }));
  
 
-app.get('/public/locallogin', (req, res) => {
-   res.redirect('/public/locallogin.html');
-});
-
 app.post('/public/locallogin', [
   auth.checkCaptchaOnLogin,
   passport.authenticate('local', { failureRedirect: '/public/authFail.html' })
 ],
+function(req, res) {
+  res.redirect('/main');
+});
+
+app.post('/public/ldaplogin', passport.authenticate('ldapauth', { failureRedirect: '/public/authFail.html' }),
 function(req, res) {
   res.redirect('/main');
 });

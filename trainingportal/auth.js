@@ -45,6 +45,7 @@ var GoogleStrategy = require('passport-google-oauth20').Strategy;
 var SlackStrategy = require('passport-slack').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var SamlStrategy = require('passport-saml').Strategy;
+var LdapStrategy = require('passport-ldapauth').Strategy;
 
 exports.isAuthenticated = function (req){
     return !util.isNullOrUndefined(req) && !util.isNullOrUndefined(req.user) && !util.isNullOrUndefined(req.user.id) && req.isAuthenticated();
@@ -299,6 +300,32 @@ getLocalStrategy = function () {
     });
 }
 
+//Returns the LDAP Strategy
+getLdapStrategy = function () {
+    config.ldapServer.bindCredentials = aesCrypto.decrypt(config.ldapServer.encBindCredentials);
+    return new LdapStrategy({
+            server: config.ldapServer
+        },
+    (user, cb) => {
+    
+        if(user!==null){
+            var splitName = user.name.split(" ");
+            var givenName = "";
+            var familyName = "";
+            var email = user.email;
+
+
+            if(splitName.length >= 1) givenName = splitName[0];
+            if(splitName.length >= 2) familyName = splitName[1];
+
+            return processAuthCallback("LDAP_"+user.cn, givenName, familyName, email, cb);
+        }
+        
+        return cb(null,false);
+
+    });
+}
+
 //Returns the google strategy settings
 getGoogleStrategy = function () {
     return new GoogleStrategy({
@@ -311,7 +338,7 @@ getGoogleStrategy = function () {
             //use the first e-mail in the list
             email = profile.emails[0].value;
         }
-        processAuthCallback(profile.id, profile.name.givenName, profile.name.familyName, email, cb);
+        return processAuthCallback(profile.id, profile.name.givenName, profile.name.familyName, email, cb);
     });
 }
 
@@ -361,7 +388,7 @@ getSlackStrategy = function () {
             if(splitName.length >= 1) givenName = splitName[0];
             if(splitName.length >= 2) familyName = splitName[1];
 
-            processAuthCallback(profile.id, givenName, familyName, email, cb);
+            return processAuthCallback(profile.id, givenName, familyName, email, cb);
         }
         else{
             //some error occured
@@ -378,6 +405,8 @@ exports.getPassport = function (){
     if("googleClientId" in config) passport.use(getGoogleStrategy());
     if("slackClientId" in config) passport.use(getSlackStrategy());
     if("localUsersPath" in config) passport.use(getLocalStrategy());
+    if("ldapServer" in config) passport.use(getLdapStrategy());
+
     var samlStrategy = getSamlStrategy();
     if(config.samlLogProviderMetadata){
         console.log(samlStrategy.generateServiceProviderMetadata(samlProviderCert));
