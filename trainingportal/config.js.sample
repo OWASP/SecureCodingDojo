@@ -11,32 +11,46 @@ config.dbUser = '';
 config.encDbPass = ''; //use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption
 
 //account id whitelisting rules, if undefined all accounts are allowed
-//config.allowedAccountPattern = /^(U\w|Local_)/; //use in conjunction with account whitelist to enable accounts matching the pattern e.g. Local_
+//config.allowedAccountPattern = /^(U\w|Local_|LDAP_)/; //use in conjunction with account whitelist to enable accounts matching the pattern e.g. Local_
 //config.accountWhitelist = 'accountWhitelist.json' //enable to only allow certain accounts to join
 
 //config.googleClientId = ''; //enable to configure Google authentication
-config.encGoogleClientSecret = '';
-//config.localUsersPath = 'localUsers.json';//authentication using a password file containing users and hashed passwords, no lockout
+//config.encGoogleClientSecret = '';
+config.localUsersPath = 'localUsers.json';//authentication using a password file containing users and hashed passwords, no lockout
 
+/* Optional LDAP integration
+config.ldapServer = {
+    url: 'ldap://company.org',
+    bindDN: 'CN=bindUser,OU=Domain Users,DC=company,DC=org',
+    encBindCredentials: '<GENERATE WITH ENCRYPT CONFIGS>',
+    searchBase: 'DC=company,DC=org',
+    searchFilter: '(sAMAccountName={{username}})' //For AD
+}
+*/
 
 config.encExpressSessionSecret = ''; //generate a strong session secret and encrypt it
 config.googleOauthCallbackUrl = config.dojoUrl+"/public/google/callback";
 config.slackOauthCallbackUrl = config.dojoUrl+"/public/slack/callback";
+
+/* Optional SAML integration = *Experimental
 config.samlCallbackUrl = config.dojoUrl+"/public/saml/callback";
 config.samlEntryPoint = 'https://ad.example.net/adfs/ls/';
 config.samlCert = 'MIICizCCAfQCCQCY8tKaMc0BMjANBgkqh ... W==';
 config.samlProviderCertFilePath = 'samlProviderCert.pem';
-//config.samlProviderPvkFilePath = 'samlProviderKey.pem';
+config.samlProviderPvkFilePath = 'samlProviderKey.pem';
 config.encSamlProviderPvkFilePath = 'samlProviderKey.enc.pem';
 config.samlLogProviderMetadata = false;
+*/
 
 //config.slackClientId = '';//enable to configure Slack authentication
 config.slackTeamId = '';
 config.encSlackClientSecret = '';
 
-config.encBadgrToken = ''; //configure to enable Badgr.io integration to issue Open Badges for challenge completion; see https://api.badgr.io
-config.reportCSV=''; //configure with the path of a CSV file with team names as the column headers and user names as rows
-config.reportLevel = 7;
+//config.encBadgrToken = ''; //configure to enable Badgr.io integration to issue Open Badges for challenge completion; see https://api.badgr.io
+//config.reportCSV=''; //configure with the path of a CSV file with team names as the column headers and user names as rows
+//config.reportLevel = 7;
+
+
 module.exports = config;
 
 /*

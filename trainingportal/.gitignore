@@ -1,7 +1,7 @@
 *node_modules*
 challengeSecrets.json
 *.DS_Store
-config.js
+*config.js
 localUsers.json
 *privacy.html
 *.csv
