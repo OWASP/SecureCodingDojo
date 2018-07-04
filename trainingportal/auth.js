@@ -303,6 +303,13 @@ getLocalStrategy = function () {
 //Returns the LDAP Strategy
 getLdapStrategy = function () {
     config.ldapServer.bindCredentials = aesCrypto.decrypt(config.ldapServer.encBindCredentials);
+    if(!util.isNullOrUndefined(config.ldapServer.caCertPath)){
+        config.ldapServer.tlsOptions = {
+            ca: [
+                fs.readFileSync(path.join(__dirname, config.ldapServer.caCertPath),'utf8')
+            ]
+          }
+    }
     return new LdapStrategy({
             server: config.ldapServer
         },
@@ -355,13 +362,17 @@ getSamlStrategy = function () {
         privateCert: samlProviderPvk,
         authnContext: 'http://schemas.microsoft.com/ws/2008/06/identity/authenticationmethod/windows',
         identifierFormat: null
-      }, (accessToken, refreshToken, profile, cb) => {
-        var email = null;
-        if(profile.emails !== null && profile.emails.length > 0){
-            //use the first e-mail in the list
-            email = profile.emails[0].value;
-        }
-        processAuthCallback(profile.id, profile.name.givenName, profile.name.familyName, email, cb);
+      }, (user, cb) => {
+            if(user!==null){
+               
+                var givenName = user[config.samlGivenName];
+                var familyName = user[config.samlFamilyName];
+                var email = user[config.samlEmail];
+
+                return processAuthCallback("SAML_"+email, givenName, familyName, email, cb);
+            }
+            
+            return cb(null,false);
     });
 }
 

@@ -115,10 +115,12 @@ app.get( '/public/slack/callback', passport.authenticate( 'slack', {
 }));
 
 // path for saml auth
-app.get('/public/saml', passport.authenticate('saml'));
+app.get('/public/saml', (req, res) => {
+  res.redirect(config.samlEntryPoint);
+});
  
 // saml callback url 
-app.get( '/public/saml/callback', passport.authenticate( 'saml', { 
+app.post( '/public/saml/callback', passport.authenticate( 'saml', { 
 		successRedirect: '/main',
 		failureRedirect: '/public/authFail.html'
 }));
