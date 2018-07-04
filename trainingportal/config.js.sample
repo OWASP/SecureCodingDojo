@@ -24,6 +24,7 @@ config.ldapServer = {
     bindDN: 'CN=bindUser,OU=Domain Users,DC=company,DC=org',
     encBindCredentials: '<GENERATE WITH ENCRYPT CONFIGS>',
     searchBase: 'DC=company,DC=org',
+    //caCertPath: 'caCert.pem', //optional for LDAPS
     searchFilter: '(sAMAccountName={{username}})' //For AD
 }
 */
@@ -36,10 +37,13 @@ config.slackOauthCallbackUrl = config.dojoUrl+"/public/slack/callback";
 config.samlCallbackUrl = config.dojoUrl+"/public/saml/callback";
 config.samlEntryPoint = 'https://ad.example.net/adfs/ls/';
 config.samlCert = 'MIICizCCAfQCCQCY8tKaMc0BMjANBgkqh ... W==';
-config.samlProviderCertFilePath = 'samlProviderCert.pem';
-config.samlProviderPvkFilePath = 'samlProviderKey.pem';
-config.encSamlProviderPvkFilePath = 'samlProviderKey.enc.pem';
-config.samlLogProviderMetadata = false;
+config.samlGivenName = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname';
+config.samlFamilyName = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname';
+config.samlEmail = 'nameID';
+config.samlProviderCertFilePath = 'samlProviderCert.pem'; //optional for provider initiated
+config.samlProviderPvkFilePath = 'samlProviderKey.pem'; //optional for provider initiated
+config.encSamlProviderPvkFilePath = 'samlProviderKey.enc.pem'; //optional for provider initiated
+config.samlLogProviderMetadata = false; //optional log provider metadata
 */
 
 //config.slackClientId = '';//enable to configure Slack authentication
