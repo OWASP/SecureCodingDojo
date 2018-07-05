@@ -166,6 +166,7 @@
                 "name":"Incorrect Authorization", 
                 "playLink":"/cwe863.jsp",
                 "description": "/static/challenges/cwe863.html",
+                "solution":"/static/challenges/cwe863.sol.md",
                 "codeBlockIds":["resourceSeparation","principleOfLeastPrivilege"]
             },
             {
@@ -173,6 +174,7 @@
                 "name":"Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection') and related flaws", 
                 "playLink":"/cwe78.jsp",
                 "description": "/static/challenges/cwe78.html",
+                "solution":"/static/challenges/cwe78.sol.md",
                 "codeBlockIds":["parameterizedCommands","inputWhitelisting","principleOfLeastPrivilege"]
             },
             {
@@ -180,6 +182,7 @@
                 "name":"Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')", 
                 "playLink":"/cwe89.jsp",
                 "description": "/static/challenges/cwe89.html",
+                "solution":"/static/challenges/cwe89.sol.md",
                 "codeBlockIds":["parameterizedCommands", "displayGenericErrorMessages", "inputWhitelisting"]
             }
         ]
@@ -193,6 +196,7 @@
                 "name":"Buffer Copy without Checking Size of Input ('Classic Buffer Overflow') and related flaws", 
                 "playLink":"/cwe120.jsp",
                 "description": "/static/challenges/cwe120.html",
+                "solution":"/static/challenges/cwe120.sol.md",
                 "codeBlockIds":["checkBoundaries","safeMemoryManagement","inputWhitelisting"]
             },
             {
@@ -200,6 +204,7 @@
                 "name":"Use of Externally-Controlled Format String", 
                 "playLink":"/cwe134.jsp",
                 "description": "/static/challenges/cwe134.html",
+                "solution":"/static/challenges/cwe134.sol.md",
                 "codeBlockIds":["safeMemoryManagement","inputWhitelisting"]
             },
             {
