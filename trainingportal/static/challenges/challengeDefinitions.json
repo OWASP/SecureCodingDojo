@@ -111,6 +111,7 @@
                 "id":"cwe601",
                 "name":"URL Redirection to Untrusted Site ('Open Redirect')", 
                 "description": "/static/challenges/cwe601.html",
+                "solution":"/static/challenges/cwe601.sol.md",
                 "playLink":"/cwe601.jsp",
                 "codeBlockIds":["inputWhitelisting","indirectObjectReferences"]
             },
@@ -118,6 +119,7 @@
                 "id":"cwe79",
                 "name":"Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting') and related flaws", 
                 "description": "/static/challenges/cwe79.html",
+                "solution":"/static/challenges/cwe79.sol.md",
                 "playLink":"/cwe79.jsp",
                 "codeBlockIds":["neutralizeOutput","inputWhitelisting","requestForgeryPrevention"]
             },
@@ -125,6 +127,7 @@
                 "id":"cwe352",
                 "name":"Cross-Site Request Forgery (CSRF)", 
                 "description": "/static/challenges/cwe352.html",
+                "solution":"/static/challenges/cwe352.sol.md",
                 "playLink":"/cwe352.jsp",
                 "codeBlockIds":["requestForgeryPrevention"]
             }
@@ -136,21 +139,24 @@
         "challenges":[
             {
                 "id":"cwe434",
-                "name":"Unrestricted Upload of File with Dangerous Type", 
+                "name":"Unrestricted Upload of File with Dangerous Type",
+                "solution":"/static/challenges/cwe434.sol.md",
                 "playLink":"/cwe434.jsp",
                 "description": "/static/challenges/cwe434.html",
                 "codeBlockIds":["indirectObjectReferences","inputWhitelisting","principleOfLeastPrivilege"]
             },
             {
                 "id":"cwe611",
-                "name":"Improper Restriction of XML External Entity Reference ('XXE')", 
+                "name":"Improper Restriction of XML External Entity Reference ('XXE')",
+                "solution":"/static/challenges/cwe611.sol.md",
                 "playLink":"/cwe611.jsp",
                 "description": "/static/challenges/cwe611.html",
                 "codeBlockIds":["disableXmlExternalEntities","principleOfLeastPrivilege"]
             },
             {
                 "id":"cwe22",
-                "name":"Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')", 
+                "name":"Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+                "solution":"/static/challenges/cwe22.sol.md",
                 "playLink":"/cwe22.jsp",
                 "description": "/static/challenges/cwe22.html",
                 "codeBlockIds":["indirectObjectReferences","inputWhitelisting","principleOfLeastPrivilege"]
