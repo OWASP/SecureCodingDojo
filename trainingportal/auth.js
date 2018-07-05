@@ -354,6 +354,7 @@ getSamlStrategy = function () {
         entryPoint: config.samlEntryPoint,
         issuer: config.samlCallbackUrl,
         callbackUrl: config.samlCallbackUrl,
+        acceptedClockSkewMs: 5*60*1000,
         authnRequestBinding : 'HTTP-POST',
         skipRequestCompression: true,
         signatureAlgorithm: 'sha256',
