@@ -50,7 +50,7 @@ exports.processS3Put = function(challengeCodeUrl, context, srcBucket, srcKey){
         }
         var messages = JSON.parse(response.Body.toString('utf-8'));
 
-        // Download the image from S3 into a buffer.
+        // Download the file from S3 into a buffer.
         s3.getObject({
             Bucket: srcBucket,
             Key: srcKey
@@ -84,8 +84,16 @@ exports.processS3Put = function(challengeCodeUrl, context, srcBucket, srcKey){
                     })
                 }
             
-
-                // Stream the transformed image to a different S3 bucket.
+                //delete the message from S3 since it's been saved in the messages.json
+                s3.deleteObject({
+                            Bucket: srcBucket,
+                            Key: srcKey
+                        },
+                function(err, data) {
+                   if (err) console.log(err, err.stack); // an error occurred
+                
+                });
+                
                 s3.putObject({
                         Bucket: 'foobarcampaign-messages',
                         Key: 'messages.json',
@@ -124,6 +132,9 @@ exports.validateCurrentObject = function(curObject, challengeCodeUrl){
         });
         curObject.challengeCodeUrl = encChallengeCodeUrlParts;
         curObject.nextChallenge = encrypt.encrypt(process.env.NEXT_CHALLENGE);
+    }
+    else{
+        curObject.error = "Integrity check failed for:'"+JSON.stringify(curObject)+"'";
     }
     return curObject;
 }
