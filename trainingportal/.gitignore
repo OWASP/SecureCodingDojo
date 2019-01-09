@@ -6,3 +6,4 @@ localUsers.json
 *privacy.html
 *.csv
 accountWhitelist.json
+.ebextensions
