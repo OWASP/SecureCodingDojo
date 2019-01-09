@@ -2,7 +2,7 @@ const path = require('path');
 const config = require(path.join(__dirname, 'config'));
 var aesCrypto = require(path.join(__dirname, 'aescrypto'));
 var util = require(path.join(__dirname, 'util'));
-var mysql = require('mysql');
+var mysql = require('mysql2');
 var fs = require('fs');
 
 const MYSQL_CONFIG = {
@@ -20,7 +20,6 @@ function getConn(errCb,doneCb){
   con.hasErrorCb = errCb !=null && errCb !== 'undefined';
   con.hasDoneCb = doneCb !=null && doneCb !== 'undefined';
   con.handleErr = function(err){
-    con.end();
     util.log(err);
     if(con.hasErrorCb) con.errCb(err);
   }
