@@ -5,7 +5,7 @@ For existing installations you must downgrade special "Master" level users by ru
 The Secure Coding Dojo is a platform for delivering secure coding training. 
 While it comes with its own vulnerable training application (the Insecure.Inc website) the training portal can be used in conjunction with other  training applications.
 The strength of the platform is its extensibility and the integration with the commonly used development collaboration platform Slack.
-The training portal can be easily setup in the cloud and instructions for AWS ELB setup are available below.
+The training portal can be easily setup in the cloud and instructions for AWS Elastic Beanstalk setup are available below.
 
 Be sure to also check the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki) for more details on deploying and installing the Dojo.
 
