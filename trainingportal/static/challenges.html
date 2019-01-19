@@ -19,7 +19,6 @@
                                 <span class="pull-right" ng-if="challenge.passed">&nbsp;</span>
                                 <a href="#!submitCode/{{challenge.id}}" class="btn btn-info pull-right btn-xs" ng-if="!challenge.passed" role="button"> Submit Code</a>
                                 <span class="pull-right" ng-if="!challenge.passed">&nbsp;</span>
-                                <a href="#!solution/{{challenge.id}}" class="btn btn-success pull-right btn-xs" ng-if="challenge.solution" role="button">View Solution</a>
 
                         </a>
                     </h4>
@@ -37,6 +36,17 @@
                         </p>
                         <p>Once you were able to exploit the vulnerability you can generate a secret code which you can submit above.</p>
                         <br>
+                        <span ng-if="challenge.solution" >
+                        <h4>
+                            Solution
+                        </h4>
+                        <p>
+                            If you get stuck you can use the button below for help, but don't give up yet, read the challenge description and tips carefully.
+                            <br/>
+                            <a href="#!solution/{{challenge.id}}" class="btn btn-success btn-xs" role="button">View Solution</a>
+                        </p>
+                        </span>
+                        <br/>
                         <span ng-if="hasCodeBlocks(challenge)">
                         <h4>Code Blocks Associated with the Challenge</h4>
                         <ul>
