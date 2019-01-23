@@ -12,6 +12,7 @@
                 "id":"cwe306",
                 "name":"Missing Authentication for Critical Function", 
                 "description": "/static/challenges/cwe306.html",
+                "attackGram":"/static/challenges/attack-grams/authbypass.png",
                 "solution":"/static/challenges/cwe306.sol.md",
                 "playLink":"/ch1.jsp",
                 "codeBlockIds":["authenticationByDefault"],
@@ -29,6 +30,7 @@
                 "id":"cwe807",
                 "name":"Reliance on Untrusted Inputs in a Security Decision", 
                 "description": "/static/challenges/cwe807.html",
+                "attackGram":"/static/challenges/attack-grams/reliance.png",
                 "solution":"/static/challenges/cwe807.sol.md",
                 "playLink":"/ch2.jsp",
                 "codeBlockIds":["serverSideValidation"]
@@ -37,6 +39,7 @@
                 "id":"cwe862",
                 "name":"Missing Authorization", 
                 "description": "/static/challenges/cwe862.html",
+                "attackGram":"/static/challenges/attack-grams/missingauthz.png",
                 "solution":"/static/challenges/cwe862.sol.md",
                 "playLink":"/cwe862.jsp",
                 "codeBlockIds":["resourceSeparation"]
@@ -51,6 +54,7 @@
                 "id":"cwe311",
                 "name":"Missing Encryption of Sensitive Data", 
                 "description": "/static/challenges/cwe311.html",
+                "attackGram":"/static/challenges/attack-grams/missingenc.png",
                 "solution":"/static/challenges/cwe311.sol.md",
                 "playLink":"/cwe311.jsp",
                 "codeBlockIds":["useStrongDataEncryption"]
@@ -59,6 +63,7 @@
                 "id":"cwe327",
                 "name":"Use of a Broken or Risky Cryptographic Algorithm", 
                 "description": "/static/challenges/cwe327.html",
+                "attackGram":"/static/challenges/attack-grams/brokencrypto.png",
                 "solution":"/static/challenges/cwe327.sol.md",
                 "playLink":"/cwe327.jsp",
                 "codeBlockIds":["useStrongDataEncryption"]
@@ -67,6 +72,7 @@
                 "id":"cwe759",
                 "name":"Use of a One-Way Hash without a Salt", 
                 "description": "/static/challenges/cwe759.html",
+                "attackGram":"/static/challenges/attack-grams/unsaltedhash.png",
                 "solution":"/static/challenges/cwe759.sol.md",
                 "playLink":"/cwe759.jsp",
                 "codeBlockIds":["useStrongDataEncryption"]
@@ -81,6 +87,7 @@
                 "id":"cwe307",
                 "name":"Password Guessing Attack", 
                 "description": "/static/challenges/cwe307.html",
+                "attackGram":"/static/challenges/attack-grams/passguessing.png",
                 "solution":"/static/challenges/cwe307.sol.md",
                 "playLink":"/cwe307.jsp",
                 "codeBlockIds":["loginBestPractices"]
@@ -89,6 +96,7 @@
                 "id":"cwe190",
                 "name":"Integer Overflow or Wraparound", 
                 "description": "/static/challenges/cwe190.html",
+                "attackGram":"/static/challenges/attack-grams/intoverflow.png",
                 "solution":"/static/challenges/cwe190.sol.md",
                 "playLink":"/cwe190.jsp",
                 "codeBlockIds":["checkBoundaries"]
@@ -96,6 +104,7 @@
             {
                 "id":"cwe494",
                 "name":"Download of Code Without Integrity Check", 
+                "attackGram":"/static/challenges/attack-grams/downloadnocheck.png",
                 "description": "/static/challenges/cwe494.html",
                 "solution":"/static/challenges/cwe494.sol.md",
                 "playLink":"/cwe494.jsp",
@@ -111,6 +120,7 @@
                 "id":"cwe601",
                 "name":"URL Redirection to Untrusted Site ('Open Redirect')", 
                 "description": "/static/challenges/cwe601.html",
+                "attackGram":"/static/challenges/attack-grams/openredirect.png",
                 "solution":"/static/challenges/cwe601.sol.md",
                 "playLink":"/cwe601.jsp",
                 "codeBlockIds":["inputWhitelisting","indirectObjectReferences"]
@@ -119,6 +129,7 @@
                 "id":"cwe79",
                 "name":"Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting') and related flaws", 
                 "description": "/static/challenges/cwe79.html",
+                "attackGram":"/static/challenges/attack-grams/xss.png",
                 "solution":"/static/challenges/cwe79.sol.md",
                 "playLink":"/cwe79.jsp",
                 "codeBlockIds":["neutralizeOutput","inputWhitelisting","requestForgeryPrevention"]
@@ -127,6 +138,7 @@
                 "id":"cwe352",
                 "name":"Cross-Site Request Forgery (CSRF)", 
                 "description": "/static/challenges/cwe352.html",
+                "attackGram":"/static/challenges/attack-grams/csrf.png",
                 "solution":"/static/challenges/cwe352.sol.md",
                 "playLink":"/cwe352.jsp",
                 "codeBlockIds":["requestForgeryPrevention"]
@@ -140,6 +152,7 @@
             {
                 "id":"cwe434",
                 "name":"Unrestricted Upload of File with Dangerous Type",
+                "attackGram":"/static/challenges/attack-grams/dangerousfileupload.png",
                 "solution":"/static/challenges/cwe434.sol.md",
                 "playLink":"/cwe434.jsp",
                 "description": "/static/challenges/cwe434.html",
@@ -148,6 +161,7 @@
             {
                 "id":"cwe611",
                 "name":"Improper Restriction of XML External Entity Reference ('XXE')",
+                "attackGram":"/static/challenges/attack-grams/xxe.png",
                 "solution":"/static/challenges/cwe611.sol.md",
                 "playLink":"/cwe611.jsp",
                 "description": "/static/challenges/cwe611.html",
@@ -156,6 +170,7 @@
             {
                 "id":"cwe22",
                 "name":"Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')",
+                "attackGram":"/static/challenges/attack-grams/pathtraversal.png",
                 "solution":"/static/challenges/cwe22.sol.md",
                 "playLink":"/cwe22.jsp",
                 "description": "/static/challenges/cwe22.html",
@@ -172,6 +187,7 @@
                 "name":"Incorrect Authorization", 
                 "playLink":"/cwe863.jsp",
                 "description": "/static/challenges/cwe863.html",
+                "attackGram":"/static/challenges/attack-grams/missingauthz.png",
                 "solution":"/static/challenges/cwe863.sol.md",
                 "codeBlockIds":["resourceSeparation","principleOfLeastPrivilege"]
             },
@@ -180,6 +196,7 @@
                 "name":"Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection') and related flaws", 
                 "playLink":"/cwe78.jsp",
                 "description": "/static/challenges/cwe78.html",
+                "attackGram":"/static/challenges/attack-grams/commandinjection.png",
                 "solution":"/static/challenges/cwe78.sol.md",
                 "codeBlockIds":["parameterizedCommands","inputWhitelisting","principleOfLeastPrivilege"]
             },
@@ -188,6 +205,7 @@
                 "name":"Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')", 
                 "playLink":"/cwe89.jsp",
                 "description": "/static/challenges/cwe89.html",
+                "attackGram":"/static/challenges/attack-grams/sqli.png",
                 "solution":"/static/challenges/cwe89.sol.md",
                 "codeBlockIds":["parameterizedCommands", "displayGenericErrorMessages", "inputWhitelisting"]
             }
@@ -202,6 +220,7 @@
                 "name":"Buffer Copy without Checking Size of Input ('Classic Buffer Overflow') and related flaws", 
                 "playLink":"/cwe120.jsp",
                 "description": "/static/challenges/cwe120.html",
+                "attackGram":"/static/challenges/attack-grams/bufferoverflow.png",
                 "solution":"/static/challenges/cwe120.sol.md",
                 "codeBlockIds":["checkBoundaries","safeMemoryManagement","inputWhitelisting"]
             },
@@ -210,6 +229,7 @@
                 "name":"Use of Externally-Controlled Format String", 
                 "playLink":"/cwe134.jsp",
                 "description": "/static/challenges/cwe134.html",
+                "attackGram":"/static/challenges/attack-grams/formatstring.png",
                 "solution":"/static/challenges/cwe134.sol.md",
                 "codeBlockIds":["safeMemoryManagement","inputWhitelisting"]
             },
@@ -237,36 +257,42 @@
                 "id":"owasp2017sensitive",
                 "name":"Sensitive Data Exposure", 
                 "description": "/static/challenges/owasp2017sensitive.html",
+                "attackGram":"/static/challenges/attack-grams/missingenc.png",
                 "codeBlockIds":["useStrongDataEncryption"]
             },
             {
                 "id":"owasp2017brokenauth",
                 "name":"Broken Authentication & Broken Access Control", 
                 "description": "/static/challenges/owasp2017brokenauth.html",
+                "attackGram":"/static/challenges/attack-grams/missingauthz.png",
                 "codeBlockIds":["loginBestPractices","principleOfLeastPrivilege","serverSideValidation"]
             },
             {
                 "id":"owasp2017xss",
                 "name":"Cross-Site Scripting", 
                 "description": "/static/challenges/owasp2017xss.html",
+                "attackGram":"/static/challenges/attack-grams/xss.png",
                 "codeBlockIds":["neutralizeOutput","inputWhitelisting","requestForgeryPrevention"]
             },
             {
                 "id":"owasp2017injection",
                 "name":"Injection", 
                 "description": "/static/challenges/owasp2017injection.html",
+                "attackGram":"/static/challenges/attack-grams/commandinjection.png",
                 "codeBlockIds":["parameterizedCommands","inputWhitelisting","principleOfLeastPrivilege"]
             },
             {
                 "id":"owasp2017xxe",
                 "name":"XML External Entities", 
                 "description": "/static/challenges/owasp2017xxe.html",
+                "attackGram":"/static/challenges/attack-grams/xxe.png",
                 "codeBlockIds":["disableXmlExternalEntities","principleOfLeastPrivilege"]
             },
             {
                 "id":"owasp2017deserialization",
                 "name":"Using Components with Known Vulnerabilities & Insecure Deserialization", 
                 "description": "/static/challenges/owasp2017deserialization.html",
+                "attackGram":"/static/challenges/attack-grams/xxe.png",
                 "codeBlockIds":["enforceSafeDeserialization","keep3rdPartyUpToDate"]
             }
         ]

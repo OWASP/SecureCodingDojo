@@ -54,6 +54,16 @@
                         </ul>
                         <br>
                         </span>
+                        <span ng-if="challenge.attackGram" >
+                                <h4>
+                                    Attack-Gram
+                                </h4>
+                                <p>
+                                    Here's a visual representation of one of the attacks possible using this category.
+                                    <br/>
+                                    <img src="{{challenge.attackGram}}" class="img-fluid img-thumbnail" alt="Attack-Gram for this category">
+                                </p>
+                                </span>
                         <h4>Challenge Description</h4>
                         <div ng-include="challenge.description"></div>
                     </div>
