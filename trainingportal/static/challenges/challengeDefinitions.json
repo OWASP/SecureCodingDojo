@@ -292,7 +292,7 @@
                 "id":"owasp2017deserialization",
                 "name":"Using Components with Known Vulnerabilities & Insecure Deserialization", 
                 "description": "/static/challenges/owasp2017deserialization.html",
-                "attackGram":"/static/challenges/attack-grams/xxe.png",
+                "attackGram":"/static/challenges/attack-grams/deserialization.png",
                 "codeBlockIds":["enforceSafeDeserialization","keep3rdPartyUpToDate"]
             }
         ]
