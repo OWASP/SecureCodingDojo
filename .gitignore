@@ -3,3 +3,4 @@
 *.pem
 node_modules
 .vscode
+~$*
