@@ -111,7 +111,7 @@ exports.foobarGetCurrentUser = function(event, context) {
 exports.challengeSigner = function(event,context){
   console.log(event);
   var challengeId = event.challengeId;
-  var token = jwt.sign({"sub": challengeId}, process.env.SIGNER_SECRET, {expiresIn:5*60});
+  var token = jwt.sign({"sub": challengeId}, process.env.SIGNER_SECRET, {expiresIn:15*60});
   context.succeed({"message":"YOU GOT IT!","challengeCodeUrl":process.env.CHALLENGE_CODE_URL+"#"+token, "challengeId":challengeId});
 }
 
