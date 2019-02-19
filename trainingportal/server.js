@@ -379,12 +379,12 @@ app.get('/api/teams',  (req, res) => {
    })
 });
 
-var returnActivityList = function(res,activityList){
+var returnListWithChallengeNames = function(res,list){
   var challengeNames = challenges.getChallengeNames();
-  activityList.forEach(function(activity){
-    activity.challengeName = challengeNames[activity.challengeId];
+  list.forEach(function(item){
+    item.challengeName = challengeNames[item.challengeId];
   });
-  res.send(activityList);
+  res.send(list);
 }
 
 //get the activity
@@ -397,17 +397,38 @@ app.get('/api/activity',  (req, res) => {
   }
   
   db.fetchActivity(query,100,null,function(activityList){
-    returnActivityList(res,activityList);
+    returnListWithChallengeNames(res,activityList);
   });
 });
+
 
 //get the activity
 app.get('/api/activity/heartbeat',  (req, res) => {
   db.fetchActivity(null,1,null,function(activityList){
-    returnActivityList(res,activityList);
+    returnListWithChallengeNames(res,activityList);
   });
 });
 
+//get the challenge stats
+app.get('/api/challengeStats',  (req, res) => {
+  db.getChallengeStats(null,function(stats){
+    returnListWithChallengeNames(res,stats);
+  });
+});
+
+//get the level stats
+app.get('/api/levelStats',  (req, res) => {
+  db.getLevelStats(null,function(stats){
+    res.send(stats);
+  });
+});
+
+//get the level stats
+app.get('/api/teamStats',  (req, res) => {
+  db.getTeamStats(null,function(stats){
+    res.send(stats);
+  });
+});
 
 //get all the users
 app.get('/api/users',  (req, res) => {

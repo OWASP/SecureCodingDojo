@@ -405,3 +405,77 @@ exports.fetchActivity = function(query,limit,errCb,doneCb){
     });
   });
 }
+/**
+ * Fetches the challenge stats
+ * @param {*} errCb 
+ * @param {*} doneCb 
+ */
+exports.getChallengeStats = function(errCb,doneCb){
+  var con = getConn(errCb,doneCb);
+  con.connect(function(err) {
+    if(err){
+       con.handleErr(err);
+       return;
+    }
+    
+    var sql = "SELECT challengeId,count(*) as achieved from challengeEntries group by challengeId order by achieved asc;";
+    var args = [];
+    
+    con.query(sql, args, function (err, result) {
+       if(err) con.handleErr(err);
+       else{
+         con.handleDone(result);
+      }
+    });
+  });
+}
+
+/**
+ * Players by level id
+ * @param {*} errCb 
+ * @param {*} doneCb 
+ */
+exports.getLevelStats= function(errCb,doneCb){
+  var con = getConn(errCb,doneCb);
+  con.connect(function(err) {
+    if(err){
+       con.handleErr(err);
+       return;
+    }
+    
+    var sql = "SELECT level as levelId, count(*) as playerCount from users group by level order by level desc;";
+    var args = [];
+    
+    con.query(sql, args, function (err, result) {
+       if(err) con.handleErr(err);
+       else{
+         con.handleDone(result);
+      }
+    });
+  });
+}
+
+/**
+ * Players by team
+ * @param {*} errCb 
+ * @param {*} doneCb 
+ */
+exports.getTeamStats= function(errCb,doneCb){
+  var con = getConn(errCb,doneCb);
+  con.connect(function(err) {
+    if(err){
+       con.handleErr(err);
+       return;
+    }
+    
+    var sql = "SELECT teams.name as teamName, count(users.id) as playerCount from teams INNER JOIN users on users.teamId=teams.id group by teams.id order by playerCount desc limit 15;";
+    var args = [];
+    
+    con.query(sql, args, function (err, result) {
+       if(err) con.handleErr(err);
+       else{
+         con.handleDone(result);
+      }
+    });
+  });
+}
