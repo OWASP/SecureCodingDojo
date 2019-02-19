@@ -50,6 +50,22 @@ exports.processS3Put = function(challengeCodeUrl, context, srcBucket, srcKey){
         }
         var messages = JSON.parse(response.Body.toString('utf-8'));
 
+        //prune messages
+        var mCount = messages.length;
+        
+        if(mCount > 1000 + 10 + 500){ //prune every 500 keep the first 10 and the last 1000
+            //keep the first 10 messages that have hints
+            var newMessages = [];
+            for(var idx=0; idx<10 && idx<mCount; idx++){
+                newMessages.push(messages[idx]);
+            }
+            //keep the last 1000 messages
+            for(var idx=mCount-1001; idx<mCount; idx++){
+                newMessages.push(messages[idx]);
+            }
+            messages = newMessages;
+        }
+
         // Download the file from S3 into a buffer.
         s3.getObject({
             Bucket: srcBucket,
