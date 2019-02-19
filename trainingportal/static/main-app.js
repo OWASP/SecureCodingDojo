@@ -19,6 +19,9 @@ app.config(function($routeProvider) {
     }).when("/activity", {
         templateUrl : "static/activity.html",
         controller: "activityCtrl"
+    }).when("/dashboard", {
+        templateUrl : "static/dashboard.html",
+        controller: "dashboardCtrl"
     }).when("/report", {
         templateUrl : "static/report.html",
         controller: "reportCtrl"
