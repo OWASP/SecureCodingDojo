@@ -18,7 +18,7 @@ exports.hashPassword = function (password, saltString){
 }
 
 exports.apiResponse = function(req, res, statusCode, message, result){
-  if(statusCode!=200){
+  if(statusCode>=400){
     //log the error
     exports.log("Error message sent: " + message, req.user, req);
   }
