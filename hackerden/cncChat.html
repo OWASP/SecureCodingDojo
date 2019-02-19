@@ -80,7 +80,7 @@
 
             </div>
             <div class="alert alert-success" ng-if="messageSuccess">Here's your next challenge: {{nextChallenge}}</div>
-            <div class=="panel-group">
+            <div class="panel-group">
                 <div ng-repeat="message in chatMessages | reverse" ng-if="message.type!=='encMessage'" ng-class="{'panel panel-primary': message.type === 'userMessage','panel panel-success': message.type !== 'userMessage'}">
                     <div class="panel panel-heading">{{message.date}} - <strong>{{message.user}}</strong> says:</div>
                     <div class="panel panel-body">{{message.message}}</div>
@@ -205,6 +205,7 @@
                                                 decUrl+=decryptText(part);
                                             })
                                             $scope.xssChallengeCodeUrl = decUrl;
+                                            $scope.challengeCodeUrl = ""; 
                                             $scope.nextChallenge = decryptText(message.nextChallenge);
                                         }
                                     }
