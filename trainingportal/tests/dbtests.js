@@ -182,6 +182,7 @@ async.waterfall([
             console.log("FAIL: fetchChallengeEntriesForUser");
             cb(err);
         },function(result){ 
+            console.log(result);
             if(result.length === 1){
                 console.log("SUCCESS: fetchChallengeEntriesForUser");
                 cb(null,user); //pass the user for the next test
