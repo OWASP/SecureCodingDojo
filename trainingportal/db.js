@@ -32,7 +32,7 @@ function getConn(){
  * @param {} errCb 
  * @param {*} err 
  */
-function handleErr(errCb,errCb,err){
+function handleErr(errCb,err){
   if(util.isNullOrUndefined(errCb)) console.log(err);
   else errCb(err);
 }
