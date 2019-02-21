@@ -20,10 +20,10 @@ else{
 	
 	if(displayName!=null){
 		displayName = displayName
-		.replace("onload","on****")
-		.replace("onclick","on****")
-		.replace("onmouseover","on****")
-		.replace("script","*****");
+		.replaceAll("(?i)onload","on****")
+		.replaceAll("(?i)onclick","on****")
+		.replaceAll("(?i)onmouseover","on****")
+		.replaceAll("(?i)script","*****");
 		
 		session.setAttribute("cwe79displayName",displayName);
 		if(Util.hasXSS(displayName)){ //challenge completed
