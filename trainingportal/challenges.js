@@ -22,6 +22,8 @@ const util = require(path.join(__dirname, 'util'));
 const challengeDefinitions = Object.freeze(require(path.join(__dirname, 'static/challenges/challengeDefinitions.json')));
 const challengeSecrets = Object.freeze(require(path.join(__dirname, 'challengeSecrets.json')));
 const config = require(path.join(__dirname, 'config'));
+const db = require(path.join(__dirname, 'db'));
+const async = require('async');
 
 
 var challengeNames = [];
@@ -77,4 +79,61 @@ exports.getSolution = function (challengeId) {
     }
 
     return solutionHtml;
+}
+
+/**
+ * Checks if the user should level up and execute level up. Passes the result, true or false to the cb
+ */
+exports.verifyLevelUp = function(user, errCb, doneCb){
+    var level = user.level !== null ? user.level+1 : 1;
+    async.waterfall([
+        function(cb){
+            db.fetchChallengeEntriesForUser(user,
+                function(err){
+                    util.log("Failed to fetch challenges for level up.", user);
+                    cb(err);
+                },
+                function(entries){
+                    cb(null,entries);
+                });
+        },
+        function(entries,cb){
+            if(entries!=null && entries.length>0 && challengeDefinitions.length > level) {
+                //get challenges for current user level
+                var challengeDefForLevel = challengeDefinitions[level].challenges;
+                //check whether the entries match the level challenges
+                var passCount = 0;
+                challengeDefForLevel.forEach(function(challengeDef){
+                    entries.forEach(function(entry){
+                        if(entry.challengeId===challengeDef.id){
+                            passCount++;
+                        }
+                    });
+                });
+                cb(null, passCount === challengeDefForLevel.length);
+            }
+            else{
+                cb(null,false);
+            }
+        },
+        function(shouldLevelUp,cb){
+            if(shouldLevelUp){
+                user.level = level;
+                db.updateUser(user,
+                    function(err){
+                        util.log("Failed to update user for level up.", user);
+                        cb(err);
+                    },
+                    function(result){
+                        doneCb(true);
+                    });
+            }
+            else{
+                doneCb(false);
+            }
+        }
+    ],function(err){
+        errCb(err);
+    });
+
 }

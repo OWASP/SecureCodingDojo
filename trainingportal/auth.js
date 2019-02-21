@@ -9,6 +9,7 @@ const uid = require('uid-safe');
 
 const db = require(path.join(__dirname, 'db'));
 const util = require(path.join(__dirname, 'util'));
+const challenges = require(path.join(__dirname, 'challenges'));
 const captchapng = require('captchapng');
 const fs = require('fs');
 
@@ -262,7 +263,16 @@ processAuthCallback = function (profileId, givenName, familyName, email, cb) {
         //the user exists return this user
         util.log("User logged in.", user);
         user.email = email;
-        if(cb) return cb(null, user);
+        challenges.verifyLevelUp(user,
+        function(err){
+            util.log("Error: Cannot execute level up.", user);
+            //but let them log in anyway
+            if(cb) return cb(null, user);
+        },
+        function(isLevelUp){
+            if(isLevelUp) util.log("WARN: Fixed level for user.", user);
+            if(cb) return cb(null, user);
+        })
     }
     else{
 

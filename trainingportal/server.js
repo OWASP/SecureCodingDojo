@@ -309,56 +309,28 @@ app.post('/api/user/challengeCode', (req, res) => {
     if(verificationHash!==challengeCode){
       return util.apiResponse(req, res, 400, "Invalid code.");
     } 
-
     //success update challenge
     db.insertChallengeEntry(req.user.id,challengeId,function(){
       util.apiResponse(req, res, 500, "Unable to save code. Please try again.");
     },function(){
+      //issue badgr badge if enabled
+      badgrCall(curChallengeObj,req.user);
       //check to see if the user levelled up
-      db.fetchChallengeEntriesForUser(req.user,function(){
+      challenges.verifyLevelUp(req.user,
+      function(err){
+        util.log(err, req.user);
         util.apiResponse(req, res, 500, "Unable to check level up. Please try again.");
-      },function(entries){
-          if(entries==null || entries.length==0) util.apiResponse(req, res, 500, "Unable to save code. Please try again.");
-          else{
-              //check if the user challenges from the database match the available challenges
-              var completedChallenges = {};
-              var completedChallengesCount = 0;
-              for(var entriesIdx=0;entriesIdx<entries.length;entriesIdx++){
-                var curEntry = entries[entriesIdx];
-                for(var challengeIdx=0;challengeIdx<availableChallenges.length;challengeIdx++){
-                    var challenge = availableChallenges[challengeIdx];
-                    if(!util.isNullOrUndefined(completedChallenges[challenge.id])) continue;
-                    if(curEntry.challengeId===challenge.id){
-                        completedChallenges[challenge.id] = true;
-                        completedChallengesCount++;
-                        break;//we found a match for the current entry
-                    }
-                }
-              }
-
-              var isLevelUp = completedChallengesCount==availableChallenges.length;
-              curChallengeObj.isLevelUp = isLevelUp;
-
-              if(isLevelUp){
-                req.user.level++;
-                db.updateUser(req.user,
-                  function(){
-                    util.apiResponse(req, res, 500, "Failed to update user level. Please try again.");
-                  },function(){
-                    util.log("User has solved the challenge "+curChallengeObj.name+" and leveled up!", req.user);
-                    util.apiResponse(req, res, 200, "Congratulations you solved the challenge and leveled up!", curChallengeObj);                
-                  });
-                
-              }
-              else{
-                util.log("User has solved the challenge "+curChallengeObj.name+"!", req.user);
-                util.apiResponse(req, res, 200, "Congratulations you solved the challenge!", curChallengeObj)
-              }
-
-              badgrCall(curChallengeObj,req.user);
-            
+      },
+      function(isLevelUp){
+          curChallengeObj.isLevelUp = isLevelUp;
+          if(isLevelUp){
+            util.log("User has solved the challenge "+curChallengeObj.name+" and leveled up!", req.user);
+            util.apiResponse(req, res, 200, "Congratulations you solved the challenge and leveled up!", curChallengeObj);               
           }
-
+          else{
+            util.log("User has solved the challenge "+curChallengeObj.name+"!", req.user);
+            util.apiResponse(req, res, 200, "Congratulations you solved the challenge!", curChallengeObj)
+          }
       });
     });
 
