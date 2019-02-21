@@ -19,11 +19,11 @@
 
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <script>
-    window.sessionStorage.setItem('XSRF_TOKEN','%XSRF_TOKEN%');
+    window.localStorage.setItem('XSRF_TOKEN','%XSRF_TOKEN%');
     window.getAjaxOpts = function(){
        var opts =  {
            headers:{
-               "xsrfToken":window.sessionStorage.getItem("XSRF_TOKEN")
+               "xsrfToken":window.localStorage.getItem("XSRF_TOKEN")
            }
        }
        return opts;
