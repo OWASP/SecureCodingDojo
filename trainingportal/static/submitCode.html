@@ -5,16 +5,16 @@
     </div>
     <h4>When you have solved the challenge, take the salt below to obtain the verification code.</h4>
     <br>
-    <div class="form-group">
+    <div class="form-group form-inline">
         <label for="salt">Salt:</label>  
-        <code>{{salt}}</code>
-        <br>
-        <label for="challengeCode">Challenge code:</label>
-        <input type="text" class="form-control" id="challengeCode">
-        <br>                     
-        <button class="btn btn-success" ng-click="submitAnswer()">Submit</button>
-
+        <input class="form-control" id="saltEl" value="{{salt}}"/><button type="button" class="btn btn-default" onclick="document.getElementById('saltEl').select();document.execCommand('copy');"><span class="glyphicon glyphicon-copy"></span></button>
     </div>
+    <div class="form-group ">
+        <label for="challengeCode">Challenge code:</label>        
+        <input type="text" class="form-control" id="challengeCode">  
+    </div>
+    <button class="btn btn-success" ng-click="submitAnswer()">Submit</button>
+    
 
             <!-- Code Block Dialog -->
             <div id="codeBlocksModal" class="modal fade" role="dialog">

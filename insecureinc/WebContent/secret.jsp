@@ -22,7 +22,7 @@ function getCode(){
 		var codeDiv = $("#codeDiv")[0];
 		codeDiv.style.display = "";
 		var code = $("#code")[0];
-		code.contentText = code.innerText = data;
+		code.value = data;
     });
 }
 </script>
@@ -49,7 +49,13 @@ You will be given a salt which you can enter below. Then provide the resulting c
 </div>
 <button type="button" class="btn btn-success" onClick="getCode()">Get Code</button>
 <br><br>
-<div class="alert alert-info" style="display:none" id="codeDiv">The code is: <code id="code"></code></div>
+<div class="alert alert-info form-group form-inline" style="display:none" id="codeDiv">
+	<label for="code">The code is:</label> 
+	<input class="form-control" id="code" style="width:40%" value=""/>
+	<button type="button" class="btn btn-default" onclick="document.getElementById('code').select();document.execCommand('copy');">
+		<span class="glyphicon glyphicon-copy"></span>
+	</button>
+</div>
 </div>
 </body>
 </html>
