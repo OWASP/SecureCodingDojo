@@ -45,13 +45,13 @@ function getCode(){
 You will be given a salt which you can enter below. Then provide the resulting code on the training portal site.</p>
 <div class="form-group">
   <label for="salt">Salt:</label>
-  <input type="text" class="form-control" id="salt" name="salt">
+  <input type="text" autocomplete="off" class="form-control" id="salt" name="salt">
 </div>
 <button type="button" class="btn btn-success" onClick="getCode()">Get Code</button>
 <br><br>
 <div class="alert alert-info form-group form-inline" style="display:none" id="codeDiv">
 	<label for="code">The code is:</label> 
-	<input class="form-control" id="code" style="width:40%" value=""/>
+	<input class="form-control" type="text" autocomplete="off" id="code" style="width:40%" value=""/>
 	<button type="button" class="btn btn-default" onclick="document.getElementById('code').select();document.execCommand('copy');">
 		<span class="glyphicon glyphicon-copy"></span>
 	</button>
