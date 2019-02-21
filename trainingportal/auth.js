@@ -451,9 +451,10 @@ exports.getSession = function () {
     var ses = session(
     { 
         proxy:true,
-        secret: aesCrypto.decrypt(config.encExpressSessionSecret), 
+        secret: uid.sync(64), 
         resave:false, 
         saveUninitialized:false,
+        maxAge: Date.now() + 1000 * 60 * 60 * 2, //2 hours session timeout
         cookie: {secure:config.isSecure} 
     });
 

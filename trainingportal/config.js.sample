@@ -29,7 +29,6 @@ config.ldapServer = {
 }
 */
 
-config.encExpressSessionSecret = ''; //generate a strong session secret and encrypt it
 config.googleOauthCallbackUrl = config.dojoUrl+"/public/google/callback";
 config.slackOauthCallbackUrl = config.dojoUrl+"/public/slack/callback";
 
