@@ -18,7 +18,7 @@ if(pwd!=null){
 	else{
 		String output = Util.executeMasterPwd(pwd,"inc/insecure/formatstring.c");
 		outputPre = String.format(OUTPUT_PRE_FORMAT,output);
-		if(Util.isMatch(output,"(?m)^Invalid password:\\d+$") && !Util.isMatch(pwd,"^\\d+$")){
+		if(Util.isMatch(output,"(?m)^Invalid password:[0-9a-fA-F]+$") && pwd.indexOf('%') > -1){
 			String code = "";
 			try {
 				code = CodeLoader.getInstance().getCode("cwe134");
