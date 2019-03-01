@@ -1,6 +1,3 @@
-# Notice for upgrading to Second Degree Black Belt levels
-For existing installations you must downgrade special "Master" level users by running the following DB query: "UPDATE users SET level=7 where level=8;"
-
 # About the Secure Coding Dojo
 The Secure Coding Dojo is a platform for delivering secure coding training. 
 While it comes with its own vulnerable training application (the Insecure.Inc website) the training portal can be used in conjunction with other  training applications.
