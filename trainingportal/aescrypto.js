@@ -18,7 +18,7 @@ function getEncParams(keySeed,ivSeed){
 
 exports.decrypt = function(encryptdata, keySeed, ivSeed) {
     var keyParams = getEncParams(keySeed,ivSeed);
-    encryptdata = new Buffer(encryptdata, 'base64').toString('binary');
+    encryptdata = Buffer.from(encryptdata, 'base64').toString('binary');
     var decipher = crypto.createDecipheriv('aes-256-cbc', keyParams.key, keyParams.iv);
     var decoded  = decipher.update(encryptdata, 'binary', 'utf8');
     decoded += decipher.final('utf-8');
@@ -32,7 +32,7 @@ exports.encrypt = function(cleardata, keySeed, ivSeed) {
     var encryptdata  = encipher.update(cleardata, 'utf8', 'binary');
 
     encryptdata += encipher.final('binary');
-    encode_encryptdata = new Buffer(encryptdata, 'binary').toString('base64');
+    encode_encryptdata = Buffer.from(encryptdata, 'binary').toString('base64');
     return encode_encryptdata;
 }
 
