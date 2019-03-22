@@ -93,8 +93,8 @@ Java prevents command chaining so you must use only one command. OpenSSL is idea
 <br><br>
 Use the command <code>openssl enc -aes-256-ecb -in _AUTH_CODE_FILE_ -out /tmp/_YOUR_FILE_NAME.enc -base64 -k _YOUR_SECRET_</code>
 <br><br>
-Then you can use the XXE login request (save that in a Burp repeater Tab or Postman tab) to list the contents of <code>file://temp/</code> and download your encrypted file.
+Then you can use the XXE login request (save that in a Burp repeater Tab or Postman tab) to list the contents of <code>file://tmp/</code> and download your encrypted file.
 Be careful to remove the \n inserted by API Gateway in the response to the pinger request.
 <br><br>
-The command  <code>openssl enc -aes-256-ecb -in /_YOUR_FILE_NAME.enc -base64 -k _YOUR_SECRET_ -d|base64</code> will decrypt the authentication code to a base64 string.
+The command  <code>openssl enc -aes-256-ecb -in /_YOUR_FILE_NAME.enc -base64 -k _YOUR_SECRET_ -d -md md5|base64</code> will decrypt the authentication code to a base64 string.
 </p>
