@@ -27,6 +27,8 @@ function getConn(){
   return con;
 }
 
+exports.getConn = getConn;
+
 /**
  * Utility function to handle errors
  * @param {} errCb 
