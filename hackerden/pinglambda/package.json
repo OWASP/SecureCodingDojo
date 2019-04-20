@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "jsonwebtoken": "^8.2.2",
+    "jsonwebtoken": "^8.5.0",
     "simple-ssh": "^1.0.0"
   }
 }
