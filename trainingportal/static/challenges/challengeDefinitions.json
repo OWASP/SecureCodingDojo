@@ -7,6 +7,16 @@
     {
         "level":1,
         "name":"Yellow Belt",
+        "badgrInfo":
+        {
+            "issuer":"Insert <issuer id> from https://badgr.io/issuer/issuers/<issuer id>",
+            "badge_class":"Insert <badge class id> from https://badgr.io/issuer/issuers/<issuer id>/badges/<badge id>",
+            "recipient_type":"email",
+            "recipient_identifier":"",
+            "narrative":"Badge issued for completing the Secure Coding Dojo:Yellow Belt.",
+            "create_notification":true,
+            "evidence_items":[]
+        },
         "challenges":[
             {
                 "id":"cwe306",

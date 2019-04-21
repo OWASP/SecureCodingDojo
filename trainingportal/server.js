@@ -26,11 +26,8 @@ const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
 const config = require(path.join(__dirname, 'config'));
 const challenges = require(path.join(__dirname, 'challenges'));
-const crypto = require('crypto');
-const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const uid = require('uid-safe');
 const validator = require('validator');
-const https = require('https');
 var reportUsers = util.loadReportCSV(config.reportCSV);
 
 //INIT
@@ -214,127 +211,34 @@ app.post('/api/user/team',  (req, res) => {
 });
 
 
-function badgrCall(curChallengeObj, user){
-  //check if the challenge has a Open Badge configuration and the Badgr integration has been configured
-  if(!util.isNullOrUndefined(curChallengeObj.badgrInfo) && !util.isNullOrUndefined(config.encBadgrToken)){
-    if(user.email===null){
-      util.log("Cannot issue badge for this user. E-mail is null.", user);
-    }
-    else{
-      var token = aescrypto.decrypt(config.encBadgrToken);
-      var badgrInfo = Object.assign({}, curChallengeObj.badgrInfo);
-      badgrInfo.recipient_identifier = user.email;
-      badgrInfo.narrative+=" Awarded to "+user.givenName+" "+user.familyName+".";
-      var postData = JSON.stringify(badgrInfo);
-      var postOptions = {
-        host: 'api.badgr.io',
-        port: '443',
-        path: '/v1/issuer/issuers/'+badgrInfo.issuer+'/badges/'+badgrInfo.badge_class+'/assertions',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': Buffer.byteLength(postData),
-            'Authorization':'Token '+token
+
+
+//challenge code api
+app.post('/api/user/challengeCode', (req,res) => {
+    challenges.apiChallengeCode(req, (err, result) => {
+      if(err){
+        if(util.isNullOrUndefined(err.code)){
+          //should not happen
+          util.apiResponse(req, res, 500, "Unknown error");
         }
-      
-      }
-
-      // Set up the request
-      var postReq = https.request(postOptions, function(res) {
-          if(res!==null && !util.isNullOrUndefined(res.statusCode) && res.statusCode === 201){
-            util.log("Badgr Open Badge issued successfully.");
+        else{
+          switch(err.code){
+            case "invalidRequest":util.apiResponse(req, res, 400, "Invalid request."); break;
+            case "invalidCode":util.apiResponse(req, res, 400, "Invalid challenge code."); break;
+            case "invalidId":util.apiResponse(req, res, 400, "Invalid challenge id."); break;
+            case "wrongLevel":util.apiResponse(req, res, 400, "No challenges available for the current user level"); break;
+            case "challengeNotFound":util.apiResponse(req, res, 404, "Challenge not found for the current user level"); break; 
+            case "challengeSecretNotFound":util.apiResponse(req, res, 404, "Challenge secret not found."); break; 
+            case "invalidCode":util.apiResponse(req, res, 400, "Invalid code."); break; 
+            case "codeSaveError":util.apiResponse(req, res, 500, "Unable to save code."); break;
+            case "levelUpError":util.apiResponse(req, res, 500, "Unable to check level up. Please try again."); break;  
           }
-          else{
-            util.log("Badgr Open Badge could not be issued.");
-          } 
-      });
-
-      // post the data
-      postReq.write(postData);
-      postReq.end();
-    }
-  }
-}
-
-//allows updating the current user team
-app.post('/api/user/challengeCode', (req, res) => {
-    var challengeId = req.body.challengeId.trim();
-    var challengeCode = req.body.challengeCode.trim();
-
-    if(util.isNullOrUndefined(challengeCode) || validator.isBase64(challengeCode) == false){
-      return util.apiResponse(req, res, 400, "Invalid challenge code."); 
-    }
-
-    if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) == false){
-      return util.apiResponse(req, res, 400, "Invalid challenge id."); 
-    }
-
-
-    //check id
-    var availableChallenges = null;
-    var curChallengeObj = null;
-    var userLevel = req.user.level+1;
-    if(req.user.level === null) req.user.level = 0;
-
-    //identify the current challenge object and also the available challenges for the current user level
-    var challengeDefinitions = challenges.getChallengeDefinitions();
-    for(var idx=0;idx<challengeDefinitions.length;idx++){
-      var levelObj = challengeDefinitions[idx];
-      var levelChallenges = levelObj.challenges;
-      if(levelObj.level===userLevel){
-        availableChallenges = levelChallenges;
+        }
       }
-    }
-
-    if(availableChallenges==null || availableChallenges.length==0) return util.apiResponse(req, res, 400, "No challenges available for the current user level");
-
-    //search for the current challenge id
-    for(var cIdx=0; cIdx<availableChallenges.length; cIdx++){
-      if(challengeId === availableChallenges[cIdx].id){
-        curChallengeObj = availableChallenges[cIdx];
-        break;
+      else if(result){
+        util.apiResponse(req, res, 200, result.message, result.data);
       }
-    }
-    
-    if(curChallengeObj==null) return util.apiResponse(req, res, 404, "Challenge not found for the current user level");
-    var challengeSecrets = challenges.getChallengeSecrets();
-    var secretEntry = challengeSecrets[challengeId];
-    if(secretEntry==null) return util.apiResponse(req, res, 404, "Challenge id not found.");
-    
-    if(util.hasKey())
-      secretEntry = aescrypto.decrypt(secretEntry,process.env.CHALLENGE_KEY,process.env.CHALLENGE_KEY_IV);
-  
-    //calculate the hash
-    var verificationHash = crypto.createHash('sha256').update(secretEntry+req.user.codeSalt).digest('base64');
-    if(verificationHash!==challengeCode){
-      return util.apiResponse(req, res, 400, "Invalid code.");
-    } 
-    //success update challenge
-    db.insertChallengeEntry(req.user.id,challengeId,function(){
-      util.apiResponse(req, res, 500, "Unable to save code. Please try again.");
-    },function(){
-      //issue badgr badge if enabled
-      badgrCall(curChallengeObj,req.user);
-      //check to see if the user levelled up
-      challenges.verifyLevelUp(req.user,
-      function(err){
-        util.log(err, req.user);
-        util.apiResponse(req, res, 500, "Unable to check level up. Please try again.");
-      },
-      function(isLevelUp){
-          curChallengeObj.isLevelUp = isLevelUp;
-          if(isLevelUp){
-            util.log("User has solved the challenge "+curChallengeObj.name+" and leveled up!", req.user);
-            util.apiResponse(req, res, 200, "Congratulations you solved the challenge and leveled up!", curChallengeObj);               
-          }
-          else{
-            util.log("User has solved the challenge "+curChallengeObj.name+"!", req.user);
-            util.apiResponse(req, res, 200, "Congratulations you solved the challenge!", curChallengeObj)
-          }
-      });
     });
-
-   
 });
 
 
