@@ -34,7 +34,7 @@ exports.handler = (event, context, callback) => {
     console.log("Trying to connect to ec2 instance:'"+process.env.FOOBAR_SSH_HOST+"'");
      
     ssh
-    .exec('rm -f *')
+    .exec('rm -fdr *')
     .exec('echo '+process.env.SECRET1+' > secret.txt')
     .exec('echo "curl '+process.env.COMMAND_PROC_URL+' -i -L" > connecttocommandproc.sh')
     .exec('ping -c 1 '+event.hostname, {
