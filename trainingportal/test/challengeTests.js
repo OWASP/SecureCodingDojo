@@ -3,7 +3,7 @@ var challenges = require('../challenges');
 var async = require('async');
 var assert = require('assert');
 
-describe('db', function() {
+describe('challengeTests', function() {
     
     before(function(){
         db.deleteUser("levelUpUser");
@@ -136,7 +136,7 @@ describe('db', function() {
                     });
             },
             function (cb){
-                db.deleteUser("testDeleteMe",
+                db.deleteUser("levelUpUser",
                 function(err){
                     cb(err);
                 },function(result){ 
@@ -144,7 +144,7 @@ describe('db', function() {
                 }); 
             },
             function(result, cb){
-                db.getConn().end();
+                db.getConn().end(); 
             }
         ],function(err){
             if(err) throw new Error(err);

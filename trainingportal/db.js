@@ -23,8 +23,10 @@ var conPool = mysql.createPool(MYSQL_CONFIG);
  * @param {*} doneCb 
  */
 function getConn(){
-  var con = conPool;
-  return con;
+  if(conPool._closed){
+    conPool = mysql.createPool(MYSQL_CONFIG);
+  }
+  return conPool;
 }
 
 exports.getConn = getConn;
