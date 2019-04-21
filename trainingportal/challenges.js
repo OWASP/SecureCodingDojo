@@ -24,6 +24,10 @@ const challengeSecrets = Object.freeze(require(path.join(__dirname, 'challengeSe
 const config = require(path.join(__dirname, 'config'));
 const db = require(path.join(__dirname, 'db'));
 const async = require('async');
+const validator = require('validator');
+const crypto = require('crypto');
+const aescrypto = require(path.join(__dirname, 'aescrypto'));
+const https = require('https');
 
 
 var challengeNames = [];
@@ -136,4 +140,154 @@ exports.verifyLevelUp = function(user, errCb, doneCb){
         errCb(err);
     });
 
+}
+
+/**
+ * Issue a badge for achieving a level
+ * @param {*} badgrInfo 
+ * @param {*} user 
+ */
+module.exports.badgrCall = function(badgrInfo, user){
+    if(!util.isNullOrUndefined(badgrInfo) && !util.isNullOrUndefined(config.encBadgrToken)){
+      if(user.email===null){
+        util.log("Cannot issue badge for this user. E-mail is null.", user);
+      }
+      else{
+        var token = aescrypto.decrypt(config.encBadgrToken);
+        badgrInfo.recipient_identifier = user.email;
+        badgrInfo.narrative+=" Awarded to "+user.givenName+" "+user.familyName+".";
+        var postData = JSON.stringify(badgrInfo);
+        var postOptions = {
+          host: 'api.badgr.io',
+          port: '443',
+          path: '/v1/issuer/issuers/'+badgrInfo.issuer+'/badges/'+badgrInfo.badge_class+'/assertions',
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Content-Length': Buffer.byteLength(postData),
+              'Authorization':'Token '+token
+          }
+        
+        }
+  
+        // Set up the request
+        var postReq = https.request(postOptions, function(res) {
+            if(res!==null && !util.isNullOrUndefined(res.statusCode) && res.statusCode === 201){
+              util.log("Badgr Open Badge issued successfully.");
+            }
+            else{
+              util.log("Badgr Open Badge could not be issued.");
+            } 
+        });
+  
+        // post the data
+        postReq.write(postData);
+        postReq.end();
+      }
+    }
+}
+
+/** 
+ * Logic to for the api challenge code
+ */
+module.exports.apiChallengeCode = (req, cb) => {
+    if(util.isNullOrUndefined(req.body.challengeId) || 
+        util.isNullOrUndefined(req.body.challengeCode)){
+        return cb({code:"invalidRequest"});
+    }
+  
+    var challengeId = req.body.challengeId.trim();
+    var challengeCode = req.body.challengeCode.trim();
+
+    if(util.isNullOrUndefined(challengeCode) || validator.isBase64(challengeCode) == false){
+        return cb({code:"invalidCode"});
+    }
+
+    if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) == false){
+        return cb({code:"invalidId"});
+    }
+
+    //check id
+    var availableChallenges = null;
+    var curChallengeObj = null;
+    var userLevel = req.user.level+1;
+    if(req.user.level === null) req.user.level = 0;
+
+    //identify the current challenge object and also the available challenges for the current user level
+    var challengeDefinitions = module.exports.getChallengeDefinitions();
+    for(var idx=0;idx<challengeDefinitions.length;idx++){
+        var levelObj = challengeDefinitions[idx];
+        var levelChallenges = levelObj.challenges;
+        if(levelObj.level===userLevel){
+            availableChallenges = levelChallenges;
+        }
+    }
+
+    if(availableChallenges==null || availableChallenges.length==0){ 
+        return cb({code:"wrongLevel"});
+    }
+
+    //search for the current challenge id
+    for(var cIdx=0; cIdx<availableChallenges.length; cIdx++){
+        if(challengeId === availableChallenges[cIdx].id){
+            curChallengeObj = availableChallenges[cIdx];
+            break;
+        }
+    }
+
+    if(curChallengeObj==null){
+        return cb({code:"challengeNotFound"});
+    }
+    var challengeSecrets = module.exports.getChallengeSecrets();
+    var secretEntry = challengeSecrets[challengeId];
+    
+    if(secretEntry===null){
+        return cb({code:"challengeSecretNotFound"});
+
+    } 
+
+    if(util.hasKey()){
+        secretEntry = aescrypto.decrypt(secretEntry,process.env.CHALLENGE_KEY,process.env.CHALLENGE_KEY_IV);
+    }
+    //calculate the hash
+    var verificationHash = crypto.createHash('sha256').update(secretEntry+req.user.codeSalt).digest('base64');
+    if(verificationHash!==challengeCode){
+        return cb({code:"invalidCode"});
+    } 
+    //success update challenge
+    db.insertChallengeEntry(req.user.id,challengeId,
+    function(){
+        return cb({code:"Code save error"});
+    },function(){
+            //issue badgr badge if enabled
+            module.exports.badgrCall(curChallengeObj.badgrInfo,req.user);
+            //check to see if the user levelled up
+            module.exports.verifyLevelUp(req.user,
+                function(err){
+                    return cb({code:"levelUpError"});
+                },
+                function(isLevelUp){
+                    curChallengeObj.isLevelUp = isLevelUp;
+                    if(isLevelUp){
+                        util.log(`User has solved the challenge ${curChallengeObj.name} and leveled up!`, req.user);
+                        //issue badgr badge if enabled for level
+                        module.exports.badgrCall(challengeDefinitions[req.user.level].badgrInfo,req.user);    
+                        return cb(null,
+                            {
+                                message:"Congratulations you solved the challenge and leveled up!",
+                                data:curChallengeObj
+                            });
+                    }
+                    else{
+                        util.log(`User has solved the challenge ${curChallengeObj.name}!`, req.user);
+                        return cb(null,
+                            { 
+                                message:"Congratulations you solved the challenge!", 
+                                data: curChallengeObj
+                            });
+                    }
+                });
+    });
+
+   
 }
