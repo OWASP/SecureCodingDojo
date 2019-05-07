@@ -7,3 +7,4 @@ localUsers.json
 *.csv
 accountWhitelist.json
 .ebextensions
+*.db
