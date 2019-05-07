@@ -3,19 +3,74 @@ const config = require(path.join(__dirname, 'config'));
 var aesCrypto = require(path.join(__dirname, 'aescrypto'));
 var util = require(path.join(__dirname, 'util'));
 var mysql = require('mysql2');
+var sqlite3 = require('sqlite3');
+
 var fs = require('fs');
 var async = require('async');
+var MYSQL_CONFIG = null;
+var liteDB = null;
 
-const MYSQL_CONFIG = {
-  connectionLimit:100,
-  host: config.dbHost,
-  database: config.dbName,
-  user: config.dbUser,
-  password: aesCrypto.decrypt(config.encDbPass),
-  multipleStatements:true
+if(util.isNullOrUndefined(config.dbHost)){
+  //use sqlite insted of mysql
+  liteDB = new sqlite3.Database(path.join(__dirname, ".securecodingdojo.db"));
 }
-//create DB connection pool to handle high DB load
-var conPool = mysql.createPool(MYSQL_CONFIG);
+else {
+  MYSQL_CONFIG = {
+    connectionLimit:100,
+    host: config.dbHost,
+    database: config.dbName,
+    user: config.dbUser,
+    password: aesCrypto.decrypt(config.encDbPass),
+    multipleStatements:true
+  }
+}
+
+class Connection{
+  
+  constructor (){
+    if(MYSQL_CONFIG!==null){
+      this.conPool = mysql.createPool(MYSQL_CONFIG);
+    }
+  }
+
+
+  query(sql,params,callback){
+
+    if(arguments.length===2){
+      if(typeof params === 'function'){
+        callback = params;
+        params = [];
+      }
+    }
+
+    if(MYSQL_CONFIG!==null){
+      if(this.conPool._closed){
+        this.conPool = mysql.createPool(MYSQL_CONFIG);
+      }
+      this.conPool.query(sql,params,callback);
+    }
+    else{
+      liteDB.all(sql,params,callback);      
+    }
+  }
+
+  exec(sql, callback){
+    if(MYSQL_CONFIG!==null){
+      this.conPool.query(sql,callback);
+    }
+    else{
+      liteDB.exec(sql,callback);
+    }
+  }
+
+  end(){
+    if(MYSQL_CONFIG!==null){
+      this.conPool.end();
+    }
+  }
+}
+
+var connection = new Connection();
 
 /**
  * Returns a database connection to use
@@ -23,10 +78,7 @@ var conPool = mysql.createPool(MYSQL_CONFIG);
  * @param {*} doneCb 
  */
 function getConn(){
-  if(conPool._closed){
-    conPool = mysql.createPool(MYSQL_CONFIG);
-  }
-  return conPool;
+  return connection;
 }
 
 exports.getConn = getConn;
@@ -52,17 +104,37 @@ function handleDone(doneCb,result){
 
 exports.init = function(){
   var con = getConn();
-  var sql = "SELECT * FROM users";
+  var sql = "";
+  var dbSetup = "";
+  if(MYSQL_CONFIG!==null){
+    sql = "SELECT * from users";
+    dbSetup = "dbsetup.mysql.sql";
+  }
+  else{
+    sql = "SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name = 'users'";
+    dbSetup = "dbsetup.sqlite.sql";
+  }
   con.query(sql, function (err, result) {
-    if (err){
+
+    var setupNeeded = (MYSQL_CONFIG === null && result.length>0 && result[0].count===0) || (MYSQL_CONFIG !== null && err !== null);
+
+    if (setupNeeded){
       //there's no user table
       
-      fs.readFile(path.join(__dirname, 'dbsetup.sql'), 'utf8', function(err, data) {
+      fs.readFile(path.join(__dirname, dbSetup), 'utf8', function(err, data) {
         if (err){
             util.log(err);
             return;
         }
-        con.query(data);
+        con.exec(data, function(err,result){
+          if(err){
+            util.log("Database setup failed");
+            console.log(err);
+          }
+          else{
+            util.log("Database tables created");
+          }
+        });
         
       });
     }
@@ -96,7 +168,7 @@ exports.insertUser = function(user,errCb,doneCb){
 //fetches a user from the database
 exports.getUser = function(accountId,errCb,doneCb){
   var con = getConn();
-  var sql = "SELECT * FROM users WHERE accountId = ? LIMIT 1";
+  var sql = "SELECT * FROM users WHERE accountId = ? ";
   con.query(sql, [accountId], function (err, result) {
     if(err) handleErr(errCb,err);
     else
@@ -111,7 +183,7 @@ exports.getUser = function(accountId,errCb,doneCb){
 //deletes a user from the database
 exports.deleteUser = function(accountId,errCb,doneCb){
   var con = getConn();
-  var sql = "DELETE FROM users WHERE accountId = ? LIMIT 1";
+  var sql = "DELETE FROM users WHERE accountId = ? ";
   con.query(sql, [accountId], function (err, result) {
     if(err) handleErr(errCb,err);
     else handleDone(doneCb,result);
@@ -199,7 +271,7 @@ exports.fetchTeams = function(errCb,doneCb){
 //fetches a team and its members from the database by its name (unique)
 exports.getTeamWithMembersByName = function(name,errCb,doneCb){
   var con = getConn();
-  var sql = "SELECT * FROM teams WHERE name = ? LIMIT 1";
+  var sql = "SELECT * FROM teams WHERE name = ? ";
   con.query(sql, [name], function (err, result) {
       if(err) handleErr(errCb,err);
       else{
@@ -223,7 +295,7 @@ exports.getTeamWithMembersByName = function(name,errCb,doneCb){
 //fetches a team from the database by id
 exports.getTeamById = function(id,errCb,doneCb){
   var con = getConn();
-  var sql = "SELECT * FROM teams WHERE id = ? LIMIT 1";
+  var sql = "SELECT * FROM teams WHERE id = ? ";
   con.query(sql, [id], function (err, result) {
       if(err) handleErr(errCb,err);
       else{
@@ -306,9 +378,13 @@ exports.fetchActivity = function(query,limit,errCb,doneCb){
   var args = [];
   if(!util.isNullOrEmpty(query)){
     query = "%"+query+"%";
+    var concat = "CONCAT(users.givenName,' ',users.familyName)";
+    if(MYSQL_CONFIG===null){
+      concat = "users.givenName || ' ' || users.familyName";
+    }
     sql = "SELECT challengeEntries.challengeId, users.givenName, users.familyName, users.level, users.teamId "+
       " FROM challengeEntries INNER JOIN users on users.id=challengeEntries.userId "+
-      "WHERE CONCAT(users.givenName, ' ', users.familyName) LIKE ? order by challengeEntries.id desc LIMIT ?";
+      "WHERE "+concat+" LIKE ? order by challengeEntries.id desc LIMIT ?";
     args = [query, limit];
   }
   else{

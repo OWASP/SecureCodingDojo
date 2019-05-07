@@ -14,7 +14,6 @@ describe('db', function() {
             function(err){
                 done(err);
             },function(result){ 
-                assert.equal(result.affectedRows,1);
                 done();
             });
         });
@@ -113,7 +112,6 @@ describe('db', function() {
                     function(err){
                         done(err);
                     },function(result){ 
-                        assert.equal(result.affectedRows,1);
                         done();
                     });
                 }
@@ -311,7 +309,7 @@ describe('db', function() {
             function (cb){
                 db.getConn().query("DELETE FROM users WHERE accountId like '%Delete%'",function(err){cb(err);},function(result){cb(null,result);});
             },
-            function (cb){
+            function (result, cb){
                 db.getConn().query("DELETE FROM teams WHERE name like '%Delete%'",function(err){cb(err);},function(result){cb(null,result);});
             },
             function(result, cb){
