@@ -26,11 +26,27 @@ if(!util.isNullOrUndefined(config.encSamlProviderPvkFilePath)){
 
 
 var localUsers = null;
+var localUsersPath = "";
 try{
-  if(typeof config.localUsersPath !== 'undefined' && config.localUsersPath!=null)
-     localUsers = require(path.join(__dirname, config.localUsersPath));
+  if(!util.isNullOrUndefined(config.localUsersPath))
+  {
+    
+    if(util.isNullOrEmpty(config.dataDir)){
+        localUsersPath = path.join(__dirname, config.localUsersPath);
+    }
+    else{
+        localUsersPath = path.join(config.dataDir, config.localUsersPath);
+    }
+    if(!fs.existsSync(localUsersPath)){
+        //create the users file if not already there
+        fs.writeFileSync(localUsersPath, "{}", 'utf8');
+    }
+    localUsers = require(localUsersPath);
+  }
 }
-catch(ex){/*Do nothing*/}
+catch(ex){
+    util.log(ex);
+}
 
 
 var accountWhitelist = null;
@@ -165,7 +181,7 @@ exports.createUpdateUser = function(req, res, username, localUser, password){
     localUsers[username] = localUser;
     //save to disk
     var json = JSON.stringify(localUsers, null, "\t");
-    fs.writeFileSync(path.join(__dirname, config.localUsersPath), json, 'utf8');
+    fs.writeFileSync(localUsersPath, json, 'utf8');
 
     return util.apiResponse(req, res, 200, "User created/modified.");
 }

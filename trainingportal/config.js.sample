@@ -16,6 +16,7 @@ config.encDbPass = ''; //use encryptConfigs.js to generate, configure environmen
 
 //config.googleClientId = ''; //enable to configure Google authentication
 //config.encGoogleClientSecret = '';
+config.dataDir = process.env.DATA_DIR; //use to specify where the local db or the local users will be stored
 config.localUsersPath = 'localUsers.json';//authentication using a password file containing users and hashed passwords, no lockout
 
 /* Optional LDAP integration
