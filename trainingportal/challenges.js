@@ -169,20 +169,26 @@ module.exports.badgrCall = function(badgrInfo, user){
           }
         
         }
-  
-        // Set up the request
-        var postReq = https.request(postOptions, function(res) {
-            if(res!==null && !util.isNullOrUndefined(res.statusCode) && res.statusCode === 201){
-              util.log("Badgr Open Badge issued successfully.");
-            }
-            else{
-              util.log("Badgr Open Badge could not be issued.");
-            } 
-        });
-  
-        // post the data
-        postReq.write(postData);
-        postReq.end();
+        
+        try
+        {
+            // Set up the request
+            var postReq = https.request(postOptions, function(res) {
+                if(res!==null && !util.isNullOrUndefined(res.statusCode) && res.statusCode === 201){
+                util.log("Badgr Open Badge issued successfully.");
+                }
+                else{
+                util.log("Badgr Open Badge could not be issued.");
+                } 
+            });
+    
+            // post the data
+            postReq.write(postData);
+            postReq.end();
+        }
+        catch(ex){
+            util.log(ex);
+        }
       }
     }
 }

@@ -224,6 +224,16 @@
     {
         "level":7,
         "name":"Black Belt",
+        "badgrInfo":
+        {
+            "issuer":"JEzPNy2zSGG1XVTsJ5JE0g",
+            "badge_class":"AIMEaNOFQUeaiGZ7gC19FQ",
+            "recipient_type":"email",
+            "recipient_identifier":"",
+            "narrative":"Badge issued for completing the Secure Coding Dojo:First Degree Black Belt.",
+            "create_notification":true,
+            "evidence_items":[]
+        },
         "challenges":[
             {
                 "id":"cwe120",
@@ -255,6 +265,16 @@
     {
         "level":8,
         "name":"Second Degree Black Belt",
+        "badgrInfo":
+        {
+            "issuer":"JEzPNy2zSGG1XVTsJ5JE0g",
+            "badge_class":"6T4w5fU8RaiAedgSsVG4TA",
+            "recipient_type":"email",
+            "recipient_identifier":"",
+            "narrative":"Badge issued for completing the Secure Coding Dojo:Second Degree Black Belt.",
+            "create_notification":true,
+            "evidence_items":[]
+        },
         "challenges":[
             {
                 "id":"owasp2017misconfig",
