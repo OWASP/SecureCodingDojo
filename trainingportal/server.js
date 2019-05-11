@@ -422,6 +422,10 @@ app.get('/api/report',  (req, res) => {
 
 db.init();
 
+process.on('SIGINT', function() {
+  process.exit();
+});
+
 app.listen(8081,function(){
     util.log('Listening on 8081');
     util.log('Configured url:'+config.dojoUrl);
