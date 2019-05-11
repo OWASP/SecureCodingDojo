@@ -12,7 +12,15 @@ var liteDB = null;
 
 if(util.isNullOrUndefined(config.dbHost)){
   //use sqlite insted of mysql
-  liteDB = new sqlite3.Database(path.join(__dirname, ".securecodingdojo.db"));
+  var dbPath = "";
+  var dbFileName = "securecodingdojo.db";
+  if(util.isNullOrEmpty(config.dataDir)){
+    dbPath = path.join(__dirname, dbFileName);
+  }
+  else{
+    dbPath = path.join(config.dataDir, dbFileName);
+  }
+  liteDB = new sqlite3.Database(dbPath);
 }
 else {
   MYSQL_CONFIG = {
