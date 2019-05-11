@@ -12,7 +12,7 @@ exports.hasKey = function(){
  * Creates a pbkdf2 salted hash
  */
 exports.hashPassword = function (password, saltString){
-  var salt = new Buffer(saltString,'base64');
+  var salt = Buffer.from(saltString,'base64');
   var passwordHash = crypto.pbkdf2Sync(password, salt, 10000, 64, "SHA512").toString('base64');
   return passwordHash;  
 }

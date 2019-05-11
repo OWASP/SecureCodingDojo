@@ -64,7 +64,7 @@ exports.getCaptcha = function(req,res){
       p.color(80, 80, 80, 255); 
     
       var img = p.getBase64();
-      var imgbase64 = new Buffer(img,'base64');
+      var imgbase64 = new Buffer.from(img, 'Base64');
       res.writeHead(200, {
           'Content-Type': 'image/png',
           'Cache-Control': 'no-cache, must-revalidate'
@@ -165,7 +165,7 @@ exports.createUpdateUser = function(req, res, username, localUser, password){
     localUsers[username] = localUser;
     //save to disk
     var json = JSON.stringify(localUsers, null, "\t");
-    fs.writeFile(path.join(__dirname, config.localUsersPath), json, 'utf8');
+    fs.writeFileSync(path.join(__dirname, config.localUsersPath), json, 'utf8');
 
     return util.apiResponse(req, res, 200, "User created/modified.");
 }
