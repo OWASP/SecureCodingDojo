@@ -16,6 +16,7 @@ public class Crypto {
 	private static final String HASH_ALG="SHA-256";
 	private static SecretKeySpec key = null;
 	private static IvParameterSpec iv = null;
+	private static String masterSalt = "";
 	
 	private static Crypto instance = null;
 	private static Object lock = new Object();
@@ -52,9 +53,23 @@ public class Crypto {
 				keyString = System.getProperty("CHALLENGE_KEY");
 				ivString = System.getProperty("CHALLENGE_KEY_IV");
 			}
+			
+			String masterSaltVar = System.getenv("CHALLENGE_MASTER_SALT");
+			if(masterSaltVar == null){
+				masterSaltVar = System.getProperty("CHALLENGE_MASTER_SALT");
+			}
+			
+			if(masterSaltVar != null){
+				masterSalt = masterSaltVar;
+			}
+			else{
+				System.out.println("WARNING.CHALLENGE_MASTER_SALT not set. Challenges may be bypassed.");
+			}
+		
+			
 			//if we can't get the keys
 			if(keyString==null||ivString==null){
-				System.out.println("Could not initialize keys. Make sure CHALLENGE_KEY and CHALLENGE_KEY_IV are set in /opt/tomcat/bin/setenv.sh");
+				System.out.println("WARNING. CHALLENGE_KEY and CHALLENGE_KEY_IV are not set in /opt/tomcat/bin/setenv.sh");
 				return;
 			}
 			
@@ -148,7 +163,7 @@ public class Crypto {
      * @throws UnsupportedEncodingException
      */
     public String getHashString(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException{
-    	byte[] digest = getHash(text, HASH_ALG);
+    	byte[] digest = getHash(text+masterSalt, HASH_ALG);
 		return Base64.getEncoder().encodeToString(digest);    
 	}
 }
