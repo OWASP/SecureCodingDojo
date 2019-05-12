@@ -3,7 +3,7 @@ const config = require(path.join(__dirname, 'config'));
 var aesCrypto = require(path.join(__dirname, 'aescrypto'));
 var util = require(path.join(__dirname, 'util'));
 var mysql = require('mysql2');
-var sqlite3 = require('sqlite3');
+var sqlite3 = null;
 
 var fs = require('fs');
 var async = require('async');
@@ -11,6 +11,8 @@ var MYSQL_CONFIG = null;
 var liteDB = null;
 
 if(util.isNullOrUndefined(config.dbHost)){
+  sqlite3 = require('sqlite3');
+
   //use sqlite insted of mysql
   var dbPath = "";
   var dbFileName = "securecodingdojo.db";
