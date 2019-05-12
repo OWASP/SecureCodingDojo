@@ -33,10 +33,7 @@ exports.challengeValidator = function(event,context){
       }
 
       var masterSalt = "";
-      if(util.isNullOrUndefined(process.env.CHALLENGE_MASTER_SALT)){
-          util.log("WARNING. CHALLENGE_MASTER_SALT not set. Challenges may be bypassed.");
-      }
-      else{
+      if(process.env.CHALLENGE_MASTER_SALT){
           masterSalt=process.env.CHALLENGE_MASTER_SALT;
       }
 
