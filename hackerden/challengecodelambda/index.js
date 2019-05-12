@@ -22,7 +22,7 @@ exports.challengeValidator = function(event,context){
         case "dQDYI7p7he": challengeCode = process.env.CHALLENGE_CODE6; break;
         case "utuwHk41j": challengeCode = process.env.CHALLENGE_CODE7; break;
       }
-      console.log(challengeCode);
+      
       
       if(challengeCode===null || typeof challengeCode==='undefined'){
         return context.fail("Invalid challenge code");
@@ -32,7 +32,15 @@ exports.challengeValidator = function(event,context){
         return context.fail("Invalid salt");
       }
 
-      var verificationHash = crypto.createHash('sha256').update(challengeCode+event.codeSalt).digest('base64');
+      var masterSalt = "";
+      if(util.isNullOrUndefined(process.env.CHALLENGE_MASTER_SALT)){
+          util.log("WARNING. CHALLENGE_MASTER_SALT not set. Challenges may be bypassed.");
+      }
+      else{
+          masterSalt=process.env.CHALLENGE_MASTER_SALT;
+      }
+
+      var verificationHash = crypto.createHash('sha256').update(challengeCode+event.codeSalt+masterSalt).digest('base64');
 
       return context.succeed({
         verificationCode:verificationHash

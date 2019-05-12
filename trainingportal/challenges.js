@@ -39,6 +39,14 @@ challengeDefinitions.forEach(function(level){
   })
 });
 
+var masterSalt = "";
+if(util.isNullOrUndefined(process.env.CHALLENGE_MASTER_SALT)){
+    util.log("WARNING. CHALLENGE_MASTER_SALT not set. Challenges may be bypassed.");
+}
+else{
+    masterSalt=process.env.CHALLENGE_MASTER_SALT;
+}
+
 exports.getChallengeNames = function(){ return challengeNames; }
 exports.getChallengeDefinitions = function(){ return challengeDefinitions; }
 exports.getChallengeSecrets = function(){ return challengeSecrets; }
@@ -256,7 +264,7 @@ module.exports.apiChallengeCode = (req, cb) => {
         secretEntry = aescrypto.decrypt(secretEntry,process.env.CHALLENGE_KEY,process.env.CHALLENGE_KEY_IV);
     }
     //calculate the hash
-    var verificationHash = crypto.createHash('sha256').update(secretEntry+req.user.codeSalt).digest('base64');
+    var verificationHash = crypto.createHash('sha256').update(secretEntry+req.user.codeSalt+masterSalt).digest('base64');
     if(verificationHash!==challengeCode){
         return cb({code:"invalidCode"});
     } 
