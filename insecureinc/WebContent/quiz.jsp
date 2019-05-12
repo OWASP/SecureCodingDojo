@@ -169,7 +169,7 @@ What is the best method to avoid Authorization Bypass issues?
 <blockquote>
 What is the best way to store user passwords in a database?
 </blockquote>
-<%=getOption(answers,"q4","1","Use pbkdf2 with 10000 iteration and a salt.")%>
+<%=getOption(answers,"q4","1","Use pbkdf2 with 10000 iterations and a salt.")%>
 <%=getOption(answers,"q4","2","Use asymetric encryption, RSA with 2048 key size.")%>
 <%=getOption(answers,"q4","3","Hash the passwords with a SHA-2 algorithm")%>
 <%=getOption(answers,"q4","4","Use pbkdf5")%>
@@ -179,7 +179,7 @@ What is the best way to store user passwords in a database?
 <h4>Question 5</h4>
 <%=getIncorrectMessage(solutions,answers,"q5")%><%=getSuccessMessage(solutions,answers,"q5")%>
 <blockquote>
-Which of the following hashing algorithms is NOT outdated?
+Which of the following hashing algorithms is NOT out-dated?
 </blockquote>
 <%=getOption(answers,"q5","1","SHA-1")%>
 <%=getOption(answers,"q5","2","SHA-2")%>
@@ -191,18 +191,18 @@ Which of the following hashing algorithms is NOT outdated?
 <h4>Question 6</h4>
 <%=getIncorrectMessage(solutions,answers,"q6")%><%=getSuccessMessage(solutions,answers,"q6")%>
 <blockquote>
-Which communication protocol would you select for your SSL server configuration ?
+Which communication protocol would you select for your server configuration ?
 </blockquote>
 <%=getOption(answers,"q6","1","SSLv3. It is the best protocol for compatibility with all browsers.")%>
 <%=getOption(answers,"q6","2","TLS1.0. It is stronger than SSL and supported by all browsers")%>
-<%=getOption(answers,"q6","3","TLS1.2. It is the most secure.")%>
+<%=getOption(answers,"q6","3","TLS1.2 or TLS 1.3.")%>
 <%=getOption(answers,"q6","4","Custom protocol based on AES 256 ECB encryption algorithm.")%>
 <hr>
 
 <h4>Question 7</h4>
 <%=getIncorrectMessage(solutions,answers,"q7")%><%=getSuccessMessage(solutions,answers,"q7")%>
 <blockquote>
-You are implementing a SSL client but your test server has a self signed certificate and the connection fails.
+You are implementing a TLS client but your test server has a self signed certificate and the connection fails.
 </blockquote>
 <%=getOption(answers,"q7","1","Import the self signed certificate in your Java trusted store.")%>
 <%=getOption(answers,"q7","2","Disable certificate validation the connection is encrypted anyways.")%>
@@ -225,7 +225,7 @@ The following snippets represent an account lockout mechanism. Which of the foll
 <h4>Question 9</h4>
 <%=getIncorrectMessage(solutions,answers,"q9")%><%=getSuccessMessage(solutions,answers,"q9")%>
 <blockquote>
-Which of the following statements about account lockout is contrary to security best practices.?
+Which of the following statements about account lockout is against security best practices.?
 </blockquote>
 <%=getOption(answers,"q9","1","Two factor authentication prevents password guessing attacks.")%>
 <%=getOption(answers,"q9","2","It is the user's responsibility to configure a strong password. Brute force attacks won't work against a good password")%>
@@ -241,7 +241,7 @@ Which is the best way to ensure the integrity of software updates?
 <%=getOption(answers,"q10","1","Hash the software with a SHA-2 hash and ship the hash along with the update package.")%>
 <%=getOption(answers,"q10","2","Encrypt the software with a hard-coded password and download over unencrypted connection to improve performance.")%>
 <%=getOption(answers,"q10","3","Download the valid over trusted, secure connection. Reject invalid download server certificates.")%>
-<%=getOption(answers,"q10","4","Create a SHA-2 digest for the updates and encrypt the hash with the software provider private key. Download over valid SSL.")%>
+<%=getOption(answers,"q10","4","Create a SHA-2 digest for the updates and encrypt the hash with the software provider private key. Download over valid TLS.")%>
 <hr>
 
 <h4>Question 11</h4>
@@ -344,7 +344,7 @@ Your application needs to run an operation with elevated privileges. Which appro
 </blockquote>
 <%=getOption(answers,"q19","1","Run the application as root always. This will make sure there are no issues.")%>
 <%=getOption(answers,"q19","2","Ask the user to execute the operation via SSH.")%>
-<%=getOption(answers,"q19","3","Use setuid flags to temporarily elevate privileges then drop them back.")%>
+<%=getOption(answers,"q19","3","Use setuid flags on an program dedicated to the priviled operation only.")%>
 <%=getOption(answers,"q19","4","Add the application user to /etc/sudoers. Execute the critical functionality as a bash script that you launch with sudo.")%>
 <hr>
 
