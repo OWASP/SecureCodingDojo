@@ -39,7 +39,16 @@ if(util.hasKey()){
 }
 //calculate the hash
 var mockSalt = "1234";
-var mockHash = crypto.createHash('sha256').update(secretEntry+mockSalt).digest('base64');
+var masterSalt = "";
+if(util.isNullOrUndefined(process.env.CHALLENGE_MASTER_SALT)){
+    util.log("WARNING. CHALLENGE_MASTER_SALT not set. Challenges may be bypassed.");
+}
+else{
+    masterSalt=process.env.CHALLENGE_MASTER_SALT;
+}
+
+
+var mockHash = crypto.createHash('sha256').update(secretEntry+mockSalt+masterSalt).digest('base64');
 
 var mockRequest = {
     "body":{
