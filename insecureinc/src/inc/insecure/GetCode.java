@@ -34,7 +34,7 @@ public class GetCode extends HttpServlet {
 		String saltedCode = "";
 		if(salt!=null && code!=null){
 			try {
-				saltedCode = Crypto.getInstance().getHashString(code+salt);
+				saltedCode = Crypto.getInstance().getCodeHashString(code+salt);
 			} catch (NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

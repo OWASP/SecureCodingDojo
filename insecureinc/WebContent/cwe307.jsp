@@ -47,7 +47,7 @@ if(usr!=null && pwd!=null){
   </div>
 </nav>
 <div class="container"> 
-<h3>Welcome to CWE307!</h3>
+<h3>Welcome to Password Guessing!</h3>
 <p> Sorry, this time you will have to brute force your way in. By the way, did you know
 that a <a target="_blank" href="https://www.theregister.co.uk/2010/01/21/lame_passwords_exposed_by_rockyou_hack/">
 famous hack</a> of the RockYou site exposed 32 million passwords which have since been used in pen-testing?</p>

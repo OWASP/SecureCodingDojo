@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.util.Base64;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,8 +46,9 @@ public class Util {
 	 */
 	public static boolean isAdminPassOk(String pwd) throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		if(pwd==null) return false;
-		String passHash = Crypto.getInstance().getHashString(pwd+"PucMfDDfkG7jVOaaK51AjQ");
-		return passHash.equals("6lvOg9Sb1U8XIo2pNifNw+S3+Kk82+vX0E7CcqttkYU=");
+		byte [] digest = Crypto.getInstance().getHash(pwd+"PucMfDDfkG7jVOaaK51AjQ","SHA-256");
+		String passHashString = Base64.getEncoder().encodeToString(digest);    
+		return passHashString.equals("6lvOg9Sb1U8XIo2pNifNw+S3+Kk82+vX0E7CcqttkYU=");
 	}
 	
 	/**

@@ -162,7 +162,7 @@ public class Crypto {
      * @throws NoSuchAlgorithmException
      * @throws UnsupportedEncodingException
      */
-    public String getHashString(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+    public String getCodeHashString(String text) throws NoSuchAlgorithmException, UnsupportedEncodingException{
     	byte[] digest = getHash(text+masterSalt, HASH_ALG);
 		return Base64.getEncoder().encodeToString(digest);    
 	}
