@@ -307,12 +307,12 @@ describe('db', function() {
         async.waterfall([
             //cleanup test data 
             function (cb){
-                db.getConn().query("DELETE FROM users WHERE accountId like '%Delete%'",function(err){cb(err);},function(result){cb(null,result);});
+                db.getConn().query("DELETE FROM users WHERE accountId like '%Delete%'",function(err){cb(err);},function(result){cb();});
             },
-            function (result, cb){
-                db.getConn().query("DELETE FROM teams WHERE name like '%Delete%'",function(err){cb(err);},function(result){cb(null,result);});
+            function (cb){
+                db.getConn().query("DELETE FROM teams WHERE name like '%Delete%'",function(err){cb(err);},function(result){cb();});
             },
-            function(result, cb){
+            function(cb){
                 db.getConn().end();
             }
         ],function(err){
