@@ -1,9 +1,9 @@
 const path = require('path');
 const crypto = require('crypto');
-const aescrypto = require(path.join(__dirname, 'aescrypto'));
-const util = require(path.join(__dirname, 'util'));
+const aescrypto = require(path.join(__dirname, '../aescrypto'));
+const util = require(path.join(__dirname, '../util'));
 
-const challengeSecrets = require(path.join(__dirname, 'challengeSecrets.json'));
+const challengeSecrets = require(path.join(__dirname, '../challengeSecrets.json'));
 const uid = require('uid-safe');
 //temporarily write your passwords here, cleanup after generating the encrypted settings
 var dbPass="<db pass>";//DELETE ME WHEN DONE
