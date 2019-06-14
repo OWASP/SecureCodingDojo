@@ -12,6 +12,7 @@
     <table class="table table-striped">
         <thead>
         <tr>
+            <th>Timestamp</th>
             <th>User</th>
             <th>Team</th>
             <th>Current Level</th>
@@ -20,6 +21,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="activityEntry in activityList">
+                <td>{{activityEntry.timestamp}}</td>
                 <td>{{activityEntry.givenName}} {{activityEntry.familyName}}</td>
                 <td>{{teamNames[activityEntry.teamId]}}</td>
                 <td>{{levelNames[activityEntry.level]}}</td>

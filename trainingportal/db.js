@@ -1,3 +1,5 @@
+const SCHEMA_VERSION = 3;
+module.exports.SCHEMA_VERSION = SCHEMA_VERSION;
 const path = require('path');
 const config = require(path.join(__dirname, 'config'));
 var aesCrypto = require(path.join(__dirname, 'aescrypto'));
@@ -157,46 +159,64 @@ exports.init = function(){
   var dbSetup = "";
   if(MYSQL_CONFIG!==null){
     sql = "SELECT * from users";
-    dbSetup = "dbsetup.mysql.sql";
+    dbSetup = "sql/dbsetup.mysql.sql";
   }
   else{
     sql = "SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name = 'users'";
-    dbSetup = "dbsetup.sqlite.sql";
+    dbSetup = "sql/dbsetup.sqlite.sql";
   }
-  con.query(sql, function (err, result) {
+  con.query(sql, async (err, result) => {
 
     var setupNeeded = (MYSQL_CONFIG === null && result.length>0 && result[0].count===0) || (MYSQL_CONFIG !== null && err !== null);
 
     if (setupNeeded){
       //there's no user table
       
-      fs.readFile(path.join(__dirname, dbSetup), 'utf8', function(err, data) {
-        if (err){
-            util.log(err);
-            return;
+      var setupScript = fs.readFileSync(path.join(__dirname, dbSetup), 'utf8');
+      con.exec(setupScript, function(err,result){
+        if(err){
+          util.log("Database setup failed");
+          console.log(err);
         }
-        con.exec(data, function(err,result){
-          if(err){
-            util.log("Database setup failed");
-            console.log(err);
-          }
-          else{
-            util.log("Database tables created");
-          }
-        });
-        
+        else{
+          util.log("Database tables created");
+        }
       });
     }
-    else{ //run db maintenance scripts
+    else { //run db maintenance scripts
       util.log("Database tables exist.");
-      fs.readFile(path.join(__dirname, 'dbmaintain.sql'), 'utf8', function(err, data) {
-        if (err){
-            util.log(err);
-            return;
-        }
-        if(data.length>0) con.query(data);
+      //check db version
+      let version = await exports.getPromise(exports.getVersion);
+
+      if(util.isNullOrUndefined(version)) version = 2; //started versioning from 3
+
+      if(version < SCHEMA_VERSION){
         
-      });
+        //run the scripts for each missing version
+        for(let ver = version+1; ver <= SCHEMA_VERSION; ver++){
+          var maintenanceFilePath = "sql/dbupgrade.v"+ver;
+          if(MYSQL_CONFIG!==null){
+            maintenanceFilePath+=".mysql.sql";
+          }
+          else{
+            maintenanceFilePath+=".sqlite.sql";
+          }
+          var maintenanceScript = fs.readFileSync(path.join(__dirname, maintenanceFilePath), 'utf8');
+          util.log(`Running database upgrade script '${maintenanceFilePath}'`);
+
+          await new Promise((resolve,reject) => {
+            con.exec(maintenanceScript, function(err,result){
+              if(err){
+                util.log("Database upgrade failed");
+                console.log(err);
+              }
+              else{
+                util.log("Database upgrade completed");
+              }
+            });
+          });
+        }
+      }
     }
   });
 }
@@ -212,7 +232,19 @@ exports.insertUser = function(user,errCb,doneCb){
   });
 }
 
-
+//gets the database schema version
+exports.getVersion = function(accountId,errCb,doneCb){
+  var con = getConn();
+  var sql = "SELECT version FROM dbInfo";
+  con.query(sql, [accountId], function (err, result) {
+    if(err) handleDone(doneCb, null); 
+    else
+    {
+      if(result.length >= 1) handleDone(doneCb,result[0].version);
+      else handleDone(doneCb, null);
+    }
+  });
+}
 
 //fetches a user from the database
 exports.getUser = function(accountId,errCb,doneCb){
@@ -393,8 +425,9 @@ exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
   con.query(sql, [userId,challengeId], function (err, result) {
     if (err) handleErr(errCb,err);
     else{
-      var sql = "INSERT INTO challengeEntries (id, userId, challengeId) VALUES (null, ?, ?)";
-      con.query(sql, [userId,challengeId], function (err, result) {
+      var timeStamp = Date().toString();
+      var sql = "INSERT INTO challengeEntries (id, userId, challengeId, timestamp) VALUES (null, ?, ?, ?)";
+      con.query(sql, [userId, challengeId, timeStamp], function (err, result) {
         if (err) handleErr(errCb,err);
         else handleDone(doneCb,result);
       });
@@ -431,13 +464,13 @@ exports.fetchActivity = function(query,limit,errCb,doneCb){
     if(MYSQL_CONFIG===null){
       concat = "users.givenName || ' ' || users.familyName";
     }
-    sql = "SELECT challengeEntries.challengeId, users.givenName, users.familyName, users.level, users.teamId "+
+    sql = "SELECT challengeEntries.challengeId, challengeEntries.timestamp, users.givenName, users.familyName, users.level, users.teamId "+
       " FROM challengeEntries INNER JOIN users on users.id=challengeEntries.userId "+
       "WHERE "+concat+" LIKE ? order by challengeEntries.id desc LIMIT ?";
     args = [query, limit];
   }
   else{
-    sql = "SELECT challengeEntries.challengeId, users.givenName, users.familyName, users.level, users.teamId "+
+    sql = "SELECT challengeEntries.challengeId, challengeEntries.timestamp, users.givenName, users.familyName, users.level, users.teamId "+
     " FROM challengeEntries INNER JOIN users on users.id=challengeEntries.userId order by challengeEntries.id desc LIMIT ?";
     args = [limit];
   }
