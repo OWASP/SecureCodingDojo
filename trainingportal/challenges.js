@@ -269,39 +269,45 @@ module.exports.apiChallengeCode = (req, cb) => {
         return cb({code:"invalidCode"});
     } 
     //success update challenge
-    db.insertChallengeEntry(req.user.id,challengeId,
-    function(){
-        return cb({code:"Code save error"});
-    },function(){
-            //issue badgr badge if enabled
-            module.exports.badgrCall(curChallengeObj.badgrInfo,req.user);
-            //check to see if the user levelled up
-            module.exports.verifyLevelUp(req.user,
-                function(err){
-                    return cb({code:"levelUpError"});
-                },
-                function(isLevelUp){
-                    curChallengeObj.isLevelUp = isLevelUp;
-                    if(isLevelUp){
-                        util.log(`User has solved the challenge ${curChallengeObj.name} and leveled up!`, req.user);
-                        //issue badgr badge if enabled for level
-                        module.exports.badgrCall(challengeDefinitions[req.user.level].badgrInfo,req.user);    
-                        return cb(null,
-                            {
-                                message:"Congratulations you solved the challenge and leveled up!",
-                                data:curChallengeObj
-                            });
-                    }
-                    else{
-                        util.log(`User has solved the challenge ${curChallengeObj.name}!`, req.user);
-                        return cb(null,
-                            { 
-                                message:"Congratulations you solved the challenge!", 
-                                data: curChallengeObj
-                            });
-                    }
-                });
-    });
-
+    module.exports.insertChallengeEntry(req.user, curChallengeObj, cb);
    
+}
+
+/**
+ * Inserts a challenge entry
+ */
+module.exports.insertChallengeEntry = function(user,curChallengeObj, cb){
+    db.insertChallengeEntry(user.id,curChallengeObj.id,
+        function(){
+            return cb({code:"Code save error"});
+        },function(){
+                //issue badgr badge if enabled
+                module.exports.badgrCall(curChallengeObj.badgrInfo,user);
+                //check to see if the user levelled up
+                module.exports.verifyLevelUp(user,
+                    function(err){
+                        return cb({code:"levelUpError"});
+                    },
+                    function(isLevelUp){
+                        curChallengeObj.isLevelUp = isLevelUp;
+                        if(isLevelUp){
+                            util.log(`User has solved the challenge ${curChallengeObj.name} and leveled up!`, user);
+                            //issue badgr badge if enabled for level
+                            module.exports.badgrCall(challengeDefinitions[user.level].badgrInfo,user);    
+                            return cb(null,
+                                {
+                                    message:"Congratulations you solved the challenge and leveled up!",
+                                    data:curChallengeObj
+                                });
+                        }
+                        else{
+                            util.log(`User has solved the challenge ${curChallengeObj.name}!`, user);
+                            return cb(null,
+                                { 
+                                    message:"Congratulations you solved the challenge!", 
+                                    data: curChallengeObj
+                                });
+                        }
+                    });
+        });
 }

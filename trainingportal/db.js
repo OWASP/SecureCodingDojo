@@ -64,6 +64,28 @@ class Connection{
     }
   }
 
+  /**
+   * Creates a promise with the query function so it can be called with async/await
+   * @param {String} sql The SQL statement to execute
+   * @param {*} params Optional array of parameters to pass to the statement
+   */
+  queryPromise(sql, params){
+    let promise = new Promise((resolve,reject) => {
+      this.query(sql,params,function(err,result){
+        if(err){
+          reject(err);
+        }
+        else{
+          resolve(result);
+        }
+      });
+    });
+
+    return promise;
+  }
+
+
+
   exec(sql, callback){
     if(MYSQL_CONFIG!==null){
       this.conPool.query(sql,callback);
@@ -110,6 +132,23 @@ function handleErr(errCb,err){
  */
 function handleDone(doneCb,result){
   if(!util.isNullOrUndefined(doneCb)) doneCb(result);
+}
+
+/**
+ * Utility function to get a promise from a db function 
+ */
+exports.getPromise = function(dbFunc, params){
+  let promise = new Promise((resolve,reject) => {
+      if(util.isNullOrUndefined(params)) params = [];
+      if(typeof params !== 'Array') params = [params];
+      let count = params.length;
+      switch(count){
+        case 0: dbFunc(reject, resolve); break;
+        case 1: dbFunc(params[0], reject, resolve);break;
+        case 2: dbFunc(parames[0], params[1], reject, resolve);break;
+      }
+    });
+  return promise;
 }
 
 exports.init = function(){
