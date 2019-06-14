@@ -3,38 +3,43 @@ var async = require('async');
 var assert = require('assert');
 //Test Suite
 
-
+//we need reference to a global promise so the tests don't run until the test user was created
+var insertUserPromise = null; 
+async function waitForInsertUser(){
+    while(insertUserPromise === null) {} //wait for promise to get initialized
+    await insertUserPromise;
+}
 
 describe('db', function() {
-    before(function(){
-        db.getConn().query("DELETE FROM users WHERE accountId like '%Delete%'");
+    before(async() => {
+        await db.getConn().queryPromise("DELETE FROM users WHERE accountId like '%Delete%'");
     });
 
-    describe('#insertUser(),getUser()', function() {
+    describe('#insertUser(),getUser()', () => {
         it('should insert one row without error', async () => {
-            let insertUserPromise = db.getPromise(db.insertUser,{accountId:"testDeleteMe",familyName:"LastTest", givenName:"FirstTest"});
+            insertUserPromise = db.getPromise(db.insertUser,{accountId:"testDeleteMe",familyName:"LastTest", givenName:"FirstTest"});
             let result = await insertUserPromise;
             assert.equal(result.affectedRows,1);
             return insertUserPromise;
         });
-        it('should retrieve the user without error', function(done) {
-            db.getUser("testDeleteMe",
-            function(err){
-                done(err);
-            },function(user){ 
-                assert(user!==null,"Could not get user");
-                assert.equal(user.givenName,"FirstTest");
-                assert.equal(user.familyName,"LastTest");
-                done();
-            });  
+        it('should retrieve the user without error', async () => {
+            waitForInsertUser();
+            let getUserPromise = db.getPromise(db.getUser, "testDeleteMe");
+            let user = await getUserPromise;
+            assert(user!==null,"Could not get user");
+            assert.equal(user.givenName,"FirstTest");
+            assert.equal(user.familyName,"LastTest");
+            return getUserPromise;
         });
+    
+    
     });
 
 
 
     describe('#updateUser()', function() {
         it('should update the user without error', function(done) {
-
+            waitForInsertUser();
             async.waterfall([
                 function(cb){
                     db.getUser("testDeleteMe",
