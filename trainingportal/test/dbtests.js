@@ -10,16 +10,30 @@ async function waitForInsertUser(){
     await insertUserPromise;
 }
 
+async function runDbInit(){
+    await db.getPromise(db.init);
+}
+runDbInit();
+
 describe('db', function() {
     before(async() => {
         await db.getConn().queryPromise("DELETE FROM users WHERE accountId like '%Delete%'");
+    });
+
+    describe('#getVersion()', () => {
+        it('should return the correct schema version', async () => {
+            let versionPromise = db.getPromise(db.getVersion);
+            let version = await versionPromise;
+            assert.equal(version,db.SCHEMA_VERSION);
+            return versionPromise;
+        });
     });
 
     describe('#insertUser(),getUser()', () => {
         it('should insert one row without error', async () => {
             insertUserPromise = db.getPromise(db.insertUser,{accountId:"testDeleteMe",familyName:"LastTest", givenName:"FirstTest"});
             let result = await insertUserPromise;
-            assert.equal(result.affectedRows,1);
+            assert.notEqual(result,null);
             return insertUserPromise;
         });
         it('should retrieve the user without error', async () => {
@@ -262,6 +276,7 @@ describe('db', function() {
                         },function(result){ 
                             assert.equal(result.length,1,"Incorrect number of entries for user");
                             assert.equal(result[0].challengeId,"cwe306","Incorrect challenge entry id for user");                                
+                            assert.notEqual(result[0].timestamp,null,"Timestamp should not be null");                                
                             cb(null,user); //pass the user for the next test
                         });
                 },

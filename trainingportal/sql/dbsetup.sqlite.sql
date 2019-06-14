@@ -1,7 +1,13 @@
+CREATE TABLE dbInfo (
+  version INTEGER
+);
+INSERT INTO dbInfo (version) VALUES (3);
+
 CREATE TABLE challengeEntries (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   userId INTEGER,
-  challengeId CHAR(255)
+  challengeId CHAR(255),
+  timestamp CHAR(255)
 );
 CREATE TABLE teams (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,3 +23,4 @@ CREATE TABLE users (
   familyName CHAR(255),
   givenName CHAR(255)
 );
+
