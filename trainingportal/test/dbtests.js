@@ -3,26 +3,26 @@ var async = require('async');
 var assert = require('assert');
 //Test Suite
 
+
+
 describe('db', function() {
     before(function(){
         db.getConn().query("DELETE FROM users WHERE accountId like '%Delete%'");
     });
 
     describe('#insertUser(),getUser()', function() {
-        it('should insert one row without error', function(done) {
-            db.insertUser({accountId:"testDeleteMe",familyName:"LastTest", givenName:"FirstTest"},
-            function(err){
-                done(err);
-            },function(result){ 
-                done();
-            });
+        it('should insert one row without error', async () => {
+            let insertUserPromise = db.getPromise(db.insertUser,{accountId:"testDeleteMe",familyName:"LastTest", givenName:"FirstTest"});
+            let result = await insertUserPromise;
+            assert.equal(result.affectedRows,1);
+            return insertUserPromise;
         });
         it('should retrieve the user without error', function(done) {
             db.getUser("testDeleteMe",
             function(err){
                 done(err);
             },function(user){ 
-                assert(user!=null,"Could not get user");
+                assert(user!==null,"Could not get user");
                 assert.equal(user.givenName,"FirstTest");
                 assert.equal(user.familyName,"LastTest");
                 done();
