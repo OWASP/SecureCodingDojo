@@ -149,7 +149,7 @@ app.get('/main', (req, res) => {
 });
 
 app.get('/challengeDefinitions.json', (req, res) => {
-  var returnChallenges = challenges.getChallengeDefinitionsForUser(req.user);
+  var returnChallenges = challenges.getChallengeDefinitionsForUser(req.user,["blackBelt","secondDegreeBlackBelt"]);
   res.send(returnChallenges);
 });
 

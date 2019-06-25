@@ -1,0 +1,12 @@
+{
+    "blackBelt":{
+        "name":"Black Belt",
+        "summary":"Teaches entry level software security concepts",
+        "dependencies":[]
+    },
+    "secondDegreeBlackBelt":{
+        "name":"Second Degree Black Belt",
+        "summary":"Teaches advanced software security concepts",
+        "dependencies":["blackBelt"]
+    }
+}

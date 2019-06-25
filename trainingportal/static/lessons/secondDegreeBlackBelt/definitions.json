@@ -1,0 +1,67 @@
+[
+    {
+        "level":8,
+        "name":"Second Degree Black Belt",
+        "badgrInfo":
+        {
+            "issuer":"JEzPNy2zSGG1XVTsJ5JE0g",
+            "badge_class":"6T4w5fU8RaiAedgSsVG4TA",
+            "recipient_type":"email",
+            "recipient_identifier":"",
+            "narrative":"Badge issued for completing the Secure Coding Dojo:Second Degree Black Belt.",
+            "create_notification":true,
+            "evidence_items":[]
+        },
+        "challenges":[
+            {
+                "id":"owasp2017misconfig",
+                "name":"Security Misconfiguration", 
+                "playLink":"",
+                "description": "owasp2017misconfig.html",
+                "codeBlockIds":["enforceSafeConfig"]
+            },
+            {
+                "id":"owasp2017sensitive",
+                "name":"Sensitive Data Exposure", 
+                "description": "owasp2017sensitive.html",
+                "attackGram":"missingenc.png",
+                "codeBlockIds":["useStrongDataEncryption"]
+            },
+            {
+                "id":"owasp2017brokenauth",
+                "name":"Broken Authentication & Broken Access Control", 
+                "description": "owasp2017brokenauth.html",
+                "attackGram":"missingauthz.png",
+                "codeBlockIds":["loginBestPractices","principleOfLeastPrivilege","serverSideValidation"]
+            },
+            {
+                "id":"owasp2017xss",
+                "name":"Cross-Site Scripting", 
+                "description": "owasp2017xss.html",
+                "attackGram":"xss.png",
+                "codeBlockIds":["neutralizeOutput","inputWhitelisting","requestForgeryPrevention"]
+            },
+            {
+                "id":"owasp2017injection",
+                "name":"Injection", 
+                "description": "owasp2017injection.html",
+                "attackGram":"commandinjection.png",
+                "codeBlockIds":["parameterizedCommands","inputWhitelisting","principleOfLeastPrivilege"]
+            },
+            {
+                "id":"owasp2017xxe",
+                "name":"XML External Entities", 
+                "description": "owasp2017xxe.html",
+                "attackGram":"xxe.png",
+                "codeBlockIds":["disableXmlExternalEntities","principleOfLeastPrivilege"]
+            },
+            {
+                "id":"owasp2017deserialization",
+                "name":"Using Components with Known Vulnerabilities & Insecure Deserialization", 
+                "description": "owasp2017deserialization.html",
+                "attackGram":"deserialization.png",
+                "codeBlockIds":["enforceSafeDeserialization","keep3rdPartyUpToDate"]
+            }
+        ]
+    }
+]

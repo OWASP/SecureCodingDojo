@@ -19,7 +19,7 @@ const path = require('path');
 const fs = require('fs');
 const markdown = require('markdown').markdown;
 const util = require(path.join(__dirname, 'util'));
-const challengeDefinitions = Object.freeze(require(path.join(__dirname, 'static/challenges/challengeDefinitions.json')));
+const modules = Object.freeze(require(path.join(__dirname, 'static/lessons/modules.json')));
 const challengeSecrets = Object.freeze(require(path.join(__dirname, 'challengeSecrets.json')));
 const config = require(path.join(__dirname, 'config'));
 const db = require(path.join(__dirname, 'db'));
@@ -30,22 +30,40 @@ const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const https = require('https');
 
 
+function getDefinifionsForModule(moduleId){
+    var defs = Object.freeze(require(path.join(__dirname, 'static/lessons/',moduleId,'/definitions.json')));
+    return defs;
+}
+
+var challengeDefinitions = [];
 var challengeNames = [];
 var solutions = [];
-challengeDefinitions.forEach(function(level){
-  level.challenges.forEach(function(challenge){
-    challengeNames[challenge.id] = challenge.name;
-    solutions[challenge.id] = challenge.solution;
-  })
-});
-
 var masterSalt = "";
-if(util.isNullOrUndefined(process.env.CHALLENGE_MASTER_SALT)){
-    util.log("WARNING. CHALLENGE_MASTER_SALT not set. Challenges may be bypassed.");
+
+/**
+ * Initializes challenges when this module is loaded
+ */
+function init(){   
+    for(moduleId in modules){
+        moduleDefinitions = getDefinifionsForModule(moduleId);
+        for(level of moduleDefinitions){
+            challengeDefinitions.push(level);
+            for(challenge of level.challenges){
+                challengeNames[challenge.id] = challenge.name;
+                solutions[challenge.id] = challenge.solution;
+            }
+        }
+    }
+
+    if(util.isNullOrUndefined(process.env.CHALLENGE_MASTER_SALT)){
+        util.log("WARNING. CHALLENGE_MASTER_SALT not set. Challenges may be bypassed.");
+    }
+    else{
+        masterSalt=process.env.CHALLENGE_MASTER_SALT;
+    }
 }
-else{
-    masterSalt=process.env.CHALLENGE_MASTER_SALT;
-}
+
+init();
 
 exports.getChallengeNames = function(){ return challengeNames; }
 exports.getChallengeDefinitions = function(){ return challengeDefinitions; }
@@ -53,28 +71,42 @@ exports.getChallengeSecrets = function(){ return challengeSecrets; }
 
 /**
  * Construct the challenge definitions loaded on the client side based on the users level
- * @param {The session user object} user 
+ * @param {Object} user The session user object
+ * @param {Array} moduleIds The lesson module ids
  */
-exports.getChallengeDefinitionsForUser = function (user) {
+exports.getChallengeDefinitionsForUser = function (user, moduleIds) {
     var returnChallenges = [];
     var permittedLevel = user.level + 1;
-    challengeDefinitions.forEach(function (level) {
-        if (permittedLevel >= level.level) {
-            level.challenges.forEach(function (challenge) {
-                //update the play link if it exists
-                if (!util.isNullOrUndefined(config.playLinks)) {
-                    var playLink = config.playLinks[challenge.id];
-                    if (!util.isNullOrUndefined(playLink)) {
-                        challenge.playLink = playLink;
+    
+    if(util.isNullOrUndefined(moduleIds)) return [];
+    
+    if(!Array.isArray(moduleIds)) moduleIds = [moduleIds];
+    
+    for(moduleId of moduleIds){
+
+        if(util.isNullOrUndefined(modules[moduleId])) return [];
+
+        var moduleDefinitions = getDefinifionsForModule(moduleId);
+
+        for(level of moduleDefinitions){
+            if (permittedLevel >= level.level) {
+                level.challenges.forEach(function (challenge) {
+                    //update the play link if it exists
+                    if (!util.isNullOrUndefined(config.playLinks)) {
+                        var playLink = config.playLinks[challenge.id];
+                        if (!util.isNullOrUndefined(playLink)) {
+                            challenge.playLink = playLink;
+                        }
                     }
-                }
-            });
-            returnChallenges.push(level);
+                });
+                returnChallenges.push(level);
+            }
+            else {
+                returnChallenges.push({ "level": level.level, "name": level.name, "challenges": [] });
+            }
         }
-        else {
-            returnChallenges.push({ "level": level.level, "name": level.name, "challenges": [] });
-        }
-    });
+        
+    }
     return returnChallenges;
 }
 
