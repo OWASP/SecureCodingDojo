@@ -82,16 +82,7 @@ String scoreMessage = "";
 if(score>0){
 	scoreMessage = String.format("<div class='alert alert-info'>Your score is %d out of %d</div>",score,total);
 	if(score==total){
-		
-		String code = "";
-		try {
-			code = CodeLoader.getInstance().getCode("quiz");
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		session.setAttribute(Constants.CHALLENGE_CODE,code);
+		session.setAttribute(Constants.CHALLENGE_ID,"quiz");
 		successMessage = getYourCodeMarkup;
 	
 	}

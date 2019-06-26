@@ -55,15 +55,8 @@ public class Ch1Loggedin extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		
-		String code = "";
-		try {
-			code = CodeLoader.getInstance().getCode("cwe306");
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
-		session.setAttribute(Constants.CHALLENGE_CODE,code);
+		session.setAttribute(Constants.CHALLENGE_ID,"cwe306");
 		response.sendRedirect(Constants.SECRET_PAGE);
 		
 	}

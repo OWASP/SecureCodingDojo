@@ -52,16 +52,8 @@ public class Cwe434FileUpload extends HttpServlet {
 		
 		if(fileName.toLowerCase().endsWith(".jsp")){
 			HttpSession session = request.getSession();
-			
-			String code = "";
-			try {
-				code = CodeLoader.getInstance().getCode("cwe434");
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
-			session.setAttribute(Constants.CHALLENGE_CODE,code);
+			session.setAttribute(Constants.CHALLENGE_ID,"cwe434");
 			response.sendRedirect(Constants.SECRET_PAGE);
 			
 		}

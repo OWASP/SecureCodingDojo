@@ -46,13 +46,6 @@ public class Crypto {
 	 */
 	private Crypto() throws UnsupportedEncodingException, NoSuchAlgorithmException{
 		try{
-			String keyString = System.getenv("CHALLENGE_KEY");
-			String ivString = System.getenv("CHALLENGE_KEY_IV");
-			if(keyString==null||ivString==null){
-				//try to get the key pairs with System.getProperty
-				keyString = System.getProperty("CHALLENGE_KEY");
-				ivString = System.getProperty("CHALLENGE_KEY_IV");
-			}
 			
 			String masterSaltVar = System.getenv("CHALLENGE_MASTER_SALT");
 			if(masterSaltVar == null){
@@ -66,24 +59,6 @@ public class Crypto {
 				System.out.println("WARNING.CHALLENGE_MASTER_SALT not set. Challenges may be bypassed.");
 			}
 		
-			
-			//if we can't get the keys
-			if(keyString==null||ivString==null){
-				System.out.println("WARNING. CHALLENGE_KEY and CHALLENGE_KEY_IV are not set in /opt/tomcat/bin/setenv.sh");
-				return;
-			}
-			
-			
-			byte [] ivBytes = new byte[16];
-			byte [] ivStringBytes = getHash(ivString,HASH_ALG);
-			for(int i=0;i<ivBytes.length && i<ivStringBytes.length; i++){
-				ivBytes[i] = ivStringBytes[i];
-			}
-			
-			byte[] keyHash = getHash(keyString, HASH_ALG);
-			
-			key = new SecretKeySpec(keyHash, "AES");
-			iv = new IvParameterSpec(ivBytes);
 		}
 		catch(Exception ex){
 			System.out.println("Could not initialize keys."+ex.getMessage());
@@ -107,54 +82,7 @@ public class Crypto {
 		return keyHash;
 	}
 	
-	/**
-	 * Encrypts a string
-	 * @param value
-	 * @return
-	 */
-	public String encrypt(String value) {
-        try {
-
-        	if(key==null) return value;
-        	
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.ENCRYPT_MODE, key, iv);
-
-            byte[] encrypted = cipher.doFinal(value.getBytes());
-            
-            return Base64.getEncoder().encodeToString(encrypted);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return null;
-    }
-
-	/**
-	 * Decrypts a string from base64 encoded bytes
-	 * @param encrypted
-	 * @return
-	 * @throws NoSuchAlgorithmException 
-	 * @throws UnsupportedEncodingException 
-	 */
-    public String decrypt( String encrypted) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        try {
-        
-        	if(key==null) return encrypted;
-        	
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.DECRYPT_MODE, key, iv);
-
-            byte[] original = cipher.doFinal(Base64.getDecoder().decode(encrypted));
-
-            return new String(original);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return null;
-    }
-    
+	    
     /**
      * Gets a SHA256 digest for the provided string
      * @param text

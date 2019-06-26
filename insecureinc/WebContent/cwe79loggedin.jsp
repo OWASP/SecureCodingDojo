@@ -27,14 +27,7 @@ else{
 		
 		session.setAttribute("cwe79displayName",displayName);
 		if(Util.hasXSS(displayName)){ //challenge completed
-			String code = "";
-			try {
-				code = CodeLoader.getInstance().getCode("cwe79");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			session.setAttribute(Constants.CHALLENGE_CODE,code);
+			session.setAttribute(Constants.CHALLENGE_ID,"cwe79");
 			successMessage = getYourCodeMarkup;
 		}
 		else if(Util.hasImgTagAndEvent(displayName)){

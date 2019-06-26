@@ -21,14 +21,7 @@ if(pwd!=null){
 		String output = Util.executeMasterPwd(pwd,"inc/insecure/bufferoverflow.c");
 		outputPre = String.format(OUTPUT_PRE_FORMAT,output);
 		if(outputPre.contains("PASSWORD VERIFIED") && pwd.indexOf("59563376") ==-1){
-			String code = "";
-			try {
-				code = CodeLoader.getInstance().getCode("cwe120");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			session.setAttribute(Constants.CHALLENGE_CODE,code);
+			session.setAttribute(Constants.CHALLENGE_ID,"cwe120");
 			successMessage = GET_YOUR_CODE_MARKUP;
 		}
 		else{

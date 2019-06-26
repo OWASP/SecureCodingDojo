@@ -15,15 +15,7 @@ if(session.getAttribute("cwe89loggedin")==null || !(boolean)session.getAttribute
 	response.sendRedirect("cwe89.jsp?loggedin=false");
 }
 else{
-	
-	String code = "";
-	try {
-		code = CodeLoader.getInstance().getCode("cwe89");
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	session.setAttribute(Constants.CHALLENGE_CODE,code);
+	session.setAttribute(Constants.CHALLENGE_ID,"cwe89");
 	successMessage = GET_YOUR_CODE_MARKUP;
 
 

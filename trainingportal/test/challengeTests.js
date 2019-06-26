@@ -32,11 +32,7 @@ challenges.badgrCall = function(badgrInfo, user){
 
 //mock request and response express objects
 var lastChallengeId = "cwe862";
-var challengeSecrets = challenges.getChallengeSecrets();
-var secretEntry = challengeSecrets[lastChallengeId];
-if(util.hasKey()){
-    secretEntry = aescrypto.decrypt(secretEntry,process.env.CHALLENGE_KEY,process.env.CHALLENGE_KEY_IV);
-}
+
 //calculate the hash
 var mockSalt = "1234";
 var masterSalt = "";
@@ -48,7 +44,7 @@ else{
 }
 
 
-var mockHash = crypto.createHash('sha256').update(secretEntry+mockSalt+masterSalt).digest('base64');
+var mockHash = crypto.createHash('sha256').update(lastChallengeId+mockSalt+masterSalt).digest('base64');
 
 var mockRequest = {
     "body":{

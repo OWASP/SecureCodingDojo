@@ -20,7 +20,6 @@ const fs = require('fs');
 const markdown = require('markdown').markdown;
 const util = require(path.join(__dirname, 'util'));
 const modules = Object.freeze(require(path.join(__dirname, 'static/lessons/modules.json')));
-const challengeSecrets = Object.freeze(require(path.join(__dirname, 'challengeSecrets.json')));
 const config = require(path.join(__dirname, 'config'));
 const db = require(path.join(__dirname, 'db'));
 const async = require('async');
@@ -67,7 +66,6 @@ init();
 
 exports.getChallengeNames = function(){ return challengeNames; }
 exports.getChallengeDefinitions = function(){ return challengeDefinitions; }
-exports.getChallengeSecrets = function(){ return challengeSecrets; }
 
 /**
  * Construct the challenge definitions loaded on the client side based on the users level
@@ -284,19 +282,9 @@ module.exports.apiChallengeCode = (req, cb) => {
     if(curChallengeObj==null){
         return cb({code:"challengeNotFound"});
     }
-    var challengeSecrets = module.exports.getChallengeSecrets();
-    var secretEntry = challengeSecrets[challengeId];
     
-    if(secretEntry===null){
-        return cb({code:"challengeSecretNotFound"});
-
-    } 
-
-    if(util.hasKey()){
-        secretEntry = aescrypto.decrypt(secretEntry,process.env.CHALLENGE_KEY,process.env.CHALLENGE_KEY_IV);
-    }
     //calculate the hash
-    var verificationHash = crypto.createHash('sha256').update(secretEntry+req.user.codeSalt+masterSalt).digest('base64');
+    var verificationHash = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+masterSalt).digest('base64');
     if(verificationHash!==challengeCode){
         return cb({code:"invalidCode"});
     } 

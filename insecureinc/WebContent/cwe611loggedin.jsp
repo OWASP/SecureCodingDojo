@@ -39,14 +39,7 @@ else{
 	if(avatar.indexOf("root:")!=-1 && original.indexOf("root:")==-1){
 		session.setAttribute("cwe611displayName",displayName);
 		 //challenge completed
-		String code = "";
-		try {
-			code = CodeLoader.getInstance().getCode("cwe611");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		session.setAttribute(Constants.CHALLENGE_CODE,code);
+		session.setAttribute(Constants.CHALLENGE_ID,"cwe611");
 		successMessage = getYourCodeMarkup;
 	
 	}

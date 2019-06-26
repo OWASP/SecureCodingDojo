@@ -42,15 +42,7 @@ if(file!=null){
 			contents="<div class='alert alert-info'>Nice! You got the idea, but these are not the files you are looking for.</a>";
 		}
 		else if(contents.contains("secret.password=12345678")){ //they got the password file
-			String code = "";
-			try {
-				code = CodeLoader.getInstance().getCode("cwe22");
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			session.setAttribute(Constants.CHALLENGE_CODE,code);
+			session.setAttribute(Constants.CHALLENGE_ID,"cwe22");
 			successMessage = getYourCodeMarkup;
 		}
 		else{

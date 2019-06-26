@@ -9,14 +9,7 @@ if(session.getAttribute("ch2loggedin")==null || !(boolean)session.getAttribute("
 else{
 	String isAdmin=request.getParameter("isAdmin");
 	if(isAdmin!=null && isAdmin.toLowerCase().equals("true")){
-		String code = "";
-		try {
-			code = CodeLoader.getInstance().getCode("cwe807");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		session.setAttribute(Constants.CHALLENGE_CODE,code);
+		session.setAttribute(Constants.CHALLENGE_ID,"cwe807");
 		response.sendRedirect(Constants.SECRET_PAGE);
 	}
 

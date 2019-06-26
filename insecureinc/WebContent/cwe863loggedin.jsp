@@ -25,14 +25,7 @@ else{
 	
 	
 	if(!stop && isAdmin){
-		String code = "";
-		try {
-			code = CodeLoader.getInstance().getCode("cwe863");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		session.setAttribute(Constants.CHALLENGE_CODE,code);
+		session.setAttribute(Constants.CHALLENGE_ID,"cwe863");
 		response.sendRedirect(Constants.SECRET_PAGE);
 	}
 		
