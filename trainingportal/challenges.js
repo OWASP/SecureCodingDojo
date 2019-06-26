@@ -29,8 +29,12 @@ const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const https = require('https');
 
 
+function getModulePath(moduleId){
+    return path.join('static/lessons/', moduleId);
+}
+
 function getDefinifionsForModule(moduleId){
-    var defs = Object.freeze(require(path.join(__dirname, 'static/lessons/',moduleId,'/definitions.json')));
+    var defs = Object.freeze(require(path.join(__dirname, getModulePath(moduleId), '/definitions.json')));
     return defs;
 }
 
@@ -49,7 +53,9 @@ function init(){
             challengeDefinitions.push(level);
             for(challenge of level.challenges){
                 challengeNames[challenge.id] = challenge.name;
-                solutions[challenge.id] = challenge.solution;
+                if(!util.isNullOrUndefined(challenge.solution)){
+                    solutions[challenge.id] = path.join(getModulePath(moduleId), challenge.solution);
+                }
             }
         }
     }
