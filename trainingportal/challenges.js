@@ -49,12 +49,13 @@ var masterSalt = "";
 function init(){   
     for(moduleId in modules){
         moduleDefinitions = getDefinifionsForModule(moduleId);
+        var modulePath = getModulePath(moduleId);
         for(level of moduleDefinitions){
             challengeDefinitions.push(level);
             for(challenge of level.challenges){
                 challengeNames[challenge.id] = challenge.name;
                 if(!util.isNullOrUndefined(challenge.solution)){
-                    solutions[challenge.id] = path.join(getModulePath(moduleId), challenge.solution);
+                    solutions[challenge.id] = path.join(modulePath, challenge.solution);
                 }
             }
         }
@@ -89,20 +90,24 @@ exports.getChallengeDefinitionsForUser = function (user, moduleIds) {
     for(moduleId of moduleIds){
 
         if(util.isNullOrUndefined(modules[moduleId])) return [];
-
+        var modulePath = getModulePath(moduleId);
         var moduleDefinitions = getDefinifionsForModule(moduleId);
 
         for(level of moduleDefinitions){
             if (permittedLevel >= level.level) {
-                level.challenges.forEach(function (challenge) {
+               for(challenge of level.challenges) {
                     //update the play link if it exists
                     if (!util.isNullOrUndefined(config.playLinks)) {
                         var playLink = config.playLinks[challenge.id];
                         if (!util.isNullOrUndefined(playLink)) {
                             challenge.playLink = playLink;
                         }
+                        var description = challenge.description;
+                        if(!util.isNullOrUndefined(description) && description.indexOf(modulePath) === -1){
+                            challenge.description = path.join(modulePath, description);
+                        }
                     }
-                });
+                }
                 returnChallenges.push(level);
             }
             else {
