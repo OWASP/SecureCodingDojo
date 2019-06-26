@@ -12,20 +12,9 @@ exports.challengeValidator = function(event,context){
     } else {
       console.log('authorized:', decoded);
       var challengeId = decoded.sub;
-      var challengeCode = null;
-      switch(challengeId){
-        case "dg5RbyYo" : challengeCode = process.env.CHALLENGE_CODE1; break;
-        case "ID6Qzz3Q":  challengeCode = process.env.CHALLENGE_CODE2; break;
-        case "MHU8IvrweQ": challengeCode = process.env.CHALLENGE_CODE3; break;
-        case "nptqRb99a5E": challengeCode = process.env.CHALLENGE_CODE4; break;
-        case "RpOGG3CGz": challengeCode = process.env.CHALLENGE_CODE5; break;
-        case "dQDYI7p7he": challengeCode = process.env.CHALLENGE_CODE6; break;
-        case "utuwHk41j": challengeCode = process.env.CHALLENGE_CODE7; break;
-      }
       
-      
-      if(challengeCode===null || typeof challengeCode==='undefined'){
-        return context.fail("Invalid challenge code");
+      if(challengeId===null || typeof challengeId==='undefined'){
+        return context.fail("Invalid challenge id");
       }
 
       if(!event.codeSalt || event.codeSalt.length < 5){
@@ -37,7 +26,7 @@ exports.challengeValidator = function(event,context){
           masterSalt=process.env.CHALLENGE_MASTER_SALT;
       }
 
-      var verificationHash = crypto.createHash('sha256').update(challengeCode+event.codeSalt+masterSalt).digest('base64');
+      var verificationHash = crypto.createHash('sha256').update(challengeId+event.codeSalt+masterSalt).digest('base64');
 
       return context.succeed({
         verificationCode:verificationHash

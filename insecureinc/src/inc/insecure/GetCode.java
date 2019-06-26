@@ -29,12 +29,12 @@ public class GetCode extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
-		String code = (String) session.getAttribute(Constants.CHALLENGE_CODE);
+		String chId = (String) session.getAttribute(Constants.CHALLENGE_ID);
 		String salt = request.getParameter("salt").trim();
 		String saltedCode = "";
-		if(salt!=null && code!=null){
+		if(salt!=null && chId!=null){
 			try {
-				saltedCode = Crypto.getInstance().getCodeHashString(code+salt);
+				saltedCode = Crypto.getInstance().getCodeHashString(chId+salt);
 			} catch (NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

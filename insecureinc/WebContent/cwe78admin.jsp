@@ -41,14 +41,7 @@ else{
 		
 		
 		if(challengePassed){
-			String code = "";
-			try {
-				code = CodeLoader.getInstance().getCode("cwe78");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			session.setAttribute(Constants.CHALLENGE_CODE,code);
+			session.setAttribute(Constants.CHALLENGE_ID,"cwe78");
 			successMessage = GET_YOUR_CODE_MARKUP;
 		}
 		

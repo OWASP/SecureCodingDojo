@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="inc.insecure.*" %>
 <%
-if(session.getAttribute(Constants.CHALLENGE_CODE)==null){
+if(session.getAttribute(Constants.CHALLENGE_ID)==null){
 	response.sendRedirect("index.jsp");
 }
 %>

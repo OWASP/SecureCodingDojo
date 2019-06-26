@@ -10,14 +10,7 @@ String pwd = request.getParameter("pwd");
 if(usr!=null && pwd!=null){ 
 	alertVisibility="";
 	if(usr.equals("admin") && Util.isAdminPassOk(pwd)){
-		String code = "";
-		try {
-			code = CodeLoader.getInstance().getCode("cwe307");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		session.setAttribute(Constants.CHALLENGE_CODE,code);
+		session.setAttribute(Constants.CHALLENGE_ID,"cwe307");
 		response.sendRedirect(Constants.SECRET_PAGE);
 	}
 }

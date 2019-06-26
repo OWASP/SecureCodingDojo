@@ -84,12 +84,21 @@ exports.foobarGetCurrentUser = function(event, context) {
     } else {
       console.log('authorized:', decoded);
       var response = {id:decoded.sub,name:decoded.name};
-      if(decoded.sub==="test"){
+      var challengeId = null;
+      
+      switch(decoded.sub){
+        case "test": challengeId = "owasp2017sensitive"; break;
+        case "badspaghetti": challengeId = "owasp2017brokenauth"; break;
+        case "stinkyfish": challengeId = "owasp2017brokenauth"; break;
+      }
+      
+      
+      if(challengeId!==null){
         //for the text user add the challenge code url
         var lambda = new AWS.Lambda();
         lambda.invoke({
             FunctionName:'FoobarChallengeSign',
-            Payload: JSON.stringify({challengeId:"ID6Qzz3Q"})
+            Payload: JSON.stringify({challengeId:challengeId})
         },function(error,data){
            if(error){
              context.fail("Failed to call challenge signer");
@@ -113,39 +122,6 @@ exports.challengeSigner = function(event,context){
   var challengeId = event.challengeId;
   var token = jwt.sign({"sub": challengeId}, process.env.SIGNER_SECRET, {expiresIn:15*60});
   context.succeed({"message":"YOU GOT IT!","challengeCodeUrl":process.env.CHALLENGE_CODE_URL+"#"+token, "challengeId":challengeId});
-}
-
-//validate challenge tokens and issue challenge codes
-exports.challengeValidator = function(event,context){
-  //validate the token 
-  jwt.verify(event.token, process.env.SIGNER_SECRET, function(err, decoded) {
-    if (err) {
-      console.log('Failed jwt verify');
-      return context.fail("Invalid or expired token");
-    } else {
-      console.log('authorized:', decoded);
-      var challengeId = decoded.sub;
-      var challengeCode = null;
-      switch(challengeId){
-        case "dg5RbyYo" : challengeCode = process.env.CHALLENGE_CODE1; break;
-        case "ID6Qzz3Q":  challengeCode = process.env.CHALLENGE_CODE2; break;
-      }
-      
-      if(challengeCode===null){
-        return context.fail("Invalid challenge code");
-      }
-
-      if(!event.codeSalt || event.codeSalt.length < 5){
-        return context.fail("Invalid salt");
-      }
-
-      var verificationHash = crypto.createHash('sha256').update(challengeCode+event.codeSalt).digest('base64');
-
-      return context.succeed({
-        verificationCode:verificationHash
-      });
-    }
-  });
 }
 
 

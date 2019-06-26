@@ -24,14 +24,7 @@ else{
 		avatar = avatar.replace("<", "").replace(">", "");
 		session.setAttribute("cwe352avatar",avatar);
 		if(Util.hasCSRF(avatar)){ //challenge completed
-			String code = "";
-			try {
-				code = CodeLoader.getInstance().getCode("cwe352");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			session.setAttribute(Constants.CHALLENGE_CODE,code);
+			session.setAttribute(Constants.CHALLENGE_ID,"cwe352");
 			response.sendRedirect(Constants.SECRET_PAGE);
 		}
 		else if(displayName.toLowerCase().indexOf("img") != -1){

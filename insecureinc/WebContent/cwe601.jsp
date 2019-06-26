@@ -13,14 +13,7 @@ if(usr!=null && pwd!=null){
 if(redirect!=null){
 
 	if(redirect.toLowerCase().startsWith("http://evil.bad") || redirect.toLowerCase().startsWith("https://evil.bad")){
-		String code = "";
-		try {
-			code = CodeLoader.getInstance().getCode("cwe601");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		session.setAttribute(Constants.CHALLENGE_CODE,code);
+		session.setAttribute(Constants.CHALLENGE_ID,"cwe601");
 		response.sendRedirect(Constants.SECRET_PAGE);
 	}
 }

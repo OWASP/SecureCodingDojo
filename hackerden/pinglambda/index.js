@@ -45,15 +45,15 @@ exports.handler = (event, context, callback) => {
            var challengeId = null;
            var secret = null;
            if(resp.indexOf(process.env.SECRET1) > -1){
-               challengeId="RpOGG3CGz";
+               challengeId="owasp2017injection";
                secret=process.env.SECRET1;
            }
            if(resp.indexOf(process.env.SECRET2) >-1){
-               challengeId="dQDYI7p7he";
+               challengeId="owasp2017xxe";
                secret=process.env.SECRET2;
            }
            if(resp.indexOf(process.env.SECRET3) >-1){
-               challengeId="utuwHk41j";
+               challengeId="owasp2017deserialization";
                secret=process.env.SECRET3;
            }
            

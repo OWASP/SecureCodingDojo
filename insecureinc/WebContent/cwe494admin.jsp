@@ -13,16 +13,9 @@ else{
 	updateServer = request.getParameter("updateServer");
 	if(updateServer!=null){
 		if(updateServer.toLowerCase().startsWith("http://evil.bad") || 
-		   updateServer.toLowerCase().startsWith("https://evil.bad") ||
-		   updateServer.toLowerCase().startsWith("evil.bad")){
-			String code = "";
-			try {
-				code = CodeLoader.getInstance().getCode("cwe494");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			session.setAttribute(Constants.CHALLENGE_CODE,code);
+			updateServer.toLowerCase().startsWith("https://evil.bad") ||
+			updateServer.toLowerCase().startsWith("evil.bad")){
+			session.setAttribute(Constants.CHALLENGE_ID,"cwe494");
 			response.sendRedirect(Constants.SECRET_PAGE);
 		}
 	}

@@ -17,14 +17,7 @@ if(usr!=null && pwd!=null){
 		//get the currently generated password from the session
 		String sesPwd = (String)session.getAttribute("cwe311userpassword");
 		if(sesPwd!=null && sesPwd.equals(pwd)){
-			String code = "";
-			try {
-				code = CodeLoader.getInstance().getCode("cwe311");
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			session.setAttribute(Constants.CHALLENGE_CODE,code);
+			session.setAttribute(Constants.CHALLENGE_ID,"cwe311");
 			response.sendRedirect(Constants.SECRET_PAGE);
 		}
 	}

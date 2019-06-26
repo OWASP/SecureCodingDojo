@@ -23,7 +23,7 @@ exports.handler = function(event, context, callback) {
     var lambda = new AWS.Lambda();
         lambda.invoke({
             FunctionName:'FoobarChallengeSign',
-            Payload: JSON.stringify({challengeId:"nptqRb99a5E"})
+            Payload: JSON.stringify({challengeId:"owasp2017xss"})
         },
     function(error,data){
         if(error){

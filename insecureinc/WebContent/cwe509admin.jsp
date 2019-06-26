@@ -59,14 +59,7 @@ else{
 	String output = Util.exec("/bin/ls","/tmp");
 	challengePassed = session.getAttribute("cwe509challengepassed")!=null && ((boolean)session.getAttribute("cwe509challengepassed"))==true;
 	if(challengePassed){
-		String code = "";
-		try {
-			code = CodeLoader.getInstance().getCode("cwe509");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		session.setAttribute(Constants.CHALLENGE_CODE,code);
+		session.setAttribute(Constants.CHALLENGE_ID,"cwe509");
 		successMessage = GET_YOUR_CODE_MARKUP;
 	}
 	
