@@ -243,12 +243,12 @@ describe('db', function() {
             async.waterfall([
                 function(cb){
                     db.insertUser(
-                        {accountId:"testDeleteMe",familyName:"LastTest1", givenName:"FirstTest1"},
+                        {accountId:"testDeleteMeChallenges",familyName:"LastTest1", givenName:"FirstTest1"},
                         function(err){cb(err);},
                         function(result){cb(null,result);});
                 },
                 function(result,cb){
-                    db.getUser("testDeleteMe",
+                    db.getUser("testDeleteMeChallenges",
                     function(err){
                         console.log("FAIL: getUser before update");
                         cb(err);
@@ -257,7 +257,7 @@ describe('db', function() {
                     });
                 },
                 function(user, cb){
-                    db.getUser("testDeleteMe",
+                    db.getUser("testDeleteMeChallenges",
                     function(err){
                         cb(err);
                     },function(user){ 
