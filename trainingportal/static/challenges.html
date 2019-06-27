@@ -1,14 +1,7 @@
 <div class="container-fluid">
     
-    <div class="alert alert-danger" role="alert" ng-if="!moduleId">
-        You need to pick a training module first.
-    </div>
-
-    <div class="alert alert-danger" role="alert" ng-if="!challengesAvailable && moduleId">
-        Specified module is not available.
-    </div>
-
-    <span ng-if="challengesAvailable">
+    
+    <span ng-show="challengesAvailable">
     <p>Complete challenges below to advance to the next level. Click on the challenge name to expand/collapse the description.</p>
     <p>
         <span class="oi oi-info"></span>
@@ -76,5 +69,17 @@
         </div>
     </div>
     </span>
+
+    <div class="alert alert-danger" role="alert" ng-show="!moduleId">
+            You need to pick a training module first.
+    </div>
+    <span ng-show="!challengesAvailable && moduleId">
+        <div class="alert alert-danger" role="alert" >
+            Specified module is not available.
+        </div>
+    <button class="btn btn-secondary" onclick="window.history.back()">Back</button>
+    </span>
+    
+
     <br><br>
 </div>
