@@ -1,7 +1,7 @@
 app.controller("submitCodeCtrl", function($scope, $http, $routeParams, $location) {
     //reload the challenge page
     $("#codeBlocksModal").on("hidden.bs.modal", function () {
-        window.location='#!';
+        window.history.back();
     });
 
     $scope.init = function(){

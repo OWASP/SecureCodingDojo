@@ -160,6 +160,15 @@ app.get('/challengeDefinitions.json', (req, res) => {
   res.send(returnChallenges);
 });
 
+app.get('/challenges/:moduleId', (req, res) => {
+  var moduleId = req.params.moduleId;
+  if(util.isNullOrUndefined(moduleId) || validator.isAlphanumeric(moduleId) == false){
+    return util.apiResponse(req, res, 400, "Invalid module id."); 
+  }
+  var returnChallenges = challenges.getChallengeDefinitionsForUser(req.user, moduleId);
+  res.send(returnChallenges);
+});
+
 app.get('/challenges/solutions/:challengeId', (req,res) => {
   var challengeId = req.params.challengeId;
   if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) == false){
