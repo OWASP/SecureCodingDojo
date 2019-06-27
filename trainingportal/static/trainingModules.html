@@ -1,0 +1,25 @@
+
+<div class="container" ng-app="challengesApp" ng-controller="trainingModulesCtrl">
+    <h3>Hi {{firstName}}! Welcome to the Secure Coding Dojo!</h3>
+    <p>Pick a training module below to start.</p>
+    <div class="row">
+        <div class="col-lg-6 d-flex align-items-stretch" ng-repeat="(key, value) in modules" style="padding:1em" >
+            
+                <div class="card" >
+                    <div class="card-header">
+                        {{value.name}}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{value.summary}}</h5>
+                        <p class="card-text">{{value.description}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted" ng-if="value.requiredModules.length>0">
+                            This module requires: <span ng-repeat="moduleId in value.requiredModules">{{modules[moduleId].name}}</span>
+                        </small>
+                        <a href="#!challenges/{{key}}" class="btn btn-primary float-right">Load</a>
+                    </div>
+                </div>
+    </div>
+    </div>
+</div>

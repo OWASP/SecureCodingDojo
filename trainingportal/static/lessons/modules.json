@@ -1,12 +1,15 @@
 {
     "blackBelt":{
         "name":"Black Belt",
-        "summary":"Teaches entry level software security concepts",
-        "dependencies":[]
+        "summary":"Common software security flaws",
+        "description":"This module is based on the SANS Top 25 - Most Dangerous Sofware Flaws. Lessons are entry level difficulty aimed at introducing the concepts of vulnerability, exploit and software defense.",
+        "requiredModules":[]
     },
     "secondDegreeBlackBelt":{
         "name":"Second Degree Black Belt",
-        "summary":"Teaches advanced software security concepts",
-        "dependencies":["blackBelt"]
+        "summary":"Cloud software exploitation techniques",
+        "description":"Have some fun with this Capture the Flag module which is based on OWASP Top 10 (v2017). Your goal is to take down the cloud applications used in a worldwide malware campaign.",
+        "requiredModules":["blackBelt"]
     }
+    
 }

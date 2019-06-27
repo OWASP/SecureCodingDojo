@@ -3,6 +3,10 @@ var app = angular.module('challengesApp', ['ngRoute']);
 app.config(function($routeProvider) {
     $routeProvider
     .when("/", {
+        templateUrl : "static/trainingModules.html",
+        controller: "trainingModulesCtrl"
+    })
+    .when("/challenges/:moduleId?", {
         templateUrl : "static/challenges.html",
         controller: "challengesCtrl"
     })

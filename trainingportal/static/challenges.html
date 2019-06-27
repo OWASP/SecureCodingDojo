@@ -1,13 +1,21 @@
 <div class="container-fluid">
-    <h3>Hi {{firstName}}! Your level is: '{{userLevelString}}' </h3>
-    <p>Complete the challenges below to advance to the next level. Click on the challenge name to expand/collapse the description.</p>
+    
+    <div class="alert alert-danger" role="alert" ng-if="!moduleId">
+        You need to pick a training module first.
+    </div>
+
+    <div class="alert alert-danger" role="alert" ng-if="!challengesAvailable && moduleId">
+        Specified module is not available.
+    </div>
+
+    <span ng-if="challengesAvailable">
+    <p>Complete challenges below to advance to the next level. Click on the challenge name to expand/collapse the description.</p>
     <p>
         <span class="oi oi-info"></span>
         Throughout the challenges try to think how the particular vulnerability applies to your own code. 
         While the vulnerable applications are web sites (for the purpose of providing a easily accessible gaming platform), 
         the majority of the concepts apply to any software: desktop applications, mobile applications or operating system services.</p>
-
-    <div ng-repeat="level in challengeDefinitions" style="padding-top:10px">
+    <div ng-repeat="level in moduleChallengeDefinitions" style="padding-top:10px">
         <div ng-repeat="challenge in level.challenges" ng-if="user.level+1>=level.level" style="padding-top:5px">
             <div class="card">
                 <div class="card-header">
@@ -67,6 +75,6 @@
             </div>
         </div>
     </div>
-    
+    </span>
     <br><br>
 </div>
