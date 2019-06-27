@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Secure Coding Dojo</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
-<script src="/public/jquery.min.js"></script>
-<script src="/public/bootstrap/js/bootstrap.min.js"></script>
-<script src="angular.min.js"></script>
+<title>Secure Coding Dojo</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/public/jquery/dist/jquery.min.js"></script>
+<script src="/public/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/public/angular/angular.min.js"></script>
+<link href="/public/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/public/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet">
+
 
 <script>
     var app = angular.module("homeApp", []);
@@ -32,11 +34,11 @@ body {
 
 .section{    
     padding-left: 75px;
-    min-height: 400px;
+    margin: 0px;
+    padding-right: 75px;
+    min-height: 300px;
 }
-.section .p{
-  font-size: 50px;
-}
+
 
 #about {
   color: #fff; 
@@ -70,117 +72,101 @@ body {
 }
 </style>
 </head>
-<body data-spy="scroll" data-target=".navbar" data-offset="50" ng-app="homeApp" ng-controller="homeCtrl">
+<body ng-app="homeApp" ng-controller="homeCtrl">
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>                        
-      </button>
-      <a class="navbar-brand" href="#about">Secure Coding Dojo</a>
-    </div>
-    <div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-          <li><a href="/#attacks">Attacks</a></li>
-          <li><a href="/#blocks">Blocks</a></li>
-          <li><a href="/#rules">Rules</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-log-in"></span> Login
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li ng-repeat="prov in authProviders"><a href="{{prov.url}}">{{prov.name}}</a></li>
-                 
-                </ul>
-              </li>
-        </ul>
-      </div>
-    </div>
+
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Secure Coding Dojo</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/#attacks">Attacks</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/#blocks">Blocks</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/#rules">Rules</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="oi oi-account-login"></span> Login </a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="prov in authProviders"><a class="dropdown-item" href="{{prov.url}}">{{prov.name}}</a></li>
+          </ul>
+      </li>
+    </ul>
   </div>
-</nav>    
+</nav>
 
 
-<div id="about" class="container-fluid section">
-    <div class="jumbotron transparent">
-        <h1>Welcome to the &lt;Secure Coding Dojo/&gt;</h1> 
-        <p>Hackers are after finding holes in your software. 
+
+<div id="about" class="jumbotron jumbotron-fluid transparent section">
+  <div class="container-fluid">
+    <h1 class="display-3">Welcome to the &lt;Secure Coding Dojo/&gt;</h1>
+    <p class="lead">Hackers are after finding holes in your software. 
         Are you up to the challenge? Can you find the next security bug? 
         Can you implement the software defenses that will prevent the next 
         cyber-attack on your application? Be prepared! Join the Dojo! </p>
-    </div>
-</div>
-<div id="attacks" class="container-fluid section">
-  <div class="jumbotron transparent">
-  <h2>Attacks</h2>
-  <p>In order to know how to defend you must first learn what you need to defend against.</p>
-  <p>Attacks on software are conducted by taking advantage of software weaknesses or misconfigurations. 
-    The most dangerous software weaknesses are known as the SANS Top 25. </p>
-  <p>To advance your training you will have to complete challenges that involve identifying and attacking SANS Top 25 weaknesses. 
-    This will help you get into the attacker mindset and 'put your hacker hat on'. </p>
-    <p>
-    Thinking like an attacker will help you avoid vulnerabilities when designing software, a process known as 'Threat Modeling'.
-
-    It will also help you test your code for vulnerabilities once the software has been built.
-  </p>
   </div>
 </div>
-<div id="blocks" class="container-fluid section">
-  <div class="jumbotron transparent">
-    <h2>Blocks</h2>  
-    <p>In martial arts you learn various blocking techniques. Each block defends against one or more types of attacks.</p>
-    <p>In a similar way software can be defended through 'code blocks'. They are also more widely known as 'secure coding practices'. 
-      Code blocks include practices like: 'whitelisting user input' 
-      or 'using strong cryptographic algorithms'. </p>
-    <p>After you complete a challenge you will have the opportunity to review the 'code blocks' that could have prevented the attacks.
-    </p>
-    <p>
-      Knowing the basic 'code blocks' will help you prevent the attacks while you are writing your code. 
-      It will also help you identify software weaknesses during code review.
-    </p>
-  </div>
-</div>
-<div id="rules" class="container-fluid section">
-  <div class="jumbotron transparent">
-    <h2>Rules</h2>       
-    <p>Just like in Karate you can never use the skills you learn here to attack someone. 
-      You are only participating in this training to learn how to defend your software.</p>
 
-    <p>Even when you are conducting security testing to find the security bugs so they can be fixed, 
-      it has to be fully authorized.</p>
 
-    <p>Any unauthorized testing, even when conducted for good, is a criminal offense so be sure to check you have authorization
-      before you touch any applications outside this challenge</p>   
-
-    <p>You are fully authorized to conduct testing on the target applications provided for the challenges, the 'Insecure Inc.' site, 
-      however you are not authorized to conduct disruptive testing, load testing, automated scanning or intentionally alter the integrity 
-      of the target applications.
-    </p>
-        
-    <p>
-      You are not authorized to conduct any testing on this page, or the authenticated portion of this site, 
-      try to bypass the challenges, steal challenge codes, impersonate any users or otherwise try to
-      break the leaderboard application. If you happen to notice anything you get bonus points for reporting it to the organizers.
-    </p>
-    
-  <p>
-      Don't get too intimidated by the rules, though :), have fun and enjoy the learning experience. Sign in the top corner to get started.
-  </p>
-  
-  <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-  </div>
-</div>
-<nav class="navbar navbar-inverse navbar-fixed-bottom">
+<div id="attacks" class="jumbotron jumbotron-fluid transparent section">
   <div class="container-fluid">
-    <div class="navbar-header navbar-right">
-      <a class="navbar-brand" href="/public/privacy.html" target="_blank">Privacy Policy</a>
-    </div>
+    <h1 class="display-6">Attacks</h1>
+    <p class="lead">In order to know how to defend you must first learn what you need to defend against. </p>
+    <p class="lead">Attacks on software are conducted by taking advantage of software weaknesses or misconfigurations. 
+        The most dangerous software weaknesses are known as the SANS Top 25.  </p>
+    <p class="lead">To advance your training you will have to complete challenges that involve identifying and attacking SANS Top 25 weaknesses. 
+        This will help you get into the attacker mindset and 'put your hacker hat on'. </p>
+    <p class="lead">Thinking like an attacker will help you avoid vulnerabilities when designing software, a process known as 'Threat Modeling'.
+        It will also help you test your code for vulnerabilities once the software has been built. </p>
   </div>
+</div>
+
+<div id="blocks" class="jumbotron jumbotron-fluid transparent section">
+  <div class="container-fluid">
+    <h1 class="display-6">Blocks</h1>
+    <p class="lead">In martial arts you learn various blocking techniques. Each block defends against one or more types of attacks.</p>
+    <p class="lead">In a similar way software can be defended through 'code blocks'. They are also more widely known as 'secure coding practices'. 
+        Code blocks include practices like: 'whitelisting user input' 
+        or 'using strong cryptographic algorithms'.  </p>
+    <p class="lead">After you complete a challenge you will have the opportunity to review the 'code blocks' that could have prevented the attacks. </p>
+    <p class="lead"> Knowing the basic 'code blocks' will help you prevent the attacks while you are writing your code. 
+        It will also help you identify software weaknesses during code review. </p>
+  </div>
+</div>
+
+<div id="rules" class="jumbotron jumbotron-fluid transparent section">
+  <div class="container-fluid">
+    <h1 class="display-6">Rules</h1>
+    <p class="lead">Just like in Karate you can never use the skills you learn here to attack someone. 
+        You are only participating in this training to learn how to defend your software.</p>
+    <p class="lead">Even when you are conducting security testing to find the security bugs so they can be fixed, 
+        it has to be fully authorized. </p>
+    <p class="lead">Any unauthorized testing, even when conducted for good, is a criminal offense so be sure to check you have authorization
+        before you touch any applications outside this challenge.</p>
+    <p class="lead"> You are fully authorized to conduct testing on the target applications provided for the challenges, the 'Insecure Inc.' site, 
+        however you are not authorized to conduct disruptive testing, load testing, automated scanning or intentionally alter the integrity 
+        of the target applications.</p>
+    <p class="lead"> You are not authorized to conduct any testing on this page, or the authenticated portion of this site, 
+        try to bypass the challenges, steal challenge codes, impersonate any users or otherwise try to
+        break the leaderboard application. If you happen to notice anything you get bonus points for reporting it to the organizers.</p>
+
+    <p class="lead"> Don't get too intimidated by the rules, though :), have fun and enjoy the learning experience. Sign in the top corner to get started.</p>
+  </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="/public/privacy.html" target="_blank">Privacy Policy</a>
 </nav>
+
 </body>
 </html>

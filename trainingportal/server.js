@@ -42,7 +42,14 @@ app.use(passport.session());
 
 app.use(auth.authenticationByDefault);
 app.use(auth.addSecurityHeaders);
+app.use('/public/jquery',express.static(path.join(__dirname, 'node_modules/jquery')));
+app.use('/public/angular',express.static(path.join(__dirname, 'node_modules/angular')));
+app.use('/public/angular-route',express.static(path.join(__dirname, 'node_modules/angular-route')));
+app.use('/public/bootstrap',express.static(path.join(__dirname, 'node_modules/bootstrap')));
+app.use('/public/open-iconic',express.static(path.join(__dirname, 'node_modules/open-iconic')));
 app.use('/public',express.static(path.join(__dirname, 'public')));
+
+
 app.use('/static', (req, res, next) => {
     var result = req.url.match(/challengeDefinitions.json/)
     if (result) {
