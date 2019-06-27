@@ -1,9 +1,5 @@
 app.controller("submitCodeCtrl", function($scope, $http, $routeParams, $location) {
-    //reload the challenge page
-    $("#codeBlocksModal").on("hidden.bs.modal", function () {
-        window.history.back();
-    });
-
+    
     $scope.init = function(){
         $http.get("/api/salt",window.getAjaxOpts())
         .then(function(response) {
