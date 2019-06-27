@@ -2,9 +2,9 @@
     <p>The table below lists the most recent participant activity.</p>
     <form ng-submit="fetchActivity()">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Filter by name" id="nameFilter">
+            <input type="text" class="form-control" placeholder="Filter by name" id="nameFilter" role="searchbox">
             <div class="input-group-btn">
-            <button class="btn btn-default" type="button" ng-click="fetchActivity()"><i class="glyphicon glyphicon-search"></i></button>
+            <button class="btn" ng-click="fetchActivity()" role="search"><span class="oi oi-magnifying-glass"></span></button>
             </div>
         </div>
     </form>

@@ -1,30 +1,26 @@
 <div class="container-fluid">
     <h3>Hi {{firstName}}! Your level is: '{{userLevelString}}' </h3>
     <p>Complete the challenges below to advance to the next level. Click on the challenge name to expand/collapse the description.</p>
-    <p><span class="glyphicon glyphicon-info-sign"></span> 
+    <p>
+        <span class="oi oi-info"></span>
         Throughout the challenges try to think how the particular vulnerability applies to your own code. 
         While the vulnerable applications are web sites (for the purpose of providing a easily accessible gaming platform), 
         the majority of the concepts apply to any software: desktop applications, mobile applications or operating system services.</p>
-    
-    <div class="panel-group" id="accordion">
-        <div ng-repeat="level in challengeDefinitions">
-            <div class="panel panel-default" ng-repeat="challenge in level.challenges" ng-if="user.level+1>=level.level">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" data-target="#collapse{{challenge.id}}" href="">
-                            
-                            {{level.name}} : {{challenge.name}} 
 
-                                <span class="glyphicon glyphicon-check pull-right" ng-if="challenge.passed"></span>
-                                <span class="pull-right" ng-if="challenge.passed">&nbsp;</span>
-                                <a href="#!submitCode/{{challenge.id}}" class="btn btn-info pull-right btn-xs" ng-if="!challenge.passed" role="button"> Submit Code</a>
-                                <span class="pull-right" ng-if="!challenge.passed">&nbsp;</span>
-
-                        </a>
-                    </h4>
+    <div ng-repeat="level in challengeDefinitions" style="padding-top:10px">
+        <div ng-repeat="challenge in level.challenges" ng-if="user.level+1>=level.level" style="padding-top:5px">
+            <div class="card">
+                <div class="card-header">
+                    <a class="text-dark" data-toggle="collapse" role="button" data-target="#collapse{{challenge.id}}" href="">
+                        {{level.name}} : {{challenge.name}} 
+                        <span class="oi oi-check float-right" ng-if="challenge.passed"></span>
+                        <span class="float-right" ng-if="challenge.passed">&nbsp;</span>
+                        <a href="#!submitCode/{{challenge.id}}" class="btn btn-info float-right btn-sm" ng-if="!challenge.passed" role="button"> Submit Code</a>
+                        <span class="float-right" ng-if="!challenge.passed">&nbsp;</span>
+                    </a>
                 </div>
-                <div id="collapse{{challenge.id}}" class="panel-collapse collapse"  ng-class="{'in':!challenge.passed}">
-                    <div class="panel-body">
+                <div id="collapse{{challenge.id}}" class="panel-collapse collapse"  ng-class="{'show':!challenge.passed}">
+                    <div class="card-body">
                         <h4>Play Link and Instructions</h4>
                         <p ng-if="challenge.playLink">Navigate to the 
                             <a ng-if="challenge.playLink.indexOf('http')===0" href="{{challenge.playLink}}" target="_blank">play link</a>
@@ -43,7 +39,7 @@
                         <p>
                             If you get stuck you can use the button below for help, but don't give up yet, read the challenge description and tips carefully.
                             <br/>
-                            <a href="#!solution/{{challenge.id}}" class="btn btn-success btn-xs" role="button">View Solution</a>
+                            <a href="#!solution/{{challenge.id}}" class="btn btn-success btn-sm" role="button">View Solution</a>
                         </p>
                         </span>
                         <br/>
@@ -69,10 +65,8 @@
                     </div>
                 </div>
             </div>
-            <br>
-
         </div>
-        
     </div>
+    
     <br><br>
 </div>

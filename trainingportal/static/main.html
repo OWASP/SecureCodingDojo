@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <title>Secure Coding Dojo</title>
 
-<script src="public/jquery.min.js"></script>
-<script src="public/angular.min.js"></script>
-<script src="public/angular-route.min.js"></script>
-<script src="public/bootstrap/js/bootstrap.min.js"></script>
+<script src="public/jquery/dist/jquery.min.js"></script>
+<script src="public/angular/angular.min.js"></script>
+<script src="public/angular-route/angular-route.min.js"></script>
+<script src="public/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="static/main-app.js"></script>
+<script src="static/challengesCtrl.js"></script>
 <script src="static/leaderboardCtrl.js"></script>
 <script src="static/submitCodeCtrl.js"></script>
 <script src="static/codeBlocksCtrl.js"></script>
@@ -17,7 +18,8 @@
 <script src="static/reportCtrl.js"></script>
 <script src="static/solutionCtrl.js"></script>
 
-<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link href="/public/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="/public/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet">
 <script>
     window.localStorage.setItem('XSRF_TOKEN','%XSRF_TOKEN%');
     window.getAjaxOpts = function(){
@@ -29,28 +31,32 @@
        return opts;
     }
 </script>
+    
 
 </head>
-<body>
+<body∂>
 
     <div ng-app="challengesApp" ng-controller="mainCtrl">
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#!">Secure Coding Dojo</a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li ng-class="{ active: isActive('/')}"><a href="#!">Challenges</a></li>
-                    <li ng-class="{ active: isActive('/codeBlocks')}"><a href="#!codeBlocks/inputWhitelisting">Code Blocks</a></li>
-                    <li ng-class="{ active: isActive('/leaderboard')}"><a href="#!leaderboard">Leaderboard</a></li>
-                    <li ng-class="{ active: isActive('/activity')}"><a href="#!activity">Activity</a></li>
-                    <li ng-class="{ active: isActive('/dashboard')}"><a href="#!dashboard">Dashboard</a></li>
-                    <li ng-class="{ active: isActive('/report')}" ng-if="reportAvailable"><a href="#!report">Report</a></li>
+        
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
+            <a class="navbar-brand" href="#!">Secure Coding Dojo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mr-auto">
+                    <li class="navbar-item" ng-class="{ active: isActive('/')}"><a class="nav-link" href="#!">Challenges</a></li>
+                    <li class="navbar-item" ng-class="{ active: isActive('/codeBlocks')}"><a class="nav-link" href="#!codeBlocks/inputWhitelisting">Code Blocks</a></li>
+                    <li class="navbar-item" ng-class="{ active: isActive('/leaderboard')}"><a class="nav-link" href="#!leaderboard">Leaderboard</a></li>
+                    <li class="navbar-item" ng-class="{ active: isActive('/activity')}"><a class="nav-link" href="#!activity">Activity</a></li>
+                    <li class="navbar-item" ng-class="{ active: isActive('/dashboard')}"><a class="nav-link"href="#!dashboard">Dashboard</a></li>
+                    <li class="navbar-item" ng-class="{ active: isActive('/report')}" ng-if="reportAvailable"><a class="nav-link" href="#!report">Report</a></li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="" data-toggle="modal" data-target="#teamModal"><span class="glyphicon glyphicon-user"></span> My Team</a></li>
-                    <li ng-if="user.accountId.indexOf('Local_')===0"><a href="" data-toggle="modal" data-target="#profileModal"><span class="glyphicon glyphicon-lock"></span> My Profile</a></li>
-                    <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout {{fullName}}</a></li>
+            
+                <ul class="navbar-nav">
+                    <li class="navbar-item"><a class="nav-link" href="" data-toggle="modal" data-target="#teamModal">My Team</a></li>
+                    <li class="navbar-item" ng-if="user.accountId.indexOf('Local_')===0"><a class="nav-link" href="" data-toggle="modal" data-target="#profileModal">My Profile</a></li>
+                    <li class="navbar-item"><a class="nav-link" href="/logout"><span class="oi oi-account-logout"></span> Logout {{fullName}}</a></li>
                 </ul>
             </div>
         </nav>
@@ -67,19 +73,21 @@
             </div>
        
              <!-- This is where the main view goes -->
-            <div ng-view></div>
+            <div style="margin:20px" ng-view></div>
 
 
 
             <!-- Team configuration -->
             <div id="teamModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog" role="document">
 
                     <!-- Team configuration UI -->
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Team Selection</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
                             
@@ -98,7 +106,7 @@
                             <div id="ownerContainer" ng-if="ownedTeam!=null">
                                 <p>You manage the team <strong>'{{ownedTeam.name}}'</strong>
                                 <a href="#" ng-click="deleteOwnedTeam()">
-                                    <span class="glyphicon glyphicon-trash"></span>
+                                    <span class="oi oi-trash"></span>
                                 </a>
                                 </p>
                             </div>
@@ -115,8 +123,8 @@
                         </div>
                         <div class="modal-footer">
                             
-                            <button type="button" class="btn btn-default" ng-click="saveTeamSettings()" ng-if="ownedTeam==null">Save</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="hideMessages()">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="saveTeamSettings()" ng-if="ownedTeam==null">Save</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="hideMessages()">Close</button>
                         </div>
                     </div>
                 </div>
@@ -130,8 +138,10 @@
                     <!-- Profile configuration UI -->
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">User Profile</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body">
                         
@@ -160,8 +170,8 @@
                         </div>
                         <div class="modal-footer">
                             
-                            <button type="button" class="btn btn-default" ng-click="updateLocalUser()">Save</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="updateLocalUser()">Save</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -170,14 +180,6 @@
     </div> 
     
     <br><br><br><br>
-    
-    
-    <nav class="navbar navbar-inverse navbar-fixed-bottom">
-        <div class="container-fluid">
-          <div class="navbar-header navbar-right">
-            <a class="navbar-brand" href="/public/privacy.html" target="_blank">Privacy Policy</a>
-          </div>
-        </div>
-    </nav>
+
 </body>
 </html>
