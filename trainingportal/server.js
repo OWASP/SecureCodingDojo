@@ -192,6 +192,12 @@ app.get('/api/user', (req, res) => {
   });
 });
 
+
+app.get('/api/user/badges', async (req, res) => {
+  let badges = await db.fetchBadges(req.user.id);
+  res.send(badges);
+});
+
 //allows updating the current user team
 app.post('/api/user/team',  (req, res) => {
    var teamId = req.body.teamId;
@@ -230,31 +236,27 @@ app.post('/api/user/team',  (req, res) => {
 
 
 //challenge code api
-app.post('/api/user/challengeCode', (req,res) => {
-    challenges.apiChallengeCode(req, (err, result) => {
-      if(err){
-        if(util.isNullOrUndefined(err.code)){
-          //should not happen
-          util.apiResponse(req, res, 500, "Unknown error");
-        }
-        else{
-          switch(err.code){
-            case "invalidRequest":util.apiResponse(req, res, 400, "Invalid request."); break;
-            case "invalidCode":util.apiResponse(req, res, 400, "Invalid challenge code."); break;
-            case "invalidId":util.apiResponse(req, res, 400, "Invalid challenge id."); break;
-            case "wrongLevel":util.apiResponse(req, res, 400, "No challenges available for the current user level"); break;
-            case "challengeNotFound":util.apiResponse(req, res, 404, "Challenge not found for the current user level"); break; 
-            case "challengeSecretNotFound":util.apiResponse(req, res, 404, "Challenge secret not found."); break; 
-            case "invalidCode":util.apiResponse(req, res, 400, "Invalid code."); break; 
-            case "codeSaveError":util.apiResponse(req, res, 500, "Unable to save code."); break;
-            case "levelUpError":util.apiResponse(req, res, 500, "Unable to check level up. Please try again."); break;  
-          }
-        }
+app.post('/api/user/challengeCode', async (req,res) => {
+    try{
+      let result = await challenges.apiChallengeCode(req);
+      util.apiResponse(req, res, 200, result.message, result.data);
+    }
+    catch(err){
+      switch(err.message){
+        case "invalidRequest":util.apiResponse(req, res, 400, "Invalid request."); break;
+        case "invalidCode":util.apiResponse(req, res, 400, "Invalid challenge code."); break;
+        case "invalidChallengeId":util.apiResponse(req, res, 400, "Invalid challenge id."); break;
+        case "invalidModuleId":util.apiResponse(req, res, 400, "Invalid module id."); break;
+        case "wrongLevel":util.apiResponse(req, res, 400, "No challenges available for the current user level"); break;
+        case "challengeNotFound":util.apiResponse(req, res, 404, "Challenge not found for the current user level"); break; 
+        case "challengeSecretNotFound":util.apiResponse(req, res, 404, "Challenge secret not found."); break; 
+        case "invalidCode":util.apiResponse(req, res, 400, "Invalid code."); break; 
+        case "codeSaveError":util.apiResponse(req, res, 500, "Unable to save code."); break;
+        case "levelUpError":util.apiResponse(req, res, 500, "Unable to check level up. Please try again."); break;  
+        default: util.apiResponse(req, res, 500, "Unknown error");
       }
-      else if(result){
-        util.apiResponse(req, res, 200, result.message, result.data);
-      }
-    });
+    }
+    
 });
 
 
@@ -270,6 +272,7 @@ app.get('/api/teams',  (req, res) => {
      res.send(teamList);
    })
 });
+
 
 var returnListWithChallengeNames = function(res,list){
   var challengeNames = challenges.getChallengeNames();

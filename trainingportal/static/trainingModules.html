@@ -7,6 +7,7 @@
             
                 <div class="card" >
                     <div class="card-header">
+                        <span class="oi oi-circle-check" ng-if="isModuleComplete(key)"></span>
                         {{value.name}}
                     </div>
                     <div class="card-body">
@@ -17,7 +18,7 @@
                         <small class="text-muted" ng-if="value.requiredModules.length>0">
                             This module requires: <span ng-repeat="moduleId in value.requiredModules">{{modules[moduleId].name}}</span>
                         </small>
-                        <a href="#!challenges/{{key}}" class="btn btn-primary float-right">Load</a>
+                        <a href="#!challenges/{{key}}" class="btn btn-primary float-right" ng-class="{ disabled: !isModuleEnabled(key) }">Load</a>
                     </div>
                 </div>
     </div>

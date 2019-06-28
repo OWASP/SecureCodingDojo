@@ -1,7 +1,7 @@
 CREATE TABLE `dbInfo` (
   `version` INT NULL
 ) DEFAULT CHARSET=utf8;
-INSERT INTO `dbInfo` (`version`) VALUES (3);
+INSERT INTO `dbInfo` (`version`) VALUES (4);
 
 CREATE TABLE `challengeEntries` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The entry id',
@@ -11,6 +11,16 @@ CREATE TABLE `challengeEntries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) DEFAULT CHARSET=utf8;
+
+CREATE TABLE `badges` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The entry id',
+  `userId` int(11) DEFAULT NULL COMMENT 'The user id that passed the challenge',
+  `moduleId` varchar(255) DEFAULT NULL COMMENT 'The id of the training module',
+  `timestamp` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) DEFAULT CHARSET=utf8;
+
 
 CREATE TABLE `teams` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
