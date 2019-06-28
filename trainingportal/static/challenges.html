@@ -16,7 +16,7 @@
                         {{level.name}} : {{challenge.name}} 
                         <span class="oi oi-check float-right" ng-if="challenge.passed"></span>
                         <span class="float-right" ng-if="challenge.passed">&nbsp;</span>
-                        <a href="#!submitCode/{{challenge.id}}" class="btn btn-info float-right btn-sm" ng-if="!challenge.passed" role="button"> Submit Code</a>
+                        <a href="#!submitCode/{{moduleId}}/{{challenge.id}}" class="btn btn-info float-right btn-sm" ng-if="!challenge.passed" role="button"> Submit Code</a>
                         <span class="float-right" ng-if="!challenge.passed">&nbsp;</span>
                     </a>
                 </div>

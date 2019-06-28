@@ -71,6 +71,7 @@ function init(){
 
 init();
 
+exports.getModules = function(){ return modules; }
 exports.getChallengeNames = function(){ return challengeNames; }
 exports.getChallengeDefinitions = function(){ return challengeDefinitions; }
 
@@ -137,58 +138,58 @@ exports.getSolution = function (challengeId) {
 /**
  * Checks if the user should level up and execute level up. Passes the result, true or false to the cb
  */
-exports.verifyLevelUp = function(user, errCb, doneCb){
-    var level = user.level !== null ? user.level+1 : 1;
-    async.waterfall([
-        function(cb){
-            db.fetchChallengeEntriesForUser(user,
-                function(err){
-                    util.log("Failed to fetch challenges for level up.", user);
-                    cb(err);
-                },
-                function(entries){
-                    cb(null,entries);
-                });
-        },
-        function(entries,cb){
-            if(entries!=null && entries.length>0 && challengeDefinitions.length > level) {
-                //get challenges for current user level
-                var challengeDefForLevel = challengeDefinitions[level].challenges;
-                //check whether the entries match the level challenges
-                var passCount = 0;
-                challengeDefForLevel.forEach(function(challengeDef){
-                    entries.forEach(function(entry){
-                        if(entry.challengeId===challengeDef.id){
-                            passCount++;
-                        }
-                    });
-                });
-                cb(null, passCount === challengeDefForLevel.length);
-            }
-            else{
-                cb(null,false);
-            }
-        },
-        function(shouldLevelUp,cb){
-            if(shouldLevelUp){
-                user.level = level;
-                db.updateUser(user,
-                    function(err){
-                        util.log("Failed to update user for level up.", user);
-                        cb(err);
-                    },
-                    function(result){
-                        doneCb(true);
-                    });
-            }
-            else{
-                doneCb(false);
+exports.verifyLevelUp = async (user, moduleId) => {
+    var userLevel = user.level !== null ? user.level : 0;
+    var entries = await db.getPromise(db.fetchChallengeEntriesForUser,user);
+    var shouldLevelUp = false;
+    let moduleDefinitions = getDefinifionsForModule(moduleId);
+    //determine if is level up
+    var passedLevel=0;
+
+    if(entries===null || entries.length===0){
+        return false;
+    }
+    if(moduleDefinitions===null) {
+        return false;
+    }
+
+    for(challengeLevel of moduleDefinitions){
+        var challengesForLevel = challengeLevel.challenges;
+        //check whether the entries match the level challenges
+        var passCount = 0;
+
+        for(challenge of challengesForLevel){
+            for(entry of entries){
+                if(entry.challengeId===challenge.id){
+                    passCount++;
+                }
             }
         }
-    ],function(err){
-        errCb(err);
-    });
 
+        if(passCount === challengesForLevel.length){
+            passedLevel = challengeLevel.level;
+        }
+    }
+
+    shouldLevelUp = userLevel < passedLevel;
+
+    //update user for level up
+    if(shouldLevelUp){
+        user.level = passedLevel;
+        await db.getPromise(db.updateUser, user);
+    }
+
+    var lastLevel = moduleDefinitions[moduleDefinitions.length-1];
+
+    if(lastLevel.level===passedLevel){
+        //training module complete
+        let badges = await db.fetchBadges(user.id);
+        if(!badges.includes(moduleId)){
+            await db.insertBadge(user.id, moduleId);
+        }
+    }
+
+    return shouldLevelUp;
 }
 
 /**
@@ -245,22 +246,29 @@ module.exports.badgrCall = function(badgrInfo, user){
 /** 
  * Logic to for the api challenge code
  */
-module.exports.apiChallengeCode = (req, cb) => {
+module.exports.apiChallengeCode = async (req) => {
     if(util.isNullOrUndefined(req.body.challengeId) || 
-        util.isNullOrUndefined(req.body.challengeCode)){
-        return cb({code:"invalidRequest"});
+        util.isNullOrUndefined(req.body.challengeCode) ||
+        util.isNullOrUndefined(req.body.moduleId)){
+        throw Error("invalidRequest");
     }
-  
+
+    var moduleId = req.body.moduleId.trim();
     var challengeId = req.body.challengeId.trim();
     var challengeCode = req.body.challengeCode.trim();
 
     if(util.isNullOrUndefined(challengeCode) || validator.isBase64(challengeCode) == false){
-        return cb({code:"invalidCode"});
+        throw Error("invalidCode");
+    }
+
+    if(util.isNullOrUndefined(moduleId) || validator.isAlphanumeric(moduleId) == false){
+        throw Error("invalidModuleId");
     }
 
     if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) == false){
-        return cb({code:"invalidId"});
+        throw Error("invalidChallengeId");
     }
+
 
     //check id
     var availableChallenges = null;
@@ -269,9 +277,8 @@ module.exports.apiChallengeCode = (req, cb) => {
     if(req.user.level === null) req.user.level = 0;
 
     //identify the current challenge object and also the available challenges for the current user level
-    var challengeDefinitions = module.exports.getChallengeDefinitions();
-    for(var idx=0;idx<challengeDefinitions.length;idx++){
-        var levelObj = challengeDefinitions[idx];
+    var moduleDefinitions = module.exports.getChallengeDefinitionsForUser(req.user, moduleId);
+    for(levelObj of moduleDefinitions){
         var levelChallenges = levelObj.challenges;
         if(levelObj.level===userLevel){
             availableChallenges = levelChallenges;
@@ -279,66 +286,56 @@ module.exports.apiChallengeCode = (req, cb) => {
     }
 
     if(availableChallenges==null || availableChallenges.length==0){ 
-        return cb({code:"wrongLevel"});
+        throw Error("wrongLevel");
     }
 
     //search for the current challenge id
-    for(var cIdx=0; cIdx<availableChallenges.length; cIdx++){
-        if(challengeId === availableChallenges[cIdx].id){
-            curChallengeObj = availableChallenges[cIdx];
+    for(availableChallenge of availableChallenges){
+        if(challengeId === availableChallenge.id){
+            curChallengeObj = availableChallenge;
             break;
         }
     }
 
-    if(curChallengeObj==null){
-        return cb({code:"challengeNotFound"});
+    if(curChallengeObj===null){
+        throw Error("challengeNotFound");
     }
     
     //calculate the hash
     var verificationHash = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+masterSalt).digest('base64');
     if(verificationHash!==challengeCode){
-        return cb({code:"invalidCode"});
+        throw Error("invalidCode");
     } 
     //success update challenge
-    module.exports.insertChallengeEntry(req.user, curChallengeObj, cb);
+    curChallengeObj.moduleId = moduleId;
+    return module.exports.insertChallengeEntry(req.user, curChallengeObj);
    
 }
 
 /**
  * Inserts a challenge entry
  */
-module.exports.insertChallengeEntry = function(user,curChallengeObj, cb){
-    db.insertChallengeEntry(user.id,curChallengeObj.id,
-        function(){
-            return cb({code:"Code save error"});
-        },function(){
-                //issue badgr badge if enabled
-                module.exports.badgrCall(curChallengeObj.badgrInfo,user);
-                //check to see if the user levelled up
-                module.exports.verifyLevelUp(user,
-                    function(err){
-                        return cb({code:"levelUpError"});
-                    },
-                    function(isLevelUp){
-                        curChallengeObj.isLevelUp = isLevelUp;
-                        if(isLevelUp){
-                            util.log(`User has solved the challenge ${curChallengeObj.name} and leveled up!`, user);
-                            //issue badgr badge if enabled for level
-                            module.exports.badgrCall(challengeDefinitions[user.level].badgrInfo,user);    
-                            return cb(null,
-                                {
-                                    message:"Congratulations you solved the challenge and leveled up!",
-                                    data:curChallengeObj
-                                });
-                        }
-                        else{
-                            util.log(`User has solved the challenge ${curChallengeObj.name}!`, user);
-                            return cb(null,
-                                { 
-                                    message:"Congratulations you solved the challenge!", 
-                                    data: curChallengeObj
-                                });
-                        }
-                    });
-        });
+module.exports.insertChallengeEntry = async (user,curChallengeObj) => {
+    await db.getPromise(db.insertChallengeEntry, [user.id,curChallengeObj.id]);
+    //issue badgr badge if enabled
+    module.exports.badgrCall(curChallengeObj.badgrInfo,user);
+    let isLevelUp = await module.exports.verifyLevelUp(user,moduleId);
+    //check to see if the user levelled up
+    curChallengeObj.isLevelUp = isLevelUp;
+    if(isLevelUp){
+        util.log(`User has solved the challenge ${curChallengeObj.name} and leveled up!`, user);
+        //issue badgr badge if enabled for level
+        module.exports.badgrCall(challengeDefinitions[user.level].badgrInfo,user);    
+        return {
+                "message":"Congratulations you solved the challenge and leveled up!",
+                "data":curChallengeObj
+            }
+    }
+    else{
+        util.log(`User has solved the challenge ${curChallengeObj.name}!`, user);
+        return { 
+                "message":"Congratulations you solved the challenge!", 
+                "data": curChallengeObj
+            }
+    }   
 }

@@ -10,7 +10,7 @@ app.config(function($routeProvider) {
         templateUrl : "static/challenges.html",
         controller: "challengesCtrl"
     })
-    .when("/submitCode/:challengeId", {
+    .when("/submitCode/:moduleId/:challengeId", {
         templateUrl : "static/submitCode.html",
         controller: "submitCodeCtrl"
     })

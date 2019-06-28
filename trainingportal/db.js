@@ -1,4 +1,4 @@
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 module.exports.SCHEMA_VERSION = SCHEMA_VERSION;
 const path = require('path');
 const config = require(path.join(__dirname, 'config'));
@@ -142,12 +142,12 @@ function handleDone(doneCb,result){
 exports.getPromise = function(dbFunc, params){
   let promise = new Promise((resolve,reject) => {
       if(util.isNullOrUndefined(params)) params = [];
-      if(typeof params !== 'Array') params = [params];
+      if(!Array.isArray(params)) params = [params];
       let count = params.length;
       switch(count){
         case 0: dbFunc(reject, resolve); break;
         case 1: dbFunc(params[0], reject, resolve);break;
-        case 2: dbFunc(parames[0], params[1], reject, resolve);break;
+        case 2: dbFunc(params[0], params[1], reject, resolve);break;
       }
     });
   return promise;
@@ -209,12 +209,27 @@ exports.init = function(){
               if(err){
                 util.log("Database upgrade failed");
                 console.log(err);
+                reject(err);
               }
               else{
                 util.log("Database upgrade completed");
+                resolve(result);
               }
             });
           });
+
+          if(ver===4){
+            //in version 4 badges were introduced, insert badges for all users that are level 7 and level 8
+            let users = await con.queryPromise("SELECT * FROM users WHERE level > 6");
+            for(user of users){
+              await exports.insertBadge(user.id, "blackBelt")
+              if(user.level > 7){
+                await exports.insertBadge(user.id, "secondDegreeBlackBelt")
+              }
+            }
+            console.log("Badges created for all users");
+          }
+          
         }
       }
     }
@@ -233,11 +248,11 @@ exports.insertUser = function(user,errCb,doneCb){
 }
 
 //gets the database schema version
-exports.getVersion = function(accountId,errCb,doneCb){
+exports.getVersion = function(errCb,doneCb){
   var con = getConn();
   var sql = "SELECT version FROM dbInfo";
-  con.query(sql, [accountId], function (err, result) {
-    if(err) handleDone(doneCb, null); 
+  con.query(sql, function (err, result) {
+    if(err) handleErr(errCb,err); 
     else
     {
       if(result.length >= 1) handleDone(doneCb,result[0].version);
@@ -435,6 +450,32 @@ exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
   });
 }
 
+/**
+ * Inserts a badge for a completed training module
+ */
+exports.insertBadge = async (userId, moduleId) => {
+  var con = getConn();
+
+  var sql = "DELETE FROM badges WHERE userId = ? and moduleId = ?"; //in the unlikely situation they exist replace badges for the same module
+  await con.queryPromise(sql,[userId, moduleId]);
+  
+  var timeStamp = Date().toString();
+  sql = "INSERT INTO badges (id, userId, moduleId, timestamp) VALUES (null, ?, ?, ?)";
+  await con.queryPromise(sql,[userId, moduleId, timeStamp]);
+}
+
+
+/**
+ * Returns the badges for the specified user
+ */
+exports.fetchBadges = async (userId) => {
+  let con = getConn();
+
+  let sql = "SELECT * FROM badges WHERE userId = ?"; 
+  let result = await con.queryPromise(sql,[userId, moduleId]);
+  return result;
+}
+
 //fetches the list of teams from the database
 exports.fetchChallengeEntriesForUser = function(user,errCb,doneCb){
   var con = getConn();
@@ -533,3 +574,4 @@ exports.getTeamStats= function(errCb,doneCb){
     }
   });
 }
+

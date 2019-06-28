@@ -274,21 +274,22 @@ processAuthCallback = function (profileId, givenName, familyName, email, cb) {
     }
     
     //try to get a user from the database
-    db.getUser(profileId, null, (user) => {
+    db.getUser(profileId, null, async (user) => {
     if(user){
         //the user exists return this user
         util.log("User logged in.", user);
         user.email = email;
-        challenges.verifyLevelUp(user,
-        function(err){
-            util.log("Error: Cannot execute level up.", user);
-            //but let them log in anyway
-            if(cb) return cb(null, user);
-        },
-        function(isLevelUp){
-            if(isLevelUp) util.log("WARN: Fixed level for user.", user);
-            if(cb) return cb(null, user);
-        })
+        let modules = challenges.getModules();
+        for(moduleId in modules){
+            let promise = challenges.verifyLevelUp(user, moduleId);
+            promise.then((isLevelUp)=>{
+                if(isLevelUp) util.log("WARN: Fixed level for user.", user);
+            })
+            promise.catch((err) => {
+                util.log("Error: Cannot execute level up.", user);
+            });
+        }
+        if(cb) return cb(null, user);
     }
     else{
 

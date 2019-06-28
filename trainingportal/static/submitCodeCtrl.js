@@ -16,12 +16,14 @@ app.controller("submitCodeCtrl", function($scope, $http, $routeParams, $location
 
 
     $scope.submitAnswer = function(){
+        var moduleId = $routeParams.moduleId;
         var challengeId = $routeParams.challengeId;
         $scope.isCodeErrorMessage = false;
         $scope.isCodeSuccessMessage = false;
         $http.post("/api/user/challengeCode",{
-            challengeId:challengeId,
-            challengeCode:challengeCode.value
+            "moduleId":moduleId,
+            "challengeId":challengeId,
+            "challengeCode":challengeCode.value
         }, window.getAjaxOpts()).then(function(response) {
             if(response != null && response.data != null){
                 if(response.data.status == 200){

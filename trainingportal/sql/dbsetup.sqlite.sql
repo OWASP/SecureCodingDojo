@@ -1,7 +1,7 @@
 CREATE TABLE dbInfo (
   version INTEGER
 );
-INSERT INTO dbInfo (version) VALUES (3);
+INSERT INTO dbInfo (version) VALUES (4);
 
 CREATE TABLE challengeEntries (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -9,6 +9,14 @@ CREATE TABLE challengeEntries (
   challengeId CHAR(255),
   timestamp CHAR(255)
 );
+
+CREATE TABLE badges (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  userId INTEGER,
+  moduleId CHAR(255),
+  timestamp CHAR(255)
+);
+
 CREATE TABLE teams (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name CHAR(255) UNIQUE,
