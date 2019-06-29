@@ -67,35 +67,38 @@ var mockResponse = {
 
 
 describe('challengeTests', function() {
-    
-    before(function(){
-        async.waterfall([
-            function (cb){
-                db.deleteUser("levelUpUser",function(err){cb(err);},function(result){cb(null,result);});
-            },                
-            function (result, cb){
-                db.deleteUser("apiChallengeCodeUser",function(err){cb(err);},function(result){cb(null,result);});
-            }
-        ],function(err){
-            if(err) throw new Error(err);
+    var user = null;
+
+    before(async () => {
+        await db.getPromise(db.deleteUser,"levelUpUser");
+        await db.getPromise(db.deleteUser,"apiChallengeCodeUser");
+        await db.getPromise(db.insertUser,{accountId:"levelUpUser",familyName:"LastLevelUp", givenName:"FirstLevelUp"});
+        let promise = db.getPromise(db.getUser,"levelUpUser");
+        user = await promise;
+        return promise;
+    });
+
+    describe('#isPermittedModule()', async () => {
+        it('should return false for seconDegreeBlackBelt', async () => {
+            assert.notEqual(user, null, "Failed test setup - user null");
+            let promise = challenges.isPermittedModule(user,"secondDegreeBlackBelt");
+            permitted = await promise;
+            assert.equal(permitted,false,"Shouldn't not be permitted");
+            return promise;
         });
     });
 
-    describe('#verifyLevelUp() - no challenges', async () => {
+
+    describe('#verifyLevelUp()', async () => {
         it('should fail to level up without challenges', async () => {
-            await db.getPromise(db.insertUser,{accountId:"levelUpUser",familyName:"LastLevelUp", givenName:"FirstLevelUp"});
-            let user = await db.getPromise(db.getUser,"levelUpUser");
             assert.notEqual(user, null, "Failed test setup - user null");
             let promise = challenges.verifyLevelUp(user, "blackBelt");
             let result = await promise;
             assert.notEqual(result,true,"Shouldn't have leveled up");
             return promise;
         });
-    });
 
-    describe('#verifyLevelUp() - insufficient challenges', async () => {
         it('should fail to level up with only two challenges', async () => {
-            let user = await db.getPromise(db.getUser,"levelUpUser");
             await db.getPromise(db.insertChallengeEntry,[user.id, "cwe306"]);
             await db.getPromise(db.insertChallengeEntry,[user.id, "cwe807"]);
             let promise = challenges.verifyLevelUp(user, "blackBelt");
@@ -103,13 +106,8 @@ describe('challengeTests', function() {
             assert.notEqual(result,true,"Shouldn't have leveled up");
             return promise;
         });
-    });
 
-    
-
-    describe('#verifyLevelUp() - level up case', async () => {
         it('should level up', async () => {
-            let user = await db.getPromise(db.getUser,"levelUpUser");
             await db.getPromise(db.insertChallengeEntry,[user.id, "cwe862"]);
             let result = await challenges.verifyLevelUp(user, "blackBelt");
             assert.equal(result,true,"Should have leveled up");
@@ -123,7 +121,9 @@ describe('challengeTests', function() {
         });
     });
 
-    describe('#verifyLevelUp() - completed module', async () => {
+
+  
+    describe('#verifyLevelUp() - issue badge', async () => {
         var user = null;
         before(async ()=>{
             //cleanup
@@ -309,62 +309,17 @@ describe('challengeTests', function() {
         });
     });
 
-    after(function(){
-        async.waterfall([
-            //cleanup test data 
-            function (cb){
-                db.getUser("levelUpUser",
-                    function(err){
-                        cb(err);
-                    },function(user){ 
-                        cb(null,user);
-                    });
-            },
-            function (user,cb){
-                db.getConn().query("DELETE FROM challengeEntries WHERE userId = ?",[user.id],
-                    function(err, result){
-                        if(err)  cb(err);
-                        else cb(null,result);
-                    });
-            },
-            function (result,cb){
-                db.getUser("apiChallengeCodeUser",
-                    function(err){
-                        cb(err);
-                    },function(user){ 
-                        cb(null,user);
-                    });
-            },
-            function(user,cb){
-                db.getConn().query("DELETE FROM challengeEntries WHERE userId = ?",[user.id],
-                function(err, result){
-                    if(err)  cb(err);
-                    else cb(null,result);
-                });
-            },
-            function (result,cb){
-                db.deleteUser("levelUpUser",
-                function(err){
-                    cb(err);
-                },function(result){ 
-                    cb(null,null);
-                }); 
-            },
-            function (result,cb){
-                db.deleteUser("apiChallengeCodeUser",
-                function(err){
-                    cb(err);
-                },function(result){ 
-                    cb(null,null);
-                }); 
-            },
-            function(result, cb){
-                db.getConn().end(); 
-            }
-        ],function(err){
-            if(err) throw new Error(err);
-        });
-        
+    after(async () =>{
+       
+        var user1 = await db.getPromise(db.getUser,"levelUpUser");
+        await db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId = ?",[user1.id]);
+        var user2 = await db.getPromise(db.getUser,"apiChallengeCodeUser");
+        await db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId = ?",[user2.id]);
+        await db.getPromise(db.deleteUser,"levelUpUser");
+        var promise = db.getPromise(db.deleteUser,"apiChallengeCodeUser");
+        await promise;
+        return promise;
+
     });
 
 });
