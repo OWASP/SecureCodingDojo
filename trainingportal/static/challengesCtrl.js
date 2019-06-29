@@ -31,7 +31,6 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
                     }
                 }
             }
-            console.log(challengeDefinitions);
             $scope.moduleChallengeDefinitions = challengeDefinitions;
 
 
