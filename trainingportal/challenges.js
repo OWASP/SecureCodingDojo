@@ -75,6 +75,29 @@ exports.getModules = function(){ return modules; }
 exports.getChallengeNames = function(){ return challengeNames; }
 exports.getChallengeDefinitions = function(){ return challengeDefinitions; }
 
+exports.isPermittedModule = async (user, moduleId) => {
+    let badges = await db.fetchBadges(user.id);
+    if(util.isNullOrUndefined(modules[moduleId])){
+        return false;
+    }
+
+    let requiredModules = modules[moduleId].requiredModules;
+
+    for(moduleId of requiredModules){
+        found = false;
+        for(badge of badges){
+            if(badge.moduleId === moduleId){
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            return false;
+        }
+    }
+    return true;
+}
+
 /**
  * Construct the challenge definitions loaded on the client side based on the users level
  * @param {Object} user The session user object

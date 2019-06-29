@@ -160,11 +160,19 @@ app.get('/challengeDefinitions.json', (req, res) => {
   res.send(returnChallenges);
 });
 
-app.get('/challenges/:moduleId', (req, res) => {
+app.get('/challenges/:moduleId', async (req, res) => {
   var moduleId = req.params.moduleId;
+  
   if(util.isNullOrUndefined(moduleId) || validator.isAlphanumeric(moduleId) == false){
     return util.apiResponse(req, res, 400, "Invalid module id."); 
   }
+
+  let allowed = await challenges.isPermittedModule(req.user, moduleId);
+
+  if(!allowed){
+    return util.apiResponse(req, res, 403, "Requested module id is not available."); 
+  }
+
   var returnChallenges = challenges.getChallengeDefinitionsForUser(req.user, moduleId);
   res.send(returnChallenges);
 });
