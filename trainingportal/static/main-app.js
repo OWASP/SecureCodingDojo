@@ -103,7 +103,7 @@ app.controller('mainCtrl', function($scope, $http, $location) {
             },function(){
                
             });
-    }
+    }    
 
     //whether the menu is active
     $scope.isActive = function (viewLocation) { 
@@ -175,30 +175,12 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                     $http.get("/api/users",window.getAjaxOpts())
                     .then(function(response) {
                         if(response != null && response.data != null){
-                            var userList = response.data;
 
                             for(var teamIdx=0;teamIdx<teamListCount;teamIdx++){
                                 var team = teamList[teamIdx];
                                 if(team.ownerId!=null && team.ownerId === $scope.user.id){// the user cannot change their team until they delete their current team
                                     $scope.ownedTeam = team;
                                 }
-                                var levelCount = $scope.challengeDefinitions.length;
-                                var challengeDefinitions = [];
-                                for(var levelIdx=0;levelIdx<levelCount;levelIdx++){
-                                    var level = {};
-                                    var levelMembers = [];
-                                    var userListCount = userList.length;
-                                    for(var userIdx=0;userIdx<userListCount;userIdx++){
-                                        var user = userList[userIdx];
-                                        if(user.level==null) user.level = 0;
-                                        if(user.level==levelIdx && user.teamId == team.id){
-                                            levelMembers.push(user);
-                                        }
-                                    } 
-                                    level.members = levelMembers;   
-                                    challengeDefinitions.push(level);
-                                }
-                                team.challengeDefinitions = challengeDefinitions;
                             }
                             $scope.teamList = teamList;
 
@@ -324,51 +306,13 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                 $scope.user = user;
                 $scope.fullName = user.givenName + ' ' + user.familyName;
                 $scope.firstName = user.givenName;
-                
-                $http.get("/challengeDefinitions.json")
-                .then(function(response) {
-                    if(response != null && response.data != null){
-                        $scope.levelNames = {};
-                        var challengeDefinitions = response.data;
-                        if(challengeDefinitions.length >= 1){
-                            if($scope.user.level == null){
-                                $scope.user.level = 0;
-                            }
 
-                            $scope.userLevelString = challengeDefinitions[$scope.user.level].name;                
-
-                            //update the challenge definitions to include the current user's passed challenges
-                            for(var lIdx=0;lIdx<challengeDefinitions.length;lIdx++){
-                                var level = challengeDefinitions[lIdx];
-                                $scope.levelNames[lIdx] = level.name;
-
-                                var challenges = level.challenges;
-                                
-                                if(challenges!=null){
-                                    for(var cIdx=0;cIdx<challenges.length;cIdx++){
-                                        var ch = challenges[cIdx];
-                                        var passed = $scope.user.passedChallenges;
-                                        if(passed!=null){
-                                            for(var uIdx=0; uIdx < passed.length; uIdx++){
-                                                passed[uIdx].passed=false;
-                                                if(ch.id===passed[uIdx].challengeId){
-                                                    ch.passed = true;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        $scope.challengeDefinitions = challengeDefinitions;
-
-                        $scope.fetchTeams();
+                $scope.fetchTeams();
                         
-                        //do the first activity heartbeat
-                        $scope.activityHeartBeat();
-                    }
-                });
+                //do the first activity heartbeat
+                $scope.activityHeartBeat();
+                
+            
                 //get the code blocks definitions
                 $http.get("static/codeBlocks/codeBlocksDefinitions.json").then(function(response) {
                     if(response != null && response.data != null){
@@ -377,16 +321,15 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                     }
                 });
 
-                //get the code blocks definitions
                 $http.get("api/target",window.getAjaxOpts()).then(function(response) {
                     if(response != null && response.data != null){
                         $scope.targetUrl = response.data;
                         
                     }
                 });
-
+               
                 //load the user report
-                $scope.loadUserReport();
+               $scope.loadUserReport();
             }
         });
     }

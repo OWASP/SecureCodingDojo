@@ -1,11 +1,11 @@
 <div class="container-fluid" ng-app="challengesApp" ng-controller="dashboardCtrl" data-ng-init="init()">
     <table><tr valign="top">
     <td style="padding:5px;width:50%">
-        <h3>Challenges</h3>
+        <h3>Lessons</h3>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Challenge Name</th>
+                <th>Lesson Name</th>
                 <th>Achieved</th>
     
             </tr>
@@ -19,19 +19,19 @@
         </table>
     </td>
     <td style="padding:5px;width:50%">
-        <h3>Levels</h3>
+        <h3>Modules</h3>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Level Name</th>
+                <th>Module Name</th>
                 <th>Player Count</th>
     
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="levelStat in levelStatList">
-                    <td style="width:75%">{{challengeDefinitions[levelStat.levelId].name}}</td>
-                    <td>{{levelStat.playerCount}}</td>
+                <tr ng-repeat="moduleStat in moduleStatList">
+                    <td style="width:75%">{{modules[moduleStat.moduleId].name}}</td>
+                    <td>{{moduleStat.playerCount}}</td>
                 </tr>
             </tbody>
         </table>

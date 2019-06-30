@@ -432,6 +432,16 @@ exports.deleteTeam = function(user,teamId,errCb,doneCb){
   });
 }
 
+/**
+ * Gets a team members with completed modules
+ */
+exports.getTeamMembersByBadges = async (teamId) => {
+  let con = getConn();
+  let sql = "SELECT badges.moduleId, users.givenName, users.familyName FROM badges RIGHT JOIN users on badges.userId=users.id WHERE users.teamId = ?";
+  let result = await con.queryPromise(sql,[teamId]);
+  return result;
+}
+
 
 //Creates a user in the database
 exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
@@ -472,7 +482,7 @@ exports.fetchBadges = async (userId) => {
   let con = getConn();
 
   let sql = "SELECT * FROM badges WHERE userId = ?"; 
-  let result = await con.queryPromise(sql,[userId, moduleId]);
+  let result = await con.queryPromise(sql,[userId]);
   return result;
 }
 
@@ -540,21 +550,16 @@ exports.getChallengeStats = function(errCb,doneCb){
 }
 
 /**
- * Players by level id
+ * Players by module id
  * @param {*} errCb 
  * @param {*} doneCb 
  */
-exports.getLevelStats= function(errCb,doneCb){
+exports.getModuleStats = async () => {
   var con = getConn();
-  var sql = "SELECT level as levelId, count(*) as playerCount from users group by level order by level desc;";
+  var sql = "SELECT badges.moduleId, count(*) as playerCount FROM badges group by badges.moduleId";
   var args = [];
   
-  con.query(sql, args, function (err, result) {
-    if(err) handleErr(errCb,err);
-    else{
-      handleDone(doneCb,result);
-    }
-  });
+  return con.queryPromise(sql, args);
 }
 
 /**
@@ -562,16 +567,19 @@ exports.getLevelStats= function(errCb,doneCb){
  * @param {*} errCb 
  * @param {*} doneCb 
  */
-exports.getTeamStats= function(errCb,doneCb){
+exports.getTeamStats= async (limit) => {
   var con = getConn();
-  var sql = "SELECT teams.name as teamName, count(users.id) as playerCount from teams INNER JOIN users on users.teamId=teams.id group by teams.id order by playerCount desc limit 15;";
+
+  var sql = "SELECT teams.id as id, teams.name as teamName, count(users.id) as playerCount from teams INNER JOIN users on users.teamId=teams.id group by teams.id order by playerCount desc";
   var args = [];
+  if(limit!==null){
+    sql+=" limit ?";
+    args=[limit];
+  }
   
-  con.query(sql, args, function (err, result) {
-    if(err) handleErr(errCb,err);
-    else{
-      handleDone(doneCb,result);
-    }
-  });
+  return await con.queryPromise(sql, args);
+  
 }
+
+
 
