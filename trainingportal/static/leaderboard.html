@@ -1,7 +1,8 @@
 <div class="container" ng-app="challengesApp" ng-controller="leaderboardCtrl" ng-init="init()">   
     <label for="teamListChoice">Select a team to see member status</label>
     <input list="teamList" id="teamListChoice" name="teamListChoice" class="custom-select" 
-        ng-model="teamListChoice" ng-change="onTeamChange()" autocomplete="off"/>
+        ng-model="teamListChoice" ng-change="onTeamChange()"
+         autocomplete="off" placeholder="Start typing to search existing teams"/>
     <datalist id="teamList">
         <option ng-repeat="teamInfo in teamStatList" value="{{$index}}">{{teamInfo.teamName}} ({{teamInfo.playerCount}})</option>
     </datalist>
