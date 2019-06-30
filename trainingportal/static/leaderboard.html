@@ -1,24 +1,27 @@
-<div class="container-fluid">
-    <p>Below is the list of teams that are participating in the challenge and the members that attained a particular level.</p>
-
-    <table class="table table-striped">
+<div class="container" ng-app="challengesApp" ng-controller="leaderboardCtrl" ng-init="init()">   
+    <label for="teamListChoice">Select a team to see member status</label>
+    <input list="teamList" id="teamListChoice" name="teamListChoice" class="custom-select" 
+        ng-model="teamListChoice" ng-change="onTeamChange()" autocomplete="off"/>
+    <datalist id="teamList">
+        <option ng-repeat="teamInfo in teamStatList" value="{{$index}}">{{teamInfo.teamName}} ({{teamInfo.playerCount}})</option>
+    </datalist>
+    <br>
+    <br>
+    <table class="table">
         <thead>
-        <tr>
-            <th>Teams vs. Levels</th>
-            <th ng-repeat="level in challengeDefinitions">{{level.name}}</th>
-        </tr>
+            <tr>
+                <th scope="col" ng-repeat="module in modules">{{module.name}} ({{module.percentageCompleted}}%)</th>
+            </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="team in teamList">
-                <td>{{team.name}}</td>
-                <td ng-repeat="level in team.challengeDefinitions">
-                    <span class="badge" ng-if="level.members.length>0">{{level.members.length}} </span>
-                    <div style="height: 70px; overflow-y: auto">
-                        <ol class="small">
-                            <li ng-repeat="user in level.members">{{user.givenName}} {{user.familyName}}</li>
-                        </ol>
-                    </div>
-                </td>
+            <tr>
+                <td scope="col" ng-repeat="module in modules">
+                    <ol class="small">
+                        <li ng-repeat="user in module.members">
+                            {{user.givenName}} {{user.familyName}}
+                        </li>
+                    </ol>
+                </th>
             </tr>
         </tbody>
     </table>

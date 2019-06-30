@@ -155,10 +155,6 @@ app.get('/main', (req, res) => {
   res.send(mainHtml);
 });
 
-app.get('/challengeDefinitions.json', (req, res) => {
-  var returnChallenges = challenges.getChallengeDefinitionsForUser(req.user,["blackBelt","secondDegreeBlackBelt"]);
-  res.send(returnChallenges);
-});
 
 app.get('/challenges/:moduleId', async (req, res) => {
   var moduleId = req.params.moduleId;
@@ -281,6 +277,16 @@ app.get('/api/teams',  (req, res) => {
    })
 });
 
+//get the team members
+app.get('/api/teams/:teamId/badges', async (req, res) => {
+  var teamId = req.params.teamId;
+  if(util.isNullOrUndefined(teamId) || validator.isAlphanumeric(teamId) == false){
+    return util.apiResponse(req, res, 400, "Invalid team id."); 
+  }
+  let result = await db.getTeamMembersByBadges(teamId);
+  res.send(result);
+});
+
 
 var returnListWithChallengeNames = function(res,list){
   var challengeNames = challenges.getChallengeNames();
@@ -319,18 +325,27 @@ app.get('/api/challengeStats',  (req, res) => {
   });
 });
 
-//get the level stats
-app.get('/api/levelStats',  (req, res) => {
-  db.getLevelStats(null,function(stats){
-    res.send(stats);
-  });
+//get the module stats
+app.get('/api/moduleStats', async (req, res) => {
+  let stats = await db.getModuleStats();
+  res.send(stats);
 });
 
-//get the level stats
-app.get('/api/teamStats',  (req, res) => {
-  db.getTeamStats(null,function(stats){
-    res.send(stats);
-  });
+//get the team stats
+app.get('/api/teamStats',async (req, res) => {
+  var limit = req.query.limit;
+
+  if(util.isNullOrUndefined(limit)){
+    limit = null;
+  }
+  else if (validator.isNumeric(limit) === false){
+    return util.apiResponse(req, res, 400, "Invalid value for limit."); 
+  }
+  else{
+    limit = parseInt(limit, 10)
+  }
+  let stats = await db.getTeamStats(limit)
+  res.send(stats);
 });
 
 //get all the users

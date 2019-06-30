@@ -190,19 +190,55 @@ describe('db', function() {
       });
     });
 
-    describe('#getTeamStats()', function() {
-        it('should get the team stats without error', function(done) {
-            db.getTeamStats(
-                function(err){
-                    done(err);
-                },function(result){ 
-                    assert(result!==null,"Result should not be null");
-                    assert(result.length > 0 ,"Result should have more than 0 rows");
-                    done();
-                });
+    describe('#getTeamStats()', async () => {
+        it('should get the team stats without error', async () => {
+            let promise = db.getTeamStats(null);
+            let result = await promise;
+            assert(result!==null,"Result should not be null");
+            assert(result.length > 0 ,"Result should have more than 0 rows");
+            return promise;
         });
     });
 
+    describe('#getTeamMembersByBadges()', async () => {
+        var team = null;
+        var user = null;
+        before(async () => {
+            await db.getPromise(db.insertUser,{accountId:"deleteMeTeamMember1",familyName:"LastTeamMember1", givenName:"FirstTeamMember1"});
+            await db.getPromise(db.insertUser,{accountId:"deleteMeTeamMember2",familyName:"LastTeamMember2", givenName:"FirstTeamMember2"});
+            user = await db.getPromise(db.getUser,"deleteMeTeamMember2");
+
+            await db.getPromise(db.insertTeam,[user,{name:"testTeamDeleteMe2"}]);
+            team = await db.getPromise(db.getTeamWithMembersByName,"testTeamDeleteMe2");
+
+            await db.getConn().queryPromise("UPDATE users SET teamId = ? WHERE accountId LIKE 'deleteMeTeam%'",[team.id]);
+            
+            return db.insertBadge(user.id,"blackBelt");
+            
+        });
+    
+        it('should get the team members with badges without error', async () => {
+            let promise = db.getTeamMembersByBadges(team.id);
+            let result = await promise;
+            assert.notEqual(result, null,"Result should not be null");
+            assert.equal(result.length, 2 ,"Result should have 2 rows");
+            
+            assert.equal(result[0].givenName,"FirstTeamMember2","First entry should be 'FirstTeamMember2'");
+            assert.equal(result[0].moduleId,"blackBelt","FirstTeamMember2 should have the 'blackBelt' badge");
+
+            assert.equal(result[1].givenName,"FirstTeamMember1","Second entry should be 'FirstTeamMember1'");
+            assert.equal(result[1].moduleId,null,"FirstTeamMember1 should have no badges");
+
+            return promise;
+        });
+
+        after(async () => {
+            await db.getConn().queryPromise("DELETE FROM users WHERE teamId = ?",[team.id]);
+            await db.getConn().queryPromise("DELETE FROM badges WHERE userId = ?",[user.id]);
+            return db.getConn().queryPromise("DELETE FROM teams WHERE id = ?",[team.id]);
+
+        });
+    });
 
     describe('#deleteTeam()', function() {
         it('should delete a team without error', function(done) {
@@ -309,16 +345,13 @@ describe('db', function() {
         });
     });
 
-    describe('#getLevelStats()', function() {
-        it('should get the level stats without error', function(done) {
-            db.getLevelStats(
-                function(err){
-                    done(err);
-                },function(result){ 
-                    assert(result!==null,"Result should not be null");
-                    assert(result.length > 0 ,"Result should have more than 0 rows");
-                    done();
-                });
+    describe('#getModuleStats()', async () => {
+        it('should get the level stats without error', async () =>{
+            let promise = db.getModuleStats();
+            let result = await promise;
+            assert(result!==null,"Result should not be null");
+            assert(result.length > 0 ,"Result should have more than 0 rows");
+            return promise;
         });
     });
 
