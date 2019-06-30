@@ -93,13 +93,14 @@
                         <div class="modal-body">
                             
                             <div id="editContainer" ng-if="ownedTeam==null">
-                                <label for="existingTeamSelect">Pick existing team:</label>
-                                <select class="form-control" id="existingTeamSelect" autocomplete="off">
-                                    <option value=0>Select a team</option>
-                                    <option ng-repeat="team in teamList" value="{{team.id}}" ng-selected="team.id==user.teamId">{{team.name}}</option>
-                                    
-                                </select>
-                            
+                                <label for="userTeamListChoice">Pick an existing team:</label>
+                                <input list="userTeamList" id="userTeamListChoice" name="userTeamListChoice" class="custom-select" 
+                                    ng-model="userTeamListChoice" ng-change="onUserTeamChange()" 
+                                    autocomplete="off" placeholder="Start typing to search existing teams"/>
+                                <datalist id="userTeamList">
+                                    <option ng-repeat="team in teamList" value="{{$index}}">{{team.name}}</option>
+                                </datalist>
+                                                        
                                 <br><br>
                                 <label for="newTeamName">Create new team:</label>
                                 <input type="text" class="form-control" id="newTeamName">

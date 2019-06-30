@@ -206,7 +206,7 @@ app.get('/api/user/badges', async (req, res) => {
 app.post('/api/user/team',  (req, res) => {
    var teamId = req.body.teamId;
 
-   if(util.isNullOrUndefined(teamId) || validator.isAlphanumeric(teamId) == false){
+   if(util.isNullOrUndefined(teamId) || typeof teamId !== "number"){
       return util.apiResponse(req, res, 400, "Invalid team id."); 
   }
 

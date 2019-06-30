@@ -166,20 +166,21 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                 if(response != null && response.data != null){
                     $scope.teamNames = {};
                     var teamList = response.data;
-                    var teamListCount = teamList.length;
                     //create a map of team names to team ids
-                    for(var tIdx=0;tIdx<teamListCount; tIdx++){
-                        var team = teamList[tIdx];
+                    for(team of teamList){
                         $scope.teamNames[team.id] = team.name;
                     }
                     $http.get("/api/users",window.getAjaxOpts())
                     .then(function(response) {
                         if(response != null && response.data != null){
 
-                            for(var teamIdx=0;teamIdx<teamListCount;teamIdx++){
-                                var team = teamList[teamIdx];
+                            for(team of teamList){
                                 if(team.ownerId!=null && team.ownerId === $scope.user.id){// the user cannot change their team until they delete their current team
                                     $scope.ownedTeam = team;
+                                }
+                                if(team.id===$scope.user.teamId){
+                                    userTeamListChoice.value = team.name;
+                                    $scope.existingTeamSelect = team.id;
                                 }
                             }
                             $scope.teamList = teamList;
@@ -190,21 +191,32 @@ app.controller('mainCtrl', function($scope, $http, $location) {
             });
     }
 
+    $scope.onUserTeamChange = function(){
+        if($scope.teamList!==null && typeof userTeamListChoice !== "undefined" && userTeamListChoice.value!==""){
+            let index = parseInt(userTeamListChoice.value,10);
+            if(typeof index !== "undefined" && !isNaN(index)){
+                let selectedTeam = $scope.teamList[index];
+                $scope.existingTeamSelect = selectedTeam.id;
+                userTeamListChoice.value = selectedTeam.name;
+            }
+        }
+    }
 
+    $scope.existingTeamSelect = null;
     //validate the team settings and save
     $scope.saveTeamSettings = function() {
         $scope.hideMessages();
         if(newTeamName.value == ""){
-            if(existingTeamSelect.value==0){
+            if($scope.existingTeamSelect===null){
                 //no team was selected show a message
                 $scope.isTeamSaveError = true;
                 $scope.teamSaveErrorMessage = "No team was selected";
             }
             else{
+                var teamId = $scope.existingTeamSelect;
                 //update the team
-                var teamId = existingTeamSelect.value;
                 $http.post("/api/user/team",{
-                    teamId:teamId
+                    "teamId": teamId
                 }, window.getAjaxOpts())
                 .then(function(response) {
                     if(response != null && response.data != null){
