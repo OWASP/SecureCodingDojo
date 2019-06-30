@@ -1,10 +1,12 @@
 <div class="container-fluid" ng-app="challengesApp" ng-controller="codeBlocksCtrl">
   <div class="row">
       <div class="col col-lg-2" role="navigation">
-          <div class="nav nav-pills flex-column">
-              <a class="nav-item nav-link"  ng-repeat="(id,block) in codeBlocks" 
-              ng-class="{ active: isCodeBlockActive(id) }" data-toggle="pill" data-target="#menu{{$index}}" 
-              href="#!codeBlocks/{{id}}">{{block.name}}</a>
+          <div class="list-group list-group-flush">
+                <a class="list-group-item list-group-item-action"  ng-repeat="(id,block) in codeBlocks" 
+                ng-class="{ active: isCodeBlockActive(id) }" data-toggle="pill" data-target="#menu{{$index}}" 
+                href="#!codeBlocks/{{id}}">
+                    {{block.name}}
+                </a>
           </div>
       </div>
       <div class="col col-lg-10" role="presentation">
