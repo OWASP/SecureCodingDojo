@@ -200,7 +200,7 @@ describe('db', function() {
         });
     });
 
-    describe('#getTeamMembersByBadges()', async () => {
+    describe('#getTeamMembersByBadges(), #getModuleStats()', async () => {
         var team = null;
         var user = null;
         before(async () => {
@@ -215,6 +215,14 @@ describe('db', function() {
             
             return db.insertBadge(user.id,"blackBelt");
             
+        });
+
+        it('should get the module stats without error', async () =>{
+            let promise = db.getModuleStats();
+            let result = await promise;
+            assert(result!==null,"Result should not be null");
+            assert(result.length > 0 ,"Result should have more than 0 rows");
+            return promise;
         });
     
         it('should get the team members with badges without error', async () => {
@@ -346,15 +354,6 @@ describe('db', function() {
         });
     });
 
-    describe('#getModuleStats()', async () => {
-        it('should get the level stats without error', async () =>{
-            let promise = db.getModuleStats();
-            let result = await promise;
-            assert(result!==null,"Result should not be null");
-            assert(result.length > 0 ,"Result should have more than 0 rows");
-            return promise;
-        });
-    });
 
 
     after(function(){
