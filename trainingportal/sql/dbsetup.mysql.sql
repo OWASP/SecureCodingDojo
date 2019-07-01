@@ -1,7 +1,7 @@
 CREATE TABLE `dbInfo` (
   `version` INT NULL
 ) DEFAULT CHARSET=utf8;
-INSERT INTO `dbInfo` (`version`) VALUES (4);
+INSERT INTO `dbInfo` (`version`) VALUES (5);
 
 CREATE TABLE `challengeEntries` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The entry id',
@@ -37,7 +37,6 @@ CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'The user id',
   `accountId` varchar(255) NOT NULL COMMENT 'The user account name',
   `teamId` int(10) unsigned DEFAULT NULL COMMENT 'The id of the team the user belongs to',
-  `level` int(10) DEFAULT NULL,
   `familyName` varchar(255) DEFAULT NULL,
   `givenName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),

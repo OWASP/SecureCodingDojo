@@ -89,41 +89,8 @@ describe('challengeTests', function() {
     });
 
 
-    describe('#verifyLevelUp()', async () => {
-        it('should fail to level up without challenges', async () => {
-            assert.notEqual(user, null, "Failed test setup - user null");
-            let promise = challenges.verifyLevelUp(user, "blackBelt");
-            let result = await promise;
-            assert.notEqual(result,true,"Shouldn't have leveled up");
-            return promise;
-        });
-
-        it('should fail to level up with only two challenges', async () => {
-            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe306"]);
-            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe807"]);
-            let promise = challenges.verifyLevelUp(user, "blackBelt");
-            let result = await promise;
-            assert.notEqual(result,true,"Shouldn't have leveled up");
-            return promise;
-        });
-
-        it('should level up', async () => {
-            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe862"]);
-            let result = await challenges.verifyLevelUp(user, "blackBelt");
-            assert.equal(result,true,"Should have leveled up");
-            user = await db.getPromise(db.getUser,"levelUpUser");;
-            assert.equal(user.level, 1, "User level not updated");
-            let promise = db.fetchBadges(user.accountId);
-            let badge = await promise;
-            assert.notEqual(badge, null, "badge should NOT be null");
-            assert.equal(badge, 0, "badges should be 0");
-            return promise;
-        });
-    });
-
-
   
-    describe('#verifyLevelUp() - issue badge', async () => {
+    describe('#verifyModuleCompletion() - issue badge', async () => {
         var user = null;
         before(async ()=>{
             //cleanup
@@ -136,18 +103,14 @@ describe('challengeTests', function() {
             await db.getPromise(db.insertChallengeEntry,[user.id, "owasp2017xss"]);
             await db.getPromise(db.insertChallengeEntry,[user.id, "owasp2017injection"]);
             await db.getPromise(db.insertChallengeEntry,[user.id, "owasp2017xxe"]);
-            await db.getPromise(db.insertChallengeEntry,[user.id, "owasp2017deserialization"]);
+            return db.getPromise(db.insertChallengeEntry,[user.id, "owasp2017deserialization"]);
 
-            user.level = 7;
-            return db.getPromise(db.updateUser, user);
         });
 
-        it('should level up and issue a badge', async () => {
+        it('should  issue a badge', async () => {
             
-            let result = await challenges.verifyLevelUp(user, "secondDegreeBlackBelt");
-            assert.equal(result,true,"Should have leveled up");
-            user = await db.getPromise(db.getUser,user.accountId);;
-            assert.equal(user.level, 8, "User level not updated");
+            let result = await challenges.verifyModuleCompletion(user, "secondDegreeBlackBelt");
+            assert.equal(result,true,"Should have completed the module");
             let promise = db.fetchBadges(user.id);
             let badges = await promise;
             assert.notEqual(null, badges, "badges should NOT be null");
@@ -165,8 +128,47 @@ describe('challengeTests', function() {
         })
     });
 
+    describe('#getUserLevelForModule()', async () => {
+        var user = null;
+        before(async ()=>{
+            //cleanup
+            await db.getConn().queryPromise("DELETE FROM users WHERE accountId='deleteMe_getUserLevelForModule'");
+            await db.getPromise(db.insertUser,{accountId:"deleteMe_getUserLevelForModule",familyName:"Last", givenName:"First"});
+            user = await db.getPromise(db.getUser,"deleteMe_getUserLevelForModule");
+            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe306"]);
+            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe807"]);
+            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe862"]);
+            return db.getPromise(db.insertChallengeEntry,[user.id, "cwe311"]);
+        });
+
+        it('should be at the correct level for module', async () => {
+            
+            let promise = challenges.getUserLevelForModule(user, "blackBelt");
+            let result = await promise;
+            assert.equal(result,1,"Should be at level 1");
+            //cleanup
+            return promise;
+        });
+
+        after(async ()=>{
+            //cleanup
+            await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
+            return db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId=?",[user.id]);
+        })
+    });
+
+
 
     describe('#apiChallengeCode', async () => {
+        var user = null;
+        before(async ()=>{
+            //cleanup
+            await db.getConn().queryPromise("DELETE FROM users WHERE accountId='deleteMe_apiChallengeCode'");
+            await db.getPromise(db.insertUser,{accountId:"deleteMe_apiChallengeCode",familyName:"Last", givenName:"First"});
+            let promise = db.getPromise(db.getUser,"deleteMe_apiChallengeCode");
+            user = await promise;
+            return promise;
+        });
         
         it('should return invalid request if fields are missing',async () => {
             let promise = challenges.apiChallengeCode({"body":{}});
@@ -221,9 +223,9 @@ describe('challengeTests', function() {
             return promise;
         });
 
-        it('should return wrong level for incorrect user level',async () => {
+        it('should return challenge not available for incorrect user level',async () => {
             let promise = challenges.apiChallengeCode({
-                "user":{level:20},
+                "user":user,
                 "body":
                     {
                         "moduleId":"blackBelt",
@@ -237,7 +239,7 @@ describe('challengeTests', function() {
             }
             catch(err){
                 assert.notEqual(err,null,"Error is null");
-                assert.equal(err.message,"wrongLevel","Wrong error code returned");
+                assert.equal(err.message,"challengeNotAvailable","Wrong error code returned");
                 promise = new Promise((resolve)=>{resolve("ok")});
 
             }
@@ -248,7 +250,7 @@ describe('challengeTests', function() {
         it('should return challenge not found for incorrect user level',async () => {
             let promise = challenges.apiChallengeCode(
                 {
-                    "user":{level:0},
+                    "user":user,
                     "body":
                         {
                             "moduleId":"blackBelt",
@@ -261,7 +263,7 @@ describe('challengeTests', function() {
             }
             catch(err){
                 assert.notEqual(err,null,"Error is null");
-                assert.equal(err.message,"challengeNotFound","Wrong error code returned");
+                assert.equal(err.message,"challengeNotAvailable","Wrong error code returned");
                 promise = new Promise((resolve)=>{resolve("ok")});
             }
             return promise;    
@@ -270,7 +272,7 @@ describe('challengeTests', function() {
         it('should return invalid code for wrong hash',async () => {
             let promise = challenges.apiChallengeCode(
                 {
-                    "user":{level:0},
+                    "user":user,
                     "body":
                         {
                             "moduleId":"blackBelt",
@@ -291,30 +293,29 @@ describe('challengeTests', function() {
         });
 
 
-        it('should level up user and call badgr', async () => {
-            await db.getPromise(db.insertUser,{
-                accountId:"apiChallengeCodeUser",
-                familyName:"LastApiChallengeCode", 
-                givenName:"FirstApiChallengeCode"
-            });
-            let user = await db.getPromise(db.getUser,"apiChallengeCodeUser");
+        it('should return updated level for user', async () => {
             await db.getPromise(db.insertChallengeEntry, [user.id, "cwe306"]);
             await db.getPromise(db.insertChallengeEntry, [user.id, "cwe807"]);
             user.codeSalt = mockSalt;
             mockRequest.user = user;
-            let promise = await challenges.apiChallengeCode(mockRequest);
-            assert.equal(mockRequest.user.level,1,"User level did not update");
-            assert.equal(badgrCount,2,"Badgr not called");
+            await challenges.apiChallengeCode(mockRequest);
+            let promise = challenges.getUserLevelForModule(user,"blackBelt");
+            let level = await promise;
+            assert.equal(level,1,"Wrong level for module");
             return promise;
         });
+
+        after(async ()=>{
+            //cleanup
+            await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
+            return db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId=?",[user.id]);
+        })
     });
 
     after(async () =>{
        
         var user1 = await db.getPromise(db.getUser,"levelUpUser");
         await db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId = ?",[user1.id]);
-        var user2 = await db.getPromise(db.getUser,"apiChallengeCodeUser");
-        await db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId = ?",[user2.id]);
         await db.getPromise(db.deleteUser,"levelUpUser");
         var promise = db.getPromise(db.deleteUser,"apiChallengeCodeUser");
         await promise;

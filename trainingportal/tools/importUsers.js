@@ -31,14 +31,13 @@ async function importUsers(){
 
             if(dbUser===null){ //create the user and update the team id
                 //user doesn't exist level is 0
-                user.level = 0;
                 await db.getPromise(db.insertUser,user);
                 dbUser = await db.getPromise(db.getUser, user.accountId);
                 if(!util.isNullOrUndefined(teamId)){
                     dbUser.teamId = teamId;
                 }
             }
-            if(dbUser && (dbUser.level==0 || dbUser.level < user.level)){ //only import challenges for users at a lower level
+            else{ //only import challenges for users at a lower level
 
                 for(let chId of user.passedChallenges){
                     await new Promise((resolve, reject) => {

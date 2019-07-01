@@ -169,8 +169,20 @@ app.get('/challenges/:moduleId', async (req, res) => {
     return util.apiResponse(req, res, 403, "Requested module id is not available."); 
   }
 
-  var returnChallenges = challenges.getChallengeDefinitionsForUser(req.user, moduleId);
+  var returnChallenges = await challenges.getChallengeDefinitionsForUser(req.user, moduleId);
   res.send(returnChallenges);
+});
+
+app.get('/challenges/:moduleId/level', async (req, res) => {
+  var moduleId = req.params.moduleId;
+  
+  if(util.isNullOrUndefined(moduleId) || validator.isAlphanumeric(moduleId) == false){
+    return util.apiResponse(req, res, 400, "Invalid module id."); 
+  }
+
+  let userLevelForModule = await challenges.getUserLevelForModule(req.user, moduleId);
+
+  res.send({"level":userLevelForModule});
 });
 
 app.get('/challenges/solutions/:challengeId', (req,res) => {
@@ -251,8 +263,7 @@ app.post('/api/user/challengeCode', async (req,res) => {
         case "invalidCode":util.apiResponse(req, res, 400, "Invalid challenge code."); break;
         case "invalidChallengeId":util.apiResponse(req, res, 400, "Invalid challenge id."); break;
         case "invalidModuleId":util.apiResponse(req, res, 400, "Invalid module id."); break;
-        case "wrongLevel":util.apiResponse(req, res, 400, "No challenges available for the current user level"); break;
-        case "challengeNotFound":util.apiResponse(req, res, 404, "Challenge not found for the current user level"); break; 
+        case "challengeNotAvailable":util.apiResponse(req, res, 404, "Challenge not found for the current user level"); break; 
         case "challengeSecretNotFound":util.apiResponse(req, res, 404, "Challenge secret not found."); break; 
         case "invalidCode":util.apiResponse(req, res, 400, "Invalid code."); break; 
         case "codeSaveError":util.apiResponse(req, res, 500, "Unable to save code."); break;
@@ -418,48 +429,50 @@ app.get('/api/salt',  (req, res) => {
 });
 
 //get a salt for the challenge code
-app.get('/api/report',  (req, res) => {
+app.get('/api/report',  async (req, res) => {
   if(util.isNullOrUndefined(reportUsers)){
     return util.apiResponse(req,res,204,"User report is not configured");
   }
 
-  var lastLevel = config.reportLevel;
+  var requiredModule = config.requiredModule;
   //update the user status based on the users in the database
   reportUsers.completeMembers = 0;
   reportUsers.inProgressMembers = 0;
-  db.fetchUsers(null, function(dbUsers){
-    reportUsers.teamList.forEach(function(team){
-      team.completed = 0;
-      team.percentComplete = 0;
-      team.members.forEach(function(member){
-        member.status="Not Started";
-        dbUsers.forEach(function(dbUser){
-          //check if the dbUser name matches
-          if(member.name.toLowerCase().trim().indexOf(dbUser.givenName.toLowerCase().trim())===0 
-          && member.name.toLowerCase().trim().indexOf(dbUser.familyName.toLowerCase().trim()) >= 0){
-            //check the level
-            if(dbUser.level>0){
-              if(member.status==="Not Started"){
-                if(dbUser.level>=lastLevel){
-                    member.status="Complete";
-                    team.completed++;
-                    reportUsers.completeMembers++;
-                }
-                else{
-                  member.status="In Progress";
-                  reportUsers.inProgressMembers++;
-                }
-              }
+
+  let dbUsers = await db.getUsersByBadges();
+  for(team of reportUsers.teamList){
+    team.completed = 0;
+    team.percentComplete = 0;
+    for(member of team.members){
+      member.status="Not Started";
+
+      for(dbUser of dbUsers){
+        //check if the dbUser name matches
+        if(member.name.toLowerCase().trim().indexOf(dbUser.givenName.toLowerCase().trim())===0 
+        && member.name.toLowerCase().trim().indexOf(dbUser.familyName.toLowerCase().trim()) >= 0){
+          //check the level
+          if(member.status==="Not Started"){
+            if(dbUser.moduleId===requiredModule){
+                member.status="Complete";
+                team.completed++;
+                reportUsers.completeMembers++;
+            }
+            else{
+              member.status="In Progress";
+              reportUsers.inProgressMembers++;
             }
           }
-        });
-      });
-      team.percentComplete = Math.round((team.completed/team.members.length) * 100);
-    });
-    reportUsers.percentComplete = Math.round((reportUsers.completeMembers/reportUsers.totalMembers) * 100);
-    reportUsers.status = 200;
-    res.send(reportUsers);
-  })
+        }
+      }
+    }
+    team.percentComplete = Math.round((team.completed/team.members.length) * 100);
+
+  }
+
+  reportUsers.percentComplete = Math.round((reportUsers.completeMembers/reportUsers.totalMembers) * 100);
+  reportUsers.status = 200;
+  res.send(reportUsers);
+
 });
 
 db.init();

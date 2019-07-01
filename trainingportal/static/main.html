@@ -93,10 +93,11 @@
                         <div class="modal-body">
                             
                             <div id="editContainer" ng-if="ownedTeam==null">
+                            <form autocomplete="off">
                                 <label for="userTeamListChoice">Pick an existing team:</label>
                                 <input list="userTeamList" id="userTeamListChoice" name="userTeamListChoice" class="custom-select" 
                                     ng-model="userTeamListChoice" ng-change="onUserTeamChange()" 
-                                    autocomplete="off" placeholder="Start typing to search existing teams"/>
+                                    placeholder="Start typing to search existing teams."/>
                                 <datalist id="userTeamList">
                                     <option ng-repeat="team in teamList" value="{{$index}}">{{team.name}}</option>
                                 </datalist>
@@ -104,6 +105,7 @@
                                 <br><br>
                                 <label for="newTeamName">Create new team:</label>
                                 <input type="text" class="form-control" id="newTeamName">
+                            </form>
                             </div>
                             <div id="ownerContainer" ng-if="ownedTeam!=null">
                                 <p>You manage the team <strong>'{{ownedTeam.name}}'</strong>
