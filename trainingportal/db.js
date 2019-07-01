@@ -240,7 +240,7 @@ exports.init = function(){
 //Creates a user in the database
 exports.insertUser = function(user,errCb,doneCb){
   var con = getConn();
-  var sql = "INSERT INTO users (id, accountId, teamId, familyName, givenName) VALUES (null, ?, null, ?, ?, ?)";
+  var sql = "INSERT INTO users (id, accountId, teamId, familyName, givenName) VALUES (null, ?, null, ?, ?)";
   con.query(sql, [user.accountId, user.familyName, user.givenName], function (err, result) {
     if (err) handleErr(errCb,err);
     else handleDone(doneCb,result);
@@ -374,7 +374,7 @@ exports.getTeamWithMembersByName = function(name,errCb,doneCb){
       if(result.length >= 1){
         var team = result[0];
         //execute one more query to get the team members
-        var sql = "SELECT level,givenName,familyName FROM users WHERE teamId = ?";
+        var sql = "SELECT givenName,familyName FROM users WHERE teamId = ?";
         con.query(sql, [team.id], function (err, result) {
           if(err) handleErr(errCb,err);
           else{
