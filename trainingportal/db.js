@@ -441,18 +441,14 @@ exports.deleteTeam = function(user,teamId,errCb,doneCb){
  */
 exports.getTeamMembersByBadges = async (teamId) => {
   let con = getConn();
-  let sql = "SELECT badges.moduleId, users.givenName, users.familyName FROM badges RIGHT JOIN users on badges.userId=users.id WHERE users.teamId = ?";
-  let result = await con.queryPromise(sql,[teamId]);
-  return result;
-}
-
-/**
- * Gets users by completed modules
- */
-exports.getUsersByBadges = async () => {
-  let con = getConn();
-  let sql = "SELECT badges.moduleId, users.givenName, users.familyName FROM badges RIGHT JOIN users on badges.userId=users.id";
-  let result = await con.queryPromise(sql);
+  let sql = "SELECT badges.moduleId, users.givenName, users.familyName FROM users LEFT JOIN badges on badges.userId=users.id";
+  let args = [];
+  if(teamId!==null){
+    sql+=" WHERE users.teamId = ?";
+    args = [teamId];
+  }
+  sql+=" order by badges.moduleId, users.givenName, users.familyName";
+  let result = await con.queryPromise(sql,args);
   return result;
 }
 

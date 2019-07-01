@@ -223,11 +223,12 @@ describe('db', function() {
             assert.notEqual(result, null,"Result should not be null");
             assert.equal(result.length, 2 ,"Result should have 2 rows");
             
-            assert.equal(result[0].givenName,"FirstTeamMember2","First entry should be 'FirstTeamMember2'");
-            assert.equal(result[0].moduleId,"blackBelt","FirstTeamMember2 should have the 'blackBelt' badge");
+            assert.equal(result[0].givenName,"FirstTeamMember1","First entry should be 'FirstTeamMember1'");
+            assert.equal(result[0].moduleId,null,"FirstTeamMember2 should have no badges");
 
-            assert.equal(result[1].givenName,"FirstTeamMember1","Second entry should be 'FirstTeamMember1'");
-            assert.equal(result[1].moduleId,null,"FirstTeamMember1 should have no badges");
+            assert.equal(result[1].givenName,"FirstTeamMember2","Second entry should be 'FirstTeamMember2'");
+            assert.equal(result[1].moduleId,"blackBelt","FirstTeamMember2 should have the 'blackBelt' badge");
+
 
             return promise;
         });

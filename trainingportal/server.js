@@ -439,7 +439,7 @@ app.get('/api/report',  async (req, res) => {
   reportUsers.completeMembers = 0;
   reportUsers.inProgressMembers = 0;
 
-  let dbUsers = await db.getUsersByBadges();
+  let dbUsers = await db.getTeamMembersByBadges(null);
   for(team of reportUsers.teamList){
     team.completed = 0;
     team.percentComplete = 0;
