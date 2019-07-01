@@ -199,6 +199,10 @@ exports.init = function(){
             maintenanceFilePath+=".mysql.sql";
           }
           else{
+            if(ver===5){
+              console.log("SQLite Upgrade to DB version 5 is not yet supported");
+              return;
+            }
             maintenanceFilePath+=".sqlite.sql";
           }
           var maintenanceScript = fs.readFileSync(path.join(__dirname, maintenanceFilePath), 'utf8');
