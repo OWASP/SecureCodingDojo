@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" ng-app="challengesApp" ng-controller="challengesCtrl" ng-init="init()">
     
     
     <span ng-show="challengesAvailable">
@@ -9,7 +9,7 @@
         While the vulnerable applications are web sites (for the purpose of providing a easily accessible gaming platform), 
         the majority of the concepts apply to any software: desktop applications, mobile applications or operating system services.</p>
     <div ng-repeat="level in moduleChallengeDefinitions" style="padding-top:10px">
-        <div ng-repeat="challenge in level.challenges" ng-if="user.level+1>=level.level" style="padding-top:5px">
+        <div ng-repeat="challenge in level.challenges" ng-if="userLevel+1>=level.level" style="padding-top:5px">
             <div class="card">
                 <div class="card-header">
                     <a class="text-dark" data-toggle="collapse" role="button" data-target="#collapse{{challenge.id}}" href="">

@@ -1,4 +1,4 @@
-const SCHEMA_VERSION = 4;
+const SCHEMA_VERSION = 5;
 module.exports.SCHEMA_VERSION = SCHEMA_VERSION;
 const path = require('path');
 const config = require(path.join(__dirname, 'config'));
@@ -240,8 +240,8 @@ exports.init = function(){
 //Creates a user in the database
 exports.insertUser = function(user,errCb,doneCb){
   var con = getConn();
-  var sql = "INSERT INTO users (id, accountId, teamId, level, familyName, givenName) VALUES (null, ?, null, ?, ?, ?)";
-  con.query(sql, [user.accountId, user.level, user.familyName, user.givenName], function (err, result) {
+  var sql = "INSERT INTO users (id, accountId, teamId, familyName, givenName) VALUES (null, ?, null, ?, ?, ?)";
+  con.query(sql, [user.accountId, user.familyName, user.givenName], function (err, result) {
     if (err) handleErr(errCb,err);
     else handleDone(doneCb,result);
   });
@@ -289,8 +289,8 @@ exports.deleteUser = function(accountId,errCb,doneCb){
 //updates the properties of a user in the database
 exports.updateUser = function(user,errCb,doneCb){
   var con = getConn();
-  var sql = "UPDATE users SET accountId = ?, teamId = ?, level = ?, familyName = ?, givenName = ? WHERE id = ?";
-  con.query(sql, [user.accountId, user.teamId, user.level, user.familyName, user.givenName, user.id], function (err, result) {
+  var sql = "UPDATE users SET accountId = ?, teamId = ?, familyName = ?, givenName = ? WHERE id = ?";
+  con.query(sql, [user.accountId, user.teamId, user.familyName, user.givenName, user.id], function (err, result) {
     if(err) handleErr(errCb,err);
     else handleDone(doneCb,result);
       
@@ -300,7 +300,7 @@ exports.updateUser = function(user,errCb,doneCb){
 //fetches the list of users from the database only with public info
 exports.fetchUsers = function(errCb,doneCb){
   var con = getConn();
-  var sql = "SELECT givenName,familyName,level,teamId FROM users";
+  var sql = "SELECT givenName,familyName,teamId FROM users";
   con.query(sql, function (err, result) {
       if(err) handleErr(errCb,err);
       else{
@@ -355,7 +355,7 @@ exports.insertTeam = function(user,team,errCb,doneCb){
 //fetches the list of teams from the database
 exports.fetchTeams = function(errCb,doneCb){
   var con = getConn();
-  var sql = "SELECT * FROM teams";
+  var sql = "SELECT * FROM teams order by name";
   con.query(sql, function (err, result) {
       if(err) handleErr(errCb,err);
       else{
@@ -442,6 +442,15 @@ exports.getTeamMembersByBadges = async (teamId) => {
   return result;
 }
 
+/**
+ * Gets users by completed modules
+ */
+exports.getUsersByBadges = async () => {
+  let con = getConn();
+  let sql = "SELECT badges.moduleId, users.givenName, users.familyName FROM badges RIGHT JOIN users on badges.userId=users.id";
+  let result = await con.queryPromise(sql);
+  return result;
+}
 
 //Creates a user in the database
 exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
@@ -515,13 +524,13 @@ exports.fetchActivity = function(query,limit,errCb,doneCb){
     if(MYSQL_CONFIG===null){
       concat = "users.givenName || ' ' || users.familyName";
     }
-    sql = "SELECT challengeEntries.challengeId, challengeEntries.timestamp, users.givenName, users.familyName, users.level, users.teamId "+
+    sql = "SELECT challengeEntries.challengeId, challengeEntries.timestamp, users.givenName, users.familyName, users.teamId "+
       " FROM challengeEntries INNER JOIN users on users.id=challengeEntries.userId "+
       "WHERE "+concat+" LIKE ? order by challengeEntries.id desc LIMIT ?";
     args = [query, limit];
   }
   else{
-    sql = "SELECT challengeEntries.challengeId, challengeEntries.timestamp, users.givenName, users.familyName, users.level, users.teamId "+
+    sql = "SELECT challengeEntries.challengeId, challengeEntries.timestamp, users.givenName, users.familyName, users.teamId "+
     " FROM challengeEntries INNER JOIN users on users.id=challengeEntries.userId order by challengeEntries.id desc LIMIT ?";
     args = [limit];
   }

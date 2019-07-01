@@ -99,47 +99,90 @@ exports.isPermittedModule = async (user, moduleId) => {
 }
 
 /**
+ * Get the user level based on the ammount of passed challenges
+ */
+exports.getUserLevelForModule = async (user,moduleId) => {
+    let moduleDefinitions = getDefinifionsForModule(moduleId);
+    let passedChallenges =  await db.getPromise(db.fetchChallengeEntriesForUser,user);
+    let userLevel=-1;
+    for(level of moduleDefinitions){
+        let passCount = 0;
+        for(chDef of level.challenges) {
+            for(passedCh of passedChallenges){
+                if(chDef.id===passedCh.challengeId){
+                    passCount++;
+                }
+            }
+        }
+        if(passCount===level.challenges.length){
+            userLevel = level.level;
+        }
+        else{
+            break;
+        }
+    }
+    return userLevel;
+}
+
+/**
+ * Get permitted challenges for module
+ */
+exports.getPermittedChallengesForUser = async (user, moduleId) => {    
+    if(util.isNullOrUndefined(moduleId)) return [];    
+    if(util.isNullOrUndefined(modules[moduleId])) return [];
+
+    var permittedLevel = await exports.getUserLevelForModule(user, moduleId) + 1;
+
+    var modulePath = getModulePath(moduleId);
+    var moduleDefinitions = getDefinifionsForModule(moduleId);
+
+    for(level of moduleDefinitions){
+        if (permittedLevel === level.level) {
+            return level.challenges;
+        }
+    }
+        
+    return [];
+}
+
+/**
  * Construct the challenge definitions loaded on the client side based on the users level
  * @param {Object} user The session user object
  * @param {Array} moduleIds The lesson module ids
  */
-exports.getChallengeDefinitionsForUser = function (user, moduleIds) {
+exports.getChallengeDefinitionsForUser = async (user, moduleId) => {
     var returnChallenges = [];
-    var permittedLevel = user.level + 1;
     
-    if(util.isNullOrUndefined(moduleIds)) return [];
-    
-    if(!Array.isArray(moduleIds)) moduleIds = [moduleIds];
-    
-    for(moduleId of moduleIds){
+    if(util.isNullOrUndefined(moduleId)) return [];    
+    if(util.isNullOrUndefined(modules[moduleId])) return [];
 
-        if(util.isNullOrUndefined(modules[moduleId])) return [];
-        var modulePath = getModulePath(moduleId);
-        var moduleDefinitions = getDefinifionsForModule(moduleId);
+    var permittedLevel = await exports.getUserLevelForModule(user, moduleId) + 1;
 
-        for(level of moduleDefinitions){
-            if (permittedLevel >= level.level) {
-               for(challenge of level.challenges) {
-                    //update the play link if it exists
-                    if (!util.isNullOrUndefined(config.playLinks)) {
-                        var playLink = config.playLinks[challenge.id];
-                        if (!util.isNullOrUndefined(playLink)) {
-                            challenge.playLink = playLink;
-                        }
-                        var description = challenge.description;
-                        if(!util.isNullOrUndefined(description) && description.indexOf(modulePath) === -1){
-                            challenge.description = path.join(modulePath, description);
-                        }
+    var modulePath = getModulePath(moduleId);
+    var moduleDefinitions = getDefinifionsForModule(moduleId);
+
+    for(level of moduleDefinitions){
+        if (permittedLevel >= level.level) {
+            for(challenge of level.challenges) {
+                //update the play link if it exists
+                if (!util.isNullOrUndefined(config.playLinks)) {
+                    var playLink = config.playLinks[challenge.id];
+                    if (!util.isNullOrUndefined(playLink)) {
+                        challenge.playLink = playLink;
+                    }
+                    var description = challenge.description;
+                    if(!util.isNullOrUndefined(description) && description.indexOf(modulePath) === -1){
+                        challenge.description = path.join(modulePath, description);
                     }
                 }
-                returnChallenges.push(level);
             }
-            else {
-                returnChallenges.push({ "level": level.level, "name": level.name, "challenges": [] });
-            }
+            returnChallenges.push(level);
         }
-        
+        else {
+            returnChallenges.push({ "level": level.level, "name": level.name, "challenges": [] });
+        }
     }
+        
     return returnChallenges;
 }
 
@@ -159,60 +202,23 @@ exports.getSolution = function (challengeId) {
 }
 
 /**
- * Checks if the user should level up and execute level up. Passes the result, true or false to the cb
+ * Checks if the user has completed the module and issue a badge
  */
-exports.verifyLevelUp = async (user, moduleId) => {
-    var userLevel = user.level !== null ? user.level : 0;
-    var entries = await db.getPromise(db.fetchChallengeEntriesForUser,user);
-    var shouldLevelUp = false;
+exports.verifyModuleCompletion = async (user, moduleId) => {
+    var userLevel = await exports.getUserLevelForModule(user, moduleId);
     let moduleDefinitions = getDefinifionsForModule(moduleId);
-    //determine if is level up
-    var passedLevel=0;
-
-    if(entries===null || entries.length===0){
-        return false;
-    }
-    if(moduleDefinitions===null) {
-        return false;
-    }
-
-    for(challengeLevel of moduleDefinitions){
-        var challengesForLevel = challengeLevel.challenges;
-        //check whether the entries match the level challenges
-        var passCount = 0;
-
-        for(challenge of challengesForLevel){
-            for(entry of entries){
-                if(entry.challengeId===challenge.id){
-                    passCount++;
-                }
-            }
-        }
-
-        if(passCount === challengesForLevel.length){
-            passedLevel = challengeLevel.level;
-        }
-    }
-
-    shouldLevelUp = userLevel < passedLevel;
-
-    //update user for level up
-    if(shouldLevelUp){
-        user.level = passedLevel;
-        await db.getPromise(db.updateUser, user);
-    }
-
     var lastLevel = moduleDefinitions[moduleDefinitions.length-1];
 
-    if(lastLevel.level===passedLevel){
+    if(lastLevel.level===userLevel){
         //training module complete
         let badges = await db.fetchBadges(user.id);
         if(!badges.includes(moduleId)){
             await db.insertBadge(user.id, moduleId);
         }
+        return true;
     }
 
-    return shouldLevelUp;
+    return false;
 }
 
 /**
@@ -296,22 +302,10 @@ module.exports.apiChallengeCode = async (req) => {
     //check id
     var availableChallenges = null;
     var curChallengeObj = null;
-    var userLevel = req.user.level+1;
-    if(req.user.level === null) req.user.level = 0;
 
     //identify the current challenge object and also the available challenges for the current user level
-    var moduleDefinitions = module.exports.getChallengeDefinitionsForUser(req.user, moduleId);
-    for(levelObj of moduleDefinitions){
-        var levelChallenges = levelObj.challenges;
-        if(levelObj.level===userLevel){
-            availableChallenges = levelChallenges;
-        }
-    }
-
-    if(availableChallenges==null || availableChallenges.length==0){ 
-        throw Error("wrongLevel");
-    }
-
+    var availableChallenges = await module.exports.getPermittedChallengesForUser(req.user, moduleId);
+    
     //search for the current challenge id
     for(availableChallenge of availableChallenges){
         if(challengeId === availableChallenge.id){
@@ -321,7 +315,7 @@ module.exports.apiChallengeCode = async (req) => {
     }
 
     if(curChallengeObj===null){
-        throw Error("challengeNotFound");
+        throw Error("challengeNotAvailable");
     }
     
     //calculate the hash
@@ -331,26 +325,25 @@ module.exports.apiChallengeCode = async (req) => {
     } 
     //success update challenge
     curChallengeObj.moduleId = moduleId;
-    return module.exports.insertChallengeEntry(req.user, curChallengeObj);
+    return module.exports.insertChallengeEntry(req.user, curChallengeObj, moduleId);
    
 }
 
 /**
  * Inserts a challenge entry
  */
-module.exports.insertChallengeEntry = async (user,curChallengeObj) => {
+module.exports.insertChallengeEntry = async (user,curChallengeObj, moduleId) => {
     await db.getPromise(db.insertChallengeEntry, [user.id,curChallengeObj.id]);
     //issue badgr badge if enabled
     module.exports.badgrCall(curChallengeObj.badgrInfo,user);
-    let isLevelUp = await module.exports.verifyLevelUp(user,moduleId);
+    let isModuleComplete = await module.exports.verifyModuleCompletion(user,moduleId);
     //check to see if the user levelled up
-    curChallengeObj.isLevelUp = isLevelUp;
-    if(isLevelUp){
-        util.log(`User has solved the challenge ${curChallengeObj.name} and leveled up!`, user);
-        //issue badgr badge if enabled for level
-        module.exports.badgrCall(challengeDefinitions[user.level].badgrInfo,user);    
+    if(isModuleComplete){
+        util.log(`User has solved the challenge ${curChallengeObj.name} and completed the module!`, user);
+        //issue badgr badge if enabled for module
+        module.exports.badgrCall(modules[moduleId].badgrInfo,user);    
         return {
-                "message":"Congratulations you solved the challenge and leveled up!",
+                "message":"Congratulations you solved the challenge and completed the module!",
                 "data":curChallengeObj
             }
     }
