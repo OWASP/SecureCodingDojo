@@ -20,7 +20,7 @@
         </thead>
         <tbody>
             <tr ng-repeat="activityEntry in activityList">
-                <td>{{activityEntry.timestamp}}</td>
+                <td>{{toLocaleDate(activityEntry.timestamp)}}</td>
                 <td>{{activityEntry.givenName}} {{activityEntry.familyName}}</td>
                 <td>{{teamNames[activityEntry.teamId]}}</td>
                 <td>{{activityEntry.challengeName}}</td>
