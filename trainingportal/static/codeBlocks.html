@@ -13,7 +13,7 @@
           <div class="tab-content">
               <div ng-repeat="(id,block) in codeBlocks" id="menu{{$index}}" 
               class="tab-pane fade ng-class:{'show active': isCodeBlockActive(id)}"> 
-                <div ng-include="block.description"></div>
+                <div ng-include="block.description" onload="highlightCode()"></div>
           
               </div>
           </div>

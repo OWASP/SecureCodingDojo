@@ -21,7 +21,7 @@
             {
                 "id":"cwe306",
                 "name":"Missing Authentication for Critical Function", 
-                "description": "cwe306.html",
+                "description": "cwe306.md",
                 "attackGram":"authbypass.png",
                 "solution":"cwe306.sol.md",
                 "playLink":"/ch1.jsp",

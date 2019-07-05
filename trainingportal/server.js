@@ -47,6 +47,8 @@ app.use('/public/angular',express.static(path.join(__dirname, 'node_modules/angu
 app.use('/public/angular-route',express.static(path.join(__dirname, 'node_modules/angular-route')));
 app.use('/public/bootstrap',express.static(path.join(__dirname, 'node_modules/bootstrap')));
 app.use('/public/open-iconic',express.static(path.join(__dirname, 'node_modules/open-iconic')));
+app.use('/public/highlightjs',express.static(path.join(__dirname, 'node_modules/highlightjs')));
+
 app.use('/public',express.static(path.join(__dirname, 'public')));
 
 
@@ -187,11 +189,21 @@ app.get('/challenges/:moduleId/level', async (req, res) => {
 
 app.get('/challenges/solutions/:challengeId', (req,res) => {
   var challengeId = req.params.challengeId;
-  if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) == false){
+  if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) === false){
     return util.apiResponse(req, res, 400, "Invalid challenge id."); 
   }
   var solutionHtml = challenges.getSolution(challengeId);
   res.send(solutionHtml);
+});
+
+
+app.get('/challenges/descriptions/:challengeId', (req,res) => {
+  var challengeId = req.params.challengeId;
+  if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) === false){
+    return util.apiResponse(req, res, 400, "Invalid challenge id."); 
+  }
+  var descriptionHtml = challenges.getDescription(challengeId);
+  res.send(descriptionHtml);
 });
 
 
