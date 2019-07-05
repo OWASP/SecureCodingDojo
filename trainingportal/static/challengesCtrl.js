@@ -6,9 +6,12 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
         }
     }
 
+    $scope.isLoading = () => {
+        return typeof $scope.challengesAvailable === 'undefined';
+    }
+
     $scope.init = () => {
         $scope.moduleId = $routeParams.moduleId;
-        $scope.challengesAvailable = false;
         $http.get(`/challenges/${$scope.moduleId}/level`)
         .then((response) => {
             if(response != null && response.data != null){
@@ -18,7 +21,7 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
 
         $http.get(`/challenges/${$scope.moduleId}`)
         .then(function(response) {
-            if(response != null && response.data != null){
+            if(response != null && response.data != null && Array.isArray(response.data)){
                 $scope.levelNames = {};
                 var challengeDefinitions = response.data;
                 if(challengeDefinitions.length >= 1){
@@ -49,6 +52,9 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
                 $scope.moduleChallengeDefinitions = challengeDefinitions;
 
 
+            }
+            else{
+                $scope.challengesAvailable = false;
             }
         });
     }

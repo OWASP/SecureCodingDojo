@@ -69,10 +69,15 @@
     </div>
     </span>
 
+    <div class="text-center" ng-show="isLoading()">
+        <strong>Loading...</strong>
+        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+    </div>
+
     <div class="alert alert-danger" role="alert" ng-show="!moduleId">
             You need to pick a training module first.
     </div>
-    <span ng-show="!challengesAvailable && moduleId">
+    <span ng-show="challengesAvailable === false && moduleId">
         <div class="alert alert-secondary" role="alert" >
             Specified module is not available.
         </div>
