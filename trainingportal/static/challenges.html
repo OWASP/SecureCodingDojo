@@ -1,6 +1,5 @@
 <div class="container-fluid" ng-app="challengesApp" ng-controller="challengesCtrl" ng-init="init()">
     
-    
     <span ng-show="challengesAvailable">
     <p>Complete the lessons below to advance to the next level. Click on the lesson name to expand/collapse the description.</p>
     <p>
@@ -62,7 +61,7 @@
                                 </p>
                                 </span>
                         <h4>Challenge Description</h4>
-                        <div ng-include="challenge.description"></div>
+                        <div ng-include="getDescriptionLink(challenge.id)" onload="highlightCode()"></div>
                     </div>
                 </div>
             </div>

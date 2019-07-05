@@ -22,7 +22,6 @@ const util = require(path.join(__dirname, 'util'));
 const modules = Object.freeze(require(path.join(__dirname, 'static/lessons/modules.json')));
 const config = require(path.join(__dirname, 'config'));
 const db = require(path.join(__dirname, 'db'));
-const async = require('async');
 const validator = require('validator');
 const crypto = require('crypto');
 const aescrypto = require(path.join(__dirname, 'aescrypto'));
@@ -41,6 +40,7 @@ function getDefinifionsForModule(moduleId){
 var challengeDefinitions = [];
 var challengeNames = [];
 var solutions = [];
+var descriptions = [];
 var masterSalt = "";
 
 /**
@@ -53,7 +53,11 @@ function init(){
         for(level of moduleDefinitions){
             challengeDefinitions.push(level);
             for(challenge of level.challenges){
+                if(!util.isNullOrUndefined(challengeNames[challenge.id])){
+                    throw new Error(`Duplicate challenge id: '${challenge.id}'!`);
+                }
                 challengeNames[challenge.id] = challenge.name;
+                descriptions[challenge.id] = path.join(modulePath, challenge.description);
                 if(!util.isNullOrUndefined(challenge.solution)){
                     solutions[challenge.id] = path.join(modulePath, challenge.solution);
                 }
@@ -199,6 +203,26 @@ exports.getSolution = function (challengeId) {
     }
 
     return solutionHtml;
+}
+
+/**
+ * Returns the description html (converted from markdown if applicable)
+ * @param {The challenge id} challengeId 
+ */
+exports.getDescription = function (challengeId) {
+    var description = descriptions[challengeId];
+    var descriptionHtml = "";
+    if(!util.isNullOrUndefined(description)){
+        var descriptionText = fs.readFileSync(path.join(__dirname, description),'utf8');
+        if(description.endsWith(".md")){
+            descriptionHtml = markdown.toHTML(descriptionText);
+        }
+        else{
+            descriptionHtml = descriptionText;
+        }
+    }
+
+    return descriptionHtml;
 }
 
 /**

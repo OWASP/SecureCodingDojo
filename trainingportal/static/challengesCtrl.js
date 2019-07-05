@@ -1,5 +1,11 @@
 app.controller("challengesCtrl", function($scope, $http, $routeParams) {
 
+    $scope.getDescriptionLink = (chId) => {
+        if(chId){
+            return `/challenges/descriptions/${chId}`;
+        }
+    }
+
     $scope.init = () => {
         $scope.moduleId = $routeParams.moduleId;
         $scope.challengesAvailable = false;
