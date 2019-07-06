@@ -349,7 +349,7 @@ app.controller('mainCtrl', function($scope, $http, $location) {
     $scope.highlightCode = () => {
         document.querySelectorAll('pre').forEach((block) => {
             if(block.innerText.indexOf("\n") > -1){
-                hljs.highlightBlock(block);
+                setTimeout(hljs.highlightBlock,1, block);
             }
         });
     }
