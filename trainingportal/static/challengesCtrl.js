@@ -16,9 +16,13 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
         .then((response) => {
             if(response != null && response.data != null){
                 $scope.userLevel = response.data.level;
+                $scope.loadChallenges();
             }
         });
 
+    }
+
+    $scope.loadChallenges = function(){
         $http.get(`/challenges/${$scope.moduleId}`)
         .then(function(response) {
             if(response != null && response.data != null && Array.isArray(response.data)){
