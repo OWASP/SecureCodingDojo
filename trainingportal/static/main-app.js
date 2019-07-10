@@ -36,6 +36,25 @@ app.config(function($routeProvider) {
     });
 });
 
+app.directive('highlightCode', [ function(){
+
+    function doHighlight(preList){
+        for(pre of preList){
+            hljs.highlightBlock(pre);
+        }
+    }
+
+    function linkFunc (scope, element, attrs) {
+        for(domEl of element){
+            var preList = domEl.querySelectorAll('pre');
+            setTimeout(doHighlight,1,preList)   
+        }        
+    }
+
+    return {
+        link: linkFunc
+    } 
+}])
 
 app.controller('mainCtrl', function($scope, $http, $location) {
     
@@ -342,14 +361,6 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                
                 //load the user report
                $scope.loadUserReport();
-            }
-        });
-    }
-
-    $scope.highlightCode = () => {
-        document.querySelectorAll('pre').forEach((block) => {
-            if(block.innerText.indexOf("\n") > -1){
-                setTimeout(hljs.highlightBlock,1, block);
             }
         });
     }
