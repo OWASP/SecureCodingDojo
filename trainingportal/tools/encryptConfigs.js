@@ -12,7 +12,7 @@ var sessionSecret=uid.sync(64);
 
 var badgrToken = "<badgr token>";
 
-const config = require(path.join(__dirname, 'config'));
+const config = require(path.join(__dirname, '../config'));
 const fs = require('fs');
 
 console.log("======= config.js ==========");
