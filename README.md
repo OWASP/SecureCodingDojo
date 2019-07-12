@@ -32,14 +32,16 @@ While we don't guarantee compliance the training could be used to meet complianc
 
 # Development Pre-requisites
 Training portal
-- Install VS Code (developed with 1.14)
-- node/npm (developed with v6.10)
+- Install VS Code 
+- node/npm (developed with v10)
 - MySQL server + My SQL Workbench (developed with MySQL 5.7)
 
 Insecure.Inc
 - Developed in Java EE
 - Eclipse Java EE latest version (developed with Neon) + Java 1.8 + tomcat 8 for the Insecure.Inc training app
 
+# Docker Images
+Check the relevant sections on the wiki for Docker setup instructions.
 
 # Slack Setup Instructions
 You will need to create a Slack app for authentication.
@@ -57,6 +59,8 @@ In the same place you will setup your domain and authorized redirect URIs. For e
 # Local Authentication Setup Instructions
 For small teams or pre-configured images Slack or Google authentication may not be an option. For this scenario you can configure authentication working with a local flat file.
 
+Check the wiki for a Docker image with this configuration.
+
 - Copy localUsers.json.sample to localUsers.json
 - Un-comment the line in config.js which specifies the localUsersPath
 - Un-comment the line in encryptConfigs.js that calls the genLocalUser function and fill in accordingly. 
@@ -71,15 +75,14 @@ For small teams or pre-configured images Slack or Google authentication may not 
 Install MySQL and create a DB and credentials for that DB. Note your user name and password you will need them for later.
 
 # Encryption Key Seeds and Environment Variables
-You will have to setup four seeds for encryption keys as OS environment variables. On *nix/mac modify .bash_profile as follows
+You will have to setup encryption keys as OS environment variables. On *nix/mac modify .bash_profile as follows
 
     export ENC_KEY="put something random here"
     export ENC_KEY_IV="put something random here"
 
-The following two are optional but recommended. They will cause the challenge secrets to be stored encrypted on the hard drive.
+The following is to prevent participants from generating their own challenge codes.
 
-    export CHALLENGE_KEY="put something random here"
-    export CHALLENGE_KEY_IV="put something random here"
+    export CHALLENGE_MASTER_SALT="put something random here"
 
 You will also have to configure environmental settings such as the below
 
@@ -95,14 +98,13 @@ Training portal
 - Open VSCode and open the repository directory
 - To download all the required node packages change directory to  ./trainingportal and run npm install
 - Copy ./trainingportal/config.js.sample to ./trainingportal/config.js
-- Copy ./insecureinc/src/inc/insecure/code.properties.sample to ./insecureinc/src/inc/insecure/code.properties
 - Open ./trainingportal/encryptConfigs.js, fill in db password, the Slack OAuth secret, the Google OAuth secret; etc. 
-- Change the value of the regenerateSecrets variable to true, to generate new challenge secrets. Otherwise the sample values will be used and people may be able to cheat.
 - Debug the script in VSCode to generate encrypted configuration settings in the Console.
 - Copy the Console output to each corresponding file.
 - Delete passwords from the encryptConfigs.
 - Open ./trainingportal/server.js and debug it in VSCode (at the first run the DB tables will get created)
 - The trainingportal server will be running on http://localhost:8081/ 
+- Run tests with `npm test`
 
 Insecure.Inc
 - Add a Tomcat 8.0 server you have installed to your Eclipse > Servers view
@@ -117,21 +119,21 @@ Training portal
 Insecure.Inc 
 - Right click on the project to export as a .war file and drop it into the /webapps folder of your Tomcat 8 installation.
 
-NOTE: You can download a pre-built version of insecureinc.war from /build however make sure you change and encrypt the values in WEB-INF/classes/inc/insecure/codes.properties after deployment with encryptConfigs.js. 
 
 # Hosting Insecure.Inc
+
+Check out the wiki for Docker instructions.
+
 Note: Don't put Insecure.Inc on a publicly facing server or in AWS since activity against it may trigger IPS alarms, etc. 
 
 Setup a Tomcat 8 server.
 
-If you configured a key for storing the challenge secrets encrypted you need to perform the following step.
+If you configured a master key for storing the challenge secrets encrypted you need to perform the following step.
 
-Tomcat will ignore environment variables so you will have to configure the challenge key in /opt/tomcat/bin/setenv.sh
+Tomcat will ignore environment variables so you will have to configure the challenge master saltin /opt/tomcat/bin/setenv.sh
 (or wherever you had tomcat installed) like so:
 
-    export CHALLENGE_KEY="our challenge key seed"
-    export CHALLENGE_KEY_IV="your challenge key iv seed"
-
+    export CHALLENGE_MASTER_SALT="our challenge master salt"
 
 # Deploying the Training Portal on AWS ELB
 AWS ELB setup is pretty standard. Configure the RDS DB separately because once you setup the environment you can't easily switch or delete databases.
@@ -144,8 +146,6 @@ Training portal
 
         ENC_KEY="your enc key seed"
         ENC_KEY_IV="your enc iv seed"
-        CHALLENGE_KEY="your challenge key seed"
-        CHALLENGE_KEY_IV="your challenge key iv seed"
         DOJO_DB_HOST="your AWS RDS mysql host"
         DOJO_URL="https://elburl"
         DOJO_TARGET_URL="http://internalhost:8080/InsecureInc"
@@ -160,11 +160,16 @@ The file challengeDefinitions.json points to the corresponding html challenge de
 Follow the already defined examples to create a new one.
 
     .
-    +-- /trainingportal/static/challenges
-    |   +-- challengeDefinitions.json //configuration file where challenges are grouped by levels and defined
-    |   +-- cwe22.html //challenge description html
-    |   ...
-    |   +-- quiz.html //the quiz is also a challenge
+    +-- /trainingportal/static/lessons
+    |   +-- modules.json //configuration file where lesson modules are defined
+    |   +-- /attack-grams //visual representations of attacks included in challenge descriptions
+    |   +-- /blackBelt //lesson module
+    |       +--definitions.json //individual lesson definitions
+    |       +--cwe494.md // html or markdown file including the lesson description
+    |       +--cwe494.sol.md //solution for the lesson
+    |       ....
+    |       +--quiz.html 
+    |   +-- /secondDegreeBlackBelt
 
 
 ## Code Blocks 
@@ -177,12 +182,6 @@ Code Blocks are defined in  ./trainingportal/static/codeBlocks. This folder has 
     |   ...
     |   +-- useStrongDataEncryption.html 
 
-## Challenge codes
-In order to ensure people don't just copy/paste challenge codes from each other to pass the lessons, the codes are salted and hashed by Insecure.Inc with a salt generated by the training portal. This way the verification code required to complete a lesson changes every time.
-
-If you want to create your own version of Insecure.Inc containing different challenges and maybe on a different platform you can see how the verification codes are generated in Java Resources > src > inc.insecure > GetCode.java
-
-You can also create a new jsp in the Insecure.Inc app and leverage the existing code to add a new lesson. The Insecure.Inc site stores its challenge codes in ./insecureinc/src/inc/insecure/code.properties
 
 
 
