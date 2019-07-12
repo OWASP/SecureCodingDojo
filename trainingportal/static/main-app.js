@@ -352,13 +352,6 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                     }
                 });
 
-                $http.get("api/target",window.getAjaxOpts()).then(function(response) {
-                    if(response != null && response.data != null){
-                        $scope.targetUrl = response.data;
-                        
-                    }
-                });
-               
                 //load the user report
                $scope.loadUserReport();
             }

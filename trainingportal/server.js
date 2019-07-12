@@ -172,7 +172,14 @@ app.get('/challenges/:moduleId', async (req, res) => {
   }
 
   var returnChallenges = await challenges.getChallengeDefinitionsForUser(req.user, moduleId);
-  res.send(returnChallenges);
+  var response = {
+    "challenges" : returnChallenges
+  };
+
+  if(!util.isNullOrUndefined(config.moduleUrls[moduleId])){
+    response.targetUrl = config.moduleUrls[moduleId];
+  }
+  res.send(response);
 });
 
 app.get('/challenges/:moduleId/level', async (req, res) => {
@@ -189,7 +196,7 @@ app.get('/challenges/:moduleId/level', async (req, res) => {
 
 app.get('/challenges/solutions/:challengeId', (req,res) => {
   var challengeId = req.params.challengeId;
-  if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) === false){
+  if(util.isNullOrUndefined(challengeId) || util.isAlphanumericOrUnderscore(challengeId) === false){
     return util.apiResponse(req, res, 400, "Invalid challenge id."); 
   }
   var solutionHtml = challenges.getSolution(challengeId);
@@ -199,7 +206,7 @@ app.get('/challenges/solutions/:challengeId', (req,res) => {
 
 app.get('/challenges/descriptions/:challengeId', (req,res) => {
   var challengeId = req.params.challengeId;
-  if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) === false){
+  if(util.isNullOrUndefined(challengeId) || util.isAlphanumericOrUnderscore(challengeId) === false){
     return util.apiResponse(req, res, 400, "Invalid challenge id."); 
   }
   var descriptionHtml = challenges.getDescription(challengeId);
@@ -284,12 +291,6 @@ app.post('/api/user/challengeCode', async (req,res) => {
       }
     }
     
-});
-
-
-//get the available teams
-app.get('/api/target',  (req, res) => {
-   res.send(config.dojoTargetUrl);
 });
 
 

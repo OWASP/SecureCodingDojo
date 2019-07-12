@@ -4,9 +4,9 @@
     <p>Complete the lessons below to advance to the next level. Click on the lesson name to expand/collapse the description.</p>
     <p>
         <span class="oi oi-info"></span>
-        Throughout the lessons try to think how the particular vulnerability applies to your own code. 
-        While the vulnerable applications are web sites (for the purpose of providing a easily accessible gaming platform), 
-        the majority of the concepts apply to any software: desktop applications, mobile applications or operating system services.</p>
+        Try to think how the concepts that are demonstrated in the lesson apply to your own code. 
+        While examples may not match the platform or language you are familiar with, the concepts apply to any software: desktop applications, mobile applications or operating system services.
+    </p>
     <div ng-repeat="level in moduleChallengeDefinitions" style="padding-top:10px">
         <div ng-repeat="challenge in level.challenges" ng-if="userLevel+1>=level.level" style="padding-top:5px">
             <div class="card">
@@ -24,15 +24,16 @@
                         <h4>Play Link and Instructions</h4>
                         <p ng-if="challenge.playLink">Navigate to the 
                             <a ng-if="challenge.playLink.indexOf('http')===0" href="{{challenge.playLink}}" target="_blank">play link</a>
-                            <a ng-if="challenge.playLink.indexOf('/')===0" href="{{targetUrl}}{{challenge.playLink}}" target="_blank">play link</a>
+                            <a ng-if="challenge.playLink.indexOf('/') === 0 || challenge.playLink.indexOf('#') === 0 " href="{{targetUrl}}{{challenge.playLink}}" target="_blank">play link</a>
                         . </p>
                         <p ng-if="!challenge.playLink">
                             The play link has been provided to you when solving the previous challenge. 
                             If you have missed it read the challenge description carefully and try to figure out what it is.
                         </p>
-                        <p>Once you were able to exploit the vulnerability you can generate a secret code which you can submit above.</p>
-                        <br>
+                        <p>Once you were able to complete the challenge you can generate a code which you can submit above.</p>
+                        
                         <span ng-if="challenge.solution" >
+                        <br>
                         <h4>
                             Solution
                         </h4>
@@ -42,25 +43,30 @@
                             <a href="#!solution/{{challenge.id}}" class="btn btn-success btn-sm" role="button">View Solution</a>
                         </p>
                         </span>
-                        <br/>
+                       
                         <span ng-if="hasCodeBlocks(challenge)">
+                        <br/>
                         <h4>Code Blocks Associated with the Challenge</h4>
                         <ul>
                             <li ng-repeat="codeBlockId in challenge.codeBlockIds"><a target="_blank" href="#!codeBlocks/{{codeBlockId}}">{{codeBlocks[codeBlockId].name}}</a></li>
                         </ul>
-                        <br>
                         </span>
+                        
                         <span ng-if="challenge.attackGram" >
-                                <h4>
-                                    Attack-Gram
-                                </h4>
-                                <p>
-                                    Here's a visual representation of one of the attacks possible using this category.
-                                    <br/>
-                                    <img ng-src="/static/lessons/attack-grams/{{challenge.attackGram}}" class="img-fluid img-thumbnail" alt="Attack-Gram for this category">
-                                </p>
-                                </span>
+                        <br>
+                        <h4>
+                            Attack-Gram
+                        </h4>
+                        <p>
+                            Here's a visual representation of one of the attacks possible using this category.
+                            <br/>
+                            <img ng-src="/static/lessons/attack-grams/{{challenge.attackGram}}" class="img-fluid img-thumbnail" alt="Attack-Gram for this category">
+                        </p>
+
+                        </span>
+                        <br>
                         <h4>Challenge Description</h4>
+                        
                         <div ng-include="getDescriptionLink(challenge.id)" highlight-code></div>
                     </div>
                 </div>
