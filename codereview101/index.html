@@ -15,11 +15,17 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/9.0.0/markdown-it.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js" crossorigin="anonymous"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/sha256.min.js" crossorigin="anonymous"></script>
+
+
   <script src="codeReview101Ctrl.js"></script>
   
   
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/darcula.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" crossorigin="anonymous">
 
 </head>
 
@@ -64,7 +70,10 @@
     </div>  
     
     <div id="{{def.categoryId}}" class="card mb-3 bg-light" ng-repeat="def in definitions">
-        <div class="card-header">{{def.categoryName}}</div>
+        <div class="card-header">
+            {{def.categoryName}}
+            <span class="oi oi-check float-right" ng-if="def.passed"></span>
+        </div>
         <div class="card-body">
             <p class="card-text" markdown-it ng-include="def.categoryDetails"></p>
             <span ng-repeat="q in def.questions">
@@ -84,6 +93,26 @@
                         {{q.correctReasoning}}
                 </div>
             </span>
+
+            <form autocomplete="off" ng-if="def.passed && fromPortal" class="w-50 m-4">
+                <h3>Congratulations!!!</h3>
+                <p>You solved the category. Go to the training portal site and click the corresponding submit code button. 
+                You will be given a salt which you can enter below. Then provide the resulting code on the training portal site.</p>
+                <div class="form-group">
+                    <label for="salt_{{def.categoryId}}">Salt:</label>
+                    <input type="text" class="form-control" class="m-2" id="salt_{{def.categoryId}}" name="salt_{{def.categoryId}}">
+                </div>
+                <button type="button" class="btn btn-success" ng-click="getCode(def.categoryId)">Get Code</button>
+                <br><br>
+                <div class="alert alert-info form-group" style="display:none" id="codeDiv_{{def.categoryId}}">
+                    <label for="code_{{def.categoryId}}">The code is:</label>
+                    <input type="text" class="form-control" id="code_{{def.categoryId}}" value=""/>
+                    <button type="button" class="btn btn-default" ng-click="copyCode(def.categoryId)">
+                        <span class="oi oi-clipboard"></span>
+                    </button>
+                </div>             
+            </form>
+
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 [
     {
-        "categoryId":"inputValidation",
+        "categoryId":"codereview101_inputValidation",
         "categoryName":"Input Validation",
         "categoryDetails":"categoryInputValidation.md",
         "questions":[
@@ -22,7 +22,7 @@
     },
 
     {
-        "categoryId":"paramStatements",
+        "categoryId":"codereview101_paramStatements",
         "categoryName":"Parameterized Statements",
         "categoryDetails":"categoryParamStatements.md",
         "questions":[
@@ -57,7 +57,7 @@
     },
 
     {
-        "categoryId":"memory",
+        "categoryId":"codereview101_memory",
         "categoryName":"Memory Best Practices",
         "categoryDetails":"categoryMemory.md",
         "questions":[
@@ -121,7 +121,7 @@
     },
 
     {
-        "categoryId":"data",
+        "categoryId":"codereview101_data",
         "categoryName":"Protecting Data",
         "categoryDetails":"categoryData.md",
         "questions":[
@@ -170,7 +170,7 @@
         
     },
     {
-        "categoryId":"xss",
+        "categoryId":"codereview101_xss",
         "categoryName":"Preventing Cross-Site Scripting",
         "categoryDetails":"categoryXSS.md",
         "questions":[
@@ -234,7 +234,7 @@
     },
 
     {
-        "categoryId":"indirectReferences",
+        "categoryId":"codereview101_indirectReferences",
         "categoryName":"Indirect Object References",
         "categoryDetails":"categoryIndirectReferences.md",
         "questions":[
