@@ -25,9 +25,9 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
     $scope.loadChallenges = function(){
         $http.get(`/challenges/${$scope.moduleId}`)
         .then(function(response) {
-            if(response != null && response.data != null && Array.isArray(response.data)){
+            if(response != null && response.data != null && Array.isArray(response.data.challenges)){
                 $scope.levelNames = {};
-                var challengeDefinitions = response.data;
+                var challengeDefinitions = response.data.challenges;
                 if(challengeDefinitions.length >= 1){
                     //update the challenge definitions to include the current user's passed challenges
                     for(levelId in challengeDefinitions){
@@ -53,6 +53,7 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
                         }
                     }
                 }
+                $scope.targetUrl = response.data.targetUrl;
                 $scope.moduleChallengeDefinitions = challengeDefinitions;
 
 
