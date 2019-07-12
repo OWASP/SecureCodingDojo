@@ -1,12 +1,48 @@
 var app = angular.module("codeReview101", ['ngSanitize']);
 
-app.controller("codeReview101Ctrl", function($scope, $http) {
+app.controller("codeReview101Ctrl", function($scope, $http, $location) {
     
+    $scope.fromPortal = window.location.search.indexOf("fromPortal")!==-1;
+
+    $scope.getCode = function(id){
+        var codeDiv = document.querySelector(`#codeDiv_${id}`);
+        var codeText = document.querySelector(`#code_${id}`);
+
+        var salt = document.querySelector(`#salt_${id}`);
+        var hash = CryptoJS.SHA256(id+salt.value);
+        var base64 = CryptoJS.enc.Base64.stringify(hash);
+        codeText.value = base64; 
+        codeDiv.style.display = ""         
+    }
+
+    $scope.copyCode = function(id){
+        document.getElementById(`code_${id}`).select();
+        document.execCommand('copy');
+    }
+
+
+    var onDefinitionsChanged = function(newDefinitions){
+        //check whether category is complete
+        for(category of newDefinitions){
+            if(!category.passed){
+                var correct = true;
+                for(question of category.questions){
+                    correct &= question.correct;
+                }
+                if(correct){
+                    category.passed = true;
+                }
+            }
+        }
+    }
+
     $http.get("definitions.json")
     .then(function(response) {
         if(response != null && response.data != null){
             //init definitions
             $scope.definitions = response.data;
+            
+            $scope.$watch(function() { return $scope.definitions; }, onDefinitionsChanged, true);
         }
     },function(errorMessage){
         console.error(errorMessage);
