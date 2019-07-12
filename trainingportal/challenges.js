@@ -212,15 +212,20 @@ exports.getSolution = function (challengeId) {
 exports.getDescription = function (challengeId) {
     var description = descriptions[challengeId];
     var descriptionHtml = "";
-    if(!util.isNullOrUndefined(description)){
-        var descriptionText = fs.readFileSync(path.join(__dirname, description),'utf8');
-        if(description.endsWith(".md")){
-            descriptionHtml = markdown.toHTML(descriptionText);
-        }
-        else{
-            descriptionHtml = descriptionText;
-        }
+    if(util.isNullOrUndefined(description)) return "";
+
+    var descriptionPath = path.join(__dirname, description);
+    
+    if(!fs.existsSync(descriptionPath)) return "";
+
+    var descriptionText = fs.readFileSync(descriptionPath,'utf8');
+    if(description.endsWith(".md")){
+        descriptionHtml = markdown.toHTML(descriptionText);
     }
+    else{
+        descriptionHtml = descriptionText;
+    }
+    
 
     return descriptionHtml;
 }
@@ -318,7 +323,7 @@ module.exports.apiChallengeCode = async (req) => {
         throw Error("invalidModuleId");
     }
 
-    if(util.isNullOrUndefined(challengeId) || validator.isAlphanumeric(challengeId) == false){
+    if(util.isNullOrUndefined(challengeId) || util.isAlphanumericOrUnderscore(challengeId) == false){
         throw Error("invalidChallengeId");
     }
 

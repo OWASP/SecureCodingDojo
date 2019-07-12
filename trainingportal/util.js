@@ -101,3 +101,7 @@ exports.loadReportCSV = function(reportCSVPath){
   }
   return reportUsers;
 }
+
+exports.isAlphanumericOrUnderscore = (string) => {
+  return string.match(/^[a-zA-Z0-9_]+$/) !== null;
+}
