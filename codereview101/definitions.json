@@ -1,0 +1,272 @@
+[
+    {
+        "categoryId":"inputValidation",
+        "categoryName":"Input Validation",
+        "categoryDetails":"categoryInputValidation.md",
+        "questions":[
+            {
+                "questionId":"inputValidation.q1",
+                "language":"java",
+                "lineToHighlight":3,
+                "question":"Which of the following code snippets prevents a vulnerability?",
+                "snippets":[
+                    "snipInputValidation1.java",
+                    "snipInputValidation2.java"
+                ],
+                "answer":1,
+                "correctReasoning":"You're right! The code sample is preventing a vulnerability by using input whitelisting.",
+                "incorrectReasoning": "Incorrect! While there is some validation, it is based on block-listing and will still allow command injection (ex. `rm -rf /`)."
+            }
+        ]
+        
+    },
+
+    {
+        "categoryId":"paramStatements",
+        "categoryName":"Parameterized Statements",
+        "categoryDetails":"categoryParamStatements.md",
+        "questions":[
+            {
+                "questionId":"paramStatements.q1",
+                "language":"java",
+                "lineToHighlight":6,
+                "question":"Which of the following code snippets prevents a Command Injection attack?",
+                "snippets":[
+                    "snipParamStatements1.java",
+                    "snipParamStatements2.java"
+                ],
+                "answer":0,
+                "correctReasoning":"You're right! The code sample is preventing a vulnerability by using a parameterized command object.",
+                "incorrectReasoning": "Incorrect! The sample is concatenating the input to the OS command."
+            },
+            {
+                "questionId":"paramStatements.q2",
+                "language":"java",
+                "lineToHighlight":2,
+                "question":"Which of the following code snippets prevents SQL Injection?",
+                "snippets":[
+                    "snipParamStatements3.java",
+                    "snipParamStatements4.java"
+                ],
+                "answer":1,
+                "correctReasoning":"You're right! The code sample is using a Prepared Statement and input is passed as parameters.",
+                "incorrectReasoning": "Incorrect! The sample is actually concatenating the input to the SQL statement allowing Injection."
+            }
+        ]
+        
+    },
+
+    {
+        "categoryId":"memory",
+        "categoryName":"Memory Best Practices",
+        "categoryDetails":"categoryMemory.md",
+        "questions":[
+            {
+                "questionId":"memory.q1",
+                "lineToHighlight":3,
+                "language":"C++",
+                "question":"Which of the following code snippets prevents a Buffer Overflow vulnerability?",
+                "snippets":[
+                    "snipMemory1.cpp",
+                    "snipMemory2.cpp"
+                ],
+                "answer":0,
+                "correctReasoning":"You're right! The code sample is preventing a vulnerability by using a function that controls the size of the input ('fgets').",
+                "incorrectReasoning": "Incorrect! The sample is using an insecure function: 'gets'. This function will overflow the buffer."
+            },
+
+            {
+                "questionId":"memory.q2",
+                "lineToHighlight":3,
+                "language":"C++",
+                "question":"Which of the following code snippets employs a best practice to avoid the Incorrect Calculation of Buffer Size?",
+                "snippets":[
+                    "snipMemory3.cpp",
+                    "snipMemory4.cpp"
+                ],
+                "answer":0,
+                "correctReasoning":"You're right! The code sample is preventing a vulnerability by using the BUFFER_SIZE constant to ensure the size of the buffer is allocated consistently.",
+                "incorrectReasoning": "Incorrect! The sample is using numeric values to allocate the size of the buffer. Notice that the buffer size is '5' but '9' characters can be read into the buffer."
+            },
+
+            {
+                "questionId":"memory.q3",
+                "lineToHighlight":7,
+                "language":"C++",
+                "question":"Off-by-one is introduced when employing incorrect comparison operators. Which snippet prevents this type of flaw?",
+                "snippets":[
+                    "snipMemory5.cpp",
+                    "snipMemory6.cpp"
+                ],
+                "answer":1,
+                "correctReasoning":"You're right! The code is using '<' and will stop at the right time.",
+                "incorrectReasoning": "Incorrect! The sample is using '<=' which means one extra iteration resulting in off by one."
+            },
+
+            {
+                "questionId":"memory.q4",
+                "lineToHighlight":7,
+                "language":"C++",
+                "question":"Format String Injection is a type of vulnerability caused by concatenating or using user input in a format parameter. Which snippet avoids the vulnerability?",
+                "snippets":[
+                    "snipMemory7.cpp",
+                    "snipMemory8.cpp"
+                ],
+                "answer":1,
+                "correctReasoning":"You're right! The code is not passing the input as a format argument.",
+                "incorrectReasoning": "Incorrect! The sample is actually passing the input as a format argument to 'printf'."
+            }
+        ]
+        
+    },
+
+    {
+        "categoryId":"data",
+        "categoryName":"Protecting Data",
+        "categoryDetails":"categoryData.md",
+        "questions":[
+            {
+                "questionId":"data.q1",
+                "lineToHighlight":6,
+                "language":"java",
+                "question":"Which of the following code snippets indicates that the password is stored correctly?",
+                "snippets":[
+                    "snipData1.java",
+                    "snipData2.java"
+                ],
+                "answer":1,
+                "correctReasoning":"You're right! The code sample indicates the password is hashed with PBKDF2 + a salt + iterations.",
+                "incorrectReasoning": "Incorrect! The code indicates that the password is compared to the value provided by the user, meaning the password is stored in the clear."
+            },
+
+            {
+                "questionId":"data.q2",
+                "lineToHighlight":2,
+                "language":"java",
+                "question":"Can you spot the code that transmits data securely??",
+                "snippets":[
+                    "snipData3.java",
+                    "snipData4.java"
+                ],
+                "answer":0,
+                "correctReasoning":"You're right! The code sample uses a 'https://' url to transmit data.",
+                "incorrectReasoning": "Incorrect! The code is sending a user name and a password via a 'http://' url."
+            },
+
+            {
+                "questionId":"data.q3",
+                "lineToHighlight":2,
+                "language":"javascript",
+                "question":"Can you spot the code that anonymizes and encrypts the data?",
+                "snippets":[
+                    "snipData5.js",
+                    "snipData6.js"
+                ],
+                "answer":1,
+                "correctReasoning":"You're right! The code removes the credit card number and also encrypts the data before storing.",
+                "incorrectReasoning": "Incorrect! The code is storing the transaction in clear text including the credit card number!"
+            }
+        ]
+        
+    },
+    {
+        "categoryId":"xss",
+        "categoryName":"Preventing Cross-Site Scripting",
+        "categoryDetails":"categoryXSS.md",
+        "questions":[
+            {
+                "questionId":"xss.q1",
+                "language":"html",
+                "lineToHighlight":8,
+                "question":"Which of the following code snippets prevents XSS through HTML Encoding?",
+                "snippets":[
+                    "snipXSS1.jsp",
+                    "snipXSS2.jsp"
+                ],
+                "answer":0,
+                "correctReasoning":"You're right! The code sample is neutralizing HTML markup.",
+                "incorrectReasoning": "Incorrect! The code outputs the input 'as is', allowing '<script>' tags to be inserted in the page."
+            },
+
+            {
+                "questionId":"xss.q2",
+                "language":"html",
+                "lineToHighlight":4,
+                "question":"Both code samples use HTML Encoding but which one uses the correct encoding for the output context?",
+                "snippets":[
+                    "snipXSS3.jsp",
+                    "snipXSS4.jsp"
+                ],
+                "answer":0,
+                "correctReasoning":"You're right! The code sample is neutralizing the single quote as well.",
+                "incorrectReasoning": "Incorrect! The encoding misses the single quote which allows XSS with a payload like: '+alert(1)+'."
+            },
+
+            {
+                "questionId":"xss.q3",
+                "language":"javascript",
+                "lineToHighlight":8,
+                "question":"In this case the application is implementing its own client side rendering of the input instead of taking advantage of a JS framework. Can you tell which snippet is safer?",
+                "snippets":[
+                    "snipXSS5.js",
+                    "snipXSS6.js"
+                ],
+                "answer":0,
+                "correctReasoning":"You're right! The code sample is updating the element text.",
+                "incorrectReasoning": "Incorrect! The code sample is updating the element html which will allow XSS with a payload like: <img src=x onerror=alert(1)>."
+            },
+
+            {
+                "questionId":"xss.q4",
+                "language":"javascript",
+                "lineToHighlight":7,
+                "question":"The following example is showing the use of a JavaScript parameterized statement. Can you spot the snippet that leverages this best practice?",
+                "snippets":[
+                    "snipXSS7.js",
+                    "snipXSS8.js"
+                ],
+                "answer":1,
+                "correctReasoning":"You're right! The code sample is passing the input to 'setTimeout' as a separate argument",
+                "incorrectReasoning": "Incorrect! The code sample is concatenating the input into the JavaScript statement resulting in XSS."
+            }
+        ]
+        
+    },
+
+    {
+        "categoryId":"indirectReferences",
+        "categoryName":"Indirect Object References",
+        "categoryDetails":"categoryIndirectReferences.md",
+        "questions":[
+            {
+                "questionId":"indirectReferences.q1",
+                "language":"java",
+                "lineToHighlight":3,
+                "question":"Which of the following code snippets prevents Path Traversal?",
+                "snippets":[
+                    "snipIndirectReferences1.java",
+                    "snipIndirectReferences2.java"
+                ],
+                "answer":1,
+                "correctReasoning":"You're right! The code sample is preventing a path traversal by referencing the file name by id.",
+                "incorrectReasoning": "Incorrect! The code is referencing the file path directly allowing a traversal attack."
+            },
+
+            {
+                "questionId":"indirectReferences.q2",
+                "language":"java",
+                "lineToHighlight":2,
+                "question":"Which of the following code snippets prevents Open Redirect?",
+                "snippets":[
+                    "snipIndirectReferences3.java",
+                    "snipIndirectReferences4.java"
+                ],
+                "answer":1,
+                "correctReasoning":"You're right! The code sample is preventing arbitrary redirects by referencing the id of the authentication provider.",
+                "incorrectReasoning": "Incorrect! The code is referencing the URL directly allowing a Open Redirect spoofing attack."
+            }
+        ]
+        
+    }
+
+]
