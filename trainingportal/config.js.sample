@@ -4,7 +4,7 @@ config.dojoUrl = process.env.DOJO_URL;
 config.dojoTargetUrl = process.env.DOJO_TARGET_URL;
 config.isSecure = config.dojoUrl.startsWith("https");
 //module specific target urls
-config.moduleUrls = {"blackBelt":"http://localhost:8080/insecureinc","securityCodeReviewMaster":"https://localhost:8000/codereview101/?fromPortal"}
+config.moduleUrls = {"blackBelt":"http://localhost:8080/insecureinc","securityCodeReviewMaster":"https://trendmicro.github.io/SecureCodingDojo/codereview101/?fromPortal"}
 //for those cases when absolute links are specific to your environment
 config.playLinks = [{"challengeid":"links"}];
 config.dbHost = process.env.DOJO_DB_HOST;
