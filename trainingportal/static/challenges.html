@@ -21,28 +21,9 @@
                 </div>
                 <div id="collapse{{challenge.id}}" class="panel-collapse collapse"  ng-class="{'show':!challenge.passed}">
                     <div class="card-body">
-                        <h4>Play Link and Instructions</h4>
-                        <p ng-if="challenge.playLink">Navigate to the 
-                            <a ng-if="challenge.playLink.indexOf('http')===0" href="{{challenge.playLink}}" target="_blank">play link</a>
-                            <a ng-if="challenge.playLink.indexOf('/') === 0 || challenge.playLink.indexOf('#') === 0 " href="{{targetUrl}}{{challenge.playLink}}" target="_blank">play link</a>
-                        . </p>
-                        <p ng-if="!challenge.playLink">
-                            The play link has been provided to you when solving the previous challenge. 
-                            If you have missed it read the challenge description carefully and try to figure out what it is.
-                        </p>
-                        <p>Once you were able to complete the challenge you can generate a code which you can submit above.</p>
-                        
-                        <span ng-if="challenge.solution" >
-                        <br>
-                        <h4>
-                            Solution
-                        </h4>
-                        <p>
-                            If you get stuck you can use the button below for help, but don't give up yet, read the challenge description and tips carefully.
-                            <br/>
-                            <a href="#!solution/{{challenge.id}}" class="btn btn-success btn-sm" role="button">View Solution</a>
-                        </p>
-                        </span>
+                        <h4>Challenge Description</h4>
+                    
+                        <div ng-include="getDescriptionLink(challenge.id)" highlight-code></div>        
                        
                         <span ng-if="hasCodeBlocks(challenge)">
                         <br/>
@@ -65,9 +46,29 @@
 
                         </span>
                         <br>
-                        <h4>Challenge Description</h4>
+
+
+                        <h4>Play Link and Instructions</h4>
+                        <p ng-if="challenge.playLink">Navigate to the 
+                            <a ng-if="challenge.playLink.indexOf('http')===0" ng-href="{{challenge.playLink}}" target="_blank">play link</a>
+                            <a ng-if="challenge.playLink.indexOf('/') === 0 || challenge.playLink.indexOf('#') === 0 " ng-href="{{targetUrl}}{{challenge.playLink}}" target="_blank">play link</a>
+                        . </p>
+                        <p ng-if="!challenge.playLink">
+                            The play link has been provided to you when solving the previous challenge. 
+                            If you have missed it read the challenge description carefully and try to figure out what it is.
+                        </p>
+                        <p>Once you were able to complete the challenge you can generate a code which you can submit above.</p>
                         
-                        <div ng-include="getDescriptionLink(challenge.id)" highlight-code></div>
+                        <span ng-if="challenge.solution" >
+                        <h4>
+                            Solution
+                        </h4>
+                        <p>
+                            If you get stuck you can use the button below for help, but don't give up yet, read the challenge description and tips carefully.                            
+                        </p>
+                        <a href="#!solution/{{challenge.id}}" class="btn btn-success btn-sm" role="button">View Solution</a>
+                        </span>
+
                     </div>
                 </div>
             </div>
