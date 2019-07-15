@@ -64,7 +64,7 @@ app.directive("markdownIt", ['$sanitize', function($sanitize){
     } 
 }])
 
-app.directive("highlightCode", ['$http', function($http){
+app.directive("highlightCode", ['$http','$anchorScroll', function($http, $anchorScroll){
 
     function highlightLine(html,lineNoToHighlight){
         let lines = html.split("\n");
@@ -108,6 +108,8 @@ app.directive("highlightCode", ['$http', function($http){
                 for(domEl of element){
                     hljs.highlightBlock(element[0]);
                 }
+
+                $anchorScroll();
             }
         });
        
