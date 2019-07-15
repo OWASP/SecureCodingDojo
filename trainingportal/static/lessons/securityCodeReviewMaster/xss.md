@@ -8,7 +8,9 @@ Example URL with XSS payload:
 
 #####Code Defenses Against Cross-Site Scripting
 
-To prevent the attack the application must **neutralize the user input**. This means that the input will be inserted in the page witthout being rendered or executed. Most modern JavaScript frameworks such as **Angular** or **React** do this implicitly.
+To prevent the attack the application must **neutralize the user input**. This means that the input will be inserted in the page without being rendered or executed. Most modern JavaScript frameworks such as **Angular** or **React** do this implicitly. 
+
+In the Angular example below the `fullName` parameter is embeded in the link innerText, a safe context.
 
     <a class="nav-link"><span class="oi oi-account-logout"> Logout {{fullName}} </a>
 
