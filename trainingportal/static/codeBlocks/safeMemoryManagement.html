@@ -1,11 +1,12 @@
 <p>Follow this set of secure coding practices to prevent memory attacks.</p>
 <h5>Use functions that limit the input size</h5>
-<p> fgets(…) allows limits the size of the input; <code>fgets(userPass, 16, stdin)</code>. 
+<p> fgets(…) allows limits the size of the input; <code>fgets(userPass, BUFF_SIZE, stdin)</code>. 
 Other such functions are strncpy, snprintf and strncmp.
 </p>
 <h5>Check that the size of the input matches the size of the allocated memory.</h5>
 <p>
-Even with the use of a "safe function" buffer overflow can still occur if the size argument is larger than the size of the buffer.
+Even with the use of a "safe function" buffer overflow can still occur if the size argument is larger than the size of the buffer. Avoid mistakes by using constants for memory allocation and controlling boundaries. 
+Pay close attention to comparison operators.
 </p>
 <h5>Do not allow input as format string arguments.</h5>
 <p>
@@ -20,8 +21,10 @@ If the user input is used in the format string portion of format string argument
 <h5>
     Safe compiler flags
 </h5>
-<p>Some versions of Linux enforce stack protection by default others don't. 
-    In our challenge the flag <mark>-fno-stack-protector</mark> was explicitly set to off to demonstrate a very insecure practice.
-    Note that even if it was set to on it still wouldn't have prevented the issue. It would just prevent stack smashing.
-Windows does not always enforce Address Space Layout Randomization if software is not built for it.
+<p>Compiler flags enable operating system defences such as ASLR in Windows or PIE/SSP in Linux. 
+    They tell the operating system to employ countermeasures such as randomizing memory, which is making it hard for attackers to insert arbitrary code.
+</p>
+<p>
+        Even with compiler flags in place attackers can still crash the program so the main effect of compiler flags is reducing the impact of the attack. 
+        The best defence is to prevent the flaws in the code, from the start, by employing the best practices discussed in this article.
 </p>
