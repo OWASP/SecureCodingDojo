@@ -17,7 +17,6 @@ limitations under the License.
  */
 const path = require('path');
 const fs = require('fs');
-const markdown = require('markdown').markdown;
 const util = require(path.join(__dirname, 'util'));
 const modules = Object.freeze(require(path.join(__dirname, 'static/lessons/modules.json')));
 const config = require(path.join(__dirname, 'config'));
@@ -137,7 +136,6 @@ exports.getPermittedChallengesForUser = async (user, moduleId) => {
 
     var permittedLevel = await exports.getUserLevelForModule(user, moduleId) + 1;
 
-    var modulePath = getModulePath(moduleId);
     var moduleDefinitions = getDefinifionsForModule(moduleId);
 
     for(level of moduleDefinitions){
@@ -190,6 +188,8 @@ exports.getChallengeDefinitionsForUser = async (user, moduleId) => {
     return returnChallenges;
 }
 
+
+
 /**
  * Returns the solution html (converted from markdown)
  * @param {The challenge id} challengeId 
@@ -199,7 +199,7 @@ exports.getSolution = function (challengeId) {
     var solutionHtml = "";
     if(!util.isNullOrUndefined(solution)){
         var solutionMarkDown = fs.readFileSync(path.join(__dirname, solution),'utf8');
-        solutionHtml = markdown.toHTML(solutionMarkDown);
+        solutionHtml = util.parseMarkdown(solutionMarkDown);
     }
 
     return solutionHtml;
@@ -220,13 +220,12 @@ exports.getDescription = function (challengeId) {
 
     var descriptionText = fs.readFileSync(descriptionPath,'utf8');
     if(description.endsWith(".md")){
-        descriptionHtml = markdown.toHTML(descriptionText);
+        descriptionHtml = uril.parseMarkdown(descriptionText);
     }
     else{
         descriptionHtml = descriptionText;
     }
     
-
     return descriptionHtml;
 }
 
@@ -348,7 +347,11 @@ module.exports.apiChallengeCode = async (req) => {
     }
     
     //calculate the hash
-    var verificationHash = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+masterSalt).digest('base64');
+    let ms = "";
+    if(util.isNullOrUndefined(modules[moduleId].skipMasterSalt) || modules[moduleId].skipMasterSalt===false){
+        ms = masterSalt;
+    }
+    var verificationHash = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+ms).digest('base64');
     if(verificationHash!==challengeCode){
         throw Error("invalidCode");
     } 

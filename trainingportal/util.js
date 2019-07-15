@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path'); 
+const markdown = require('markdown').markdown;
 
 
 exports.hasKey = function(){
@@ -104,4 +105,17 @@ exports.loadReportCSV = function(reportCSVPath){
 
 exports.isAlphanumericOrUnderscore = (string) => {
   return string.match(/^[a-zA-Z0-9_]+$/) !== null;
+}
+
+/**
+ * Util function to conver markdown to html
+ */
+exports.parseMarkdown = (text) => {
+  html = markdown.toHTML(text);
+  //replace angular symbols and html tags with their html encoded equivalent
+  html = html.replace(/{/g,"&#123;");
+  html = html.replace(/}/g,"&#125;");
+  html = html.replace(/</g,"&lt;");
+  html = html.replace(/</g,"&gt;");
+  return html
 }
