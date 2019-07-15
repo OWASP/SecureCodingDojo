@@ -111,11 +111,6 @@ exports.isAlphanumericOrUnderscore = (string) => {
  * Util function to conver markdown to html
  */
 exports.parseMarkdown = (text) => {
-  html = markdown.toHTML(text);
-  //replace angular symbols and html tags with their html encoded equivalent
-  html = html.replace(/{/g,"&#123;");
-  html = html.replace(/}/g,"&#125;");
-  html = html.replace(/</g,"&lt;");
-  html = html.replace(/</g,"&gt;");
+  html = markdown.toHTML(html);
   return html
 }

@@ -220,7 +220,7 @@ exports.getDescription = function (challengeId) {
 
     var descriptionText = fs.readFileSync(descriptionPath,'utf8');
     if(description.endsWith(".md")){
-        descriptionHtml = uril.parseMarkdown(descriptionText);
+        descriptionHtml = util.parseMarkdown(descriptionText);
     }
     else{
         descriptionHtml = descriptionText;
