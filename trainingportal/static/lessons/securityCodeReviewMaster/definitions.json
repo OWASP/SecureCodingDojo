@@ -1,0 +1,50 @@
+[
+    {
+        "level":0,
+        "name":"Security Code Review Master",
+        "challenges":[
+            {
+                "id":"codereview101_inputValidation",
+                "name":"Input Validation", 
+                "playLink":"#codereview101_inputValidation",
+                "description": "inputValidation.md",
+                "codeBlockIds":["inputWhitelisting"]
+            },
+            {
+                "id":"codereview101_paramStatements",
+                "name":"Parameterized Statements", 
+                "description": "paramStatements.md",
+                "playLink":"#codereview101_paramStatements",
+                "codeBlockIds":["parameterizedCommands"]
+            },
+            {
+                "id":"codereview101_memory",
+                "name":"Memory Best Practices", 
+                "description": "memory.md",
+                "playLink":"#codereview101_memory",
+                "codeBlockIds":["safeMemoryManagement"]
+            },
+            {
+                "id":"codereview101_data",
+                "name":"Protecting Data", 
+                "description": "data.md",
+                "playLink":"#codereview101_data",
+                "codeBlockIds":["useStrongDataEncryption"]
+            },
+            {
+                "id":"codereview101_xss",
+                "name":"Preventing Cross-Site Scripting", 
+                "description": "xss.md",
+                "playLink":"#codereview101_xss",
+                "codeBlockIds":["neutralizeOutput"]
+            },
+            {
+                "id":"codereview101_indirectReferences",
+                "name":"Indirect Object References", 
+                "description": "indirectReferences.md",
+                "playLink":"#codereview101_indirectReferences",
+                "codeBlockIds":["indirectObjectReferences"]
+            }
+        ]
+    }
+]
