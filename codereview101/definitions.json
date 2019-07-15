@@ -18,7 +18,7 @@
                 "incorrectReasoning": "Incorrect! While there is some validation, it is based on block-listing and will still allow command injection (ex. `rm -rf /`)."
             }
         ]
-        
+
     },
 
     {
@@ -53,7 +53,7 @@
                 "incorrectReasoning": "Incorrect! The sample is actually concatenating the input to the SQL statement allowing Injection."
             }
         ]
-        
+
     },
 
     {
@@ -117,7 +117,7 @@
                 "incorrectReasoning": "Incorrect! The sample is actually passing the input as a format argument to 'printf'."
             }
         ]
-        
+
     },
 
     {
@@ -167,7 +167,7 @@
                 "incorrectReasoning": "Incorrect! The code is storing the transaction in clear text including the credit card number!"
             }
         ]
-        
+
     },
     {
         "categoryId":"codereview101_xss",
@@ -230,7 +230,7 @@
                 "incorrectReasoning": "Incorrect! The code sample is concatenating the input into the JavaScript statement resulting in XSS."
             }
         ]
-        
+
     },
 
     {
@@ -266,7 +266,7 @@
                 "incorrectReasoning": "Incorrect! The code is referencing the URL directly allowing a Open Redirect spoofing attack."
             }
         ]
-        
+
     }
 
 ]
