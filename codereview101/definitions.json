@@ -228,6 +228,20 @@
                 "answer":1,
                 "correctReasoning":"You're right! The code sample is passing the input to 'setTimeout' as a separate argument",
                 "incorrectReasoning": "Incorrect! The code sample is concatenating the input into the JavaScript statement resulting in XSS."
+            },
+
+            {
+                "questionId": "xss.q5",
+                "language": "javascript",
+                "lineToHighlight": 5,
+                "question": "If you need to up date a React webapp, which of the following code snippets prevents XSS?",
+                "snippets": [
+                    "snipXSS9.jsx",
+                    "snipXSS10.jsx"
+                ],
+                "answer": 1,
+                "correctReasoning": "You're right! React handles escaping text in its templates by default.",
+                "incorrectReasoning": "Incorrect! If we use `dangerouslySetInnerHTML`, we need to sanitize the output first."
             }
         ]
 
