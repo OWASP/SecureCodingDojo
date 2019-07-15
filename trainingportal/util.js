@@ -111,6 +111,6 @@ exports.isAlphanumericOrUnderscore = (string) => {
  * Util function to conver markdown to html
  */
 exports.parseMarkdown = (text) => {
-  html = markdown.toHTML(html);
+  html = markdown.toHTML(text);
   return html
 }
