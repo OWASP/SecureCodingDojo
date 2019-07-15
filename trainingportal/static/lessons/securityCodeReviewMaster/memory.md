@@ -23,4 +23,4 @@ Another variation of buffer size flaw is **Off-by-one**. This type of programmin
 
 Last but not least **Format String Injection** is a type of vulnerability caused by concatenating or using user input in a format parameter. Code that logs user values using functions such as `printf` is particularly exposed to this type of vulnerability.
 
-In this challenge you must examine code samples for each of the∂ four memory flaws and select the snippet that prevents the vulnerability. 
+In this challenge you must examine code samples for each of the four memory flaws and select the snippet that prevents the vulnerability. 
