@@ -240,7 +240,15 @@ exports.verifyModuleCompletion = async (user, moduleId) => {
     if(lastLevel.level===userLevel){
         //training module complete
         let badges = await db.fetchBadges(user.id);
-        if(!badges.includes(moduleId)){
+        let found = false;
+        for(badge of badges){
+            if(badge.moduleId===moduleId){
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            util.log("WARN: Fixed badge for user.", user);
             await db.insertBadge(user.id, moduleId);
         }
         return true;
