@@ -284,61 +284,37 @@ describe('db', function() {
     });
 
     describe('#insertChallengeEntry(),#fetchChallengeEntriesForUser(),#fetchActivity()', function() {
-        it('should insert a challenge entry without error', function(done) {
-            async.waterfall([
-                function(cb){
-                    db.insertUser(
-                        {accountId:"testDeleteMeChallenges",familyName:"LastTest1", givenName:"FirstTest1"},
-                        function(err){cb(err);},
-                        function(result){cb(null,result);});
-                },
-                function(result,cb){
-                    db.getUser("testDeleteMeChallenges",
-                    function(err){
-                        console.log("FAIL: getUser before update");
-                        cb(err);
-                    },function(user){ 
-                        cb(null,user);
-                    });
-                },
-                function(user, cb){
-                    db.getUser("testDeleteMeChallenges",
-                    function(err){
-                        cb(err);
-                    },function(user){ 
-                        db.insertChallengeEntry(user.id, "cwe306",
-                        function(err){
-                            cb(err);
-                        },function(result){ 
-                            cb(null,user); //pass the user for the next test
-                        });
-                    });
-                },
-                function(user, cb){
-                    db.fetchChallengeEntriesForUser(user,
-                        function(err){
-                            cb(err);
-                        },function(result){ 
-                            assert.equal(result.length,1,"Incorrect number of entries for user");
-                            assert.equal(result[0].challengeId,"cwe306","Incorrect challenge entry id for user");                                
-                            assert.notEqual(result[0].timestamp,null,"Timestamp should not be null");                                
-                            cb(null,user); //pass the user for the next test
-                        });
-                },
-                //Get activity for user
-                function(user, cb){
-                    db.fetchActivity(user.givenName,10,
-                    function(err){
-                        cb(err);
-                    },function(result){ 
-                        assert.equal(result.length,1,"Incorrect number of activity entries for user");
-                        done();
-                    });
-                }
-            ],function(err){
-                done(err);
-            });    
-      });
+
+        var user = null;
+        before(async () => {
+            await db.getPromise(db.insertUser,{accountId:"testDeleteMeChallenges",familyName:"LastTest1", givenName:"FirstTest1"});
+            user = await db.getPromise(db.getUser,"testDeleteMeChallenges");
+        });
+
+
+        it('should insert a challenge entry without error', async () => {
+            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe306"]);
+            let promise = db.getPromise(db.fetchChallengeEntriesForUser, user);
+            let challenges = await promise;
+            assert.equal(challenges.length,1,"Incorrect number of entries for user");
+            assert.equal(challenges[0].challengeId,"cwe306","Incorrect challenge entry id for user");                                
+            assert.notEqual(challenges[0].timestamp,null,"Timestamp should not be null");  
+            return promise;     
+        });
+
+        it('should get the correct number of activities', async () => {
+            let promise = db.getPromise(db.fetchActivity, [user.givenName,10]);
+            let result = await promise;
+            assert.equal(result.length,1,"Incorrect number of activity entries for user");
+            return promise;
+        });
+
+        after(async ()=>{
+            //cleanup
+            await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
+            await db.getConn().queryPromise("DELETE FROM badges WHERE userId=?",[user.id]);
+            return db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId=?",[user.id]);
+        })
     });
 
     describe('#getChallengeStats()', function() {
