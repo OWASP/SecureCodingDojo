@@ -282,11 +282,8 @@ processAuthCallback = function (profileId, givenName, familyName, email, cb) {
         let modules = challenges.getModules();
         for(moduleId in modules){
             let promise = challenges.verifyModuleCompletion(user, moduleId);
-            promise.then((isModuleComplete)=>{
-                if(isModuleComplete) util.log("WARN: Fixed badge for user.", user);
-            })
             promise.catch((err) => {
-                util.log("Error: Cannot insert badge.", user);
+                util.log("Error with badge verification.", user);
             });
         }
         if(cb) return cb(null, user);
