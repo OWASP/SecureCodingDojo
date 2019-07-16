@@ -2,9 +2,9 @@ In the previous lesson we reviewed Input Validation. While Input Validation is a
 
 For example a person who's last name is O’Brien. The single quote in O’Brien happens to also be part of SQL command syntax. For example a website may perform a database record search like this:
 
-    SELECT * FROM users WHERE last_name LIKE 'O'BRIEN'
+    SELECT * FROM users WHERE last_name = 'O'BRIEN'
 
-Notice that the single quote in the name O’Brien is causing a syntax error. The SQL command processor considers the string ends with O and the rest, BRIEN%, is just an unrecognized command.
+Notice that the single quote in the name O'Brien is causing a syntax error. The SQL command processor considers the string ends with O and the rest, BRIEN', is just an unrecognized command.
 
 Let’s take a look at the following code snippet.
 
