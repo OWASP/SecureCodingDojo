@@ -53,9 +53,6 @@ config.slackTeamId = '';
 config.encSlackClientSecret = '';
 
 //config.encBadgrToken = ''; //configure to enable Badgr.io integration to issue Open Badges for challenge completion; see https://api.badgr.io
-//config.reportCSV=''; //configure with the path of a CSV file with team names as the column headers and user names as rows
-//config.reportLevel = 7;
-
 
 module.exports = config;
 

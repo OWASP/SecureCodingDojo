@@ -8,11 +8,6 @@ app.controller("dashboardCtrl", function($scope, $http) {
             }
         });
 
-        $http.get("/static/lessons/modules.json")
-        .then((response) => {
-            $scope.modules = response.data;
-        });
-
         $http.get("/api/moduleStats",window.getAjaxOpts())
         .then(function(response) {
             if(response != null && response.data != null){

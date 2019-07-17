@@ -448,6 +448,17 @@ exports.getTeamMembersByBadges = async (teamId) => {
   return result;
 }
 
+/**
+ * Gets a list of users for a module id
+ */
+exports.getAllUsersForBadge = async (moduleId) => {
+  let con = getConn();
+  let sql = "SELECT badges.moduleId, users.givenName, users.familyName FROM users INNER JOIN badges on badges.userId=users.id WHERE badges.moduleId = ? "+
+  " order by badges.moduleId, users.givenName, users.familyName";
+  let result = await con.queryPromise(sql,[moduleId]);
+  return result;
+}
+
 //Creates a user in the database
 exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
   var con = getConn();

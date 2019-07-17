@@ -1,4 +1,4 @@
-var app = angular.module('challengesApp', ['ngRoute']);
+var app = angular.module('challengesApp', ['ngRoute','dataSvcModule']);
 
 app.config(function($routeProvider) {
     $routeProvider
@@ -56,7 +56,7 @@ app.directive('highlightCode', [ function(){
     } 
 }])
 
-app.controller('mainCtrl', function($scope, $http, $location) {
+app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function($scope, $http, $location, dataSvc) {
     
 
     //redirect the user to the previous page if they got logged out
@@ -108,22 +108,6 @@ app.controller('mainCtrl', function($scope, $http, $location) {
 
     setInterval($scope.activityHeartBeat,10*1000);
     
-    $scope.loadUserReport = function(){
-        $http.get("/api/report",window.getAjaxOpts())
-            .then(function(response) {
-                if(response != null && response.data != null
-                     && response.status === 200 && 
-                    response.data.status===200){
-                    
-                    $scope.reportUsers = response.data;
-                    $scope.reportAvailable = true;
-                            
-                }
-            },function(){
-               
-            });
-    }    
-
     //whether the menu is active
     $scope.isActive = function (viewLocation) { 
         if(viewLocation==="/") return $location.path()===viewLocation;
@@ -348,15 +332,12 @@ app.controller('mainCtrl', function($scope, $http, $location) {
                 $http.get("static/codeBlocks/codeBlocksDefinitions.json").then(function(response) {
                     if(response != null && response.data != null){
                         $scope.codeBlocks = response.data;
-                        
+
                     }
                 });
-
-                //load the user report
-               $scope.loadUserReport();
             }
         });
     }
 
     $scope.loadData();
-});
+}]);
