@@ -15,7 +15,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
  */
-const async = require('async');
 const assert = require('assert');
 const crypto = require('crypto');
 

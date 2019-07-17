@@ -11,6 +11,8 @@
 <script src="public/highlightjs/highlight.pack.min.js"></script>
 
 <script src="static/main-app.js"></script>
+<script src="static/dataSvc.js"></script>
+
 <script src="static/challengesCtrl.js"></script>
 <script src="static/leaderboardCtrl.js"></script>
 <script src="static/submitCodeCtrl.js"></script>
@@ -55,7 +57,7 @@
                     <li class="navbar-item" ng-class="{ active: isActive('/leaderboard')}"><a class="nav-link" href="#!leaderboard">Leaderboard</a></li>
                     <li class="navbar-item" ng-class="{ active: isActive('/activity')}"><a class="nav-link" href="#!activity">Activity</a></li>
                     <li class="navbar-item" ng-class="{ active: isActive('/dashboard')}"><a class="nav-link"href="#!dashboard">Dashboard</a></li>
-                    <li class="navbar-item" ng-class="{ active: isActive('/report')}" ng-if="reportAvailable"><a class="nav-link" href="#!report">Report</a></li>
+                    <li class="navbar-item" ng-class="{ active: isActive('/report')}"><a class="nav-link" href="#!report">Report</a></li>
                 </ul>
             
                 <ul class="navbar-nav">

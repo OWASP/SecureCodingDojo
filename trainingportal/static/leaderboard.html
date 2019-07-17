@@ -13,12 +13,12 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col" ng-repeat="module in modules">{{module.name}} ({{module.percentageCompleted}}%)</th>
+                <th scope="col" ng-repeat="module in lbModules">{{module.name}} ({{module.percentageCompleted}}%)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td scope="col" ng-repeat="module in modules">
+                <td scope="col" ng-repeat="module in lbModules">
                     <ol class="small">
                         <li ng-repeat="user in module.members">
                             {{user.givenName}} {{user.familyName}}

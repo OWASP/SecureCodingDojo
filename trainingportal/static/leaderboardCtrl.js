@@ -1,5 +1,5 @@
 app.controller("leaderboardCtrl", function($scope, $http) {
- 
+    
 
     $scope.displayTeam = (team) => {
         
@@ -7,27 +7,30 @@ app.controller("leaderboardCtrl", function($scope, $http) {
         .then(function(response) {
             if(response !== null && response.data !== null){
                 let teamMembers = response.data;
-                let modules = $scope.modules;
-                for(moduleId in modules){
-                    modules[moduleId].members = [];
+                let lbModules = $scope.lbModules;
+                for(moduleId in lbModules){
+                    lbModules[moduleId].members = [];
                 }
+                
                 for(user of teamMembers){
                     if(user.moduleId===null){
                         user.moduleId = "none";
                     }
-                    for(moduleId in modules){
+                    for(moduleId in lbModules){
                         if(moduleId===user.moduleId){
-                            modules[moduleId].members.push(user);
+                            lbModules[moduleId].members.push(user);
                         }
                     }
                 }
                 //calculate percentage of completion
-                for(moduleId in modules){
-                    let m = modules[moduleId];
+                for(moduleId in lbModules){
+                    let m = lbModules[moduleId];
                     if(team.playerCount > 0){
                         m.percentageCompleted = Math.round(m.members.length/team.playerCount*100);
                     }
                 }
+
+                $scope.lbModules = lbModules;
             }
         });
         
@@ -61,15 +64,7 @@ app.controller("leaderboardCtrl", function($scope, $http) {
             }
         });
 
-        $scope.modules = null;
-        $http.get("/static/lessons/modules.json")
-        .then((response) => {
-            let modules = response.data;
-            //add an extra module for NONE
-            modules["none"]={"name":"None"};
-
-            $scope.modules = modules;
-        });
+       
         
     }
 });

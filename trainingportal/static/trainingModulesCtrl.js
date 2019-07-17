@@ -1,13 +1,7 @@
 app.controller("trainingModulesCtrl", function ($scope, $http) {
-    $scope.modules = null;
     $scope.badges = null;
 
     $scope.init=()=>{
-        $http.get("/static/lessons/modules.json")
-        .then((response) => {
-            $scope.modules = response.data;
-        });
-        
         $http.get("/api/user/badges",window.getAjaxOpts())
         .then((response) => {
             $scope.badges = response.data;

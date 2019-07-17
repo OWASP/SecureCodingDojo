@@ -204,8 +204,8 @@ describe('db', function() {
         var team = null;
         var user = null;
         before(async () => {
-            await db.getPromise(db.insertUser,{accountId:"deleteMeTeamMember1",familyName:"LastTeamMember1", givenName:"FirstTeamMember1"});
-            await db.getPromise(db.insertUser,{accountId:"deleteMeTeamMember2",familyName:"LastTeamMember2", givenName:"FirstTeamMember2"});
+            await db.getPromise(db.insertUser,{accountId:"deleteMeTeamMember1",familyName:"LastTeamMember1", givenName:"AAAFirstTeamMember1"});
+            await db.getPromise(db.insertUser,{accountId:"deleteMeTeamMember2",familyName:"LastTeamMember2", givenName:"AAAFirstTeamMember2"});
             user = await db.getPromise(db.getUser,"deleteMeTeamMember2");
 
             await db.getPromise(db.insertTeam,[user,{name:"testTeamDeleteMe2"}]);
@@ -231,12 +231,24 @@ describe('db', function() {
             assert.notEqual(result, null,"Result should not be null");
             assert.equal(result.length, 2 ,"Result should have 2 rows");
             
-            assert.equal(result[0].givenName,"FirstTeamMember1","First entry should be 'FirstTeamMember1'");
-            assert.equal(result[0].moduleId,null,"FirstTeamMember2 should have no badges");
+            assert.equal(result[0].givenName,"AAAFirstTeamMember1","First entry should be 'FirstTeamMember1'");
+            assert.equal(result[0].moduleId,null,"FirstTeamMember1 should have no badges");
 
-            assert.equal(result[1].givenName,"FirstTeamMember2","Second entry should be 'FirstTeamMember2'");
+            assert.equal(result[1].givenName,"AAAFirstTeamMember2","Second entry should be 'FirstTeamMember2'");
             assert.equal(result[1].moduleId,"blackBelt","FirstTeamMember2 should have the 'blackBelt' badge");
 
+
+            return promise;
+        });
+
+        it('should get the all users with badges for a particular module id without error', async () => {
+            let promise = db.getAllUsersForBadge("blackBelt");
+            let result = await promise;
+            assert.notEqual(result, null,"Result should not be null");
+            assert(result.length >= 1, "Result should have at least 1 row");
+            
+            assert.equal(result[0].givenName,"AAAFirstTeamMember2","First entry should be 'AAAFirstTeamMember2'");
+            assert.equal(result[0].moduleId,"blackBelt","AAAFirstTeamMember2 should have the 'blackBelt' badge");
 
             return promise;
         });

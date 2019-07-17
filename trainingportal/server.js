@@ -16,19 +16,21 @@ limitations under the License.
 
  */
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const fs = require('fs');
 const app = express();
+const uid = require('uid-safe');
+const validator = require('validator');
+
 const db = require(path.join(__dirname, 'db'));
 const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
 const config = require(path.join(__dirname, 'config'));
 const challenges = require(path.join(__dirname, 'challenges'));
-const uid = require('uid-safe');
-const validator = require('validator');
-var reportUsers = util.loadReportCSV(config.reportCSV);
+const report = require(path.join(__dirname, 'report'));
 
 //INIT
 app.use(bodyParser.urlencoded({extended:true}));
@@ -60,6 +62,12 @@ app.use('/static', (req, res, next) => {
   next()
 })
 app.use('/static',express.static(path.join(__dirname, 'static')));
+
+app.use(fileUpload({
+  limits: { fileSize: 1 * 1024 * 1024 },
+  safeFileNames: true
+}));
+
 
 //ROUTES
 
@@ -441,49 +449,31 @@ app.get('/api/salt',  (req, res) => {
   res.send(req.user.codeSalt);
 });
 
-//get a salt for the challenge code
-app.get('/api/report',  async (req, res) => {
-  if(util.isNullOrUndefined(reportUsers)){
+//upload CSV for user report
+app.post('/api/reportUpload', async (req, res) => {
+  req.user.reportUsers = report.parseReportCSV(req.files.reportCSV.data);
+  return util.apiResponse(req,res,200,"User report uploaded");
+
+});
+//get a report for training module
+app.get('/api/report/:moduleId',  async (req, res) => {
+
+  if(util.isNullOrUndefined(req.user.reportUsers)){
     return util.apiResponse(req,res,204,"User report is not configured");
   }
 
-  var requiredModule = config.requiredModule;
-  //update the user status based on the users in the database
-  reportUsers.completeMembers = 0;
-  reportUsers.inProgressMembers = 0;
-
-  let dbUsers = await db.getTeamMembersByBadges(null);
-  for(team of reportUsers.teamList){
-    team.completed = 0;
-    team.percentComplete = 0;
-    for(member of team.members){
-      member.status="Not Started";
-
-      for(dbUser of dbUsers){
-        //check if the dbUser name matches
-        if(member.name.toLowerCase().trim().indexOf(dbUser.givenName.toLowerCase().trim())===0 
-        && member.name.toLowerCase().trim().indexOf(dbUser.familyName.toLowerCase().trim()) >= 0){
-          //check the level
-          if(member.status==="Not Started"){
-            if(dbUser.moduleId===requiredModule){
-                member.status="Complete";
-                team.completed++;
-                reportUsers.completeMembers++;
-            }
-            else{
-              member.status="In Progress";
-              reportUsers.inProgressMembers++;
-            }
-          }
-        }
-      }
-    }
-    team.percentComplete = Math.round((team.completed/team.members.length) * 100);
-
+  if(util.isNullOrUndefined(req.params.moduleId)){
+    return util.apiResponse(req,res,400,"Module id required");
   }
 
-  reportUsers.percentComplete = Math.round((reportUsers.completeMembers/reportUsers.totalMembers) * 100);
-  reportUsers.status = 200;
+  if(!validator.isAlphanumeric(req.params.moduleId)){
+    return util.apiResponse(req,res,400,"Module id invalid"); 
+  }
+  var reportUsers = req.user.reportUsers;
+  var requiredModule = req.params.moduleId;
+  
+  reportUsers = await report.getReportForModuleId(reportUsers,requiredModule);
+
   res.send(reportUsers);
 
 });
