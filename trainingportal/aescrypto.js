@@ -1,6 +1,4 @@
 var crypto = require('crypto');
-const path = require('path');
-var config = require(path.join(__dirname, 'config'));
 var util = require('util');
 
 function getEncParams(keySeed,ivSeed){

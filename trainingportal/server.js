@@ -28,7 +28,7 @@ const validator = require('validator');
 const db = require(path.join(__dirname, 'db'));
 const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
-const config = require(path.join(__dirname, 'config'));
+var config = util.getConfig();
 const challenges = require(path.join(__dirname, 'challenges'));
 const report = require(path.join(__dirname, 'report'));
 
@@ -487,5 +487,5 @@ process.on('SIGINT', function() {
 app.listen(8081,function(){
     util.log('Listening on 8081');
     util.log('Configured url:'+config.dojoUrl);
-    util.log('Is secure:'+config.isSecure); 
+    util.log('Is secure:'+config.dojoUrl.startsWith("https")); 
 });

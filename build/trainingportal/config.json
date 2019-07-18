@@ -1,0 +1,11 @@
+{
+    "dojoUrl" : "http://localhost:8081",
+    "moduleUrls" : {
+        "blackBelt":"http://localhost:8080/insecureinc",
+        "securityCodeReviewMaster":"https://trendmicro.github.io/SecureCodingDojo/codereview101/?fromPortal"
+    },
+
+    "playLinks" : {},
+
+    "localUsersPath" : "localUsers.json"
+}
