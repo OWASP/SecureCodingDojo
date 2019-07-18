@@ -6,7 +6,7 @@ dataSvc.factory('dataSvc', ['$rootScope','$http',
     function($rootScope, $http) {
         //get the modules
         $rootScope.modules = null;
-        $http.get("/static/lessons/modules.json").then((response) => {
+        $http.get("/api/modules", window.getAjaxOpts()).then((response) => {
             $rootScope.modules = response.data;
             //create modules for leaderboard
             $rootScope.lbModules = {};

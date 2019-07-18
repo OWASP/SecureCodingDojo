@@ -4,6 +4,9 @@
         "blackBelt":"http://localhost:8081/insecureinc",
         "securityCodeReviewMaster":"https://trendmicro.github.io/SecureCodingDojo/codereview101/?fromPortal"
     },
+
+    "disabledModules":["moduleId"],
+
     "playLinks" : {"challengeId":"URL //for those cases when absolute links are specific to your environment"},
 
     "dbHost" : "YOUR_DB_HOST",
