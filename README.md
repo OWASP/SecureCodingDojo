@@ -41,18 +41,18 @@ Insecure.Inc
 - Eclipse Java EE latest version (developed with Neon) + Java 1.8 + tomcat 8 for the Insecure.Inc training app
 
 # Docker Images
-Check the relevant sections on the wiki for Docker setup instructions.
+Check the relevant sections on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki) for training portal and Insecure.Inc Docker setup instructions.
 
 # Slack Setup Instructions
 You will need to create a Slack app for authentication.
 - Go to https://api.slack.com/
 - Hit Start Building and follow the prompts to create a Slack App in your Development Slack Team
-- Once your app is created you will be able to get your App Credentials to configure your config.js
+- Once your app is created you will be able to get your App Credentials to configure your config.json
 - Configure redirect urls under OAuth & Permissions. For example for a localhost setup the redirect url would be: http://localhost:8081/public/slack/callback
 
 
 # Google Setup Instructions
-Google authentication can also be configured in config.js. You will need a Google developer account and obtain the OAuth credentials from the Google API console: https://console.developers.google.com
+Google authentication can also be configured in config.json. You will need a Google developer account and obtain the OAuth credentials from the Google API console: https://console.developers.google.com
 
 In the same place you will setup your domain and authorized redirect URIs. For example for a localhost setup the redirect url would be: http://localhost:8081/public/google/callback
 
@@ -62,17 +62,12 @@ For small teams or pre-configured images Slack or Google authentication may not 
 Check the wiki for a Docker image with this configuration.
 
 - Copy localUsers.json.sample to localUsers.json
-- Un-comment the line in config.js which specifies the localUsersPath
-- Un-comment the line in encryptConfigs.js that calls the genLocalUser function and fill in accordingly. 
-- Copy paste the line as needed for all the users you need to create
-
-        genLocalUser("organizer","Organizer","","<enter your password here>");//DELETE ME WHEN DONE
-
-- After running encryptConfigs.js copy paste the generated line in localUsers.json
-- There are several caveats with local authentication such as users not being able to change their own passwords, missing account lockout, password expiration etc.
+- Add the line in config.json which specifies the localUsersPath
+- There are several caveats with local authentication such as missing account lockout, password expiration etc.
 
 # DB Setup Instructions
-Install MySQL and create a DB and credentials for that DB. Note your user name and password you will need them for later.
+If you don't configure a DB the training portal will just use a local SQLite DB
+You can also MySQL and create a DB and credentials for that DB. Note your user name and password you will need them for later.
 
 # Encryption Key Seeds and Environment Variables
 You will have to setup encryption keys as OS environment variables. On *nix/mac modify .bash_profile as follows
@@ -84,12 +79,6 @@ The following is to prevent participants from generating their own challenge cod
 
     export CHALLENGE_MASTER_SALT="put something random here"
 
-You will also have to configure environmental settings such as the below
-
-    export DOJO_DB_HOST="localhost"
-    export DOJO_URL="http://localhost:8081"
-    export DOJO_TARGET_URL="http://localhost:8080/InsecureInc"
-
 
 # Environment Setup Instructions
 Training portal
@@ -97,11 +86,7 @@ Training portal
 - Run npm install (to download all necessary dependencies)
 - Open VSCode and open the repository directory
 - To download all the required node packages change directory to  ./trainingportal and run npm install
-- Copy ./trainingportal/config.js.sample to ./trainingportal/config.js
-- Open ./trainingportal/encryptConfigs.js, fill in db password, the Slack OAuth secret, the Google OAuth secret; etc. 
-- Debug the script in VSCode to generate encrypted configuration settings in the Console.
-- Copy the Console output to each corresponding file.
-- Delete passwords from the encryptConfigs.
+- Copy ./trainingportal/config.json.sample to ./trainingportal/config.json
 - Open ./trainingportal/server.js and debug it in VSCode (at the first run the DB tables will get created)
 - The trainingportal server will be running on http://localhost:8081/ 
 - Run tests with `npm test`
@@ -122,34 +107,11 @@ Insecure.Inc
 
 # Hosting Insecure.Inc
 
-Check out the wiki for Docker instructions.
+Check out the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Running-Insecure.Inc).
 
-Note: Don't put Insecure.Inc on a publicly facing server or in AWS since activity against it may trigger IPS alarms, etc. 
+# Deploying the Training Portal 
 
-Setup a Tomcat 8 server.
-
-If you configured a master key for storing the challenge secrets encrypted you need to perform the following step.
-
-Tomcat will ignore environment variables so you will have to configure the challenge master saltin /opt/tomcat/bin/setenv.sh
-(or wherever you had tomcat installed) like so:
-
-    export CHALLENGE_MASTER_SALT="our challenge master salt"
-
-# Deploying the Training Portal on AWS ELB
-AWS ELB setup is pretty standard. Configure the RDS DB separately because once you setup the environment you can't easily switch or delete databases.
-
-Training portal
-- Setup the RDS DB and credentials first
-    * Use the encryptConfigs.js script to generate new encrypted db password config.js if different then your local environment
-- Create an ELB environment using node
-- When creating the environment choose to define environment properties, under Software Configuration, as below
-
-        ENC_KEY="your enc key seed"
-        ENC_KEY_IV="your enc iv seed"
-        DOJO_DB_HOST="your AWS RDS mysql host"
-        DOJO_URL="https://elburl"
-        DOJO_TARGET_URL="http://internalhost:8080/InsecureInc"
-
+More info on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Running-the-training-portal).
 
 # Extending the Secure Coding Dojo
 You can add new lessons by following the model of existing ones.
