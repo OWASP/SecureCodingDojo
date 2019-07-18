@@ -1,0 +1,1 @@
+docker build -t securecodingdojo/insecure.inc .
