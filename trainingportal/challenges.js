@@ -18,7 +18,6 @@ limitations under the License.
 const path = require('path');
 const fs = require('fs');
 const util = require(path.join(__dirname, 'util'));
-const modules = Object.freeze(require(path.join(__dirname, 'static/lessons/modules.json')));
 const config = util.getConfig();
 const db = require(path.join(__dirname, 'db'));
 const validator = require('validator');
@@ -26,6 +25,25 @@ const crypto = require('crypto');
 const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const https = require('https');
 
+var modules = {};
+var challengeDefinitions = [];
+var challengeNames = [];
+var solutions = [];
+var descriptions = [];
+var masterSalt = "";
+
+loadModules = function(){ 
+    let moduleDefs = require(path.join(__dirname, "static/lessons/modules.json"));
+    let localModules = {}
+    let moduleIds = Object.keys(moduleDefs);
+    for(moduleId of moduleIds){
+        let disabled = config.disabledModules;
+        if(util.isNullOrUndefined(disabled) || !disabled.includes(moduleId)){
+            localModules[moduleId] = moduleDefs[moduleId];
+        }
+    }
+    return localModules; 
+}
 
 function getModulePath(moduleId){
     return path.join('static/lessons/', moduleId);
@@ -36,16 +54,12 @@ function getDefinifionsForModule(moduleId){
     return defs;
 }
 
-var challengeDefinitions = [];
-var challengeNames = [];
-var solutions = [];
-var descriptions = [];
-var masterSalt = "";
 
 /**
  * Initializes challenges when this module is loaded
  */
 function init(){   
+    modules = Object.freeze(loadModules());
     for(moduleId in modules){
         moduleDefinitions = getDefinifionsForModule(moduleId);
         var modulePath = getModulePath(moduleId);

@@ -190,6 +190,11 @@ app.get('/challenges/:moduleId', async (req, res) => {
   res.send(response);
 });
 
+app.get('/api/modules', async (req, res) => {
+  var modules = challenges.getModules();
+  res.send(modules);
+});
+
 app.get('/challenges/:moduleId/level', async (req, res) => {
   var moduleId = req.params.moduleId;
   
