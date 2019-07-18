@@ -12,8 +12,8 @@ docker build -t securecodingdojo/trainingportal ../build/trainingportal/
 
 rm -f *.zip 
 cp prod.config.json config.json;
-zip SCD-"$(date)".AWS.zip -r *.js *.sql \
+zip SCD-"$(date)".AWS.zip -r *.js config.json *.sql \
  .ebextensions/* \
  node_modules/* public/* static/* sql/*  \
- -x "*.DS_Store" -x "encryptConfigs.js" -x "decrypt.js" -x "*.config.json";
+ -x "*.DS_Store" -x "encryptConfigs.js" -x "decrypt.js" -x "*.config.js" -x "*.config.json" ;
 rm -f config.json
