@@ -182,7 +182,14 @@ exports.init = function(){
     else { //run db maintenance scripts
       util.log("Database tables exist.");
       //check db version
-      let version = await exports.getPromise(exports.getVersion);
+      let version = null;
+      try
+      {
+        await exports.getPromise(exports.getVersion);
+      }
+      catch(err){
+        console.log(err);
+      }
 
       if(util.isNullOrUndefined(version)) version = 2; //started versioning from 3
 
