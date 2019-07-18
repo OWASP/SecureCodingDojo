@@ -295,7 +295,7 @@ describe('db', function() {
       });
     });
 
-    describe('#insertChallengeEntry(),#fetchChallengeEntriesForUser(),#fetchActivity()', function() {
+    describe('#insertChallengeEntry(),#fetchChallengeEntriesForUser(),#fetchActivity(),#getChallengeStats()', function() {
 
         var user = null;
         before(async () => {
@@ -321,6 +321,16 @@ describe('db', function() {
             return promise;
         });
 
+        it('should get the challenge stats without error', async () => {
+            let promise = db.getPromise(db.getChallengeStats);
+            let result = await promise;
+
+            assert(result!==null,"Result should not be null");
+            assert(result.length > 0 ,"Result should have more than 0 rows");
+
+            return promise;
+        });
+
         after(async ()=>{
             //cleanup
             await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
@@ -329,36 +339,18 @@ describe('db', function() {
         })
     });
 
-    describe('#getChallengeStats()', function() {
-        it('should get the challenge stats without error', function(done) {
-            db.getChallengeStats(
-                function(err){
-                    done(err);
-                },function(result){ 
-                    assert(result!==null,"Result should not be null");
-                    assert(result.length > 0 ,"Result should have more than 0 rows");
-                    done();
-                });
+   
+    after(async () => {
+        await db.getConn().queryPromise("DELETE FROM users WHERE accountId like '%Delete%'");
+        await db.getConn().queryPromise("DELETE FROM teams WHERE name like '%Delete%'");
+        
+        let promise = new Promise((resolve,reject)=>{
+            db.getConn().end();
+            resolve(null);
         });
-    });
-
-
-
-    after(function(){
-        async.waterfall([
-            //cleanup test data 
-            function (cb){
-                db.getConn().query("DELETE FROM users WHERE accountId like '%Delete%'",function(err){cb(err);},function(result){cb();});
-            },
-            function (cb){
-                db.getConn().query("DELETE FROM teams WHERE name like '%Delete%'",function(err){cb(err);},function(result){cb();});
-            },
-            function(cb){
-                db.getConn().end();
-            }
-        ],function(err){
-            if(err) throw new Error(err);
-        });
+        
+        return promise;
+        
     })
 });
 

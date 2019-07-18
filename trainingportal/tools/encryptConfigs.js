@@ -8,8 +8,6 @@ const uid = require('uid-safe');
 var dbPass="<db pass>";//DELETE ME WHEN DONE
 var slackSecret="<slack secret>";//DELETE ME WHEN DONE
 var googleSecret="<google secret>";//DELETE ME WHEN DONE
-var sessionSecret=uid.sync(64);
-
 var badgrToken = "<badgr token>";
 
 const config = require(path.join(__dirname, '../config'));
@@ -21,7 +19,6 @@ console.log("======= config.js ==========");
 console.log('config.encDbPass="'+aescrypto.encrypt(dbPass)+'";');
 console.log('config.encSlackClientSecret="'+aescrypto.encrypt(slackSecret)+'";');
 console.log('config.encGoogleClientSecret="'+aescrypto.encrypt(googleSecret)+'";');
-console.log('config.encExpressSessionSecret="'+aescrypto.encrypt(sessionSecret)+'";');
 console.log('config.encBadgrToken="'+aescrypto.encrypt(badgrToken)+'";');
 
 

@@ -1,14 +1,14 @@
 const SCHEMA_VERSION = 5;
 module.exports.SCHEMA_VERSION = SCHEMA_VERSION;
 const path = require('path');
-const config = require(path.join(__dirname, 'config'));
-var aesCrypto = require(path.join(__dirname, 'aescrypto'));
-var util = require(path.join(__dirname, 'util'));
-var mysql = require('mysql2');
+const util = require(path.join(__dirname, 'util'));
+const config = util.getConfig();
+const aesCrypto = require(path.join(__dirname, 'aescrypto'));
+const mysql = require('mysql2');
 var sqlite3 = null;
+const fs = require('fs');
+const async = require('async');
 
-var fs = require('fs');
-var async = require('async');
 var MYSQL_CONFIG = null;
 var liteDB = null;
 
@@ -18,12 +18,8 @@ if(util.isNullOrUndefined(config.dbHost)){
   //use sqlite insted of mysql
   var dbPath = "";
   var dbFileName = "securecodingdojo.db";
-  if(util.isNullOrEmpty(config.dataDir)){
-    dbPath = path.join(__dirname, dbFileName);
-  }
-  else{
-    dbPath = path.join(config.dataDir, dbFileName);
-  }
+  var dataDir = util.getDataDir();
+  dbPath = path.join(dataDir, dbFileName);
   liteDB = new sqlite3.Database(dbPath);
 }
 else {

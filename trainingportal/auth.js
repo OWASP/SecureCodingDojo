@@ -1,5 +1,6 @@
 const path = require('path');
-const config = require(path.join(__dirname, 'config'));
+const util = require(path.join(__dirname, 'util'));
+const config = util.getConfig();
 const crypto = require('crypto');
 const aesCrypto = require(path.join(__dirname, 'aescrypto'));
 const session = require('express-session');
@@ -8,7 +9,6 @@ const validator = require('validator');
 const uid = require('uid-safe');
 
 const db = require(path.join(__dirname, 'db'));
-const util = require(path.join(__dirname, 'util'));
 const challenges = require(path.join(__dirname, 'challenges'));
 const captchapng = require('captchapng');
 const fs = require('fs');
@@ -30,13 +30,9 @@ var localUsersPath = "";
 try{
   if(!util.isNullOrUndefined(config.localUsersPath))
   {
+    let dataDir = util.getDataDir();
+    localUsersPath = path.join(dataDir, config.localUsersPath);
     
-    if(util.isNullOrEmpty(config.dataDir)){
-        localUsersPath = path.join(__dirname, config.localUsersPath);
-    }
-    else{
-        localUsersPath = path.join(config.dataDir, config.localUsersPath);
-    }
     if(!fs.existsSync(localUsersPath)){
         //create the users file if not already there
         fs.writeFileSync(localUsersPath, "{}", 'utf8');
@@ -264,7 +260,7 @@ processAuthCallback = function (profileId, givenName, familyName, email, cb) {
     //if allowed account pattern or an account whitelist are not configured all users are allowed
     var isAllowed = util.isNullOrUndefined(config.allowedAccountPattern) && accountWhitelist==null;
     //check the allowed pattern if defined
-    if(!isAllowed && !util.isNullOrUndefined(config.allowedAccountPattern)) isAllowed = profileId.match(config.allowedAccountPattern);
+    if(!isAllowed && !util.isNullOrUndefined(config.allowedAccountPattern)) isAllowed = profileId.match(new RegExp(config.allowedAccountPattern));
     //check the whitelist if defined
     if(!isAllowed && accountWhitelist!=null) isAllowed = accountWhitelist.indexOf(profileId) > -1;
     //if still not allowed stop here
@@ -362,7 +358,7 @@ getGoogleStrategy = function () {
     return new GoogleStrategy({
         clientID: config.googleClientId,
         clientSecret: aesCrypto.decrypt(config.encGoogleClientSecret),
-        callbackURL: config.googleOauthCallbackUrl
+        callbackURL: config.dojoUrl+"/public/google/callback"
     }, (accessToken, refreshToken, profile, cb) => {
         var email = null;
         if(profile.emails !== null && profile.emails.length > 0){
@@ -377,7 +373,7 @@ getSamlStrategy = function () {
     return new SamlStrategy({
         entryPoint: config.samlEntryPoint,
         issuer: config.samlCallbackUrl,
-        callbackUrl: config.samlCallbackUrl,
+        callbackUrl: config.dojoUrl+"/public/saml/callback",
         acceptedClockSkewMs: 5*60*1000,
         authnRequestBinding : 'HTTP-POST',
         skipRequestCompression: true,
@@ -407,7 +403,7 @@ getSlackStrategy = function () {
     return new SlackStrategy({
         clientID: config.slackClientId,
         clientSecret: aesCrypto.decrypt(config.encSlackClientSecret),
-        callbackURL: config.slackOauthCallbackUrl,
+        callbackURL: config.dojoUrl+"/public/slack/callback",
         scope:'identity.basic'
     }, (accessToken, refreshToken, profile, cb) => {
         if(typeof profile.user!=='undefined'){
@@ -469,7 +465,7 @@ exports.getSession = function () {
         resave:false, 
         saveUninitialized:false,
         maxAge: Date.now() + 1000 * 60 * 60 * 2, //2 hours session timeout
-        cookie: {secure:config.isSecure} 
+        cookie: {secure:config.dojoUrl.startsWith("https")} 
     });
 
     return ses;

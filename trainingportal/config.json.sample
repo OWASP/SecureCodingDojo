@@ -1,0 +1,48 @@
+{
+    "dojoUrl" : "http://localhost:8081",
+    "moduleUrls" : {
+        "blackBelt":"http://localhost:8081/insecureinc",
+        "securityCodeReviewMaster":"https://trendmicro.github.io/SecureCodingDojo/codereview101/?fromPortal"
+    },
+    "playLinks" : {"challengeId":"URL //for those cases when absolute links are specific to your environment"},
+
+    "dbHost" : "YOUR_DB_HOST",
+    "dbName" : "YOUR_DB_NAME",
+    "dbUser" : "YOUR_DB_USER",
+    "encDbPass":"//use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption",
+
+    "allowedAccountPattern" : ".* //if not defined all accounts can login, use in conjunction with account whitelist to enable accounts matching the pattern e.g. Local_",
+    "accountWhitelist" : "accountWhitelist.json //enable to only allow certain accounts to join",
+    "localUsersPath" : "localUsers.json",
+
+    "googleClientId" : "YOUR_GOOGLE_CLIENT_ID",
+    "slackClientId" : "YOUR_SLACK_CLIENT_ID",
+    "slackTeamId" : "YOUR_SLACK_TEAM_ID",
+
+    "encGoogleClientSecret":"//use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption",
+    "encSlackClientSecret":"//use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption",
+
+    "samlEntryPoint": "YOUR_SAML_ENTRY_POINT_URL",
+    "samlCert": "YOUR_SAML_PUBLIC_CERT",
+    "samlGivenName": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname",
+    "samlFamilyName": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname",
+    "samlEmail": "nameID",
+    "samlProviderCertFilePath" : "samlProviderCert.pem //optional for provider initiated",
+    "samlProviderPvkFilePath" : "samlProviderKey.pem //optional for provider initiated",
+    "encSamlProviderPvkFilePath" : "samlProviderKey.enc.pem //optional for provider initiated",
+    "samlLogProviderMetadata" : false,
+
+    
+    "ldapServer" : {
+        "url": "ldap://company.org",
+        "bindDN": "CN=bindUser,OU=Domain Users,DC=company,DC=org",
+        "encBindCredentials": "<GENERATE WITH ENCRYPT CONFIGS>",
+        "searchBase": "DC=company,DC=org",
+        "caCertPath": "caCert.pem", 
+        "searchFilter": "(sAMAccountName={{username}}" 
+    },
+
+   
+    "encBadgrToken" : "//configure to enable Badgr.io integration to issue Open Badges for challenge completion; see https://api.badgr.io"
+
+}
