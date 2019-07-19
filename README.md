@@ -13,7 +13,22 @@ Download the [demo](https://github.com/trendmicro/SecureCodingDojo/blob/master/d
 Also take a look in /screenshots
 ![Alt text](/screenshots/frontpage.png?raw=true "Secure Coding Dojo Training Portal Front Page")
 
+# Try it
 
+The following steps will get you the basic configuration for the Dojo. For advanced configuration and integrations check the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki)
+
+- Install Docker latest version.
+- Git clone the repository
+- Change directory to the repo root directory
+- Configure an environment variable DATA_DIR as a mount point for the dojo files. On *nix/mac modify .bash_profile as follows
+
+    export DATA_DIR="/YOUR_DATA_DIR"
+
+- On Mac you must allow Docker access to this directory in Docker > Preferences > File Sharing
+- Restart your terminal
+- Run with
+
+    docker-compose up
 
 # Why Another Security Training Site?
 While open source training sites to teach application security concepts are not new the target audience for these sites has been pen-testers and ethical hackers. 
@@ -40,8 +55,6 @@ Insecure.Inc
 - Developed in Java EE
 - Eclipse Java EE latest version (developed with Neon) + Java 1.8 + tomcat 8 for the Insecure.Inc training app
 
-# Docker Images
-Check the relevant sections on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki) for training portal and Insecure.Inc Docker setup instructions.
 
 # Slack Setup Instructions
 You will need to create a Slack app for authentication.
@@ -66,8 +79,10 @@ Check the wiki for a Docker image with this configuration.
 - There are several caveats with local authentication such as missing account lockout, password expiration etc.
 
 # DB Setup Instructions
+
 If you don't configure a DB the training portal will just use a local SQLite DB
-You can also MySQL and create a DB and credentials for that DB. Note your user name and password you will need them for later.
+
+You can also install MySQL and create a DB and credentials for that DB. Note your user name and password you will need them for later.
 
 # Encryption Key Seeds and Environment Variables
 You will have to setup encryption keys as OS environment variables. On *nix/mac modify .bash_profile as follows

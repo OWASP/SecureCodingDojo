@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  insecureinc:
+    image: securecodingdojo/insecure.inc
+    ports:
+      - "8080:8080"
+    networks:
+      - overlay
+    environment:
+       - CHALLENGE_MASTER_SALT
+
+  trainingportal:
+    image: securecodingdojo/trainingportal
+    ports:
+      - "8081:8081"
+    volumes:
+       - "${DATA_DIR}:/dojofiles:consistent"
+    networks:
+       - overlay
+    environment:
+       - CHALLENGE_MASTER_SALT
+       - ENC_KEY
+       - ENC_KEY_IV
+       - DATA_DIR=/dojofiles
+
+volumes:
+  dojofiles:
+
+networks:
+  overlay:
