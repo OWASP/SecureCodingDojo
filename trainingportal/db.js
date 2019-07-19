@@ -185,7 +185,7 @@ exports.init = function(){
       let version = null;
       try
       {
-        await exports.getPromise(exports.getVersion);
+        version = await exports.getPromise(exports.getVersion);
       }
       catch(err){
         console.log(err);
