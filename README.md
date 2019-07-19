@@ -49,7 +49,7 @@ While we don't guarantee compliance the training could be used to meet complianc
 Training portal
 - Install VS Code 
 - node/npm (developed with v10)
-- MySQL server + My SQL Workbench (developed with MySQL 5.7)
+- OPTIONAL: MySQL server + My SQL Workbench (developed with MySQL 5.7)
 
 Insecure.Inc
 - Developed in Java EE
