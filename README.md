@@ -22,13 +22,13 @@ The following steps will get you the basic configuration for the Dojo. For advan
 - Change directory to the repo root directory
 - Configure an environment variable DATA_DIR as a mount point for the dojo files. On *nix/mac modify .bash_profile as follows
 
-    export DATA_DIR="/YOUR_DATA_DIR"
+    `export DATA_DIR="/YOUR_DATA_DIR"`
 
 - On Mac you must allow Docker access to this directory in Docker > Preferences > File Sharing
 - Restart your terminal
 - Run with
 
-    docker-compose up
+    `docker-compose up`
 
 # Why Another Security Training Site?
 While open source training sites to teach application security concepts are not new the target audience for these sites has been pen-testers and ethical hackers. 
