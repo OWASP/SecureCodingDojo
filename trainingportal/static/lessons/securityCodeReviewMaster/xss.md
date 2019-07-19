@@ -32,7 +32,7 @@ In the case of legacy web applications server side rendered code (JSP, PHP, ASPX
 
 `<` becomes `&lt;`
 
-`>` becomes `&qt;`
+`>` becomes `&gt;`
 
 `"` becomes `&quot;`
 
