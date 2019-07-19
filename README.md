@@ -15,7 +15,7 @@ Also take a look in /screenshots
 
 # Try it
 
-The following steps will get you the basic configuration for the Dojo. For advanced configuration and integrations check the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki)
+The following steps will get you the basic configuration for the Dojo. For advanced configuration and integrations check the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Running-with-Docker)
 
 - Install Docker latest version.
 - Git clone the repository
