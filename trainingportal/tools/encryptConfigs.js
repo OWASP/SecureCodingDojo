@@ -12,13 +12,13 @@ var badgrToken = "<badgr token>";
 var config = util.getConfig();
 const fs = require('fs');
 
-console.log("======= config.js ==========");
+console.log("======= config.json ==========");
 
 //You can use the following script from  when you update your key to a new value
-console.log('config.encDbPass="'+aescrypto.encrypt(dbPass)+'";');
-console.log('config.encSlackClientSecret="'+aescrypto.encrypt(slackSecret)+'";');
-console.log('config.encGoogleClientSecret="'+aescrypto.encrypt(googleSecret)+'";');
-console.log('config.encBadgrToken="'+aescrypto.encrypt(badgrToken)+'";');
+console.log(`"encDbPass":${aescrypto.encrypt(dbPass)}",`);
+console.log(`"encSlackClientSecret":${aescrypto.encrypt(slackSecret)}",`);
+console.log(`"encGoogleClientSecret":${aescrypto.encrypt(googleSecret)}",`);
+console.log(`"encBadgrToken":${aescrypto.encrypt(badgrToken)}",`);
 
 
 if(!util.isNullOrUndefined(config.samlProviderPvkFilePath)){
