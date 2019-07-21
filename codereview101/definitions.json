@@ -234,7 +234,7 @@
                 "questionId": "xss.q5",
                 "language": "javascript",
                 "lineToHighlight": 5,
-                "question": "If you need to up date a React webapp, which of the following code snippets prevents XSS?",
+                "question": "In the following React example, which of the code snippets prevents XSS?",
                 "snippets": [
                     "snipXSS9.jsx",
                     "snipXSS10.jsx"
