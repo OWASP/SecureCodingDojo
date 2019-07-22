@@ -1,7 +1,7 @@
 **Input Validation** is an effective and simple security best practice. Even without having security knowledge any programmer can prevent security flaws by implementing input verification checks such as:
 
 - The input should only contain digits if the input type is numeric
-- The input should only contain unicode letter characters if the input type is aplhabetic
+- The input should only contain unicode letter characters if the input type is alphabetic
 - The input should match the format of an e-mail or GUID or PIN number if those are the intended types
 - The input should not exceed a certain size
 
