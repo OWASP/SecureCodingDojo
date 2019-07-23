@@ -34,6 +34,16 @@ app.controller("codeReview101Ctrl", function($scope, $http, $location) {
                 }
             }
         }
+        let allPassed = true;
+        for(category of newDefinitions){
+            if(!category.passed){
+                allPassed = false;
+                break;
+            }
+        }
+        if(allPassed){
+            $('#finalModal').modal();
+        }
     }
 
     $http.get("definitions.json")
