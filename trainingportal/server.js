@@ -75,6 +75,17 @@ app.get("/",(req,res) => {
     res.redirect('/public/index.html');
 });
 
+app.get("/public/privacy",(req,res) => {
+  let html = util.getPrivacyHtml();
+  if(html===null){
+    res.status(204).send();
+  }
+  else{
+    res.header("Content-type","text/html").send(html);
+  }
+});
+
+
 app.get("/public/providers",(req,res) => {
   var providers = [];
   if("googleClientId" in config) providers.push({"name":"Google","url":"/public/provider/google"});
