@@ -102,3 +102,15 @@ exports.parseMarkdown = (text) => {
   html = html.replace(/<code/g,"<code ng-non-bindable ");
   return html
 }
+
+exports.getPrivacyHtml = () => {
+  let dataDir = exports.getDataDir();
+  let polPath = path.join(dataDir,"privacy.md");
+  if(!fs.existsSync(polPath)){
+    return null;
+  }
+
+  let md = fs.readFileSync(polPath,"utf-8");
+  let html = exports.parseMarkdown(md);
+  return html;
+}
