@@ -2,7 +2,7 @@
     "blackBelt":{
         "name":"Black Belt",
         "summary":"Common software security flaws",
-        "description":"This module is based on the SANS Top 25 - Most Dangerous Sofware Flaws. Lessons are entry level difficulty aimed at introducing the concepts of vulnerability, exploit and software defense.",
+        "description":"This module is based on the SANS Top 25 - Most Dangerous Software Flaws. Lessons are entry level difficulty aimed at introducing the concepts of vulnerability, exploit and software defense.",
         "requiredModules":[]
     },
     "secondDegreeBlackBelt":{
