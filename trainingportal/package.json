@@ -28,7 +28,7 @@
     "highlightjs": "^9.12.0",
     "jquery": "^3.4.1",
     "markdown": "^0.5.0",
-    "mysql2": "^1.6.5",
+    "mysql2": "^1.7.0",
     "node-pre-gyp": "^0.13.0",
     "node-truncate": "^0.1.0",
     "open-iconic": "^1.1.1",
@@ -38,12 +38,12 @@
     "passport-local": "^1.0.0",
     "passport-saml": "^0.33.0",
     "passport-slack": "0.0.7",
-    "sqlite3": "^4.0.9",
+    "sqlite3": "^4.1.0",
     "uid-safe": "^2.1.4",
     "validator": "^7.0.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^6.1.4"
+    "mocha": "^6.2.0"
   }
 }
