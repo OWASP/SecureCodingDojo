@@ -4,7 +4,7 @@ npm test
 #include here your own test tools
 if [ -f "runCustomTestScripts.sh" ]
 then
-    ./runCustomScripts.sh
+    ./runCustomTestScripts.sh
 fi
 
 npm install
