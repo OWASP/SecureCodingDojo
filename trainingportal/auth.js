@@ -506,7 +506,7 @@ exports.addCsrfToken = function (req, responseBody){
 
 exports.authenticationByDefault = function (req, res, next) {
     //the root folder and the public folder are the only ones excluded from authentication
-    if (req.path === "/" || req.path.indexOf('/public') === 0){ 
+    if (req.path === "/" || req.path.indexOf('/public') === 0 || req.path.indexOf('/favicon.ico') === 0 ){ 
         next();
     }
     else if(req.path.indexOf('/api') === 0){ 
