@@ -75,6 +75,11 @@ app.get("/",(req,res) => {
     res.redirect('/public/index.html');
 });
 
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).send();
+}); 
+
+
 app.get("/public/privacy",(req,res) => {
   let html = util.getPrivacyHtml();
   if(html===null){
