@@ -15,7 +15,7 @@ Also take a look in /screenshots
 
 # Try it
 
-The following steps will get you the basic configuration for the Dojo. For advanced configuration and integrations check the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Running-with-Docker)
+The following steps will get you the basic configuration for the Dojo. For advanced configuration and integrations check the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Deploying-with-Docker)
 
 - Install Docker latest version.
 - Git clone the repository
@@ -72,7 +72,7 @@ In the same place you will setup your domain and authorized redirect URIs. For e
 # Local Authentication Setup Instructions
 For small teams or pre-configured images Slack or Google authentication may not be an option. For this scenario you can configure authentication working with a local flat file.
 
-Check the wiki for a Docker image with this configuration.
+Check the wiki for more informations.
 
 - Copy localUsers.json.sample to localUsers.json
 - Add the line in config.json which specifies the localUsersPath
@@ -132,8 +132,8 @@ More info on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Runn
 You can add new lessons by following the model of existing ones.
 
 ## Challenges 
-Challenges are defined in ./trainingportal/static/challenges
-The file challengeDefinitions.json points to the corresponding html challenge description, play link and corresponding code blocks by code block id.
+Challenges are defined in ./trainingportal/static/lessons
+The file definitions.json points to the corresponding html challenge description, play link and corresponding code blocks by code block id.
 Follow the already defined examples to create a new one.
 
     .
