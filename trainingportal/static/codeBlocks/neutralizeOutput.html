@@ -1,6 +1,6 @@
 <p>This software defense prevents the many flavours of <strong>Cross-Site Scripting</strong></p>
 <p>First if you want to get an idea of the challenges associated with fixing XSS, watch the following public video: 
-<a target="_blank" href="https://youtu.be/FGr6gGqM4f0">How Fixing Cross-Site Scripting is Like Playing Whack-A-Mole</a> </p>
+<a target="_blank" rel="noopener noreferrer" href="https://youtu.be/FGr6gGqM4f0">How Fixing Cross-Site Scripting is Like Playing Whack-A-Mole</a> </p>
 
 <p>There are several proven ways to ensure the user input doesn't "pop". </p>
 <h5>Output Encoding</h5>
@@ -42,7 +42,7 @@ Modern applications have moved the UI handling to client side technologies such 
 </p>
 <p>
 In such applications the danger lies in dynamic updates of the innerHTML attribute. The contentText/innerText attribute should be used instead, like in the case of using the 
-<a target="_blank" href="http://api.jquery.com/text/">.text(text)</a> function in jQuery.
+<a target="_blank" rel="noopener noreferrer" href="http://api.jquery.com/text/">.text(text)</a> function in jQuery.
 A better approach to UI design in modern applications is using widgets or <mark>templates</mark>. 
 <br><br>
 The example below is from this page, which uses AngularJS.
