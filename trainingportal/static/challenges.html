@@ -29,7 +29,7 @@
                         <br/>
                         <h4>Code Blocks Associated with the Challenge</h4>
                         <ul>
-                            <li ng-repeat="codeBlockId in challenge.codeBlockIds"><a target="_blank" href="#!codeBlocks/{{codeBlockId}}">{{codeBlocks[codeBlockId].name}}</a></li>
+                            <li ng-repeat="codeBlockId in challenge.codeBlockIds"><a target="_blank" rel="noopener noreferrer" href="#!codeBlocks/{{codeBlockId}}">{{codeBlocks[codeBlockId].name}}</a></li>
                         </ul>
                         </span>
                         
@@ -50,8 +50,8 @@
 
                         <h4>Play Link and Instructions</h4>
                         <p ng-if="challenge.playLink">Navigate to the 
-                            <a ng-if="challenge.playLink.indexOf('http')===0" ng-href="{{challenge.playLink}}" target="_blank">play link</a>
-                            <a ng-if="challenge.playLink.indexOf('/') === 0 || challenge.playLink.indexOf('#') === 0 " ng-href="{{targetUrl}}{{challenge.playLink}}" target="_blank">play link</a>
+                            <a ng-if="challenge.playLink.indexOf('http')===0" ng-href="{{challenge.playLink}}" target="_blank" rel="noopener noreferrer">play link</a>
+                            <a ng-if="challenge.playLink.indexOf('/') === 0 || challenge.playLink.indexOf('#') === 0 " ng-href="{{targetUrl}}{{challenge.playLink}}" target="_blank" rel="noopener noreferrer">play link</a>
                         . </p>
                         <p ng-if="!challenge.playLink">
                             The play link has been provided to you when solving the previous challenge. 
