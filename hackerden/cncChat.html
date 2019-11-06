@@ -57,7 +57,7 @@
         <div class="panel-heading">
             <h4>Foobar Chat Messages</h4> 
             <p>
-                <strong>Current user:</strong> <span id="userName">{{userNameText}}</span> ( <a id="challengeCodeUrl" href="{{challengeCodeUrl}}" target="_blank">{{challengeCodeUrl}}</a>)
+                <strong>Current user:</strong> <span id="userName">{{userNameText}}</span> ( <a id="challengeCodeUrl" href="{{challengeCodeUrl}}" target="_blank" rel="noopener noreferrer">{{challengeCodeUrl}}</a>)
             </p>
             <hr>
             <form>
@@ -75,7 +75,7 @@
             <div class="alert alert-danger" style="display:none"  ng-model="chatAlertDiv" id="chatAlertDiv"></div>
             <div class="alert alert-success" ng-if="messageSuccess">
                 <p>Wow you got it, check the Network tab in the debugger!</p>
-                <p>Here's your challenge code url: <a href="{{xssChallengeCodeUrl}}" target="_blank">{{xssChallengeCodeUrl}}</a>
+                <p>Here's your challenge code url: <a href="{{xssChallengeCodeUrl}}" target="_blank" rel="noopener noreferrer">{{xssChallengeCodeUrl}}</a>
                 </p>
 
             </div>
