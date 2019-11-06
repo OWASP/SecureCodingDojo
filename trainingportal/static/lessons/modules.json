@@ -1,4 +1,11 @@
 {
+    "securityCodeReviewMaster":{
+        "name":"Security Code Review Master",
+        "summary":"Integrating security into code review",
+        "description":"Code review is, hopefully, part of regular development practices for any organization. Adding security elements to code review is the most effective measure in preventing vulnerabilities, even before the first commit.",
+        "skipMasterSalt":true,
+        "requiredModules":[]
+    },
     "blackBelt":{
         "name":"Black Belt",
         "summary":"Common software security flaws",
@@ -10,12 +17,5 @@
         "summary":"Cloud software exploitation techniques",
         "description":"Have some fun with this Capture the Flag module which is based on OWASP Top 10 (v2017). Your goal is to take down the cloud applications used in a worldwide malware campaign.",
         "requiredModules":["blackBelt"]
-    },
-    "securityCodeReviewMaster":{
-        "name":"Security Code Review Master",
-        "summary":"Integrating security into code review",
-        "description":"Code review is, hopefully, part of regular development practices for any organization. Adding security elements to code review is the most effective measure in preventing vulnerabilities, even before the first commit.",
-        "skipMasterSalt":true,
-        "requiredModules":[]
     }
 }
