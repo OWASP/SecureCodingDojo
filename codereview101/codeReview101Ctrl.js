@@ -23,10 +23,10 @@ app.controller("codeReview101Ctrl", function($scope, $http, $location) {
 
     var onDefinitionsChanged = function(newDefinitions){
         //check whether category is complete
-        for(category of newDefinitions){
+        for(let category of newDefinitions){
             if(!category.passed){
                 var correct = true;
-                for(question of category.questions){
+                for(let question of category.questions){
                     correct &= question.correct;
                 }
                 if(correct){
@@ -35,7 +35,7 @@ app.controller("codeReview101Ctrl", function($scope, $http, $location) {
             }
         }
         let allPassed = true;
-        for(category of newDefinitions){
+        for(let category of newDefinitions){
             if(!category.passed){
                 allPassed = false;
                 break;
@@ -80,7 +80,7 @@ app.directive("highlightCode", ['$http','$anchorScroll', function($http, $anchor
         let lines = html.split("\n");
         lineno = 1;
         html = "";
-        for(line of lines){
+        for(let line of lines){
             if(lineno == lineNoToHighlight ){
                 html+=`<span class="text-white">${line}</span>`;
             }
@@ -115,7 +115,7 @@ app.directive("highlightCode", ['$http','$anchorScroll', function($http, $anchor
 
                 element.html(text);
 
-                for(domEl of element){
+                for(let domEl of element){
                     hljs.highlightBlock(element[0]);
                 }
 

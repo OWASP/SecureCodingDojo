@@ -64,13 +64,13 @@ exports.parseReportCSV = (csvData) => {
     reportUsers.incompleteMembers = 0;
   
     let dbUsers = await db.getAllUsersForBadge(requiredModule);
-    for(team of reportUsers.teamList){
+    for(let team of reportUsers.teamList){
       team.completed = 0;
       team.percentComplete = 0;
-      for(member of team.members){
+      for(let member of team.members){
         member.status="Not Started";
   
-        for(dbUser of dbUsers){
+        for(let dbUser of dbUsers){
           //check if the dbUser name matches
           let reportName = member.name.toLowerCase().trim();
           let dbUserGivenName = dbUser.givenName.toLowerCase().trim();

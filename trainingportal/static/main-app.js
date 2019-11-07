@@ -39,13 +39,13 @@ app.config(function($routeProvider) {
 app.directive('highlightCode', [ function(){
 
     function doHighlight(preList){
-        for(pre of preList){
+        for(let pre of preList){
             hljs.highlightBlock(pre);
         }
     }
 
     function linkFunc (scope, element, attrs) {
-        for(domEl of element){
+        for(let domEl of element){
             var preList = domEl.querySelectorAll('pre');
             setTimeout(doHighlight,1,preList)   
         }        
@@ -170,14 +170,14 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                     $scope.teamNames = {};
                     var teamList = response.data;
                     //create a map of team names to team ids
-                    for(team of teamList){
+                    for(let team of teamList){
                         $scope.teamNames[team.id] = team.name;
                     }
                     $http.get("/api/users",window.getAjaxOpts())
                     .then(function(response) {
                         if(response != null && response.data != null){
 
-                            for(team of teamList){
+                            for(let team of teamList){
                                 if(team.ownerId!=null && team.ownerId === $scope.user.id){// the user cannot change their team until they delete their current team
                                     $scope.ownedTeam = team;
                                 }

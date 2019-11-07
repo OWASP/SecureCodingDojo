@@ -12,7 +12,7 @@ app.controller("leaderboardCtrl", function($scope, $http) {
                     lbModules[moduleId].members = [];
                 }
                 
-                for(user of teamMembers){
+                for(let user of teamMembers){
                     if(user.moduleId===null){
                         user.moduleId = "none";
                     }
