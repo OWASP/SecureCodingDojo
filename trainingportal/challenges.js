@@ -36,7 +36,7 @@ loadModules = function(){
     let moduleDefs = require(path.join(__dirname, "static/lessons/modules.json"));
     let localModules = {}
     let moduleIds = Object.keys(moduleDefs);
-    for(moduleId of moduleIds){
+    for(let moduleId of moduleIds){
         let disabled = config.disabledModules;
         if(util.isNullOrUndefined(disabled) || !disabled.includes(moduleId)){
             localModules[moduleId] = moduleDefs[moduleId];
@@ -63,9 +63,9 @@ function init(){
     for(moduleId in modules){
         moduleDefinitions = getDefinifionsForModule(moduleId);
         var modulePath = getModulePath(moduleId);
-        for(level of moduleDefinitions){
+        for(let level of moduleDefinitions){
             challengeDefinitions.push(level);
-            for(challenge of level.challenges){
+            for(let challenge of level.challenges){
                 if(!util.isNullOrUndefined(challengeNames[challenge.id])){
                     throw new Error(`Duplicate challenge id: '${challenge.id}'!`);
                 }
@@ -100,9 +100,9 @@ exports.isPermittedModule = async (user, moduleId) => {
 
     let requiredModules = modules[moduleId].requiredModules;
 
-    for(moduleId of requiredModules){
+    for(let moduleId of requiredModules){
         found = false;
-        for(badge of badges){
+        for(let badge of badges){
             if(badge.moduleId === moduleId){
                 found = true;
                 break;
@@ -122,10 +122,10 @@ exports.getUserLevelForModule = async (user,moduleId) => {
     let moduleDefinitions = getDefinifionsForModule(moduleId);
     let passedChallenges =  await db.getPromise(db.fetchChallengeEntriesForUser,user);
     let userLevel=-1;
-    for(level of moduleDefinitions){
+    for(let level of moduleDefinitions){
         let passCount = 0;
-        for(chDef of level.challenges) {
-            for(passedCh of passedChallenges){
+        for(let chDef of level.challenges) {
+            for(let passedCh of passedChallenges){
                 if(chDef.id===passedCh.challengeId){
                     passCount++;
                 }
@@ -152,7 +152,7 @@ exports.getPermittedChallengesForUser = async (user, moduleId) => {
 
     var moduleDefinitions = getDefinifionsForModule(moduleId);
 
-    for(level of moduleDefinitions){
+    for(let level of moduleDefinitions){
         if (permittedLevel === level.level) {
             return level.challenges;
         }
@@ -177,9 +177,9 @@ exports.getChallengeDefinitionsForUser = async (user, moduleId) => {
     var modulePath = getModulePath(moduleId);
     var moduleDefinitions = getDefinifionsForModule(moduleId);
 
-    for(level of moduleDefinitions){
+    for(let level of moduleDefinitions){
         if (permittedLevel >= level.level) {
-            for(challenge of level.challenges) {
+            for(let challenge of level.challenges) {
                 //update the play link if it exists
                 if (!util.isNullOrUndefined(config.playLinks)) {
                     var playLink = config.playLinks[challenge.id];
@@ -255,7 +255,7 @@ exports.verifyModuleCompletion = async (user, moduleId) => {
         //training module complete
         let badges = await db.fetchBadges(user.id);
         let found = false;
-        for(badge of badges){
+        for(let badge of badges){
             if(badge.moduleId===moduleId){
                 found = true;
                 break;
@@ -357,7 +357,7 @@ module.exports.apiChallengeCode = async (req) => {
     var availableChallenges = await module.exports.getPermittedChallengesForUser(req.user, moduleId);
     
     //search for the current challenge id
-    for(availableChallenge of availableChallenges){
+    for(let availableChallenge of availableChallenges){
         if(challengeId === availableChallenge.id){
             curChallengeObj = availableChallenge;
             break;

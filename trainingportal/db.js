@@ -224,7 +224,7 @@ exports.init = function(){
           if(ver===4){
             //in version 4 badges were introduced, insert badges for all users that are level 7 and level 8
             let users = await con.queryPromise("SELECT * FROM users WHERE level > 6");
-            for(user of users){
+            for(let user of users){
               await exports.insertBadge(user.id, "blackBelt")
               if(user.level > 7){
                 await exports.insertBadge(user.id, "secondDegreeBlackBelt")

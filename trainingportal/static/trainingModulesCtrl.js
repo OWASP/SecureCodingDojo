@@ -11,7 +11,7 @@ app.controller("trainingModulesCtrl", function ($scope, $http) {
     $scope.isModuleEnabled = (moduleId)=>{
         if(!$scope.modules === null) return false;
         var trainingModule = $scope.modules[moduleId];
-        for(reqModuleId of trainingModule.requiredModules){
+        for(let reqModuleId of trainingModule.requiredModules){
             found = $scope.isModuleComplete(reqModuleId);
             if(!found){
                 return false;
@@ -21,7 +21,7 @@ app.controller("trainingModulesCtrl", function ($scope, $http) {
     }
     $scope.isModuleComplete = (moduleId)=>{
         if($scope.badges === null) return false;
-        for(badge of $scope.badges){
+        for(let badge of $scope.badges){
             if(moduleId === badge.moduleId){
                 return true;
             }

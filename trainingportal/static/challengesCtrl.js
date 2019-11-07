@@ -39,10 +39,10 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
                             $scope.challengesAvailable = true;
                         }
                         if(challenges!=null){
-                            for(ch of challenges){
+                            for(let ch of challenges){
                                 var passedChallenges = $scope.user.passedChallenges;
                                 if(passedChallenges!=null){
-                                    for(passedCh of passedChallenges){
+                                    for(let passedCh of passedChallenges){
                                         if(ch.id===passedCh.challengeId){
                                             ch.passed = true;
                                             break;
