@@ -59,6 +59,8 @@ A lecture recording using the provided presentation material can be found at the
 The Secure Coding Dojo runs from Docker containers. Students could easily deploy their own instance using docker-compose as described below. 
 Deploying a common permanent production instance of the Dojo requires a bit more setup with instructions available on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Deploying-with-Docker) .
 
+You may also find useful the AppSec DC 2019 presentation of the project: [AppSeC Presentation](https://github.com/trendmicro/SecureCodingDojo/tree/master/AppSecDC%20Secure%20Coding%20Dojo%20Presentation)
+
 Costs for a permanent deployment may vary from $30/m to more depending on the number of participants.
 
 ## Basic Setup
