@@ -6,10 +6,10 @@ The Secure Coding Dojo project was created to bring knowledge about software wea
 # Package Contents
 
 The following resources are being provided with the package:
-- Pre-requisites
+- Prerequisites
 - Suggested agenda and workshop structure
 - Presentation material
-- Recording of a lecture at University of Ottawa using the presentation material
+- Recording of a lecture at the University of Ottawa using the presentation material
 - Dojo deployment instructions
 
 # Pre-requisites
