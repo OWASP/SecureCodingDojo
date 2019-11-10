@@ -15,7 +15,7 @@ The following resources are being provided with the package:
 - Recording of a lecture at the University of Ottawa using the presentation material
 - Dojo deployment instructions
 
-# Pre-requisites
+# Prerequisites
 
 Students will be asked to bring the following:
 - Laptop with Internet access 
