@@ -3,6 +3,9 @@
 Bringing Software Security training to schools can have a huge impact on the security of future software. 
 The Secure Coding Dojo project was created to bring knowledge about software weaknesses and security best practices to classrooms of all sizes: from universities to large companies. This workshop package is intended to facilitate security advocates to deliver training sessions using the dojo.
 
+The workshop package is based on an event organized by the OWASP Ottawa Chapter and Secure that Cert at the University of Ottawa. Special thanks to the workshop organizers: Nancy Gariche, Garth Boyd, Miguel Garzon, Abdulwahaab Ahmed, Scott Kelly and Dave Petrasovic.
+
+
 # Package Contents
 
 The following resources are being provided with the package:
