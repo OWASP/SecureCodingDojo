@@ -8,7 +8,6 @@ async function exportUsers(){
     var result = [];
 
     let users = await conn.queryPromise("SELECT id,givenName,familyName,level,teamId FROM users");
-    let count = users.length;
         
     for(let user of users){
         let entries = await conn.queryPromise("SELECT challengeId FROM challengeEntries WHERE userId=?",[user.id]);

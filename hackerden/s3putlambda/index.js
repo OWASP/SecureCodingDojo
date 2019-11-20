@@ -16,8 +16,7 @@ exports.handler = function(event, context, callback) {
         //ignore put requests for self
         return context.succeed("self request");
     }
-    var curObject = null;
-    var messages = null;
+
     var challengeCodeUrl = null;
 
     var lambda = new AWS.Lambda();
@@ -97,7 +96,7 @@ exports.processS3Put = function(challengeCodeUrl, context, srcBucket, srcKey){
                         "type":"botMessage",
                         "date": new Date().toLocaleString(),
                         "message":"A new bot was added: "+curObject
-                    })
+                    });
                 }
             
                 //delete the message from S3 since it's been saved in the messages.json
