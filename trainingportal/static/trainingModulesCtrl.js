@@ -9,10 +9,10 @@ app.controller("trainingModulesCtrl", function ($scope, $http) {
     }
 
     $scope.isModuleEnabled = (moduleId)=>{
-        if(!$scope.modules === null) return false;
+        if($scope.modules === null) return false;
         var trainingModule = $scope.modules[moduleId];
         for(let reqModuleId of trainingModule.requiredModules){
-            found = $scope.isModuleComplete(reqModuleId);
+            let found = $scope.isModuleComplete(reqModuleId);
             if(!found){
                 return false;
             }

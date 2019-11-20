@@ -30,7 +30,7 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
                 var challengeDefinitions = response.data.challenges;
                 if(challengeDefinitions.length >= 1){
                     //update the challenge definitions to include the current user's passed challenges
-                    for(levelId in challengeDefinitions){
+                    for(let levelId in challengeDefinitions){
                         var level = challengeDefinitions[levelId];
                         $scope.levelNames[levelId] = level.name;
 

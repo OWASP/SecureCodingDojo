@@ -281,7 +281,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
         $scope.isProfileSaveError = false;
         $scope.isProfileSaveSuccess = false;
         $scope.profileSaveErrorMessage = "";
-        profileInfo = {};
+        var profileInfo = {};
         profileInfo.curPassword = currentPassword.value.trim();
         profileInfo.newPassword = newPassword.value.trim();
         

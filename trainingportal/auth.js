@@ -276,7 +276,7 @@ processAuthCallback = function (profileId, givenName, familyName, email, cb) {
         util.log("User logged in.", user);
         user.email = email;
         let modules = challenges.getModules();
-        for(moduleId in modules){
+        for(let moduleId in modules){
             let promise = challenges.verifyModuleCompletion(user, moduleId);
             promise.catch((err) => {
                 util.log("Error with badge verification.", user);

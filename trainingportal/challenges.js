@@ -60,8 +60,8 @@ function getDefinifionsForModule(moduleId){
  */
 function init(){   
     modules = Object.freeze(loadModules());
-    for(moduleId in modules){
-        moduleDefinitions = getDefinifionsForModule(moduleId);
+    for(let moduleId in modules){
+        let moduleDefinitions = getDefinifionsForModule(moduleId);
         var modulePath = getModulePath(moduleId);
         for(let level of moduleDefinitions){
             challengeDefinitions.push(level);
@@ -101,7 +101,7 @@ exports.isPermittedModule = async (user, moduleId) => {
     let requiredModules = modules[moduleId].requiredModules;
 
     for(let moduleId of requiredModules){
-        found = false;
+        let found = false;
         for(let badge of badges){
             if(badge.moduleId === moduleId){
                 found = true;
@@ -296,8 +296,7 @@ module.exports.badgrCall = function(badgrInfo, user){
               'Content-Length': Buffer.byteLength(postData),
               'Authorization':'Token '+token
           }
-        
-        }
+        };
         
         try
         {

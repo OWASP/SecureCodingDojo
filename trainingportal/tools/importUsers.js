@@ -21,7 +21,7 @@ async function importUsers(){
         console.log(`Please specify user id format ex:'SAML_%givenName%_%lastName%'`);
     }
     else{
-        users = require(path.join(__dirname,USER_DUMP));
+        let users = require(path.join(__dirname,USER_DUMP));
         for(let user of users){
             user.accountId = accountIdFormat.replace("%givenName%",user.givenName).replace("%familyName%",user.familyName);
 
