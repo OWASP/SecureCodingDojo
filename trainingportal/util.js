@@ -97,7 +97,7 @@ exports.isAlphanumericOrUnderscore = (string) => {
  * Util function to conver markdown to html
  */
 exports.parseMarkdown = (text) => {
-  html = markdown.toHTML(text);
+  let html = markdown.toHTML(text);
   //made code tag non bindable by angular
   html = html.replace(/<code/g,"<code ng-non-bindable ");
   return html

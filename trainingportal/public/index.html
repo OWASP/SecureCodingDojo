@@ -98,7 +98,7 @@ body {
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="oi oi-account-login"></span> Login </a>
           <ul class="dropdown-menu">
-            <li ng-repeat="prov in authProviders"><a class="dropdown-item" href="{{prov.url}}">{{prov.name}}</a></li>
+            <li ng-repeat="prov in authProviders"><a class="dropdown-item" ng-href="{{prov.url}}">{{prov.name}}</a></li>
           </ul>
       </li>
     </ul>

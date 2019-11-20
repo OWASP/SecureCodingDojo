@@ -30,7 +30,7 @@ exports.encrypt = function(cleardata, keySeed, ivSeed) {
     var encryptdata  = encipher.update(cleardata, 'utf8', 'binary');
 
     encryptdata += encipher.final('binary');
-    encode_encryptdata = Buffer.from(encryptdata, 'binary').toString('base64');
+    let encode_encryptdata = Buffer.from(encryptdata, 'binary').toString('base64');
     return encode_encryptdata;
 }
 

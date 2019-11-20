@@ -8,7 +8,7 @@ app.controller("leaderboardCtrl", function($scope, $http) {
             if(response !== null && response.data !== null){
                 let teamMembers = response.data;
                 let lbModules = $scope.lbModules;
-                for(moduleId in lbModules){
+                for(let moduleId in lbModules){
                     lbModules[moduleId].members = [];
                 }
                 
@@ -53,7 +53,7 @@ app.controller("leaderboardCtrl", function($scope, $http) {
             if(response !== null && response.data !== null){
                 $scope.teamStatList = response.data;
                 //preselect current user's team
-                for(index = 0; index < $scope.teamStatList.length; index++){
+                for(let index = 0; index < $scope.teamStatList.length; index++){
                     let team = $scope.teamStatList[index];
                     if(team.id === $scope.user.teamId){
                         $scope.teamListChoice = index;

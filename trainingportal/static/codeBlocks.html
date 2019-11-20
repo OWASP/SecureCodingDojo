@@ -4,7 +4,7 @@
           <div class="list-group list-group-flush">
                 <a class="list-group-item list-group-item-action"  ng-repeat="(id,block) in codeBlocks" 
                 ng-class="{ active: isCodeBlockActive(id) }" data-toggle="pill" data-target="#menu{{$index}}" 
-                href="#!codeBlocks/{{id}}">
+                ng-href="#!codeBlocks/{{id}}">
                     {{block.name}}
                 </a>
           </div>

@@ -315,7 +315,6 @@ app.post('/api/user/challengeCode', async (req,res) => {
         case "invalidModuleId":util.apiResponse(req, res, 400, "Invalid module id."); break;
         case "challengeNotAvailable":util.apiResponse(req, res, 404, "Challenge not found for the current user level"); break; 
         case "challengeSecretNotFound":util.apiResponse(req, res, 404, "Challenge secret not found."); break; 
-        case "invalidCode":util.apiResponse(req, res, 400, "Invalid code."); break; 
         case "codeSaveError":util.apiResponse(req, res, 500, "Unable to save code."); break;
         case "levelUpError":util.apiResponse(req, res, 500, "Unable to check level up. Please try again."); break;  
         default: util.apiResponse(req, res, 500, "Unknown error");

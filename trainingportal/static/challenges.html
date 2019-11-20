@@ -15,7 +15,7 @@
                         {{level.name}} : {{challenge.name}} 
                         <span class="oi oi-check float-right" ng-if="challenge.passed"></span>
                         <span class="float-right" ng-if="challenge.passed">&nbsp;</span>
-                        <a href="#!submitCode/{{moduleId}}/{{challenge.id}}" class="btn btn-info float-right btn-sm" ng-if="!challenge.passed" role="button"> Submit Code</a>
+                        <a ng-href="#!submitCode/{{moduleId}}/{{challenge.id}}" class="btn btn-info float-right btn-sm" ng-if="!challenge.passed" role="button"> Submit Code</a>
                         <span class="float-right" ng-if="!challenge.passed">&nbsp;</span>
                     </a>
                 </div>
@@ -29,7 +29,7 @@
                         <br/>
                         <h4>Code Blocks Associated with the Challenge</h4>
                         <ul>
-                            <li ng-repeat="codeBlockId in challenge.codeBlockIds"><a target="_blank" rel="noopener noreferrer" href="#!codeBlocks/{{codeBlockId}}">{{codeBlocks[codeBlockId].name}}</a></li>
+                            <li ng-repeat="codeBlockId in challenge.codeBlockIds"><a target="_blank" rel="noopener noreferrer" ng-href="#!codeBlocks/{{codeBlockId}}">{{codeBlocks[codeBlockId].name}}</a></li>
                         </ul>
                         </span>
                         
@@ -66,7 +66,7 @@
                         <p>
                             If you get stuck you can use the button below for help, but don't give up yet, read the challenge description and tips carefully.                            
                         </p>
-                        <a href="#!solution/{{challenge.id}}" class="btn btn-success btn-sm" role="button">View Solution</a>
+                        <a ng-href="#!solution/{{challenge.id}}" class="btn btn-success btn-sm" role="button">View Solution</a>
                         </span>
 
                     </div>

@@ -78,7 +78,7 @@ app.directive("highlightCode", ['$http','$anchorScroll', function($http, $anchor
 
     function highlightLine(html,lineNoToHighlight){
         let lines = html.split("\n");
-        lineno = 1;
+        let lineno = 1;
         html = "";
         for(let line of lines){
             if(lineno == lineNoToHighlight ){
@@ -106,7 +106,7 @@ app.directive("highlightCode", ['$http','$anchorScroll', function($http, $anchor
         .then(function(response) {
             if(response != null && response.data != null){
                 //init definitions
-                text = response.data;
+                let text = response.data;
                 text = replaceTags(text);
                 
                 if(scope.q && scope.q.lineToHighlight){
