@@ -116,7 +116,7 @@ app.directive("highlightCode", ['$http','$anchorScroll', function($http, $anchor
                 element.html(text);
 
                 for(let domEl of element){
-                    hljs.highlightBlock(element[0]);
+                    hljs.highlightBlock(domEl);
                 }
 
                 $anchorScroll();
