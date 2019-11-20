@@ -13,7 +13,7 @@
   "author": "Paul Ionescu",
   "license": "Apache-2.0",
   "dependencies": {
-    "angular": "^1.7.8",
+    "angular": "^1.7.9",
     "angular-route": "^1.7.8",
     "atob": "^2.1.2",
     "body-parser": "^1.19.0",
