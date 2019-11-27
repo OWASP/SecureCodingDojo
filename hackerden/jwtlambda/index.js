@@ -13,7 +13,6 @@ exports.foobarAuthorizer = function(event, context) {
   
   if(authToken && authToken.split(' ')[0] === 'Bearer') {
     var idToken = authToken.split(' ')[1];
-    var currentTime = Math.floor(Date.now() / 1000);
     jwt.verify(idToken, process.env.AUTHORIZER_SECRET, function(err, decoded) {
       if (err) {
         console.log('failed jwt verify: ', err, 'auth: ', idToken);
