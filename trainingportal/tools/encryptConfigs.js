@@ -31,6 +31,7 @@ if(!util.isNullOrUndefined(config.samlProviderPvkFilePath)){
 /**
  * Use this function to generate the properties for a local user
  */
+/*
 function genLocalUser(username, givenName, familyName, password){
     
     var saltString = crypto.randomBytes(16).toString('base64').toString();
@@ -42,3 +43,4 @@ function genLocalUser(username, givenName, familyName, password){
 
 //genLocalUser("organizer","Organizer","","<enter your password here>");//DELETE ME WHEN DONE
 
+*/
