@@ -16,7 +16,7 @@ app.controller("leaderboardCtrl", function($scope, $http) {
                     if(user.moduleId===null){
                         user.moduleId = "none";
                     }
-                    for(moduleId in lbModules){
+                    for(let moduleId in lbModules){
                         if(moduleId===user.moduleId){
                             lbModules[moduleId].members.push(user);
                         }

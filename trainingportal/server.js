@@ -31,6 +31,8 @@ const util = require(path.join(__dirname, 'util'));
 var config = util.getConfig();
 const challenges = require(path.join(__dirname, 'challenges'));
 const report = require(path.join(__dirname, 'report'));
+const mainHtml = fs.readFileSync(path.join(__dirname, 'static/main.html'),'utf8');
+
 
 //INIT
 app.use(bodyParser.urlencoded({extended:true}));
@@ -57,12 +59,13 @@ app.use('/public',express.static(path.join(__dirname, 'public')));
 
 
 app.use('/static', (req, res, next) => {
-    var result = req.url.match(/challengeDefinitions.json/)
+    var result = req.url.match(/challengeDefinitions.json/);
     if (result) {
-      return res.status(403).end('403 Forbidden')
+      return res.status(403).end('403 Forbidden');
     }
-  next()
-})
+  next();
+});
+
 app.use('/static',express.static(path.join(__dirname, 'static')));
 
 app.use(fileUpload({
@@ -178,7 +181,6 @@ app.get("/public/authFailure",(req,res) => {
 app.get('/logout', auth.logout);
 
 app.get('/main', (req, res) => {
-  var mainHtml = fs.readFileSync(path.join(__dirname, 'static/main.html'),'utf8');
   mainHtml = auth.addCsrfToken(req, mainHtml);
   res.send(mainHtml);
 });
@@ -348,7 +350,7 @@ var returnListWithChallengeNames = function(res,list){
     item.challengeName = challengeNames[item.challengeId];
   });
   res.send(list);
-}
+};
 
 //get the activity
 app.get('/api/activity',  (req, res) => {

@@ -57,7 +57,7 @@ exports.apiResponse = function(req, res, statusCode, message, result){
  * @param {*} val 
  */
 exports.isNullOrUndefined = function(val){
-  return val == null || typeof val === 'undefined';
+  return val === null || typeof val === 'undefined';
 }
 
 /**
