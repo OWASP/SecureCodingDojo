@@ -31,7 +31,7 @@ const util = require(path.join(__dirname, 'util'));
 var config = util.getConfig();
 const challenges = require(path.join(__dirname, 'challenges'));
 const report = require(path.join(__dirname, 'report'));
-const mainHtml = fs.readFileSync(path.join(__dirname, 'static/main.html'),'utf8');
+var mainHtml = fs.readFileSync(path.join(__dirname, 'static/main.html'),'utf8');
 
 
 //INIT
