@@ -1,5 +1,4 @@
 const path = require('path');
-const crypto = require('crypto');
 const aescrypto = require(path.join(__dirname, '../aescrypto'));
 const util = require(path.join(__dirname, '../util'));
 
@@ -32,6 +31,8 @@ if(!util.isNullOrUndefined(config.samlProviderPvkFilePath)){
  * Use this function to generate the properties for a local user
  */
 /*
+const crypto = require('crypto');
+
 function genLocalUser(username, givenName, familyName, password){
     
     var saltString = crypto.randomBytes(16).toString('base64').toString();
