@@ -37,7 +37,7 @@ var mainHtml = fs.readFileSync(path.join(__dirname, 'static/main.html'),'utf8');
 //INIT
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
-app.use(cookieParser());
+app.use(cookieParser()); //lgtm [js/missing-token-validation]
 app.use(auth.getSession());
 
 const passport = auth.getPassport();
