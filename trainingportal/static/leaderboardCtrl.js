@@ -23,7 +23,7 @@ app.controller("leaderboardCtrl", function($scope, $http) {
                     }
                 }
                 //calculate percentage of completion
-                for(moduleId in lbModules){
+                for(let moduleId in lbModules){
                     let m = lbModules[moduleId];
                     if(team.playerCount > 0){
                         m.percentageCompleted = Math.round(m.members.length/team.playerCount*100);
