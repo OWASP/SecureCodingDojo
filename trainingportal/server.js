@@ -181,8 +181,8 @@ app.get("/public/authFailure",(req,res) => {
 app.get('/logout', auth.logout);
 
 app.get('/main', (req, res) => {
-  mainHtml = auth.addCsrfToken(req, mainHtml);
-  res.send(mainHtml);
+  let updatedHtml = auth.addCsrfToken(req, mainHtml);
+  res.send(updatedHtml);
 });
 
 
