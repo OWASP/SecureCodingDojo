@@ -8,12 +8,12 @@
                 "questionId":"inputValidation.q1",
                 "language":"java",
                 "lineToHighlight":3,
-                "question":"Which of the following code snippets prevents a vulnerability?",
+                "question":"Which of the following code snippets contains a vulnerability?",
                 "snippets":[
                     "snipInputValidation1.java",
                     "snipInputValidation2.java"
                 ],
-                "answer":1,
+                "answer":0,
                 "correctReasoning":"You're right! The code sample is preventing a vulnerability by using input whitelisting.",
                 "incorrectReasoning": "Incorrect! While there is some validation, it is based on block-listing and will still allow command injection (ex. `rm -rf /`)."
             }
