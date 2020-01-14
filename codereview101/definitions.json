@@ -143,7 +143,7 @@
                 "questionId":"data.q2",
                 "lineToHighlight":2,
                 "language":"java",
-                "question":"Can you spot the code that transmits data securely and with no traces?",
+                "question":"Can you spot the code that transmits data securely?",
                 "snippets":[
                     "snipData3.java",
                     "snipData4.java"
