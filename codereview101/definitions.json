@@ -8,7 +8,7 @@
                 "questionId":"inputValidation.q1",
                 "language":"java",
                 "lineToHighlight":3,
-                "question":"Which of the following code snippets prevents a vulnerability?",
+                "question":"Which of the following code snippets does not contain a command injection vulnerability?",
                 "snippets":[
                     "snipInputValidation1.java",
                     "snipInputValidation2.java"
