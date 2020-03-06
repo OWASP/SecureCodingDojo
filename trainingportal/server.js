@@ -296,7 +296,7 @@ app.post('/api/user/team',  (req, res) => {
         util.apiResponse(req, res, 200, "Team does not exist. Refresh your page.");
       }
 
-   })
+   });
    
 });
 
@@ -330,7 +330,7 @@ app.post('/api/user/challengeCode', async (req,res) => {
 app.get('/api/teams',  (req, res) => {
    db.fetchTeams(null,function(teamList){
      res.send(teamList);
-   })
+   });
 });
 
 //get the team members
@@ -398,9 +398,9 @@ app.get('/api/teamStats',async (req, res) => {
     return util.apiResponse(req, res, 400, "Invalid value for limit."); 
   }
   else{
-    limit = parseInt(limit, 10)
+    limit = parseInt(limit, 10);
   }
-  let stats = await db.getTeamStats(limit)
+  let stats = await db.getTeamStats(limit);
   res.send(stats);
 });
 
@@ -408,7 +408,7 @@ app.get('/api/teamStats',async (req, res) => {
 app.get('/api/users',  (req, res) => {
    db.fetchUsers(null, function(users){
      res.send(users);
-   })
+   });
 });
 
 
