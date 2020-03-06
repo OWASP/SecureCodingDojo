@@ -143,14 +143,14 @@
                 "questionId":"data.q2",
                 "lineToHighlight":2,
                 "language":"java",
-                "question":"Can you spot the code that transmits data securely??",
+                "question":"Can you spot the code that transmits data securely?",
                 "snippets":[
                     "snipData3.java",
                     "snipData4.java"
                 ],
                 "answer":0,
-                "correctReasoning":"You're right! The code sample uses a 'https://' url to transmit data.",
-                "incorrectReasoning": "Incorrect! The code is sending a user name and a password via a 'http://' url."
+                "correctReasoning":"You're right! The code uses TLS 'https://' and sends data using POST, which doesn't store the parameters in web logs.",
+                "incorrectReasoning": "Incorrect! The code is sending a user name and a password via a 'http://' url and risks of storing the credentials in web logs."
             },
 
             {
