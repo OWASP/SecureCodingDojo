@@ -74,7 +74,7 @@ exports.log = function(message,user,req){
   var finalMessage = new Date().toString()+" - ";
 
   if(!exports.isNullOrUndefined(user) && !exports.isNullOrUndefined(user.givenName) && !exports.isNullOrUndefined(user.familyName)){
-    finalMessage+=user.givenName+" "+user.familyName+" - ";
+    finalMessage+=`${user.givenName} ${user.familyName} (id: ${user.id}), `;
   }
   
   finalMessage += message;
