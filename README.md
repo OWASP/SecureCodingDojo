@@ -55,6 +55,28 @@ Insecure.Inc
 - Developed in Java EE
 - Eclipse Java EE latest version (developed with Neon) + Java 1.8 + tomcat 8 for the Insecure.Inc training app
 
+# Development Environment Setup Instructions
+Training portal 
+- More details on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Development-Setup-for-Training-Portal)
+
+Insecure.inc 
+- More details on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Development-Setup-for-Insecure.Inc)
+
+# Building
+Training portal
+- Run the ./buildTrainingPortal.sh script. It will build a docker image and a AWS Elastic Beanstalk package
+
+Insecure.Inc 
+- Right click on the project to export as a .war file and drop it into the /webapps folder of your Tomcat 8 installation.
+
+
+# Hosting Insecure.Inc
+
+Check out the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Running-Insecure.Inc).
+
+# Deploying the Training Portal 
+
+More info on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Running-the-training-portal).
 
 # Slack Setup Instructions
 You will need to create a Slack app for authentication.
@@ -94,39 +116,6 @@ The following is to prevent participants from generating their own challenge cod
 
     export CHALLENGE_MASTER_SALT="put something random here"
 
-
-# Environment Setup Instructions
-Training portal
-- Change directory to ./trainingportal
-- Run npm install (to download all necessary dependencies)
-- Open VSCode and open the repository directory
-- To download all the required node packages change directory to  ./trainingportal and run npm install
-- Copy ./trainingportal/config.json.sample to ./trainingportal/config.json
-- Open ./trainingportal/server.js and debug it in VSCode (at the first run the DB tables will get created)
-- The trainingportal server will be running on http://localhost:8081/ 
-- Run tests with `npm test`
-
-Insecure.Inc
-- Add a Tomcat 8.0 server you have installed to your Eclipse > Servers view
-- Import the insecureinc project into your Workspace (Import > Import > Existing Projects into Workspace)
-- Debug on server
-- The Insecure.Inc website will be running on http://localhost:8080/InsecureInc
-
-# Building
-Training portal
-- N/A
-
-Insecure.Inc 
-- Right click on the project to export as a .war file and drop it into the /webapps folder of your Tomcat 8 installation.
-
-
-# Hosting Insecure.Inc
-
-Check out the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Running-Insecure.Inc).
-
-# Deploying the Training Portal 
-
-More info on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Running-the-training-portal).
 
 # Extending the Secure Coding Dojo
 You can add new lessons by following the model of existing ones.
