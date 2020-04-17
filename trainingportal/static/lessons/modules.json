@@ -17,5 +17,17 @@
         "summary":"Cloud software exploitation techniques",
         "description":"Have some fun with this Capture the Flag module which is based on OWASP Top 10 (v2017). Your goal is to take down the cloud applications used in a worldwide malware campaign.",
         "requiredModules":["blackBelt"]
+    },
+    "redTeam":{
+        "name":"Red Team",
+        "summary":"Pen-testing tools and techniques",
+        "description":"Exploit vulnerabilities and perform lateral movement on a cloud container application.",
+        "requiredModules":["blackBelt"]
+    },
+    "blueTeam":{
+        "name":"Blue Team",
+        "summary":"Security controls and security engineering techniques",
+        "description":"Apply security controls to defend against common vulnerabilities and identify sensitive data in production applications.",
+        "requiredModules":["blackBelt"]
     }
 }
