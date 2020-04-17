@@ -1,0 +1,27 @@
+[
+    {
+        "level":0,
+        "name":"Red Team",
+        "challenges":[
+            {
+                "id":"red_ch1",
+                "playLink":"<Company specific target host to be provided>",
+                "name":"Scanning, Enumeration and Exploitation of CVEs",
+                "description": "red_ch1.md",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"red_ch2",
+                "name":"Scanning for Web Application Vulnerabilities", 
+                "description": "red_ch2.md",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"red_ch3",
+                "name":"Lateral Movement to Other Systems", 
+                "description": "red_ch3.md",
+                "codeBlockIds":[]
+            }
+        ]
+    }
+]

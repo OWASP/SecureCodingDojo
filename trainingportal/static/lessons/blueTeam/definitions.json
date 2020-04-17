@@ -1,0 +1,27 @@
+[
+    {
+        "level":0,
+        "name":"Blue Team",
+        "challenges":[
+            {
+                "id":"blue_ch1",
+                "playLink":"_Company_specific_link_",
+                "name":"Deploying Security Controls and Protecting Against Known CVEs",
+                "description": "blue_ch1.md",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"blue_ch2",
+                "name":"Defending Against Web Application Flaws", 
+                "description": "blue_ch2.md",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"blue_ch3",
+                "name":"Identifying Sensitive Information in Deployed Applications", 
+                "description": "blue_ch3.md",
+                "codeBlockIds":[]
+            }
+        ]
+    }
+]
