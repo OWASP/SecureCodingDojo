@@ -10,10 +10,6 @@ async function waitForInsertUser(){
     await insertUserPromise;
 }
 
-async function runDbInit(){
-    await db.getPromise(db.init);
-}
-runDbInit();
 
 describe('db', function() {
     before(async() => {

@@ -20,14 +20,13 @@ const crypto = require('crypto');
 
 const db = require('../db');
 const util = require('../util');
-const aescrypto = require('../aescrypto');
 var challenges = require('../challenges');
 var badgrCount = 0;
 
 //mock the badgr call
 challenges.badgrCall = function(badgrInfo, user){
     badgrCount++;    
-}
+};
 
 //mock request and response express objects
 var lastChallengeId = "cwe862";
@@ -56,13 +55,14 @@ var mockRequest = {
         "familyName":"MockFamilyName",
         "codeSalt":mockSalt
     }
-}
+};
 
 var mockResponse = {
     "send":function(data){
         console.log(`Response sent:${data}`);
     }
-}
+};
+
 
 
 describe('challengeTests', function() {
@@ -124,7 +124,7 @@ describe('challengeTests', function() {
             await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
             await db.getConn().queryPromise("DELETE FROM badges WHERE userId=?",[user.id]);
             return db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId=?",[user.id]);
-        })
+        });
     });
 
     describe('#getUserLevelForModule()', async () => {
@@ -153,7 +153,7 @@ describe('challengeTests', function() {
             //cleanup
             await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
             return db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId=?",[user.id]);
-        })
+        });
     });
 
 
@@ -177,7 +177,7 @@ describe('challengeTests', function() {
             catch(err){
                 assert.notEqual(err,null,"Error is null");
                 assert.equal(err.message,"invalidRequest","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok")});
+                promise = new Promise((resolve)=>{resolve("ok");});
             }
             return promise;
         });
@@ -190,7 +190,7 @@ describe('challengeTests', function() {
             catch(err){
                 assert.notEqual(err,null,"Error is null");
                 assert.equal(err.message,"invalidCode","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok")});
+                promise = new Promise((resolve)=>{resolve("ok");});
             }
             return promise;
         });
@@ -203,7 +203,7 @@ describe('challengeTests', function() {
             catch(err){
                 assert.notEqual(err,null,"Error is null");
                 assert.equal(err.message,"invalidChallengeId","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok")});
+                promise = new Promise((resolve)=>{resolve("ok");});
             }
             return promise;
 
@@ -217,7 +217,7 @@ describe('challengeTests', function() {
             catch(err){
                 assert.notEqual(err,null,"Error is null");
                 assert.equal(err.message,"invalidModuleId","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok")});
+                promise = new Promise((resolve)=>{resolve("ok");});
             }
             return promise;
         });
@@ -239,7 +239,7 @@ describe('challengeTests', function() {
             catch(err){
                 assert.notEqual(err,null,"Error is null");
                 assert.equal(err.message,"challengeNotAvailable","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok")});
+                promise = new Promise((resolve)=>{resolve("ok");});
 
             }
             return promise;
@@ -263,7 +263,7 @@ describe('challengeTests', function() {
             catch(err){
                 assert.notEqual(err,null,"Error is null");
                 assert.equal(err.message,"challengeNotAvailable","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok")});
+                promise = new Promise((resolve)=>{resolve("ok");});
             }
             return promise;    
         });
@@ -286,7 +286,7 @@ describe('challengeTests', function() {
             catch(err){
                 assert.notEqual(err,null,"Error is null");
                 assert.equal(err.message,"invalidCode","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok")});
+                promise = new Promise((resolve)=>{resolve("ok");});
             }
             return promise;      
         });
@@ -308,7 +308,7 @@ describe('challengeTests', function() {
             //cleanup
             await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
             return db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId=?",[user.id]);
-        })
+        });
     });
 
     after(async () =>{
