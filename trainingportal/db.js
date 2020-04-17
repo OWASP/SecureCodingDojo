@@ -30,7 +30,7 @@ else {
     user: config.dbUser,
     password: aesCrypto.decrypt(config.encDbPass),
     multipleStatements:true
-  }
+  };
 }
 
 class Connection{
@@ -84,13 +84,28 @@ class Connection{
 
 
 
-  exec(sql, callback){
-    if(MYSQL_CONFIG!==null){
-      this.conPool.query(sql,callback);
-    }
-    else{
-      liteDB.exec(sql,callback);
-    }
+  exec(sql){
+    let promise = new Promise((resolve,reject) => {
+      var callback = (err,result) => {
+        if(err){
+          reject(err);
+        }
+        else{
+          resolve(result);
+        }
+      };
+
+      if(MYSQL_CONFIG!==null){
+        this.conPool.query(sql,callback);
+      }
+      else{
+        liteDB.exec(sql,callback);
+      }
+
+    });
+
+    return promise;
+    
   }
 
   end(){
@@ -147,9 +162,9 @@ exports.getPromise = function(dbFunc, params){
       }
     });
   return promise;
-}
+};
 
-exports.init = function(){
+exports.init = async () => {
   var con = getConn();
   var sql = "";
   var dbSetup = "";
@@ -161,83 +176,73 @@ exports.init = function(){
     sql = "SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name = 'users'";
     dbSetup = "sql/dbsetup.sqlite.sql";
   }
-  con.query(sql, async (err, result) => {
+  let result = await con.queryPromise(sql);
+  var setupNeeded = (MYSQL_CONFIG === null && result.length>0 && result[0].count===0) || (MYSQL_CONFIG !== null && err !== null);
 
-    var setupNeeded = (MYSQL_CONFIG === null && result.length>0 && result[0].count===0) || (MYSQL_CONFIG !== null && err !== null);
 
-    if (setupNeeded){
-      //there's no user table
-      
-      var setupScript = fs.readFileSync(path.join(__dirname, dbSetup), 'utf8');
-      con.exec(setupScript, function(err,result){
-        if(err){
-          util.log("Database setup failed");
-          console.log(err);
+  if (setupNeeded){
+    //there's no user table
+    var setupScript = fs.readFileSync(path.join(__dirname, dbSetup), 'utf8');
+    try {
+      await con.exec(setupScript);
+      util.log("Database tables created");
+    } catch (error) {
+      util.log("Database setup failed");
+      console.log(err);
+    }
+    
+  }
+  else { //run db maintenance scripts
+    util.log("Database tables exist.");
+    //check db version
+    let version = null;
+    try
+    {
+      version = await exports.getPromise(exports.getVersion);
+    }
+    catch(err){
+      console.log(err);
+    }
+
+    if(util.isNullOrUndefined(version)) version = 2; //started versioning from 3
+
+    if(version < SCHEMA_VERSION){
+        
+      //run the scripts for each missing version
+      for(let ver = version+1; ver <= SCHEMA_VERSION; ver++){
+        var maintenanceFilePath = "sql/dbupgrade.v"+ver;
+        if(MYSQL_CONFIG!==null){
+          maintenanceFilePath+=".mysql.sql";
         }
         else{
-          util.log("Database tables created");
+          maintenanceFilePath+=".sqlite.sql";
         }
-      });
-    }
-    else { //run db maintenance scripts
-      util.log("Database tables exist.");
-      //check db version
-      let version = null;
-      try
-      {
-        version = await exports.getPromise(exports.getVersion);
-      }
-      catch(err){
-        console.log(err);
-      }
+        var maintenanceScript = fs.readFileSync(path.join(__dirname, maintenanceFilePath), 'utf8');
+        util.log(`Running database upgrade script '${maintenanceFilePath}'`);
+        try {
+          await con.exec(maintenanceScript);
+          util.log("Database upgrade completed");
+        } catch (error) {
+          util.log("Database upgrade failed");
+          console.log(error);
+        }
 
-      if(util.isNullOrUndefined(version)) version = 2; //started versioning from 3
-
-      if(version < SCHEMA_VERSION){
-        
-        //run the scripts for each missing version
-        for(let ver = version+1; ver <= SCHEMA_VERSION; ver++){
-          var maintenanceFilePath = "sql/dbupgrade.v"+ver;
-          if(MYSQL_CONFIG!==null){
-            maintenanceFilePath+=".mysql.sql";
-          }
-          else{
-            maintenanceFilePath+=".sqlite.sql";
-          }
-          var maintenanceScript = fs.readFileSync(path.join(__dirname, maintenanceFilePath), 'utf8');
-          util.log(`Running database upgrade script '${maintenanceFilePath}'`);
-
-          await new Promise((resolve,reject) => {
-            con.exec(maintenanceScript, function(err,result){
-              if(err){
-                util.log("Database upgrade failed");
-                console.log(err);
-                reject(err);
-              }
-              else{
-                util.log("Database upgrade completed");
-                resolve(result);
-              }
-            });
-          });
-
-          if(ver===4){
-            //in version 4 badges were introduced, insert badges for all users that are level 7 and level 8
-            let users = await con.queryPromise("SELECT * FROM users WHERE level > 6");
-            for(let user of users){
-              await exports.insertBadge(user.id, "blackBelt")
-              if(user.level > 7){
-                await exports.insertBadge(user.id, "secondDegreeBlackBelt")
-              }
+       
+        if(ver===4){
+          //in version 4 badges were introduced, insert badges for all users that are level 7 and level 8
+          let users = await con.queryPromise("SELECT * FROM users WHERE level > 6");
+          for(let user of users){
+            await exports.insertBadge(user.id, "blackBelt");
+            if(user.level > 7){
+              await exports.insertBadge(user.id, "secondDegreeBlackBelt");
             }
-            console.log("Badges created for all users");
           }
-          
+          console.log("Badges created for all users");
         }
       }
     }
-  });
-}
+  }
+};
 
 
 //Creates a user in the database
@@ -248,7 +253,7 @@ exports.insertUser = function(user,errCb,doneCb){
     if (err) handleErr(errCb,err);
     else handleDone(doneCb,result);
   });
-}
+};
 
 //gets the database schema version
 exports.getVersion = function(errCb,doneCb){
@@ -262,7 +267,7 @@ exports.getVersion = function(errCb,doneCb){
       else handleDone(doneCb, null);
     }
   });
-}
+};
 
 //fetches a user from the database
 exports.getUser = function(accountId,errCb,doneCb){
@@ -276,8 +281,15 @@ exports.getUser = function(accountId,errCb,doneCb){
       else handleDone(doneCb, null);
     }
   });
-}
+};
 
+//fetches a user from the database by id
+exports.getUserById = async (userId) => {
+  var con = getConn();
+  var sql = "SELECT * FROM users WHERE id = ? ";
+  let user = await con.queryPromise(sql,[userId]);
+  return user;
+};
 
 //deletes a user from the database
 exports.deleteUser = function(accountId,errCb,doneCb){
@@ -287,7 +299,7 @@ exports.deleteUser = function(accountId,errCb,doneCb){
     if(err) handleErr(errCb,err);
     else handleDone(doneCb,result);
   });
-}
+};
 
 //updates the properties of a user in the database
 exports.updateUser = function(user,errCb,doneCb){
@@ -298,7 +310,7 @@ exports.updateUser = function(user,errCb,doneCb){
     else handleDone(doneCb,result);
       
   });
-}
+};
 
 //fetches the list of users from the database only with public info
 exports.fetchUsers = function(errCb,doneCb){
@@ -310,7 +322,7 @@ exports.fetchUsers = function(errCb,doneCb){
         handleDone(doneCb,result);
     }
   });
-}
+};
 
 //Creates a team in the database
 exports.insertTeam = function(user,team,errCb,doneCb){
@@ -352,7 +364,7 @@ exports.insertTeam = function(user,team,errCb,doneCb){
     util.log('Failed to insert team');
     handleErr(errCb,err);
   });
-}
+};
 
 
 //fetches the list of teams from the database
@@ -365,7 +377,7 @@ exports.fetchTeams = function(errCb,doneCb){
         handleDone(doneCb,result);
     }
   });
-}
+};
 
 //fetches a team and its members from the database by its name (unique)
 exports.getTeamWithMembersByName = function(name,errCb,doneCb){
@@ -389,7 +401,7 @@ exports.getTeamWithMembersByName = function(name,errCb,doneCb){
       else handleDone(doneCb,null);
     }
   });
-}
+};
 
 //fetches a team from the database by id
 exports.getTeamById = function(id,errCb,doneCb){
@@ -404,7 +416,7 @@ exports.getTeamById = function(id,errCb,doneCb){
       else handleDone(doneCb,null);
     }
   });
-}
+};
 
 //updates the properties of a team in the database
 exports.updateTeam = function(user, team, errCb,doneCb){
@@ -415,7 +427,7 @@ exports.updateTeam = function(user, team, errCb,doneCb){
     else handleDone(doneCb,result);
       
   });
-}
+};
 
 //deletes a team from the database
 exports.deleteTeam = function(user,teamId,errCb,doneCb){
@@ -433,7 +445,7 @@ exports.deleteTeam = function(user,teamId,errCb,doneCb){
     }
     
   });
-}
+};
 
 /**
  * Gets a team members with completed modules
@@ -449,7 +461,7 @@ exports.getTeamMembersByBadges = async (teamId) => {
   sql+=" order by badges.moduleId, users.givenName, users.familyName";
   let result = await con.queryPromise(sql,args);
   return result;
-}
+};
 
 /**
  * Gets a list of users for a module id
@@ -460,7 +472,7 @@ exports.getAllUsersForBadge = async (moduleId) => {
   " order by badges.moduleId, users.givenName, users.familyName";
   let result = await con.queryPromise(sql,[moduleId]);
   return result;
-}
+};
 
 //Creates a user in the database
 exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
@@ -477,7 +489,7 @@ exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
       });
     }
   });
-}
+};
 
 /**
  * Inserts a badge for a completed training module
@@ -491,7 +503,7 @@ exports.insertBadge = async (userId, moduleId) => {
   var timeStamp = Date().toString();
   sql = "INSERT INTO badges (id, userId, moduleId, timestamp) VALUES (null, ?, ?, ?)";
   await con.queryPromise(sql,[userId, moduleId, timeStamp]);
-}
+};
 
 
 /**
@@ -503,7 +515,7 @@ exports.fetchBadges = async (userId) => {
   let sql = "SELECT * FROM badges WHERE userId = ?"; 
   let result = await con.queryPromise(sql,[userId]);
   return result;
-}
+};
 
 //fetches the list of teams from the database
 exports.fetchChallengeEntriesForUser = function(user,errCb,doneCb){
@@ -515,7 +527,7 @@ exports.fetchChallengeEntriesForUser = function(user,errCb,doneCb){
         handleDone(doneCb,result);
     }
   });
-}
+};
 
 
 
@@ -550,7 +562,7 @@ exports.fetchActivity = function(query,limit,errCb,doneCb){
       handleDone(doneCb,result);
     }
   });
-}
+};
 /**
  * Fetches the challenge stats
  * @param {*} errCb 
@@ -566,7 +578,7 @@ exports.getChallengeStats = function(errCb,doneCb){
       handleDone(doneCb,result);
     }
   });
-}
+};
 
 /**
  * Players by module id
@@ -579,7 +591,7 @@ exports.getModuleStats = async () => {
   var args = [];
   
   return con.queryPromise(sql, args);
-}
+};
 
 /**
  * Players by team
@@ -598,7 +610,7 @@ exports.getTeamStats= async (limit) => {
   
   return await con.queryPromise(sql, args);
   
-}
+};
 
 
 

@@ -160,7 +160,19 @@ exports.registerLocalUser = function(req,res){
 
     exports.createUpdateUser(req, res, username, localUser, password);
     
-}
+};
+
+
+exports.createUpdateUserInternal = (username, localUser, password) => {
+  //create user
+  localUser.passSalt = crypto.randomBytes(16).toString('base64').toString();
+  localUser.passHash = util.hashPassword(password,localUser.passSalt);
+
+  localUsers[username] = localUser;
+  //save to disk
+  var json = JSON.stringify(localUsers, null, "\t");
+  fs.writeFileSync(localUsersPath, json, 'utf8');
+};
 
 exports.createUpdateUser = function(req, res, username, localUser, password){
     
@@ -170,17 +182,11 @@ exports.createUpdateUser = function(req, res, username, localUser, password){
     if(!isStrongPass){
         return util.apiResponse(req, res, 400, "Select a password that is made up from three or more words (16 or more characters)");
     }
-    //create user
-    localUser.passSalt = crypto.randomBytes(16).toString('base64').toString();
-    localUser.passHash = util.hashPassword(password,localUser.passSalt);
 
-    localUsers[username] = localUser;
-    //save to disk
-    var json = JSON.stringify(localUsers, null, "\t");
-    fs.writeFileSync(localUsersPath, json, 'utf8');
-
+    exports.createUpdateUserInternal(username, localUser, password);
+  
     return util.apiResponse(req, res, 200, "User created/modified.");
-}
+};
 
 
 exports.verifyLocalUserPassword = function(username,password){
