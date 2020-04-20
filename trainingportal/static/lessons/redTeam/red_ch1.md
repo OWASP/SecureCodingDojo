@@ -10,9 +10,7 @@ Here are instructions on how to get your pen-tester environment setup:
 - Find the flag program in the current directory and use it to sign the challenge salt: `./flag <SALT>`
 
 ##### Nmap
-Install nmap. You can use a unofficial docker image or install it directly on your VM: 
-
-`docker pull securecodebox/nmap`
+Install nmap.
 
 For Debian/Ubuntu:
 
@@ -23,6 +21,20 @@ For RedHat/CentOS:
 `rpm -vhU https://nmap.org/dist/nmap-7.80-1.x86_64.rpm`
 
 Once nmap is installed you can scan the target host with `nmap <target_host> -Pn -p-`
+
+Other useful parameters are listed below:
+
+* `-p` {PORT_NUMBERS}: Scan ports of the target. It can be a single port number or
+a range of ports.
+* `-PS`, `-PA`, `-PU` {PORT_NUMBERS}: Replace it with the ports to scan. TCP SYN/ACK or 
+UDP discovery.
+* `-sV`: Determine service and version info.
+* `-O`: Determine OS info. 
+* `-A`: Determine service/version and OS info.
+* `-script` {SCRIPT_NAME}: Start the scan with the given script.
+* `--script` {SCRIPT_LIST}: Start the scan with the given scripts.
+
+For a detailed list of all parameters availible please refer to the [Nmap Reference Guide](https://nmap.org/book/man.html).
 
 ##### Metasploit
 If you have Docker installed you can simply run the metasploit container image. Here's how to do it:
@@ -60,3 +72,5 @@ This may fail in some cases, if it fails once reset the LHOST and run again
 `run`
 
 You should be able to get shell at this point and run commands in the container. Can you get the flag? Good luck!
+
+If you want to learn more about Metasploit, please check out this free course from Offensive Security: [Metasploit Unleashed](https://www.offensive-security.com/metasploit-unleashed/)
