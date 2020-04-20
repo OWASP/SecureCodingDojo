@@ -9,7 +9,7 @@ Here are instructions on how to get your pen-tester environment setup:
 - Execute commands remotely
 - Find the flag program in the current directory and use it to sign the challenge salt: `./flag <SALT>`
 
-##### Nmap
+#### Nmap
 Install nmap.
 
 For Debian/Ubuntu:
@@ -36,7 +36,7 @@ UDP discovery.
 
 For a detailed list of all parameters availible please refer to the [Nmap Reference Guide](https://nmap.org/book/man.html).
 
-##### Metasploit
+#### Metasploit
 If you have Docker installed you can simply run the metasploit container image. Here's how to do it:
 
 Pull metasploit docker image from DockerHub
@@ -75,7 +75,7 @@ You should be able to get shell at this point and run commands in the container.
 
 If you want to learn more about Metasploit, please check out this free course from Offensive Security: [Metasploit Unleashed](https://www.offensive-security.com/metasploit-unleashed/)
 
-##### Exploit Script
+#### Exploit Script
 
 Before being ported to Metasploit for easy usage, exploits are usually released in the wild, in an ad-hoc way. Hackers can also take advantage of those to carry out their attacks. 
 
