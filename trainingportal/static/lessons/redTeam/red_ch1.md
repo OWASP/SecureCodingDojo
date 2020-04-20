@@ -90,6 +90,7 @@ First, you need to clone the repository into your attacker's machine:
 Go to the project folder and install the library dependencies:
 
 `cd Drupalgeddon2`
+
 `sudo gem install highline`
 
 You should be able to excute the exploit like so:
