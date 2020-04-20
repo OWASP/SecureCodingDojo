@@ -14,11 +14,11 @@ Install nmap. You can use a unofficial docker image or install it directly on yo
 
 `docker pull securecodebox/nmap`
 
-OR for Debian/Ubuntu:
+For Debian/Ubuntu:
 
 `apt-get install nmap`
  
-OR for RedHat/CentOS:
+For RedHat/CentOS:
 
 `rpm -vhU https://nmap.org/dist/nmap-7.80-1.x86_64.rpm`
 
