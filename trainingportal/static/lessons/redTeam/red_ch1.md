@@ -18,7 +18,7 @@ For Debian/Ubuntu:
  
 For RedHat/CentOS:
 
-`rpm -vhU https://nmap.org/dist/nmap-7.80-1.x86_64.rpm`
+`sudo yum install nmap`
 
 Once nmap is installed you can scan the target host with `nmap <target_host> -Pn -p-`
 
@@ -37,7 +37,9 @@ UDP discovery.
 For a detailed list of all parameters availible please refer to the [Nmap Reference Guide](https://nmap.org/book/man.html).
 
 #### Metasploit
-If you have Docker installed you can simply run the metasploit container image. Here's how to do it:
+If you have Docker installed you can simply run the metasploit container image. Metasploit should be installed on a EC2 that is internet accessible to allow for the meterpreter to run. 
+
+Here's how to do it:
 
 Pull metasploit docker image from DockerHub
 
