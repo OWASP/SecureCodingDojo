@@ -27,7 +27,7 @@
     "express-fileupload": "^1.1.6",
     "express-session": "^1.17.0",
     "highlightjs": "^9.16.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "markdown": "^0.5.0",
     "mysql2": "^1.7.0",
     "node-pre-gyp": "^0.13.0",
