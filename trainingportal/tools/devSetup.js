@@ -7,15 +7,19 @@ async function setup(){
     try {
         util.log("Initializing database");
         await db.init();
+        
 
         util.log("Registering local user 'dojouser' with password: 'SecureCodingDojo'");
+        //cleanup the account if it exists
+        await db.getConn().queryPromise("DELETE FROM users WHERE accountId = 'Local_dojouser'");
+        //create the dev account
         let dojoUserInfo = {accountId:"Local_dojouser",familyName:"User", givenName:"Dojo"};
         await db.getPromise(db.insertUser, dojoUserInfo);
         auth.createUpdateUserInternal("dojouser", dojoUserInfo, "SecureCodingDojo");
 
         util.log("Unlocking all challenges for 'dojouser'");
         let user = await db.getPromise(db.getUser,"Local_dojouser");
-        challengeUtil.passChallenges("blackBelt",user.id);
+        await challengeUtil.passChallenges("blackBelt",user);
 
     } catch (error) {
         console.error(error);
