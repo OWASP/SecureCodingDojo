@@ -60,8 +60,11 @@ Select the exploit you are going to use from the search results:
 Set the host and port for the attacker's and victim's machine
 
 `set RHOSTS <host>`
+
 `set RPORT <port>`
+
 `set LHOST <remote IP of Metasploit machine>`
+
 `set LPORT 4444`
 
 Run the exploit!
