@@ -33,7 +33,7 @@ If the website analytics database is breached and the only thing obtained by the
 
 Hashing can be an effective way to secure the data, but what if the attacker is able to intercept the data before it is transformed? What if they can intercept the data even before it reaches the application?
 
-When a website uses clear text to communicate with its users, _man-in-the-middle_ attacks are possible. These attacks are can be online or offline attacks. Offline attacks usually target the Confidentiality of the data, for example tracking a user’s activity online or stealing their credentials. Online attacks can also impact the Integrity of the data, like for example replacing the content of a trusted news outlet with malware.
+When a website uses clear text to communicate with its users, _man-in-the-middle_ attacks are possible. These attacks can be online or offline attacks. Offline attacks usually target the Confidentiality of the data, for example tracking a user’s activity online or stealing their credentials. Online attacks can also impact the Integrity of the data, like for example replacing the content of a trusted news outlet with malware.
 
 Communication security protocols, indicated by `https://` URLs, prevent man-in-the-middle attacks by encrypting the transmission and verifying the identity of the two parties involved in the communication. There are many details to transmission security but one aspect that may come up during a code review is ensuring that `https://` URLs are used.
 
