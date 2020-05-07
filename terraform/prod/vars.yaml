@@ -1,0 +1,26 @@
+# *m* = Mandatory. Also these need to be defined as local vars without the lookup function in the terragrunt hcl file
+# *p* = If defined, takes precedence over the corresponding global var
+# *sm* - Mandatory and populated from the secretsmanager during buildtime.
+# See eks terragrunt hcl file for more info
+global: # *m*
+  region: us-east-2 # *m*
+  environment: prod # *m*
+  awsAccountId: # *sm*
+  vpc: # *sm*
+  subnetIds: # *sm*
+    public: # *sm*
+    private:
+    privateWithInternet:
+  certArn: # *sm*
+  tags: # *m*
+    ManagedBy: Terragrunt # *m*
+rootAlb:
+  namePrefix: SCDRoot # *m*
+  s3BucketPrefix: logs-lb # *m*
+  deletionProtection: true
+  route53:
+    enabled: true
+    aliases:
+    - .
+    - www
+    parentZoneName: # *sm*
