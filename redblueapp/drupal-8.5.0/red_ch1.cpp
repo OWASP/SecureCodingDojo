@@ -27,13 +27,13 @@ int main(int argc, char *argv[]) {
     char* master_salt = getenv("MASTER_SALT");
     string challenge_id = "red_ch1";
     if(master_salt==NULL || strlen(master_salt)==0) {
-	cout << "Environment variable MASTER_SALT is not set. Exiting ..." << endl;
-	return 1;
+	    cout << "Misconfigured environment. Exiting ..." << endl;
+	    return 1;
     }
     if(argc==2) {
-	string to_hash = challenge_id + string(argv[1]) + string(master_salt);
-	string sha256hash = sha256(to_hash);
-	cout << sha256hash;
+        string to_hash = challenge_id + string(argv[1]) + string(master_salt);
+        string sha256hash = sha256(to_hash);
+        cout << sha256hash;
         return 0;
     }
     else {
