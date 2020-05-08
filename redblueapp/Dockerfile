@@ -12,8 +12,8 @@ RUN mkdir /opt/net-diag
 COPY net-diag /opt/net-diag
 COPY drupal-8.5.0 /var/www/html
 
-RUN cd /var/www/html/ && g++ red_ch1.cpp -lcrypto -o red_ch1.flag
-RUN cd /opt/net-diag/ && g++ red_ch2.cpp -lcrypto -o red_ch2.flag
+RUN cd /var/www/html/ && g++ red_ch1.cpp -lcrypto -o red_ch1.flag && rm -f red_ch1.cpp
+RUN cd /opt/net-diag/ && g++ red_ch2.cpp -lcrypto -o red_ch2.flag && rm -f red_ch2.cpp
 
 WORKDIR /var/www/html
 
