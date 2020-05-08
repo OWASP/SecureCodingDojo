@@ -56,7 +56,7 @@ dependency "sg" {
 
 # These are the variables we have to pass in to use the module specified in the terragrunt configuration above
 inputs = {
-  name    = "${local.vars_namePrefix}-${local.global_vars_environment}-ALB"
+  name    = "${local.vars_namePrefix}-${local.global_vars_environment}"
   region  = local.global_vars_region
   vpc_id  = local.vars_vpc
   subnets = local.vars_subnetIds
@@ -67,15 +67,27 @@ inputs = {
 
   target_groups = [
     {
-      name             = "${local.vars_namePrefix}-${local.global_vars_environment}-ALB-insecureinc-TG"
+      name             = "${local.vars_namePrefix}-${local.global_vars_environment}-insecureinc"
+      backend_protocol = "HTTP"
+      backend_port     = 8080
+      target_type      = "ip"
+    },
+    {
+      name             = "${local.vars_namePrefix}-${local.global_vars_environment}-redblueapp"
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "ip"
     },
     {
-      name             = "${local.vars_namePrefix}-${local.global_vars_environment}-ALB-redblueapp-TG"
+      name             = "${local.vars_namePrefix}-${local.global_vars_environment}-redblueappnd"
       backend_protocol = "HTTP"
-      backend_port     = 8080
+      backend_port     = 8888
+      target_type      = "ip"
+    },
+    {
+      name             = "${local.vars_namePrefix}-${local.global_vars_environment}-bluetesterapp"
+      backend_protocol = "HTTP"
+      backend_port     = 8081
       target_type      = "ip"
     }
   ]
@@ -87,6 +99,27 @@ inputs = {
       certificate_arn    = local.vars_certArn
       ssl_policy         = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
       target_group_index = 0
+    },
+    {
+      port               = 8080
+      protocol           = "HTTPS"
+      certificate_arn    = local.vars_certArn
+      ssl_policy         = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+      target_group_index = 1
+    },
+    {
+      port               = 8888
+      protocol           = "HTTPS"
+      certificate_arn    = local.vars_certArn
+      ssl_policy         = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+      target_group_index = 2
+    },
+    {
+      port               = 8081
+      protocol           = "HTTPS"
+      certificate_arn    = local.vars_certArn
+      ssl_policy         = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+      target_group_index = 3
     }
   ]
 
