@@ -372,8 +372,11 @@ module.exports.apiChallengeCode = async (req) => {
     if(util.isNullOrUndefined(modules[moduleId].skipMasterSalt) || modules[moduleId].skipMasterSalt===false){
         ms = masterSalt;
     }
-    var verificationHash = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+ms).digest('base64');
-    if(verificationHash!==challengeCode){
+    //either hex or base64 formats should work
+    //we're looking at the first 10 characters only for situations where the challenge code may get truncated - pcaps, IPS logs
+    var verificationHashB64 = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+ms).digest('base64').substr(0,10);
+    var verificationHashHex = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+ms).digest('hex').substr(0,10);
+    if(challengeCode.indexOf(verificationHashB64)!==0 && challengeCode.indexOf(verificationHashHex)!==0){
         throw Error("invalidCode");
     } 
     //success update challenge
