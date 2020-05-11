@@ -1,12 +1,18 @@
+<?php
+$output="";
+$input="";
+if(isset($_GET["name"]))
+{
+    $input = $_GET["name"];
+    $output = shell_exec("ping -c 1 $input");
+    $input = htmlentities($input);
+}
+?>
 <form>
 <h1>Network Diagnostics</h1>    
 Host name:
-<input name="name"><input type="submit" value="submit"></form>
+<input name="name" value="<?php echo $input;?>"><input type="submit" value="submit"></form>
 
 <?php
-if(isset($_GET["name"]))
-{
-    $output = shell_exec("ping -c 1 ".$_GET["name"]);
-    echo "<pre>$output</pre>";
-}
+echo "<pre>$output</pre>";
 ?>
