@@ -4,7 +4,7 @@ def tfNode = 'tf_node_secure-coding-dojo'
 node(tfNode){
   properties([
     pipelineTriggers([
-      cron('0 18 * * *') // Run at 12:15am everyday.
+      cron('0 18 * * *') // Run at 6pm everyday.
     ])
   ])
 
