@@ -72,6 +72,12 @@ inputs = {
       backend_protocol = "HTTP"
       backend_port     = 8080
       target_type      = "ip"
+      deregistration_delay = 30
+      health_check  = {
+        interval = 15
+        healthy_threshold = 2
+        unhealthy_threshold = 2
+      }
       stickiness = {
         enable          = true
         cookie_duration = 604800
@@ -83,18 +89,36 @@ inputs = {
       backend_protocol = "HTTP"
       backend_port     = 80
       target_type      = "ip"
+      deregistration_delay = 30
+      health_check  = {
+        interval = 15
+        healthy_threshold = 2
+        unhealthy_threshold = 2
+      }
     },
     {
       name             = "${local.vars_namePrefix}-${local.global_vars_environment}-redblueappnd"
       backend_protocol = "HTTP"
       backend_port     = 8888
       target_type      = "ip"
+      deregistration_delay = 30
+      health_check  = {
+        interval = 15
+        healthy_threshold = 2
+        unhealthy_threshold = 2
+      }
     },
     {
       name             = "${local.vars_namePrefix}-${local.global_vars_environment}-bluetesterapp"
       backend_protocol = "HTTP"
       backend_port     = 8081
       target_type      = "ip"
+      deregistration_delay = 30
+      health_check  = {
+        interval = 15
+        healthy_threshold = 2
+        unhealthy_threshold = 2
+      }
     }
   ]
 
