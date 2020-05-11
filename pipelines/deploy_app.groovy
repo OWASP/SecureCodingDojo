@@ -44,7 +44,7 @@ node(tfNode){
 
     stage("Build image and push to ECR") {
       echo "Build and push image to ECR..."
-      sh(returnStdout: true, script: "\$(aws ecr get-login --no-include-email --region '${awsRegion}' --registry-ids '${awsAccountID}')")
+      sh(returnStdout: true, script: "set +x; \$(aws ecr get-login --no-include-email --region '${awsRegion}' --registry-ids '${awsAccountID}'); set -x")
       apps.each { item ->
         echo "Building and pushing ${item.key}"
         dir(apps["${item.key}"]["dockerfileDir"]){
