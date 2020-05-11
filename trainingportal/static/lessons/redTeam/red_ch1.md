@@ -12,27 +12,23 @@ Here are instructions on how to get your pen-tester environment setup:
 #### Nmap
 Install nmap.
 
-For Debian/Ubuntu:
-
-`apt-get install nmap`
  
 For RedHat/CentOS:
 
 `sudo yum install nmap`
 
-Once nmap is installed you can scan the target host with `nmap <target_host> -Pn -p-`
+For Debian/Ubuntu:
+
+`apt-get install nmap`
+
+
+Once nmap is installed you can scan the target host with `nmap <target_host> -Pn -vv`
 
 Other useful parameters are listed below:
 
 * `-p` {PORT_NUMBERS}: Scan ports of the target. It can be a single port number or
-a range of ports.
-* `-PS`, `-PA`, `-PU` {PORT_NUMBERS}: Replace it with the ports to scan. TCP SYN/ACK or 
-UDP discovery.
-* `-sV`: Determine service and version info.
-* `-O`: Determine OS info. 
+a range of ports. Examples: `-p22,23,80` -> scan 22,23 and 80 , `-p8000-9000` -> scan a port range, `-p-` -> scan all the ports
 * `-A`: Determine service/version and OS info.
-* `-script` {SCRIPT_NAME}: Start the scan with the given script.
-* `--script` {SCRIPT_LIST}: Start the scan with the given scripts.
 
 For a detailed list of all parameters availible please refer to the [Nmap Reference Guide](https://nmap.org/book/man.html).
 
