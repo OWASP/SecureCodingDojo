@@ -15,8 +15,9 @@ global: # *m*
   tags: # *m*
     ManagedBy: Terragrunt # *m*
 rootAlb:
-  namePrefix: SCDRoot # *m*
+  namePrefix: SCD # *m*
   s3BucketPrefix: logs-lb # *m*
+  http2: false
   deletionProtection: true
   route53:
     enabled: true
