@@ -16,6 +16,7 @@ locals {
   # Internal API ALB specific vars
   vars_namePrefix         = local.vars.rootAlb.namePrefix
   vars_s3BucketPrefix     = local.vars.rootAlb.s3BucketPrefix
+  vars_http2              = lookup(local.vars.rootAlb, "http2", true)
   vars_deletionProtection = lookup(local.vars.rootAlb, "deletionProtection", false)
   vars_vpc                = lookup(local.vars.rootAlb, "vpc", local.global_vars_vpc)
   vars_subnetIds          = lookup(local.vars.rootAlb, "subnetIds", local.global_vars_subnetIds.public)
@@ -71,6 +72,11 @@ inputs = {
       backend_protocol = "HTTP"
       backend_port     = 8080
       target_type      = "ip"
+      stickiness = {
+        enable          = true
+        cookie_duration = 604800
+        type            = "lb_cookie"
+      }
     },
     {
       name             = "${local.vars_namePrefix}-${local.global_vars_environment}-redblueapp"
@@ -136,6 +142,7 @@ inputs = {
     }
   ]
   security_groups            = [dependency.sg.outputs.this_security_group_id]
+  enable_http2               = local.vars_http2
   enable_deletion_protection = local.vars_deletionProtection
   tags                       = local.vars_tags
 }
