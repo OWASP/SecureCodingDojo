@@ -55,6 +55,6 @@ inputs = {
       cidr_blocks = "0.0.0.0/0"
     }
   ],
-  egress_rules        = ["all-all"]
-  tags                = local.vars_tags
+  egress_rules = ["all-all"]
+  tags         = local.vars_tags
 }
