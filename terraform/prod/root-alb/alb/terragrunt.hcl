@@ -95,6 +95,11 @@ inputs = {
         healthy_threshold = 2
         unhealthy_threshold = 2
       }
+      stickiness = {
+        enable          = true
+        cookie_duration = 604800
+        type            = "lb_cookie"
+      }
     },
     {
       name             = "${local.vars_namePrefix}-${local.global_vars_environment}-redblueappnd"
@@ -107,6 +112,11 @@ inputs = {
         healthy_threshold = 2
         unhealthy_threshold = 2
       }
+      stickiness = {
+        enable          = true
+        cookie_duration = 604800
+        type            = "lb_cookie"
+      }
     },
     {
       name             = "${local.vars_namePrefix}-${local.global_vars_environment}-bluetesterapp"
@@ -118,6 +128,11 @@ inputs = {
         interval = 15
         healthy_threshold = 2
         unhealthy_threshold = 2
+      }
+      stickiness = {
+        enable          = true
+        cookie_duration = 604800
+        type            = "lb_cookie"
       }
     }
   ]
