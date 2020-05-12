@@ -27,7 +27,7 @@ Configure your IPS security software to block attacks. Find the IPS rule to prot
 
 * Deploy the web-application.
 
-  `docker run -p 8080:80 <Imagename>:latest`
+  `docker run -p 8080:80 -p 8888:8888 <Imagename>:latest`
 
 * Verify your container running.
 
