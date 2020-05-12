@@ -15,7 +15,7 @@ Before deploying the vulnerable application, you should first install security s
 Use a container security scanner to spot web application vulnerabilities in your image. Web application container Image available in the provided AWS ECR Repo.
 Container security scanner will multiple CVEs, look for the CVEs reported for a CMS web application. 
 
-#### Configure IPS rules
+###### Configure IPS rules
 Configure your IPS security software to block attacks. Find the IPS rule to protect the web application reported by the container scanner and deploy it in your IPS solution.
 
 #### Instructions for Completing the Challenge
