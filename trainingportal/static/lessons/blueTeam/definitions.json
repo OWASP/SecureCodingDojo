@@ -5,7 +5,7 @@
         "challenges":[
             {
                 "id":"blue_ch1",
-                "playLink":"_Company_specific_link_",
+                "playLink":"https://insecure.link:8081/",
                 "name":"Deploying Security Controls and Protecting Against Known CVEs",
                 "description": "blue_ch1.md",
                 "codeBlockIds":[]
