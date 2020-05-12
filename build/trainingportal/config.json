@@ -5,7 +5,7 @@
         "securityCodeReviewMaster":"https://trendmicro.github.io/SecureCodingDojo/codereview101/?fromPortal"
     },
 
-    "disabledModules":["secondDegreeBlackBelt"],
+    "disabledModules":["secondDegreeBlackBelt","redTeam","blueTeam"],
 
     "playLinks" : {},
 
