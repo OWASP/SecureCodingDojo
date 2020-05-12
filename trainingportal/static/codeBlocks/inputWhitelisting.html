@@ -74,10 +74,10 @@
     //...
     String location=request.getParameter("location");
     if(isAlphanumOrException(32, location,':','/','?')){
-        throw new Exception("Invalid character in location"); //only allow a limited set of valid url characters 
+        Runtime.getRuntime().exec("/bin/sh -c 'wget "+location+"'"); //btw there is a better way to call shell commands which reduces the risk of command injection, see parameterized commands code block
     }
     else{
-        Runtime.getRuntime().exec("/bin/sh -c 'wget "+location+"'"); //btw there is a better way to call shell commands which reduces the risk of command injection, see parameterized commands code block
+        throw new Exception("Invalid character in location"); //only allow a limited set of valid url characters 
     }
 </pre>
 
