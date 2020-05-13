@@ -1,0 +1,6 @@
+{
+  "name": "scd-vulnerableapp-validator",
+  "version": "1.0.0",
+  "description": "Validates code for red team challenge 3.",
+  "main": "app.js"
+}

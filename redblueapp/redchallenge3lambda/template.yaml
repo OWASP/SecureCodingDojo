@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Validates code for red team challenge 3.
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  ValidateCodeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ValidateCodeFunction
+      CodeUri: ./
+      Handler: app.challengeValidator
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          CHALLENGE_MASTER_SALT: ${env.CHALLENGE_MASTER_SALT}
+      Events:
+        ValidateCode:
+          Type: Api
+          Properties:
+            Path: /validate-code
+            Method: post
+
+Outputs:
+  ValidateCodeFunction:
+    Description: "Validate Code Lambda Function ARN"
+    Value: !GetAtt ValidateCodeFunction.Arn
+  ValidateCodeFunctionIamRole:
+    Description: "Implicit IAM Role created for Validate Code function"
+    Value: !GetAtt ValidateCodeFunctionRole.Arn
