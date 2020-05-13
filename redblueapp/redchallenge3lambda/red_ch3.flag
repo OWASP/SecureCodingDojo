@@ -1,0 +1,3 @@
+echo "Usage: ./red_ch3.flag <SALT> "
+aws lambda invoke --function-name scd-vulnerableapp-validator --payload "{\"salt\":\"$1\"}" response.json && cat response.json 
+echo
