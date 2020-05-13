@@ -15,6 +15,14 @@ COPY drupal-8.5.0 /var/www/html
 RUN cd /var/www/html/ && g++ red_ch1.cpp -lcrypto -o red_ch1.flag && rm -f red_ch1.cpp
 RUN cd /opt/net-diag/ && g++ red_ch2.cpp -lcrypto -o red_ch2.flag && rm -f red_ch2.cpp
 
+
+RUN mkdir /root.bkp && mkdir /root.bkp/.aws
+COPY redchallenge3lambda/red_ch3.flag /root.bkp/.aws/
+RUN chown -R www-data:www-data /root.bkp
+
+RUN mkdir /root/.aws
+COPY redchallenge3lambda/blue_ch3.flag /root/.aws/
+
 WORKDIR /var/www/html
 
 RUN set -eux; \
