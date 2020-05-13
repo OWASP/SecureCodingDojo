@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="form.css">
+</head>
+<body>
+<div class="testerapp">
+	<h2>Tester application</h2>
+	<form id="form1" action="/attack" method="POST">
+	<div class="host">
+        <input id="HOST" type="text" name="host" required>
+	<label for="HOST">Enter the vulnerable host: </label>
+	</div>
+	<div class="host">
+	<input id="Salt" type="text" name="salt" required>
+        <label for="Salt">Enter your challenge salt: </label>
+	</div>
+	<div class="host">
+		<label for="challenge1">Select the challenge</label><br><br><br>
+	</div>
+	<div class="radio">
+		<p>1</p>
+		<input type="radio" id="1" name="radio" value="1" checked>	
+		<p>2</p>
+		<input type="radio" id="2" name="radio" value="2">
+	</div>
+	<a href="#" onclick="document.getElementById('form1').submit()">
+		<span></span>
+		<span></span>
+		<span></span>
+		<span></span>
+		Send Exploit
+	</a>
+	</form>
+</div>
+</body>
+</html>
+
