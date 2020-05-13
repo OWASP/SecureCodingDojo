@@ -49,8 +49,12 @@ node(tfNode){
         echo "Building and pushing ${item.key}"
         dir(apps["${item.key}"]["dockerfileDir"]){
           docker.withRegistry("https://${ecrRegistry}") {
-            dockerImage = docker.build("${ecrRegistry}/${apps["${item.key}"]["ecrRepoName"]}:${apps["${item.key}"]["ecrImageTag"]}", "-f Dockerfile .")
-            dockerImage.push()
+            withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'scd-vulnerableapp-lambda-iam',
+                              accessKeyVariable: 'ACCESS_KEY_ID', secretKeyVariable: 'SECRET_ACCESS_KEY']]) {
+              dockerImage = docker.build("${ecrRegistry}/${apps["${item.key}"]["ecrRepoName"]}:${apps["${item.key}"]["ecrImageTag"]}", "-f Dockerfile --build-arg accessKey=$ACCESS_KEY_ID " +
+                      "--build-arg secretAccessKey=$SECRET_ACCESS_KEY .")
+              dockerImage.push()
+            }
           } // docker.withRegistry
         } // dir
       } // apps.each
