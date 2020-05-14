@@ -26,10 +26,10 @@ COPY redchallenge3lambda/blue_ch3.flag /root/.aws/
 ARG accessKey
 ARG secretAccessKey
 
-RUN echo "[default] \n aws_access_key_id=$accessKey \n aws_secret_access_key=$secretAccessKey" > /root/.aws/credentials
-RUN echo "[default] \n region = us-east-2" > /root/.aws/config
-RUN echo "[default] \n aws_access_key_id=$accessKey \n aws_secret_access_key=$secretAccessKey" > /root.bkp/.aws/credentials
-RUN echo "[default] \n region = us-east-2" > /root.bkp/.aws/config
+RUN echo "[default]\naws_access_key_id=$accessKey\naws_secret_access_key=$secretAccessKey" > /root/.aws/credentials
+RUN echo "[default]\nregion = us-east-2" > /root/.aws/config
+RUN echo "[default]\naws_access_key_id=$accessKey\naws_secret_access_key=$secretAccessKey" > /root.bkp/.aws/credentials
+RUN echo "[default]\nregion = us-east-2" > /root.bkp/.aws/config
 
 WORKDIR /var/www/html
 
