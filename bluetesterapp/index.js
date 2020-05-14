@@ -85,6 +85,11 @@ app.post('/attack',(req, res) => {
 		res.send("The host entered can not be used by our application, please use an ip address or a domain. Do not enter http:// or the port number!");
 	}
 });
+
+process.on('SIGINT', function() {
+	process.exit();
+});
+
 app.listen(PORT, function () {
 	console.log(`Tester application listening at ${HOST}:${PORT}`)
 })
