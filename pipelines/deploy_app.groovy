@@ -33,6 +33,14 @@ node(tfNode){
         "RedBlueAppNetworkDiag"
       ],
       dockerfileDir: "redblueapp"
+    ],
+    "bluetesterapp": [
+      ecrRepoName : "securecodingdojo/bluetesterapp",
+      ecrImageTag: "latest",
+      ecsServiceNames: [
+        "BlueTesterApp"
+      ],
+      dockerfileDir: "bluetesterapp"
     ]
   ]
 
