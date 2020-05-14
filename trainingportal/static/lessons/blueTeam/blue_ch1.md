@@ -11,15 +11,12 @@ Spin up a VM of your preference and ensure the VM IP is exposed to public for ac
 ##### Install Security Software
 Before deploying the vulnerable application, you should first install security software. Follow instructions at the provided link for deploying IPS and FW software.
 
-##### Scan the Container Image
-Use a container security scanner to spot web application vulnerabilities in your image. Web application container Image available in the provided AWS ECR Repo.
-Container security scanner will multiple CVEs, look for the CVEs reported for a CMS web application. 
-
 ###### Configure IPS rules
-Configure your IPS security software to block attacks. Find the IPS rule to protect the web application reported by the container scanner and deploy it in your IPS solution.
+There is a well known web application that is running on one of the container ports.
+Find the IPS rules to protect this app and deploy it in your IPS configuration.
 
 #### Instructions for Completing the Challenge
-- Deploy container-based Web-Application in your VM with the port 8080.
+- Deploy container-based Web-Application in your VM 
 
 * Pull the image from AWS ECR repo.
 
@@ -33,10 +30,9 @@ Configure your IPS security software to block attacks. Find the IPS rule to prot
 
   `docker ps`
 
-- Access the tester app at the provided address.
+- You will be provided tester application that can be used to verify that the IPS is blocking attacks. 
 
-- Input your host and the challenge salt and run test. Get the challenge salt by clicking on submit code of this challenge.
+- Input your host and the challenge salt and run the test. (Get the challenge salt by clicking on submit code of this challenge)
 
 - Verify that the security software has blocked the attack and find the challenge code in the IPS events payload data. 
 
-- Look for the IPS rule triggers assigned to protect the web application. 
