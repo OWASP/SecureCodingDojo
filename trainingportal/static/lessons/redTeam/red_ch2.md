@@ -1,4 +1,4 @@
-In this challenge, you will scan the next available open port that `nmap` found to check for vulnerabilities.  There are a number of [Vulnerability Scanning Tools](https://owasp.org/www-community/Vulnerability_Scanning_Tools) that can be used for this. 
+In this challenge, you will scan the last available open port that `nmap` found to check for vulnerabilities.  There are a number of [Vulnerability Scanning Tools](https://owasp.org/www-community/Vulnerability_Scanning_Tools) that can be used for this. 
 
 Your security tests should include the following attack types based on OWASP top 10:
 

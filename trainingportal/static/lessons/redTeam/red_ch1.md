@@ -1,4 +1,4 @@
-Use nmap to scan for open ports of the provided host, identify applications running on each port, use Metaploit or a exploit script you find online to take advantage of the first vulnerability.
+Use nmap to scan for open ports of the host provided at the play link below, identify applications running on each port, use Metaploit or a exploit script you find online to take advantage of the first vulnerability.
 
 #### Getting setup
 
@@ -44,8 +44,8 @@ If you have Docker installed you can simply run the metasploit container image. 
 
 ##### Docker Install
 
-* For RedHat/CentOS: `sudo yum install nmap` or `sudo amazon-linux-extras install docker` (AWS Linux 2)
-* For Debian/Ubuntu: `apt-get install nmap`
+* For RedHat/CentOS: `sudo yum install docker` or `sudo amazon-linux-extras install docker` (AWS Linux 2)
+* For Debian/Ubuntu: `sudo apt install docker.io`
 
 ##### Running Docker
 
