@@ -33,8 +33,15 @@ var descriptions = [];
 var masterSalt = "";
 
 loadModules = function(){ 
-    let moduleDefs = require(path.join(__dirname, "static/lessons/modules.json"));
-    let localModules = {}
+    let modsPath;
+    if(!util.isNullOrUndefined(process.env.DATA_DIR)){
+        modsPath = path.join(process.env.DATA_DIR, "modules.json");
+    }    
+    if(util.isNullOrUndefined(modsPath) || !fs.existsSync(modsPath)){
+        modsPath = path.join(__dirname, "static/lessons/modules.json");
+    }
+    let moduleDefs = require(modsPath);
+    let localModules = {};
     let moduleIds = Object.keys(moduleDefs);
     for(let moduleId of moduleIds){
         let disabled = config.disabledModules;
