@@ -21,7 +21,7 @@
     "redTeam":{
         "name":"Red Team",
         "summary":"Pen-testing tools and techniques",
-        "description":"Exploit vulnerabilities and perform lateral movement on a cloud container application.",
+        "description":"Learn about scanning, exploitation and persistance. Leverage vulnerabilities found in a cloud container application and perform lateral movement to cloud account resources.",
         "requiredModules":["blackBelt"]
     },
     "blueTeam":{
