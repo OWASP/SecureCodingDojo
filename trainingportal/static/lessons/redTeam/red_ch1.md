@@ -1,9 +1,5 @@
 Use nmap to scan for open ports of the host provided at the play link below, identify applications running on each port, use Metaploit or a exploit script you find online to take advantage of the first vulnerability.
 
-#### Getting setup
-
-Here are instructions on how to get your pen-tester environment setup:
-
 #### Instructions for Completing the Challenge
 
 - Run nmap
