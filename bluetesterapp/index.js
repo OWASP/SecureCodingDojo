@@ -15,7 +15,6 @@ const HOST = '0.0.0.0';
 const htmlEncode = require('htmlencode').htmlEncode;
 const TIMEOUT = 5 * 1000;
 const CancelToken = axios.CancelToken;
-const source = CancelToken.source();
 
 var limiter = new rateLimit({
 	windowsMS: 1 * 60 * 1000,
@@ -62,7 +61,7 @@ app.post('/attack',async (req, res) => {
 
 	try{
 		if(isValidDomain(attck) || isValidIP({exact: true}).test(attck)){
-
+			const source = CancelToken.source();
 			setTimeout(() => { source.cancel(); }, TIMEOUT);
 
 			if(challenge == "blue_ch1") {
