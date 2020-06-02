@@ -11,7 +11,8 @@ const isValidDomain = require('is-valid-domain');
 const isValidIP = require('ip-regex');
 const app = express();
 const PORT = 8081;
-const HOST = '0.0.0.0'
+const HOST = '0.0.0.0';
+const htmlEncode = require('htmlencode').htmlEncode;
 
 var limiter = new rateLimit({
 	windowsMS: 1 * 60 * 1000,
@@ -41,49 +42,52 @@ app.get('/*',(req, res) => {
 	res.sendFile(path.join(__dirname, 'views/form.html'));
 });
 
-app.post('/attack',(req, res) => {
+app.post('/attack',async (req, res) => {
 	const attck = req.body.host;
 	const codeSalt = req.body.salt;
 	const challenge = req.body.radio;
-        var hash = crypto.createHash('sha256').update(challenge+codeSalt+masterSalt).digest('base64');
+    var hash = crypto.createHash('sha256').update(challenge+codeSalt+masterSalt).digest('base64');
 
-	//console.log('Host: '+ attck);
-	//console.log('CodeSalt ' + codeSalt);
-	//console.log('MasterSalt: ' + masterSalt);
-	//console.log('Challenge: '+ challenge);
-	//console.log('Hash ' + hash);
-	
-	if(isValidDomain(attck) || isValidIP({exact: true}).test(attck)){
-		if(challenge == "blue_ch1") {
-			axios.post(
-				'http://' + attck + ':8080/user/register?element_parents=account/mail/#value&ajax_form=1&_wrapper_format=drupal_ajax',
-				dataCh1 + hash,
-			).then(function (response) {
-				//console.log('Response:' + response);
-			}).catch(function (error) {
-				//console.log(error);
-			});
+	let responseMessage = "";
 
-		} else if (challenge == "blue_ch2"){
-			axios.post(
-				'http://' + attck + ':8888/ping.php',
-				dataCh2 + hash,
-			).then(function (response) {
-				//console.log(response);
-			})
-			.catch(function (error) {
-				//console.log(error);
-			});
+	try{
+		if(isValidDomain(attck) || isValidIP({exact: true}).test(attck)){
+			if(challenge == "blue_ch1") {
+				await axios.post(
+					'http://' + attck + ':8080/user/register?element_parents=account/mail/#value&ajax_form=1&_wrapper_format=drupal_ajax',
+					dataCh1 + hash);
+
+			} else if (challenge == "blue_ch2"){
+				await axios.post(
+					'http://' + attck + ':8888/ping.php',
+					dataCh2 + hash);
+			} else {
+				throw(new Error("Challenge number is not valid"));
+			}
+
+			responseMessage = "Connection succeeded when it should have been blocked. Was the security defense correctly configured?";
+
 		} else {
-        	        console.log("Challenge number is not valid");
-       	 	}
-		res.setHeader("Refresh", "7;url=/");
-        	res.sendFile(path.join(__dirname, 'views/request.html'));
-	} else {
-		console.log("The host is not valid");
-		res.setHeader("Refresh", "30;url=/");
-		res.send("The host entered can not be used by our application, please use an ip address or a domain. Do not enter http:// or the port number!");
+			throw new Error("The host entered can not be used by our application, please use an ip address or a domain. Do not enter http:// or the port number!");
+		}
+
+	}catch(err){
+
+		//this is the case where the connection was blocked as expected
+		if(err.message.indexOf("socket hang up")>-1){
+			res.setHeader("Refresh", "7;url=/");
+			res.sendFile(path.join(__dirname, 'views/request.html'));
+			return; //we're done
+		}
+
+		console.log(err.message);
+		responseMessage = err.message;
+
 	}
+
+	res.setHeader("Refresh", "30;url=/");
+	res.send(htmlEncode(responseMessage));
+	
 });
 
 process.on('SIGINT', function() {
