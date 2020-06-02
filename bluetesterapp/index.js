@@ -103,7 +103,7 @@ app.post('/attack',async (req, res) => {
 			responseMessage = "An unknown error occured";
 		}
 
-		console.log(err.message);
+		console.log(responseMessage);
 
 	}
 
