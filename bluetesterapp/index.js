@@ -13,6 +13,9 @@ const app = express();
 const PORT = 8081;
 const HOST = '0.0.0.0';
 const htmlEncode = require('htmlencode').htmlEncode;
+const TIMEOUT = 5 * 1000;
+const CancelToken = axios.CancelToken;
+const source = CancelToken.source();
 
 var limiter = new rateLimit({
 	windowsMS: 1 * 60 * 1000,
@@ -49,18 +52,30 @@ app.post('/attack',async (req, res) => {
     var hash = crypto.createHash('sha256').update(challenge+codeSalt+masterSalt).digest('base64');
 
 	let responseMessage = "";
+	const axiosInstance = axios.create();
+	axiosInstance.defaults.timeout = TIMEOUT;
+
+
+
+	
+
 
 	try{
 		if(isValidDomain(attck) || isValidIP({exact: true}).test(attck)){
+
+			setTimeout(() => { source.cancel(); }, TIMEOUT);
+
 			if(challenge == "blue_ch1") {
-				await axios.post(
+				await axiosInstance.post(
 					'http://' + attck + ':8080/user/register?element_parents=account/mail/#value&ajax_form=1&_wrapper_format=drupal_ajax',
-					dataCh1 + hash);
+					dataCh1 + hash,
+					{ cancelToken: source.token });
 
 			} else if (challenge == "blue_ch2"){
-				await axios.post(
+				await axiosInstance.post(
 					'http://' + attck + ':8888/ping.php',
-					dataCh2 + hash);
+					dataCh2 + hash,
+					{ cancelToken: source.token });
 			} else {
 				throw(new Error("Challenge number is not valid"));
 			}
@@ -72,16 +87,24 @@ app.post('/attack',async (req, res) => {
 		}
 
 	}catch(err){
-
 		//this is the case where the connection was blocked as expected
-		if(err.message.indexOf("socket hang up")>-1){
+		if(err.message && (err.message.indexOf("socket hang up")>-1 || err.message.indexOf("ECONNRESET")>-1)){ 
 			res.setHeader("Refresh", "7;url=/");
 			res.sendFile(path.join(__dirname, 'views/request.html'));
 			return; //we're done
 		}
 
+		if (axios.isCancel(err)) {
+			responseMessage = `Connection timeout to ${attck}`;
+		} 
+		else if(err.message){
+			responseMessage = err.message;
+		}
+		else{
+			responseMessage = "An unknown error occured";
+		}
+
 		console.log(err.message);
-		responseMessage = err.message;
 
 	}
 
