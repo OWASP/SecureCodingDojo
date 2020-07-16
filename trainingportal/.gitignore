@@ -4,7 +4,7 @@
 *config.json
 localUsers.json
 *.csv
-accountWhitelist.json
+allowedAccounts.json
 .ebextensions
 *.db
 runCustomTestScripts.sh

@@ -14,8 +14,8 @@
     "dbUser" : "YOUR_DB_USER",
     "encDbPass":"//use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption",
 
-    "allowedAccountPattern" : ".* //if not defined all accounts can login, use in conjunction with account whitelist to enable accounts matching the pattern e.g. Local_",
-    "accountWhitelist" : "accountWhitelist.json //enable to only allow certain accounts to join",
+    "allowedAccountPattern" : ".* //if not defined all accounts can login, use in conjunction with allowed accounts to enable accounts matching the pattern e.g. Local_",
+    "allowedAccounts" : "allowedAccounts.json //enable to only allow certain accounts to join",
     "localUsersPath" : "localUsers.json",
 
     "googleClientId" : "YOUR_GOOGLE_CLIENT_ID",

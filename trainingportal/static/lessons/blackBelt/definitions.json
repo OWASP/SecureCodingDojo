@@ -133,7 +133,7 @@
                 "attackGram":"openredirect.png",
                 "solution":"cwe601.sol.md",
                 "playLink":"/cwe601.jsp",
-                "codeBlockIds":["inputWhitelisting","indirectObjectReferences"]
+                "codeBlockIds":["inputAllowListing","indirectObjectReferences"]
             },
             {
                 "id":"cwe79",
@@ -142,7 +142,7 @@
                 "attackGram":"xss.png",
                 "solution":"cwe79.sol.md",
                 "playLink":"/cwe79.jsp",
-                "codeBlockIds":["neutralizeOutput","inputWhitelisting","requestForgeryPrevention"]
+                "codeBlockIds":["neutralizeOutput","inputAllowListing","requestForgeryPrevention"]
             },
             {
                 "id":"cwe352",
@@ -166,7 +166,7 @@
                 "solution":"cwe434.sol.md",
                 "playLink":"/cwe434.jsp",
                 "description": "cwe434.html",
-                "codeBlockIds":["indirectObjectReferences","inputWhitelisting","principleOfLeastPrivilege"]
+                "codeBlockIds":["indirectObjectReferences","inputAllowListing","principleOfLeastPrivilege"]
             },
             {
                 "id":"cwe611",
@@ -184,7 +184,7 @@
                 "solution":"cwe22.sol.md",
                 "playLink":"/cwe22.jsp",
                 "description": "cwe22.html",
-                "codeBlockIds":["indirectObjectReferences","inputWhitelisting","principleOfLeastPrivilege"]
+                "codeBlockIds":["indirectObjectReferences","inputAllowListing","principleOfLeastPrivilege"]
             }
         ]
     },
@@ -208,7 +208,7 @@
                 "description": "cwe78.html",
                 "attackGram":"commandinjection.png",
                 "solution":"cwe78.sol.md",
-                "codeBlockIds":["parameterizedCommands","inputWhitelisting","principleOfLeastPrivilege"]
+                "codeBlockIds":["parameterizedCommands","inputAllowListing","principleOfLeastPrivilege"]
             },
             {
                 "id":"cwe89",
@@ -217,7 +217,7 @@
                 "description": "cwe89.html",
                 "attackGram":"sqli.png",
                 "solution":"cwe89.sol.md",
-                "codeBlockIds":["parameterizedCommands", "displayGenericErrorMessages", "inputWhitelisting"]
+                "codeBlockIds":["parameterizedCommands", "displayGenericErrorMessages", "inputAllowListing"]
             }
         ]
     },
@@ -242,7 +242,7 @@
                 "description": "cwe120.html",
                 "attackGram":"bufferoverflow.png",
                 "solution":"cwe120.sol.md",
-                "codeBlockIds":["checkBoundaries","safeMemoryManagement","inputWhitelisting"]
+                "codeBlockIds":["checkBoundaries","safeMemoryManagement","inputAllowListing"]
             },
             {
                 "id":"cwe134",
@@ -251,7 +251,7 @@
                 "description": "cwe134.html",
                 "attackGram":"formatstring.png",
                 "solution":"cwe134.sol.md",
-                "codeBlockIds":["safeMemoryManagement","inputWhitelisting"]
+                "codeBlockIds":["safeMemoryManagement","inputAllowListing"]
             },
             {
                 "id":"quiz",

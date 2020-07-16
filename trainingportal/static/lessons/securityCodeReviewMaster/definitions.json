@@ -8,7 +8,7 @@
                 "name":"Input Validation", 
                 "playLink":"#codereview101_inputValidation",
                 "description": "inputValidation.md",
-                "codeBlockIds":["inputWhitelisting"]
+                "codeBlockIds":["inputAllowListing"]
             },
             {
                 "id":"codereview101_paramStatements",
