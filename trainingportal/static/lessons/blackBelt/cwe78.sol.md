@@ -4,7 +4,7 @@ This challenge demonstrates the dangers associated with `shelling out` and allow
 
 To pass this challenge you must to print out /etc/passwd
 
-* Try to input **insecure.inc`|cat /etc/shadow`** in the **Update server:** field. You will see the `|` character was removed because the developer already implemented some rudimentary sanitization for hazardous characters. However the developer should have used **input whitelisting** instead.
+* Try to input **insecure.inc`|cat /etc/shadow`** in the **Update server:** field. You will see the `|` character was removed because the developer already implemented some rudimentary sanitization for hazardous characters. However the developer should have used **input allow listing** instead.
 
         updateServer = updateServer.replace("'","").replace("\"","").replace("`", "").replace("&", "").replace("|", "");
 
