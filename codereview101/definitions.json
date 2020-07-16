@@ -14,8 +14,8 @@
                     "snipInputValidation2.java"
                 ],
                 "answer":1,
-                "correctReasoning":"You're right! The code sample is preventing a vulnerability by using input whitelisting.",
-                "incorrectReasoning": "Incorrect! While there is some validation, it is based on block-listing and will still allow command injection (ex. `rm -rf /`)."
+                "correctReasoning":"You're right! The code sample is preventing a vulnerability by using input allow listing.",
+                "incorrectReasoning": "Incorrect! While there is some validation, it is based on block listing and will still allow command injection (ex. `rm -rf /`)."
             }
         ]
 
