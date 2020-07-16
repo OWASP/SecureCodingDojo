@@ -1,14 +1,14 @@
 <p>
-    <strong>Input Whitelisting</strong> also known as Input Validation or Input Sanitization is a tenet of application security. 
+    <strong>Input Allow Listing</strong> also known as Input Validation or Input Sanitization is a tenet of application security. 
     It is the single most important countermeasure that will prevent a large amount of attacks.
 </p>
 <p>
-    Here are a few of the SANS 25 that are prevented or at least mitigated through Input Whitelisting. 
-    Even if Whitelisting cannot be employed in some cases, if used for most inputs it reduces the attack surface and the risk to the application.
+    Here are a few of the SANS 25 that are prevented or at least mitigated through Input Allow Listing. 
+    Even if allow listing cannot be employed in some cases, if used for most inputs it reduces the attack surface and the risk to the application.
     <ul>
-        <li>URL Redirection to Untrusted Site ('Open Redirect')<small> -- allow only whitelisted urls </small></li>
+        <li>URL Redirection to Untrusted Site ('Open Redirect')<small> -- allow only specified urls </small></li>
         <li>Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting') <small> -- allow only alphanumeric</small></li>
-        <li>Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal') <small> -- allow only alphanumeric or allow only whitelisted files</small> </li>
+        <li>Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal') <small> -- allow only alphanumeric or allow only specified files</small> </li>
         <li>Unrestricted Upload of File with Dangerous Type <small> -- allow only safe file extensions</small></li>
         <li>Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')<small> -- allow only alphanumeric</small></li>
         <li>Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')<small> -- allow only alphanumeric</small></li>
@@ -16,13 +16,13 @@
     </ul>
 </p>
 <br>
-<h5>Input Whitelisting vs. Input Blacklisting</h5>
+<h5>Input Allow Listing vs. Input Block Listing</h5>
 <p>
-    The choice of using the term 'Whitelisting' instead of 'Validation' or 'Sanitization' was made to differentiate from the bad kind of validation: 'Blacklisting'.
+    The choice of using the term 'Allow Listing' instead of 'Validation' or 'Sanitization' was made to differentiate from the bad kind of validation: 'Block Listing'.
 </p>
 <p>
-    Blacklisting involves blocking certain strings or characters. It can almost always be defeated by skilled attackers. 
-    You'd think it's better than nothing but you'd be wrong. Blacklisting masks vulnerabilities for automated tools and testers that are less skilled.
+    Block listing involves blocking certain strings or characters. It can almost always be defeated by skilled attackers. 
+    You'd think it's better than nothing but you'd be wrong. Block listing masks vulnerabilities for automated tools and testers that are less skilled.
 </p>
 <p>
     The example below tries to prevent a command injection attack (inspired from a real life scenario, the <a href="https://imagetragick.com/">ImageTragik bug</a> - translated to Java from C++)
@@ -40,12 +40,12 @@
     The attacker can still inject commands without the <mark>;</mark> symbol, for example they can use the <mark>`</mark> character: <code>location=www.google.com`ls -la`</code> 
 </p>
 <br>
-<h5>Input Whitelisting Rules</h5>
+<h5>Input Allow Listing Rules</h5>
 <p>All user input should be considered unsafe by default. </p>
 <p>The majority of input used in an application ends up being numeric or alphanumeric strings. 
     Even when other characters are required they are usually part of a limited set. 
     So only alphanumeric characters should be allowed by default while other can be added on exception. </p>
-<p>The example below implements input whitelisting</p>
+<p>The example below implements input allow listing</p>
 <pre class="pre-scrollable">
 
     public static boolean isAlphanumOrExcepted(in maxSize, String val, char ... excepted){
@@ -84,11 +84,11 @@
 <p>In Node.js there's a handy validator package containing various validation techniques</p>
 
 <br>
-<h5>Input Whitelisting as a Framework</h5>
-<p>If possible whitelisting should be built into the API or Framework. 
-    Ideally a new developer writing a new REST API should automatically benefit from whitelisting and only add extra characters or symbols as needed.</p>
+<h5>Input Allow Listing as a Framework</h5>
+<p>If possible allow listing should be built into the API or Framework. 
+    Ideally a new developer writing a new REST API should automatically benefit from allow listing and only add extra characters or symbols as needed.</p>
 <p>
-    This can be done by introducing whitelisting as part of the default data processing routines. 
+    This can be done by introducing allow listing as part of the default data processing routines. 
     At a minimum a common validation class should be made available and used every time user input is accepted and be enforced as part of coding guidelines.
 </p>
 <p>The example below shows the implementation of a 'SafeGetParameter' function that can be reused to ensure validation</p>

@@ -18,7 +18,7 @@ The variable lastName contains input coming from the user. It is `concatenated` 
 
     '; DROP TABLE users; --
 
-The SQL query being passed to the database would end up being two different commands. One selects all users in the database, while the other deletes the users table.
+The SQL query being passed to the database would end up being two different commands. One performs a query, while the other deletes the users table.
 
     SELECT * FROM users WHERE last_name = ''; DROP TABLE users; --'
 

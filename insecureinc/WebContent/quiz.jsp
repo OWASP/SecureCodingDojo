@@ -250,10 +250,10 @@ Which of the snippets below has a security issue?
 <blockquote>
 Which of the following is the most effective countermeasure against XSS
 </blockquote>
-<%=getOption(answers,"q12","1","Input Whitelisting")%>
+<%=getOption(answers,"q12","1","Input Allow Listing")%>
 <%=getOption(answers,"q12","2","Sanitize output. Remove tag symbols.")%>
-<%=getOption(answers,"q12","3","Whitelist input where possible. Neutralize output through output encoding and safe DOM updates.")%>
-<%=getOption(answers,"q12","4","Blacklist any values containing the following regex: 'img|script|on|iframe'")%>
+<%=getOption(answers,"q12","3","Allow-list input where possible. Neutralize output through output encoding and safe DOM updates.")%>
+<%=getOption(answers,"q12","4","Block-list any values containing the following regex: 'img|script|on|iframe'")%>
 <hr>
 
 
@@ -298,7 +298,7 @@ Which of the following extensions is considered dangerous during a file upload t
 <blockquote>
 Which of the following best prevents path traversal?
 </blockquote>
-<%=getOption(answers,"q16","1","Input whitelisting")%>
+<%=getOption(answers,"q16","1","Input Allow Listing")%>
 <%=getOption(answers,"q16","2","Sanitizing ../ from the user input.")%>
 <%=getOption(answers,"q16","3","Indirect object references.")%>
 <%=getOption(answers,"q16","4","Hardening linux file permissions.")%>

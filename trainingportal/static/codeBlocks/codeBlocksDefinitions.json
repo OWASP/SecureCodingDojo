@@ -1,8 +1,8 @@
 {
     
-    "inputWhitelisting":{
-        "name":"Input Whitelisting",
-        "description":"/static/codeBlocks/inputWhitelisting.html"
+    "inputAllowListing":{
+        "name":"Input Allow Listing",
+        "description":"/static/codeBlocks/inputAllowListing.html"
     },
     "neutralizeOutput":{
         "name":"Neutralize Output",

@@ -39,14 +39,14 @@
                 "name":"Cross-Site Scripting", 
                 "description": "owasp2017xss.html",
                 "attackGram":"xss.png",
-                "codeBlockIds":["neutralizeOutput","inputWhitelisting","requestForgeryPrevention"]
+                "codeBlockIds":["neutralizeOutput","inputAllowListing","requestForgeryPrevention"]
             },
             {
                 "id":"owasp2017injection",
                 "name":"Injection", 
                 "description": "owasp2017injection.html",
                 "attackGram":"commandinjection.png",
-                "codeBlockIds":["parameterizedCommands","inputWhitelisting","principleOfLeastPrivilege"]
+                "codeBlockIds":["parameterizedCommands","inputAllowListing","principleOfLeastPrivilege"]
             },
             {
                 "id":"owasp2017xxe",

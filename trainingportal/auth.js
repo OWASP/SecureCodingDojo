@@ -45,10 +45,10 @@ catch(ex){
 }
 
 
-var accountWhitelist = null;
+var allowedAccounts = null;
 try{
-    if(!util.isNullOrUndefined(config.accountWhitelist)){
-        accountWhitelist = require(path.join(__dirname, config.accountWhitelist));
+    if(!util.isNullOrUndefined(config.allowedAccounts)){
+        allowedAccounts = require(path.join(__dirname, config.allowedAccounts));
     }
 }
 catch(ex){/*Do nothing*/}
@@ -263,12 +263,12 @@ exports.updateLocalUser = function(req,res){
 
 
 processAuthCallback = function (profileId, givenName, familyName, email, cb) {
-    //if allowed account pattern or an account whitelist are not configured all users are allowed
-    var isAllowed = util.isNullOrUndefined(config.allowedAccountPattern) && accountWhitelist==null;
+    //if allowed account pattern or an allowed list of accounts are not configured all users are allowed
+    var isAllowed = util.isNullOrUndefined(config.allowedAccountPattern) && allowedAccounts===null;
     //check the allowed pattern if defined
     if(!isAllowed && !util.isNullOrUndefined(config.allowedAccountPattern)) isAllowed = profileId.match(new RegExp(config.allowedAccountPattern));
-    //check the whitelist if defined
-    if(!isAllowed && accountWhitelist!=null) isAllowed = accountWhitelist.indexOf(profileId) > -1;
+    //check the allowed accounts are defined
+    if(!isAllowed && allowedAccounts!==null) isAllowed = allowedAccounts.indexOf(profileId) > -1;
     //if still not allowed stop here
     if(!isAllowed){
         util.log("Profile id not allowed:"+profileId);
