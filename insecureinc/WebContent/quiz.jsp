@@ -252,8 +252,8 @@ Which of the following is the most effective countermeasure against XSS
 </blockquote>
 <%=getOption(answers,"q12","1","Input Allow Listing")%>
 <%=getOption(answers,"q12","2","Sanitize output. Remove tag symbols.")%>
-<%=getOption(answers,"q12","3","Allow-list input where possible. Neutralize output through output encoding and safe DOM updates.")%>
-<%=getOption(answers,"q12","4","Block-list any values containing the following regex: 'img|script|on|iframe'")%>
+<%=getOption(answers,"q12","3","Allow only safe input where possible. Neutralize output through output encoding and safe DOM updates.")%>
+<%=getOption(answers,"q12","4","Block any values containing the following regex: 'img|script|on|iframe'")%>
 <hr>
 
 
