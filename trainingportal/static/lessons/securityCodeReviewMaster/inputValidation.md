@@ -17,7 +17,7 @@ In an HTTP request there are many parameters that are simply numeric or alphanum
 
 The only parameter that may need to be excluded from validation is `q` which holds the search text. More than 90% of the request parameters are alphanumeric . By applying input validation to 90% of the input on the request, we reduce 90% of the attack surface. 
 
-#####Block-lists vs. Allow-lists
+#####Block Lists vs. Allow Lists
 Sometimes developers are tempted to take a blocking approach. However block lists can be bypassed and may in fact cause automated tools and less experienced testers to miss security issues.
 
 An analogy can be made to who you allow into your house. Would you maintain a block list of people that cannot come to your house? Likely not. You would in fact only allow inside your house friends and family, which is equivalent to an allow list. 
