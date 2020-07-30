@@ -178,7 +178,7 @@ exports.init = async () => {
   }
 
   var error = null;
-	var result = null;
+  var result = null;
   try {
     result = await con.queryPromise(sql);
   } catch(err) {
