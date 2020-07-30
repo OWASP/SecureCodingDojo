@@ -176,8 +176,17 @@ exports.init = async () => {
     sql = "SELECT count(*) as count FROM sqlite_master WHERE type='table' AND name = 'users'";
     dbSetup = "sql/dbsetup.sqlite.sql";
   }
-  let result = await con.queryPromise(sql);
-  var setupNeeded = (MYSQL_CONFIG === null && result.length>0 && result[0].count===0) || (MYSQL_CONFIG !== null && err !== null);
+
+  var error = null;
+	var result = null;
+  try {
+    result = await con.queryPromise(sql);
+  } catch(err) {
+    console.log(err)
+    error = err;
+  }
+
+  var setupNeeded = (MYSQL_CONFIG === null && result.length>0 && result[0].count===0) || (MYSQL_CONFIG !== null && error !== null);
 
 
   if (setupNeeded){
