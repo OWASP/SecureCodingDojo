@@ -107,6 +107,7 @@ app.directive("highlightCode", ['$http','$anchorScroll', function($http, $anchor
             if(response != null && response.data != null){
                 //init definitions
                 let text = response.data;
+                text = text.replace(/\/\*.+\*\//sg,"");
                 text = replaceTags(text);
                 
                 if(scope.q && scope.q.lineToHighlight){
