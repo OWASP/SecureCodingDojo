@@ -34,7 +34,7 @@
     "node-truncate": "^0.1.0",
     "open-iconic": "^1.1.1",
     "passport": "^0.3.2",
-    "passport-google-oauth20": "^1.0.0",
+    "passport-google-oauth20": "^2.0.0",
     "passport-ldapauth": "^2.1.4",
     "passport-local": "^1.0.0",
     "passport-saml": "^0.33.0",
