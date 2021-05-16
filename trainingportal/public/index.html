@@ -35,26 +35,31 @@ body {
 .section{    
     padding-left: 75px;
     margin: 0px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-right: 75px;
-    min-height: 300px;
 }
 
 
-#about {
+#banner {
   color: #fff; 
+  padding-left: 75px;
+  margin: 0px;
+  padding-right: 75px;
+  min-height: 300px;
   background-size:cover;
   background-image: linear-gradient(
     rgba(0, 0, 0, 0.5),
     rgba(0, 0, 0, 0.5) 
   ), url('/public/banner.jpg')
 }
-#blocks {color: #fff; background-color: black;}
+#attacks-and-blocks {color: #fff; background-color: black;}
     
 .transparent {
     background-color: transparent;
 }
 
-#attacks{
+#goal{
     color: #fff;
     background: darkred; /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(darkred, black); /* For Safari 5.1 to 6.0 */
@@ -62,6 +67,7 @@ body {
     background: -moz-linear-gradient(darkred, black); /* For Firefox 3.6 to 15 */
     background: linear-gradient(darkred, black); /* Standard syntax */
 }
+
 #rules{
     color: #fff;
     background: darkred; /* For browsers that do not support gradients */
@@ -75,22 +81,14 @@ body {
 <body ng-app="homeApp" ng-controller="homeCtrl">
 
 
-<nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+<nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
   <a class="navbar-brand" href="#">Secure Coding Dojo</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/#attacks">Attacks</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/#blocks">Blocks</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/#rules">Rules</a>
-      </li>
+      
     </ul>
 
     <ul class="navbar-nav">
@@ -107,7 +105,7 @@ body {
 
 
 
-<div id="about" class="jumbotron jumbotron-fluid transparent section">
+<div id="banner" class="jumbotron jumbotron-fluid transparent">
   <div class="container-fluid">
     <h1 class="display-3">Welcome to the &lt;Secure Coding Dojo/&gt;</h1>
     <p class="lead">Hackers are looking for holes in your software. 
@@ -117,23 +115,49 @@ body {
   </div>
 </div>
 
-
-<div id="attacks" class="jumbotron jumbotron-fluid transparent section">
+<div id="goal" class="jumbotron jumbotron-fluid transparent section pt-5">
   <div class="container-fluid">
-    <h1 class="display-6">Attacks</h1>
-    <p class="lead">In order to know how to defend you must first learn what you need to defend against. </p>
-    <p class="lead">Attacks on software are conducted by taking advantage of software weaknesses or misconfigurations. 
-        The most dangerous software weaknesses are known as the SANS Top 25.  </p>
-    <p class="lead">To advance your training you will have to complete challenges that involve identifying and attacking SANS Top 25 weaknesses. 
-        This will help you get into the attacker mindset and 'put your hacker hat on'. </p>
-    <p class="lead">Thinking like an attacker will help you avoid vulnerabilities when designing software, a process known as 'Threat Modeling'.
-        It will also help you test your code for vulnerabilities once the software has been built. </p>
+    <h1 class="display-6">Goal</h1>
+    <p class="lead">You are not expected to have any knowledge of software security going in. All you need is programming knowledge.</p>
+
+    <p class="lead">After you complete the training you should have a good understanding of software security aspects. 
+      However only training by itself will not be sufficient to make your software secure. 
+      Safeguards such as changes to development processes and security tools will also be necessary. 
+    </p>
+
+    <p class="lead">
+      The goal of the Dojo is to be the first step in your journey towards becoming 
+      a safer developer. 
+      It also aims to enact cultural changes and a secure mindset within organizations whether they are schools or companies. 
+    </p>
+
+    <p class="lead">
+      The training is intended to be fun and easy to achieve. 
+      It's just like in martial arts but aims to make you a <b>Secure Coding Ninja</b>. Are you ready to get your Black Belt? 
+    </p>
+
+    <p class="lead">
+      Read more about how it works below.
+    </p>
+
   </div>
 </div>
 
-<div id="blocks" class="jumbotron jumbotron-fluid transparent section">
+
+<div id="attacks-and-blocks" class="jumbotron jumbotron-fluid transparent section">
   <div class="container-fluid">
-    <h1 class="display-6">Blocks</h1>
+
+    <h1 class="display-6">Attacks</h1>
+
+    <p class="lead">In order to know how to defend you must first learn what you need to defend against. </p>
+    <p class="lead">Attacks on software are conducted by taking advantage of software weaknesses or misconfigurations. </p>
+    <p class="lead">To advance your training you will have to complete challenges that involve identifying and attacking software weaknesses. 
+        This will help you get into the attacker mindset and 'put your hacker hat on'. </p>
+    <p class="lead">Thinking like an attacker will help you avoid vulnerabilities when designing software, a process known as 'Threat Modeling'.
+        It will also help you test your code for vulnerabilities once the software has been built. </p>
+
+    <h1 class="display-6 pt-3">Blocks</h1>
+
     <p class="lead">In martial arts you learn various blocking techniques. Each block defends against one or more types of attacks.</p>
     <p class="lead">In a similar way software can be defended through 'code blocks'. They are also more widely known as 'secure coding practices'. 
         Code blocks include practices like: 'allow listing user input' 
@@ -144,6 +168,7 @@ body {
   </div>
 </div>
 
+
 <div id="rules" class="jumbotron jumbotron-fluid transparent section">
   <div class="container-fluid">
     <h1 class="display-6">Rules</h1>
@@ -153,18 +178,22 @@ body {
         it has to be fully authorized. </p>
     <p class="lead">Any unauthorized testing, even when conducted for good, is a criminal offense so be sure to check you have authorization
         before you touch any applications outside this challenge.</p>
-    <p class="lead"> You are fully authorized to conduct testing on the target applications provided for the challenges, the 'Insecure Inc.' site, 
+    <p class="lead"> You are fully authorized to conduct testing on the target applications provided for the challenges, 
         however you are not authorized to conduct disruptive testing, load testing, automated scanning or intentionally alter the integrity 
         of the target applications.</p>
     <p class="lead"> You are not authorized to conduct any testing on this page, or the authenticated portion of this site, 
         try to bypass the challenges, steal challenge codes, impersonate any users or otherwise try to
         break the leaderboard application. If you happen to notice anything you get bonus points for reporting it to the organizers.</p>
 
-    <p class="lead"> Don't get too intimidated by the rules, though :), have fun and enjoy the learning experience. Sign in the top corner to get started.</p>
+    <p class="lead"> Don't get too intimidated by the rules, though :), have fun and enjoy the learning experience.</p>
+
+    <p class="lead mb-4">Sign in below to get started!</p> 
+    <a ng-repeat="prov in authProviders" class="btn btn-lg btn-primary" ng-href="{{prov.url}}">Login ({{prov.name}})</a>
+    <br><br>
   </div>
 </div>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="/public/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
 </nav>
 
