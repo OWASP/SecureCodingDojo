@@ -7,16 +7,19 @@
         Try to think how the concepts that are demonstrated in the lesson apply to your own code. 
         While examples may not match the platform or language you are familiar with, the concepts apply to any software: desktop applications, mobile applications or operating system services.
     </p>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: {{percentDone}}%" aria-valuenow="{{percentDone}}" aria-valuemin="0" aria-valuemax="100">
+        {{completionLabel}}
+        </div>
+    </div>
     <div ng-repeat="level in moduleChallengeDefinitions" style="padding-top:10px">
-        <div ng-repeat="challenge in level.challenges" ng-if="userLevel+1>=level.level" style="padding-top:5px">
+        <div ng-repeat="challenge in level.challenges" style="padding-top:5px">
             <div class="card">
                 <div class="card-header">
-                    <a class="text-dark" data-toggle="collapse" role="button" data-target="#collapse{{challenge.id}}" href="">
+                    <a class="text-light" data-toggle="collapse" role="button" data-target="#collapse{{challenge.id}}" href="">
                         {{level.name}} : {{challenge.name}} 
                         <span class="oi oi-check float-right" ng-if="challenge.passed"></span>
                         <span class="float-right" ng-if="challenge.passed">&nbsp;</span>
-                        <a ng-href="#!submitCode/{{moduleId}}/{{challenge.id}}" class="btn btn-info float-right btn-sm" ng-if="!challenge.passed" role="button"> Submit Code</a>
-                        <span class="float-right" ng-if="!challenge.passed">&nbsp;</span>
                     </a>
                 </div>
                 <div id="collapse{{challenge.id}}" class="panel-collapse collapse"  ng-class="{'show':!challenge.passed}">
@@ -47,28 +50,46 @@
                         </span>
                         <br>
 
-
-                        <h4>Play Link and Instructions</h4>
-                        <p ng-if="challenge.playLink">Navigate to the 
-                            <a ng-if="challenge.playLink.indexOf('http')===0" ng-href="{{challenge.playLink}}" target="_blank" rel="noopener noreferrer">play link</a>
-                            <a ng-if="challenge.playLink.indexOf('/') === 0 || challenge.playLink.indexOf('#') === 0 " ng-href="{{targetUrl}}{{challenge.playLink}}" target="_blank" rel="noopener noreferrer">play link</a>
-                        . </p>
-                        <p ng-if="!challenge.playLink">
-                            The play link has been provided to you when solving the previous challenge. 
-                            If you have missed it read the challenge description carefully and try to figure out what it is.
-                        </p>
-                        <p>Once you were able to complete the challenge you can generate a code which you can submit above.</p>
-                        
-                        <span ng-if="challenge.solution" >
-                        <h4>
-                            Solution
-                        </h4>
-                        <p>
-                            If you get stuck you can use the button below for help, but don't give up yet, read the challenge description and tips carefully.                            
-                        </p>
-                        <a ng-href="#!solution/{{challenge.id}}" class="btn btn-success btn-sm" role="button">View Solution</a>
+                        <span ng-if="userLevel+1<level.level">
+                            <div class="alert alert-secondary">You cannot play this challenge yet</div>
                         </span>
+                        <span ng-if="userLevel+1>=level.level">
 
+                            <h4>Play Link and Instructions</h4>
+                            <p ng-if="challenge.mission">
+                                <code> <strong>Mission:</strong>  {{challenge.mission}} </code>
+                            </p>
+                            <span ng-if="challenge.playLink">
+                                <p>
+                                    Click the button below to access the play link. 
+                                </p> 
+                                <a ng-if="challenge.playLink.indexOf('http')===0" 
+                                    ng-href="{{challenge.playLink}}" target="_blank" rel="noopener noreferrer" class="btn btn-warning btn-sm">Play</a>
+                                <a ng-if="challenge.playLink.indexOf('/') === 0 || challenge.playLink.indexOf('#') === 0 " 
+                                    ng-href="{{targetUrl}}{{challenge.playLink}}" target="_blank" rel="noopener noreferrer" class="btn btn-warning btn-sm">Play</a>
+                                <br/><br/>
+                            </span>
+                            <p ng-if="!challenge.playLink">
+                                The play link has been provided to you when solving the previous challenge. 
+                                If you have missed it read the challenge description carefully and try to figure out what it is.
+                            </p>
+                            <span ng-if="!challenge.passed">
+                                <p>
+                                    Once you were able to complete the challenge you can generate a code which you can submit below.
+                                </p>
+                                <a ng-href="#!submitCode/{{moduleId}}/{{challenge.id}}" class="btn btn-info btn-sm" role="button"> Submit Code</a>
+                            </span>
+                            <span ng-if="challenge.solution" >
+                            <br/><br/>
+                            <h4>
+                                Solution
+                            </h4>
+                            <p>
+                                If you get stuck you can use the button below for help, but don't give up yet, read the challenge description and tips carefully.                            
+                            </p>
+                            <a ng-href="#!solution/{{challenge.id}}" class="btn btn-success btn-sm" role="button">View Solution</a>
+                            </span>
+                        </span>
                     </div>
                 </div>
             </div>
