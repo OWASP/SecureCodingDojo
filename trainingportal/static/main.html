@@ -9,6 +9,8 @@
 <script src="public/angular-route/angular-route.min.js"></script>
 <script src="public/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="public/highlightjs/highlight.pack.min.js"></script>
+<script src="public/canvas-confetti/dist/confetti.browser.js"></script>
+
 
 <script src="static/main-app.js"></script>
 <script src="static/dataSvc.js"></script>
@@ -25,7 +27,7 @@
 
 <link href="/public/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="/public/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet">
-<link href="public/highlightjs/styles/darkula.css" rel="stylesheet">
+<link href="/public/highlightjs/styles/darkula.css" rel="stylesheet">
 
 <script>
     window.localStorage.setItem('XSRF_TOKEN','%XSRF_TOKEN%');
@@ -45,7 +47,7 @@
 
     <div ng-app="challengesApp" ng-controller="mainCtrl">
         
-        <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
             <a class="navbar-brand" href="#!">Secure Coding Dojo</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -54,7 +56,7 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="navbar-item" ng-class="{ active: isActive('/')}"><a class="nav-link" href="#!">Lessons</a></li>
                     <li class="navbar-item" ng-class="{ active: isActive('/codeBlocks')}"><a class="nav-link" href="#!codeBlocks/inputAllowListing">Code Blocks</a></li>
-                    <li class="navbar-item" ng-class="{ active: isActive('/leaderboard')}"><a class="nav-link" href="#!leaderboard">Leaderboard</a></li>
+                    <li class="navbar-item" ng-class="{ active: isActive('/leaderboard')}"><a class="nav-link" href="#!leaderboard">Team Results</a></li>
                     <li class="navbar-item" ng-class="{ active: isActive('/activity')}"><a class="nav-link" href="#!activity">Activity</a></li>
                     <li class="navbar-item" ng-class="{ active: isActive('/dashboard')}"><a class="nav-link"href="#!dashboard">Dashboard</a></li>
                     <li class="navbar-item" ng-class="{ active: isActive('/report')}"><a class="nav-link" href="#!report">Report</a></li>
