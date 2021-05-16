@@ -1,12 +1,15 @@
 <div class="container" ng-app="challengesApp" ng-controller="leaderboardCtrl" ng-init="init()">   
     <form autocomplete="off">
-        <label for="teamListChoice">Select a team to see member status.</label>
-        <input list="teamList" id="teamListChoice" name="teamListChoice" class="custom-select" 
-            ng-model="teamListChoice" ng-change="onTeamChange()"
-            placeholder="Start typing to search existing teams"/>
-        <datalist id="teamList">
+        <label for="teamListChoice">Select a team to see member status: </label>
+        <select id="teamListChoice" name="teamListChoice"  ng-model="teamListChoice" class="form-select" aria-label="Team selector" ng-change="onTeamChange()">
             <option ng-repeat="teamInfo in teamStatList" value="{{$index}}">{{teamInfo.teamName}} ({{teamInfo.playerCount}})</option>
-        </datalist>
+        </select>
+        <label for="teamListTimeRange">Select a time range:</label>
+        <select id="teamListTimeRange" ng-model="teamListTimeRange" name="teamListTimeRange" class="form-select" aria-label="Time range selector" ng-change="onTeamChange()">
+            <option value="-1" selected>All Time</option>
+            <option value="7">Last Week</option>
+            <option value="30">Last 30 Days</option>
+        </select>
     </form>
     <br>
     <br>
