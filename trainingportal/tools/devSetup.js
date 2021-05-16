@@ -19,7 +19,8 @@ async function setup(){
 
         util.log("Unlocking all challenges for 'dojouser'");
         let user = await db.getPromise(db.getUser,"Local_dojouser");
-        await challengeUtil.passChallenges("blackBelt",user);
+        await challengeUtil.passChallenges("securityCodeReviewMaster",user,["codereview101_indirectReferences"]);
+        await challengeUtil.passChallenges("blackBelt",user,["cwe502"]);
 
     } catch (error) {
         console.error(error);
