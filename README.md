@@ -4,18 +4,18 @@ While it comes with its own vulnerable training application (the Insecure.Inc we
 The strength of the platform is its extensibility and the integration with the commonly used development collaboration platform Slack.
 The training portal can be easily setup in the cloud and instructions for AWS Elastic Beanstalk setup are available below.
 
-Be sure to also check the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki) for more details on deploying and installing the Dojo.
+Be sure to also check the [wiki](https://github.com/OWASP/SecureCodingDojo/wiki) for more details on deploying and installing the Dojo.
 
 # Demo
 
-Download the [demo](https://github.com/trendmicro/SecureCodingDojo/blob/master/demo/Secure%20Coding%20Dojo%20Demo.mp4) to get a look and feel of the training portal and the Insecure.Inc application.
+Download the [demo](https://github.com/OWASP/SecureCodingDojo/blob/master/demo/Secure%20Coding%20Dojo%20Demo.mp4) to get a look and feel of the training portal and the Insecure.Inc application.
 
 Also take a look in /screenshots
 ![Alt text](/screenshots/frontpage.png?raw=true "Secure Coding Dojo Training Portal Front Page")
 
 # Try it
 
-The following steps will get you the basic configuration for the Dojo. For advanced configuration and integrations check the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Deploying-with-Docker)
+The following steps will get you the basic configuration for the Dojo. For advanced configuration and integrations check the [wiki](https://github.com/OWASP/SecureCodingDojo/wiki/Deploying-with-Docker)
 
 - Install Docker latest version.
 - Git clone the repository
@@ -57,10 +57,10 @@ Insecure.Inc
 
 # Development Environment Setup Instructions
 Training portal 
-- More details on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Development-Setup-for-Training-Portal)
+- More details on the [wiki](https://github.com/OWASP/SecureCodingDojo/wiki/Development-Setup-for-Training-Portal)
 
 Insecure.inc 
-- More details on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Development-Setup-for-Insecure.Inc)
+- More details on the [wiki](https://github.com/OWASP/SecureCodingDojo/wiki/Development-Setup-for-Insecure.Inc)
 
 # Building
 Training portal
@@ -72,11 +72,11 @@ Insecure.Inc
 
 # Hosting Insecure.Inc
 
-Check out the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Running-Insecure.Inc).
+Check out the [wiki](https://github.com/OWASP/SecureCodingDojo/wiki/Running-Insecure.Inc).
 
 # Deploying the Training Portal 
 
-More info on the [wiki](https://github.com/trendmicro/SecureCodingDojo/wiki/Running-the-training-portal).
+More info on the [wiki](https://github.com/OWASP/SecureCodingDojo/wiki/Running-the-training-portal).
 
 # Slack Setup Instructions
 You will need to create a Slack app for authentication.
