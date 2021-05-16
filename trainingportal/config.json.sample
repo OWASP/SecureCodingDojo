@@ -21,6 +21,8 @@
     "googleClientId" : "YOUR_GOOGLE_CLIENT_ID",
     "slackClientId" : "YOUR_SLACK_CLIENT_ID",
     "slackTeamId" : "YOUR_SLACK_TEAM_ID",
+    "slackTokenURL": "https://<your-enterprise-workspace>.slack.com/api/oauth.access",
+    "slackAuthorizationURL": "https://<your-enterprise-workspace>.slack.com/oauth/authorize"
 
     "encGoogleClientSecret":"//use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption",
     "encSlackClientSecret":"//use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption",
@@ -46,6 +48,7 @@
     },
 
    
-    "encBadgrToken" : "//configure to enable Badgr.io integration to issue Open Badges for challenge completion; see https://api.badgr.io"
+    "encBadgrToken" : "//configure to enable Badgr.io integration to issue Open Badges for challenge completion; see https://api.badgr.io",
+    "defaultTeam" : "<Optional use this team name to register all new participants to a particular team>"
 
 }
