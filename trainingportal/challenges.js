@@ -179,31 +179,24 @@ exports.getChallengeDefinitionsForUser = async (user, moduleId) => {
     if(util.isNullOrUndefined(moduleId)) return [];    
     if(util.isNullOrUndefined(modules[moduleId])) return [];
 
-    var permittedLevel = await exports.getUserLevelForModule(user, moduleId) + 1;
-
     var modulePath = getModulePath(moduleId);
     var moduleDefinitions = getDefinifionsForModule(moduleId);
 
     for(let level of moduleDefinitions){
-        if (permittedLevel >= level.level) {
-            for(let challenge of level.challenges) {
-                //update the play link if it exists
-                if (!util.isNullOrUndefined(config.playLinks)) {
-                    var playLink = config.playLinks[challenge.id];
-                    if (!util.isNullOrUndefined(playLink)) {
-                        challenge.playLink = playLink;
-                    }
-                    var description = challenge.description;
-                    if(!util.isNullOrUndefined(description) && description.indexOf(modulePath) === -1){
-                        challenge.description = path.join(modulePath, description);
-                    }
+        for(let challenge of level.challenges) {
+            //update the play link if it exists
+            if (!util.isNullOrUndefined(config.playLinks)) {
+                var playLink = config.playLinks[challenge.id];
+                if (!util.isNullOrUndefined(playLink)) {
+                    challenge.playLink = playLink;
+                }
+                var description = challenge.description;
+                if(!util.isNullOrUndefined(description) && description.indexOf(modulePath) === -1){
+                    challenge.description = path.join(modulePath, description);
                 }
             }
-            returnChallenges.push(level);
         }
-        else {
-            returnChallenges.push({ "level": level.level, "name": level.name, "challenges": [] });
-        }
+        returnChallenges.push(level);
     }
         
     return returnChallenges;
@@ -276,6 +269,55 @@ exports.verifyModuleCompletion = async (user, moduleId) => {
     }
 
     return false;
+}
+
+/**
+ * Retrieves a code to verify completion of the level
+ * @param {Badge} badge 
+ */
+exports.getBadgeCode = (badge, user) => {
+    let module = modules[badge.moduleId];
+
+    if(util.isNullOrUndefined(module) || util.isNullOrUndefined(module.badgeInfo)) return null;
+
+    let info = {
+        badgeInfo: module.badgeInfo,
+        givenName: user.givenName,
+        familyName: user.familyName,
+        completion: badge.timestamp,
+        idHash: crypto.createHash('sha256').update(user.id+masterSalt).digest('hex').substr(0,10)
+    }
+
+    let infoStr = JSON.stringify(info);
+    let buf = Buffer.from(infoStr);
+    let encoded = buf.toString('base64');
+
+    let integrity = crypto.createHash('sha256').update(encoded+masterSalt).digest('base64');
+   
+    let code = `${encoded}.${integrity}`;
+    return encodeURIComponent(code);
+}
+
+/**
+ * Verifies a badge code and returns parsed info
+ * @param {Base64} badgeCode 
+ */
+exports.verifyBadgeCode = (badgeCode) => {
+    urlDecoded = decodeURIComponent(badgeCode);
+    let parts = urlDecoded.split(".");
+    if(parts.length !== 2) return null;
+    //verify the hash matches
+    let vfHash = crypto.createHash('sha256').update(parts[0]+masterSalt).digest('base64');
+    if(vfHash !== parts[1]) return null;
+    try {
+        let decoded = Buffer.from(parts[0],"Base64").toString();
+        let parsed = JSON.parse(decoded);
+        return parsed;
+    } catch {
+        
+    }
+
+    return null;
 }
 
 /**
@@ -401,12 +443,13 @@ module.exports.insertChallengeEntry = async (user,curChallengeObj, moduleId) => 
     module.exports.badgrCall(curChallengeObj.badgrInfo,user);
     let isModuleComplete = await module.exports.verifyModuleCompletion(user,moduleId);
     //check to see if the user levelled up
+    curChallengeObj.moduleComplete = isModuleComplete;
     if(isModuleComplete){
         util.log(`User has solved the challenge ${curChallengeObj.name} and completed the module!`, user);
         //issue badgr badge if enabled for module
         module.exports.badgrCall(modules[moduleId].badgrInfo,user);    
         return {
-                "message":"Congratulations you solved the challenge and completed the module!",
+                "message":"Congratulations you solved the challenge and completed the module! You can now get your badge of completion.",
                 "data":curChallengeObj
             }
     }

@@ -32,6 +32,9 @@ var config = util.getConfig();
 const challenges = require(path.join(__dirname, 'challenges'));
 const report = require(path.join(__dirname, 'report'));
 var mainHtml = fs.readFileSync(path.join(__dirname, 'static/main.html'),'utf8');
+const badge = require(path.join(__dirname, 'badge'));
+var badgeHtml = fs.readFileSync(path.join(__dirname, 'static/badge.html'),'utf8');
+
 
 
 //INIT
@@ -54,6 +57,7 @@ app.use('/public/bootstrap/dist/css/bootstrap.min.css',express.static(
 app.use('/public/bootstrap',express.static(path.join(__dirname, 'node_modules/bootstrap')));
 app.use('/public/open-iconic',express.static(path.join(__dirname, 'node_modules/open-iconic')));
 app.use('/public/highlightjs',express.static(path.join(__dirname, 'node_modules/highlightjs')));
+app.use('/public/canvas-confetti',express.static(path.join(__dirname, 'node_modules/canvas-confetti')));
 
 app.use('/public',express.static(path.join(__dirname, 'public')));
 
@@ -178,6 +182,43 @@ app.get("/public/authFailure",(req,res) => {
     res.send('Unable to login');
 });
 
+app.get("/public/badge/:code",async(req,res) => {
+  var code = req.params.code;
+  
+  if(util.isNullOrUndefined(code)){
+    return util.apiResponse(req, res, 400, "Invalid request."); 
+  }
+
+  let parsed = challenges.verifyBadgeCode(code);
+  if(util.isNullOrUndefined(parsed)){
+    return util.apiResponse(req, res, 400, "Invalid code."); 
+  }
+    
+  let imgSrc = `/public/badge/${encodeURIComponent(code)}/image.png`
+  let html = badgeHtml;
+  html = html.replace(/BADGE_IMG_SRC/g, imgSrc);
+  html = html.replace("BADGE_URL", config.dojoUrl+req.url);
+  res.send(html);
+});
+
+
+app.get("/public/badge/:code/image.png",async(req,res) => {
+  var code = req.params.code;
+  
+  if(util.isNullOrUndefined(code)){
+    return util.apiResponse(req, res, 400, "Invalid request."); 
+  }
+
+  let parsed = challenges.verifyBadgeCode(code);
+  if(util.isNullOrUndefined(parsed)){
+    return util.apiResponse(req, res, 400, "Invalid code."); 
+  }
+
+  let buffer = await badge.drawBadge(parsed);
+  res.set("Content-Type", "image/png");
+  res.send(buffer);
+});
+
 app.get('/logout', auth.logout);
 
 app.get('/main', (req, res) => {
@@ -263,8 +304,12 @@ app.get('/api/user', (req, res) => {
 
 app.get('/api/user/badges', async (req, res) => {
   let badges = await db.fetchBadges(req.user.id);
+  for(let badge of badges){
+    badge.code = challenges.getBadgeCode(badge,req.user);
+  }
   res.send(badges);
 });
+
 
 //allows updating the current user team
 app.post('/api/user/team',  (req, res) => {
@@ -335,20 +380,40 @@ app.get('/api/teams',  (req, res) => {
 
 //get the team members
 app.get('/api/teams/:teamId/badges', async (req, res) => {
-  var teamId = req.params.teamId;
-  if(util.isNullOrUndefined(teamId) || validator.isAlphanumeric(teamId) == false){
+  let teamId = req.params.teamId;
+
+  if(util.isNullOrUndefined(teamId) || (validator.isAlphanumeric(teamId) === false && teamId !== "*")){
     return util.apiResponse(req, res, 400, "Invalid team id."); 
   }
-  let result = await db.getTeamMembersByBadges(teamId);
+
+  let days = null;
+  if(req.query.days){
+    days = parseInt(req.query.days);
+    if(isNaN(days)){
+      return util.apiResponse(req, res, 400, "Invalid days."); 
+    }
+  }
+
+  let result = await db.getTeamMembersByBadges(teamId, days);
+
   res.send(result);
 });
 
 
 var returnListWithChallengeNames = function(res,list){
   var challengeNames = challenges.getChallengeNames();
-  list.forEach(function(item){
-    item.challengeName = challengeNames[item.challengeId];
-  });
+
+  for(let i = list.length-1; i>=0; i--){
+    let item = list[i];
+    let chName = challengeNames[item.challengeId];
+    if(chName){
+      item.challengeName = chName;
+    }
+    else{
+      list.splice(i,1); //remove item
+    }
+  }
+  
   res.send(list);
 };
 

@@ -1,0 +1,69 @@
+<!--
+    Copyright 2021 VMware, Inc.
+    SPDX-License-Identifier: Apache-2.0	
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Secure Coding Dojo - Black Belt Badge</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:site_name" content="Secure Coding Dojo" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="BADGE_IMG_SRC" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:url" content="BADGE_URL" />
+  <meta property="og:description"  
+  content="The Secure Coding Dojo is a platform for delivering secure coding knowledge." /> 
+  <script src="/public/jquery/dist/jquery.min.js"></script>
+  <script src="/public/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/public/angular/angular.min.js"></script>
+  <link href="/public/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/public/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet">
+
+  <style>
+      body {
+          background-image: url('/public/karate.jpg');
+          background-repeat: no-repeat;
+          background-size: cover;
+          
+      }
+
+      #badgeCanvas{
+            margin: auto;
+            margin-top: 100px;
+            display: block;
+            opacity: 0.75;
+      }
+  </style>
+
+  <script>
+    function copyUrl(){
+      let url = document.getElementById("url");
+      url.style.display = "";
+      url.value = document.location.href;
+      url.select();
+      document.execCommand('copy');
+      setTimeout('url.style.display = "none"',10);
+    }
+  </script>
+
+</head>
+
+<body style="margin-top: 10px">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="/main">Secure Coding Dojo</a>
+  <ul class="navbar-nav mr-auto">
+  </ul>
+  <ul class="navbar-nav pull-right">
+    <li class="navbar-item">
+      <button class="btn btn-link nav-link" onclick="copyUrl()"> 
+        <span class="oi oi-share"></span> Copy Share Link
+      </button></li>
+  </ul>
+</nav>
+<img id="badgeCanvas" class="img-fluid" src="BADGE_IMG_SRC" alt="Badge image">
+<input type="text" style="display: none;" id="url">
+
+</body>
+</html>
