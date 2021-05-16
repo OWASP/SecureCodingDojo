@@ -2,7 +2,7 @@
     "dojoUrl" : "http://localhost:8081",
     "moduleUrls" : {
         "blackBelt":"http://localhost:8080",
-        "securityCodeReviewMaster":"https://trendmicro.github.io/SecureCodingDojo/codereview101/?fromPortal"
+        "securityCodeReviewMaster":"https://owasp.org/SecureCodingDojo/codereview101/?fromPortal"
     },
 
     "disabledModules":["secondDegreeBlackBelt","redTeam","blueTeam"],
