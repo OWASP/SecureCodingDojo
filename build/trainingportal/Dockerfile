@@ -1,14 +1,22 @@
-FROM node:lts-jessie
-RUN apt-get -y upgrade
-RUN echo "deb http://ftp.us.debian.org/debian jessie main contrib" >> /etc/apt/sources.list
-RUN  rm -rf /var/lib/apt/lists/* && \
-    apt-get update --fix-missing && \
-    apt-get -y install ttf-mscorefonts-installer
+FROM node:alpine
+
+RUN apk --no-cache add --update g++ gcc libgcc libstdc++ linux-headers make jpeg-dev cairo-dev giflib-dev pango-dev
+RUN apk --no-cache add --update python3 && ln -sf python3 /usr/bin/python
+RUN apk --no-cache add msttcorefonts-installer fontconfig && \
+    update-ms-fonts && \
+    fc-cache -f
+RUN apk upgrade
 
 COPY *.DOCKER.zip /tmp
 RUN unzip -o /tmp/*.zip -d /home/node/app/
 RUN rm -f /tmp/*.zip
 COPY config.json /home/node/app/config.json
-RUN cd /home/node/app && npm install && npm audit fix
+WORKDIR /home/node/app
+
+RUN npm install -g npm
+RUN npm install -g node-gyp
+
+RUN npm install
+
 EXPOSE 8081
 ENTRYPOINT ["node","/home/node/app/server.js"]
