@@ -1,6 +1,7 @@
 var db = require('../db');
 var async = require('async');
 var assert = require('assert');
+const { resolve } = require('path');
 //Test Suite
 
 //we need reference to a global promise so the tests don't run until the test user was created
@@ -198,18 +199,38 @@ describe('db', function() {
 
     describe('#getTeamMembersByBadges(), #getModuleStats()', async () => {
         var team = null;
-        var user = null;
+        var users = [];
+        const USER_COUNT = 5;
         before(async () => {
-            await db.getPromise(db.insertUser,{accountId:"deleteMeTeamMember1",familyName:"LastTeamMember1", givenName:"AAAFirstTeamMember1"});
-            await db.getPromise(db.insertUser,{accountId:"deleteMeTeamMember2",familyName:"LastTeamMember2", givenName:"AAAFirstTeamMember2"});
-            user = await db.getPromise(db.getUser,"deleteMeTeamMember2");
 
-            await db.getPromise(db.insertTeam,[user,{name:"testTeamDeleteMe2"}]);
+            for(let i = 0; i < USER_COUNT; i++){
+                let acctId = `deleteMeTeamMember${i}`;
+                await db.getPromise(db.insertUser,{accountId:acctId,familyName:`LastTeamMember${i}`, givenName:`BadgeTeamFirstTeamMember${i}`});
+                users.push(await db.getPromise(db.getUser,acctId));
+            }
+
+            await db.getPromise(db.insertTeam,[users[1],{name:"testTeamDeleteMe2"}]);
             team = await db.getPromise(db.getTeamWithMembersByName,"testTeamDeleteMe2");
 
             await db.getConn().queryPromise("UPDATE users SET teamId = ? WHERE accountId LIKE 'deleteMeTeam%'",[team.id]);
-            
-            return db.insertBadge(user.id,"blackBelt");
+            //the fourth user is not in the team
+            await db.getConn().queryPromise("UPDATE users SET teamId = NULL WHERE accountId = 'deleteMeTeamMember3'");
+
+            //update dates
+            let now = new Date();
+            now.setDate(now.getDate()-6);
+
+            //the fifth member doesn't have a badge
+            let promise = null;
+            for(let i = 0; i < USER_COUNT-1; i++){
+                let timeStamp = now.toString();
+                promise = db.getConn().queryPromise("INSERT INTO badges (id, userId, moduleId, timestamp) VALUES (null, ?, ?, ?)",
+                [users[i].id, "blackBelt", timeStamp]);
+                await promise;
+                now.setDate(now.getDate()-20);
+            }
+
+            return promise; //last
             
         });
 
@@ -221,18 +242,59 @@ describe('db', function() {
             return promise;
         });
     
-        it('should get the team members with badges without error', async () => {
+        it('should get the team members by badges without error', async () => {
             let promise = db.getTeamMembersByBadges(team.id);
             let result = await promise;
-            assert.notEqual(result, null,"Result should not be null");
-            assert.equal(result.length, 2 ,"Result should have 2 rows");
-            
-            assert.equal(result[0].givenName,"AAAFirstTeamMember1","First entry should be 'FirstTeamMember1'");
-            assert.equal(result[0].moduleId,null,"FirstTeamMember1 should have no badges");
+            assert.notStrictEqual(result, null,"Result should not be null");
+            const EXPECTED_ROWS = 4;
+            assert.strictEqual(result.length, EXPECTED_ROWS ,`Result should have ${EXPECTED_ROWS} rows`);
 
-            assert.equal(result[1].givenName,"AAAFirstTeamMember2","Second entry should be 'FirstTeamMember2'");
-            assert.equal(result[1].moduleId,"blackBelt","FirstTeamMember2 should have the 'blackBelt' badge");
+            const EXPECTED_FIRST_NAME = "BadgeTeamFirstTeamMember4"; //BadgeTeamFirstTeamMember4 doesn't have a badge
+            assert.strictEqual(result[0].givenName,EXPECTED_FIRST_NAME,`First entry should be '${EXPECTED_FIRST_NAME}'`);
+            assert.strictEqual(result[0].moduleId,null,`${EXPECTED_FIRST_NAME} should have no badges`);
 
+            let filterWithBadge = result.filter(user => user.moduleId !== null);
+            assert.strictEqual(filterWithBadge.length,EXPECTED_ROWS-1,`Wrong amount of team users with badges`);
+
+            let filterNoBadge = result.filter(user => user.moduleId === null);
+            assert.strictEqual(filterNoBadge.length,1,`Wrong amount of team users without badges`);
+
+            return promise;
+        });
+
+        it('should get the team members by badges without error', async () => {
+            let promise = db.getTeamMembersByBadges(team.id);
+            let result = await promise;
+            assert.notStrictEqual(result, null,"Result should not be null");
+            const EXPECTED_ROWS = 4;
+            assert.strictEqual(result.length, EXPECTED_ROWS ,`Result should have ${EXPECTED_ROWS} rows`);
+
+            const EXPECTED_FIRST_NAME = "BadgeTeamFirstTeamMember4"; //BadgeTeamFirstTeamMember4 doesn't have a badge
+            assert.strictEqual(result[0].givenName,EXPECTED_FIRST_NAME,`First entry should be '${EXPECTED_FIRST_NAME}'`);
+            assert.strictEqual(result[0].moduleId,null,`${EXPECTED_FIRST_NAME} should have no badges`);
+
+            let filterWithBadge = result.filter(user => user.moduleId !== null);
+            assert.strictEqual(filterWithBadge.length,EXPECTED_ROWS-1,`Wrong amount of team users with badges`);
+
+            let filterNoBadge = result.filter(user => user.moduleId === null);
+            assert.strictEqual(filterNoBadge.length,1,`Wrong amount of team users without badges`);
+
+            return promise;
+        });
+        
+        
+        it('should get the team members by badge in the last days count', async () => {
+            let promise = db.getTeamMembersByBadges(team.id,7);
+            let result = await promise;
+
+            assert.notStrictEqual(result, null,"Result should not be null");
+            assert.strictEqual(result.length, 1 ,`Result should have 1 rows for the past 7 days`);
+
+            promise = db.getTeamMembersByBadges(team.id,30);
+            result = await promise;
+
+            assert.notStrictEqual(result, null,"Result should not be null");
+            assert.strictEqual(result.length, 2 ,`Result should have 2 rows for the past 30 days`);
 
             return promise;
         });
@@ -240,18 +302,21 @@ describe('db', function() {
         it('should get the all users with badges for a particular module id without error', async () => {
             let promise = db.getAllUsersForBadge("blackBelt");
             let result = await promise;
-            assert.notEqual(result, null,"Result should not be null");
-            assert(result.length >= 1, "Result should have at least 1 row");
-            
-            assert.equal(result[0].givenName,"AAAFirstTeamMember2","First entry should be 'AAAFirstTeamMember2'");
-            assert.equal(result[0].moduleId,"blackBelt","AAAFirstTeamMember2 should have the 'blackBelt' badge");
+            assert.notStrictEqual(result, null,"Result should not be null");
+            assert(result.length >= 1, "Result should have at least 1 row"  );
+
+            let filter = result.filter(user => user.givenName.indexOf("BadgeTeam") > -1);
+
+            assert.strictEqual(filter.length,USER_COUNT-1,`There should be at least '${USER_COUNT-1}' blackBelts`);
 
             return promise;
         });
 
         after(async () => {
-            await db.getConn().queryPromise("DELETE FROM users WHERE teamId = ?",[team.id]);
-            await db.getConn().queryPromise("DELETE FROM badges WHERE userId = ?",[user.id]);
+            for(let user of users){
+                await db.getConn().queryPromise("DELETE FROM users WHERE id = ?",[user.id]);
+                await db.getConn().queryPromise("DELETE FROM badges WHERE userId = ?",[user.id]);
+            }
             return db.getConn().queryPromise("DELETE FROM teams WHERE id = ?",[team.id]);
 
         });
