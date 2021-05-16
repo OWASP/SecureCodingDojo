@@ -1,7 +1,7 @@
 
 #### Fork SCD 
 
-Before you setup your environment, first create a fork of SCD to your personal GitHub.com account. Then, you can clone the repo and follow steps provided here: [Development Setup for Training Portal](https://github.com/trendmicro/SecureCodingDojo/wiki/Development-Setup-for-Training-Portal)
+Before you setup your environment, first create a fork of SCD to your personal GitHub.com account. Then, you can clone the repo and follow steps provided here: [Development Setup for Training Portal](https://github.com/OWASP/SecureCodingDojo/wiki/Development-Setup-for-Training-Portal)
 
 If you don't do that you won't be able to push your branch to the remote repo since you aren't added as contributor to the main SCD project. When you are done with your changes then you can open a PR from your branch to the main project.
 
