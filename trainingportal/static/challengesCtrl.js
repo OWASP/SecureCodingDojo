@@ -1,5 +1,7 @@
 app.controller("challengesCtrl", function($scope, $http, $routeParams) {
 
+    $scope.percentDone = 0;
+    $scope.completionLabel = "0/0";
     $scope.getDescriptionLink = (chId) => {
         if(chId){
             return `/challenges/descriptions/${chId}`;
@@ -28,6 +30,8 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
             if(response != null && response.data != null && Array.isArray(response.data.challenges)){
                 $scope.levelNames = {};
                 var challengeDefinitions = response.data.challenges;
+                let totalChCount = 0;
+                let passedChCount = 0;
                 if(challengeDefinitions.length >= 1){
                     //update the challenge definitions to include the current user's passed challenges
                     for(let levelId in challengeDefinitions){
@@ -41,10 +45,12 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
                         if(challenges!=null){
                             for(let ch of challenges){
                                 var passedChallenges = $scope.user.passedChallenges;
+                                totalChCount++;
                                 if(passedChallenges!=null){
                                     for(let passedCh of passedChallenges){
                                         if(ch.id===passedCh.challengeId){
                                             ch.passed = true;
+                                            passedChCount++;
                                             break;
                                         }
                                     }
@@ -56,7 +62,8 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
                 $scope.targetUrl = response.data.targetUrl;
                 $scope.moduleChallengeDefinitions = challengeDefinitions;
 
-
+                $scope.percentDone = passedChCount/totalChCount * 100;
+                $scope.completionLabel = `${passedChCount}/${totalChCount}`;
             }
             else{
                 $scope.challengesAvailable = false;
