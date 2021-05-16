@@ -1,21 +1,41 @@
 {
     "securityCodeReviewMaster":{
-        "name":"Security Code Review Master",
+        "name":"Security Code Review Ninja",
         "summary":"Integrating security into code review",
         "description":"Code review is, hopefully, part of regular development practices for any organization. Adding security elements to code review is the most effective measure in preventing vulnerabilities, even before the first commit.",
+        "description2":"Includes 6 lessons. Estimated duration 15 minutes.",
         "skipMasterSalt":true,
+        "badgeInfo":{
+            "line1":"Security",
+            "line2":"Code Review",
+            "line3":"Ninja",
+            "bg":"purple"
+        },
         "requiredModules":[]
     },
     "blackBelt":{
         "name":"Black Belt",
         "summary":"Common software security flaws",
         "description":"This module is based on the SANS Top 25 - Most Dangerous Software Flaws. Lessons are entry level difficulty aimed at introducing the concepts of vulnerability, exploit and software defense.",
+        "description2":"Includes 22 lessons. Estimated duration 4 hours.",
+        "badgeInfo":{
+            "line1":"Secure Coding",
+            "line2":"Black Belt",
+            "line3":"",
+            "bg":"black"
+        },
         "requiredModules":[]
     },
     "secondDegreeBlackBelt":{
         "name":"Second Degree Black Belt",
         "summary":"Cloud software exploitation techniques",
         "description":"Have some fun with this Capture the Flag module which is based on OWASP Top 10 (v2017). Your goal is to take down the cloud applications used in a worldwide malware campaign.",
+        "badgeInfo":{
+            "line1":"Secure Coding",
+            "line2":"2nd Degree",
+            "line3":"Black Belt",
+            "bg":"darkred"
+        },
         "requiredModules":["blackBelt"]
     },
     "redTeam":{
