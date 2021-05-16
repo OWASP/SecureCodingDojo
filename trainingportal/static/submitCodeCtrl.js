@@ -1,8 +1,18 @@
 app.controller("submitCodeCtrl", function($scope, $http, $routeParams) {
     
+   
     //reload the challenge page	
     $("#codeBlocksModal").on("hidden.bs.modal", function () {	
-        window.location=`#!/challenges/${$routeParams.moduleId}`;
+        if($scope.moduleComplete){
+            $scope.moduleComplete = false;//reset
+            window.location=`#!/`;
+            let interval = 1000;
+            setTimeout($scope.throwConfetti, 100);
+            for(let i=1; i<3; i++) setTimeout($scope.throwConfetti, i * interval);
+        }
+        else{
+            window.location=`#!/challenges/${$routeParams.moduleId}`;   
+        }
     });	
 
 
@@ -51,7 +61,12 @@ app.controller("submitCodeCtrl", function($scope, $http, $routeParams) {
                     }
                     $scope.challengeCodeBlocks = challengeCodeBlocks;
                     
+
                     $('#codeBlocksModal').modal('show');
+
+                    if(challenge.moduleComplete){
+                        $scope.moduleComplete = true;
+                    }
                     
                 }
                 else{

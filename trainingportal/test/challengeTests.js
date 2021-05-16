@@ -21,6 +21,7 @@ const crypto = require('crypto');
 const db = require('../db');
 const util = require('../util');
 var challenges = require('../challenges');
+const { info } = require('console');
 var badgrCount = 0;
 
 //mock the badgr call
@@ -156,7 +157,48 @@ describe('challengeTests', function() {
         });
     });
 
+    describe('#getBadgeCode(),verifyBadgeCode',  () => {
+        it('should generate correct badge code',  () => {
+            
+            let badgeCode = challenges.getBadgeCode({id:26,
+                  moduleId:'blackBelt',
+                  timestamp:'Thu Feb 11 2021 22:43:31 GMT-0500 (Eastern Standard Time)',
+                  userId:92
+              }, user);
+              //verify badge code
+              assert.notEqual(null, badgeCode, "badge code should not be null")
+              let uriDecoded = decodeURIComponent(badgeCode);
+              let parts = uriDecoded.split(".");
+              assert.equal(2,parts.length,"badge code should be split by .");
+              //verify the hash matches
+              let infoHash = crypto.createHash('sha256').update(parts[0]+masterSalt).digest('base64');
+              assert.equal(infoHash, parts[1]);
+              let decoded = Buffer.from(parts[0],"Base64").toString();
+              let parsed = JSON.parse(decoded);
+              assert.notEqual(null, parsed.badgeInfo, "code.info.badgeInfo should not be null")
+              assert.notEqual(null, parsed.givenName, "code.info.givenName should not be null")
+              assert.notEqual(null, parsed.familyName, "code.info.firstName should not be null")
+  
+        });
 
+        it('should verify correct badge code',  () => {
+        
+            let parsed = challenges.verifyBadgeCode("eyJiYWRnZUluZm8iOnsibGluZTEiOiJTZWN1cmUgQ29kaW5nIiwibGluZTIiOiJCbGFjayBCZWx0IiwiYmciOiJibGFjayJ9LCJnaXZlbk5hbWUiOiJGaXJzdExldmVsVXAiLCJmYW1pbHlOYW1lIjoiTGFzdExldmVsVXAiLCJjb21wbGV0aW9uIjoiVGh1IEZlYiAxMSAyMDIxIDIyOjQzOjMxIEdNVC0wNTAwIChFYXN0ZXJuIFN0YW5kYXJkIFRpbWUpIiwiaWRIYXNoIjoiOGQyN2JhMzdjNSJ9.309a1/l6E5rEE1IZ9P1Z/1MAUE+MbqbX19VIZ2+jp54=");
+            
+            assert.notEqual(null, parsed.badgeInfo, "code.info.badgeInfo should not be null")
+            assert.notEqual(null, parsed.givenName, "code.info.givenName should not be null")
+            assert.notEqual(null, parsed.familyName, "code.info.firstName should not be null")
+
+        });
+
+        it('should return null on wrong hash',  () => {
+        
+            let parsed = challenges.verifyBadgeCode("eyJiYWRnZUluZm8iOnsibGluZTEiOiJTZWN1cmUgQ29kaW5nIiwibGluZTIiOiJCbGFjayBCZWx0IiwiYmciOiJibGFjayJ9LCJnaXZlbk5hbWUiOiJGaXJzdExldmVsVXAiLCJmYW1pbHlOYW1lIjoiTGFzdExldmVsVXAiLCJjb21wbGV0aW9uIjoiVGh1IEZlYiAxMSAyMDIxIDIyOjQzOjMxIEdNVC0wNTAwIChFYXN0ZXJuIFN0YW5kYXJkIFRpbWUpIiwiaWRIYXNoIjoiOGQyN2JhMzdjNSJ9.XYZ");
+            
+            assert.equal(null, parsed, "Expected null on wrong code")
+
+        });
+    });
 
     describe('#apiChallengeCode', async () => {
         var user = null;
