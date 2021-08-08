@@ -9,3 +9,4 @@ allowedAccounts.json
 *.db
 *.npm
 runCustomTestScripts.sh
+*.lock
