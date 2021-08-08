@@ -103,7 +103,11 @@ app.get("/public/privacy",(req,res) => {
 app.get("/public/providers",(req,res) => {
   var providers = [];
   if("googleClientId" in config) providers.push({"name":"Google","url":"/public/provider/google"});
-  if("slackClientId" in config) providers.push({"name":"Slack","url":"/public/provider/slack"});
+  if("slackClientId" in config){
+    var slackLoginDisplayName = "Slack";
+    if("slackLoginName" in config) slackLoginDisplayName = config.slackLoginName;
+    providers.push({"name":slackLoginDisplayName,"url":"/public/provider/slack"});
+  }
   if("samlCert" in config) providers.push({"name":"ADFS SAML","url":"/public/provider/saml"});
   if("localUsersPath" in config) providers.push({"name":"Local","url":"/public/provider/local"});
   if("ldapServer" in config) providers.push({"name":"LDAP","url":"/public/provider/ldap"});
