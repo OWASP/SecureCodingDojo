@@ -1,6 +1,6 @@
 app.controller("challengesCtrl", function($scope, $http, $routeParams) {
 
-    $scope.percentDone = 0;
+    $scope.percentDone = 75;
     $scope.completionLabel = "0/0";
     $scope.getDescriptionLink = (chId) => {
         if(chId){

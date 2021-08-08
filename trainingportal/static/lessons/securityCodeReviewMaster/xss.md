@@ -1,4 +1,4 @@
-JavaScript’s biggest foe is Cross-Site Scripting (abbreviated XSS). This type of attack occurs when a web page accepts input containing JavaScript from an untrusted source and renders it in the context of the page. It’s practically a form of code injection.
+JavaScript’s biggest foe is Cross-Site Scripting (abbreviated XSS). This type of attack occurs when a web page accepts input containing JavaScript from an untrusted source and renders it in the context of the page. It’s a form of code injection.
 
 The target is the user identity. The server relies on authentication tokens and credentials to identify the user. The malicious script will extract this information from the browser and send it to a site the attacker controls (hence the name Cross-Site Scripting). The script makes it into the page via a specially crafted URL sent to the user (reflected XSS ) or by saving it into the site as an article or message (stored XSS).
 

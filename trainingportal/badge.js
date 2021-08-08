@@ -1,7 +1,3 @@
-/*
-    Copyright 2021 VMware, Inc.
-    SPDX-License-Identifier: Apache-2.0	
-*/
 const { createCanvas, loadImage } = require('canvas')
 const path = require('path');
 

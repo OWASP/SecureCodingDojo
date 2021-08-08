@@ -11,7 +11,6 @@ dataSvc.factory('dataSvc', ['$rootScope','$http',
             //create modules for leaderboard
             $rootScope.lbModules = {};
             Object.assign($rootScope.lbModules, $rootScope.modules);
-            $rootScope.lbModules["none"] = {"name":"N/A"};
             $rootScope.reportModule = Object.keys($rootScope.modules)[0];
         });
 

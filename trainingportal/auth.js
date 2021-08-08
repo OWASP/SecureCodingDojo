@@ -292,10 +292,8 @@ let processAuthCallback = async(profileId, givenName, familyName, email, cb) => 
             let teamId = null;
             if(config.defaultTeam){
                 let team = await db.getPromise(db.getTeamWithMembersByName, config.defaultTeam);
-                if(team){
-                    teamId = team.id;
-                }
-                else{
+                teamId = team.id;
+                if(teamId === null){
                     util.log("WARN: Could not find configured default team. Defaulting to no assigned team");
                 }
             }

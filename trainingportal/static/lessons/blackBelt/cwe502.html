@@ -1,0 +1,106 @@
+<p>
+  The purpose of this challenge is to demonstrate the MITRE weakness: CWE 502 - Deserialization of Untrusted Data. 
+</p>
+<ul>
+<li>MITRE CWE 502 - Deserialization of Untrusted Data
+    <blockquote>
+    <i>The application deserializes untrusted data without sufficiently verifying that the resulting data will be valid.</i>    
+    <footer>From MITRE <a target="_blank" rel="noopener noreferrer" href="https://cwe.mitre.org/data/definitions/502.html">CWE 502</a></footer>
+    </blockquote>
+</li>
+</ul>
+
+<p>In a deserialization vulnerability, the application accepts a serialized object as input, loads it into memory and operates on it. The potential damage depends entirely upon how the object is used.  For example, if code 
+in your application were to call System.exec() on data stored in the object, then an attacker-controlled command
+would execute on your host, under your application's privileges.   As it turns out, 
+<a targer="_blank" rel="noopener noreferer" href="https://nvd.nist.gov/vuln/search/results?form_type=Basic&results_type=overview&query=deserialization&search_type=all">some third party libraries automatically do this for you!</a>  
+
+<p>
+The combination of using unpatched 3rd party components and the unsafe use of deserialization can be fatal. 
+The scariest part is that 3rd party components don't even need to be directly used. 
+They only need to be on the class path of the vulnerable application and they'll automatically execute commands
+included in the unsafe object.
+</p>
+
+<p>Even products that accepted the serialized object, deserialized it into an in-memory object, and ran into an 
+exception when casting into a different, expected class were vulnerable - this short time window is enough to 
+consistently create the malicious object and get its payload executed. 
+</p>
+
+<p>This vulnerability was originally reported against the Java-native deserialization vulnerability, but it
+doesn't end there.  Your application can have this vulnerability if it does <em>any</em> deserialization - even 
+custom deserialization of JSON objects.  If your object allows input (user input, remote systems, files or 
+database entries that anyone else may have written, etc) to arbirarially control which class your code will 
+instantiate, then you probably have a desearialization vulnerability.
+</p>
+
+<ul>
+<li>OWASP Top 10 - Using Components with Known Vulnerabilities
+    <blockquote>
+    <i>Prevalence of this issue is very widespread. Component-heavy development patterns 
+        can lead to development teams not even understanding which components they use in their application or API, much less keeping them up to date.</i>    
+    <footer>From OWASP <a target="_blank" rel="noopener noreferrer" href="https://www.owasp.org/index.php/Top_10-2017_A9-Using_Components_with_Known_Vulnerabilities">A9-Using Components with Known Vulnerabilities</a></footer>
+    </blockquote>
+</li>
+</ul>
+
+
+<ul>
+<li>OWASP Top 10 - Insecure Deserialization
+    <blockquote>
+    <i>The impact of deserialization flaws cannot be overstated. These flaws can lead to remote code execution attacks, one of the most serious attacks possible.</i>
+    <footer>From OWASP <a target="_blank" rel="noopener noreferrer" href="https://www.owasp.org/index.php/Top_10-2017_A8-Insecure_Deserialization">A8-Insecure Deserialization</a></footer>
+</blockquote>
+</li>
+</ul>
+<br></br>
+
+<h4>Exploiting Deserialization</h4>
+<p>
+The Open Source project <a href="https://github.com/frohoff/ysoserial">ysoserial</a> provides an open source tool to test and exploit Insecure Deserialization flaws in Java apps.
+</p>
+<br></br>
+
+<h4>About the Challenge</h4>
+<p>
+The website allows an administration page to process Java objects. 
+The password to the administration site is one of the most commonly used (see brute force challenge)
+</p>
+
+
+<p>
+Once you are logged in you will notice that the application unsafely accepts serialized objects. 
+In addition there's a <code>commons-collections-3.1.jar</code>   in <code>/webapp/WEB-INF/lib.</code></p>
+<p>
+Here's a code snippet:
+</p>
+<pre class="pre-scrollable">
+String b64String = request.getParameter("object");
+String filename = request.getParameter("filename");
+//..
+byte [] objBytes = Base64.decodeBase64(b64String);
+//..
+ByteArrayInputStream in = new ByteArrayInputStream(objBytes);
+ObjectInputStream is = new ObjectInputStream(in);
+Object cat = is.readObject(); 
+</pre>
+
+<p>
+You can use ysoserial to generate a base64 encoded gadget.
+The challenge is to create a file using a file name of your choosing in the 'tmp' folder of the server.
+</p>
+<p>
+If you download ysoserial from a Docker Hub be advised that the output of docker run may get corrupted and the attack won't work.
+</p>
+<p>
+To get around this issue override the "entrypoint" like this
+</p>
+<pre class="pre-scrollable">
+docker run --entrypoint sh -it frohoff/ysoserial
+</pre>
+<p>
+Then run the command:
+</p>
+<pre class="pre-scrollable">
+java -jar ysoserial.jar CommonsCollections6 'touch /tmp/YOUR_FILE_NAME'|base64
+</pre>
