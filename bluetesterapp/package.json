@@ -15,7 +15,7 @@
     "form-data": "^3.0.0",
     "htmlencode": "0.0.4",
     "ip-regex": "^4.1.0",
-    "is-valid-domain": "0.0.19",
+    "is-valid-domain": "0.1.2",
     "qs": "^6.9.4"
   }
 }
