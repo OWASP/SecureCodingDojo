@@ -9,7 +9,7 @@
   "author": "salsalama",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.3",
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.6",
     "form-data": "^3.0.0",
