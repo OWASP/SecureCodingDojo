@@ -1,3 +1,4 @@
+#run only once
 echo "Setting up basic dojo config for the first time"
 mkdir ~/dojofiles
 echo "export DATA_DIR=~/dojofiles" >> ~/.bash_profile
