@@ -30,7 +30,7 @@ You can either update/remove those or use the --local to set that information on
 
 `git config --local user.name "NICKNAME_HERE"`
 
-There is also some settigs on your account that you can set. First go to https://github.com/settings/emails
+There is also some settings on your account that you can set. First go to https://github.com/settings/emails
 
 Check `Keep my email addresses private` and `Block command line pushes that expose my email` options to increase the security and privacy of your account.
 
