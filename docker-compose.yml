@@ -3,6 +3,7 @@ version: "3.7"
 services:
   insecureinc:
     image: securecodingdojo/insecure.inc
+    restart: "no" #change to always if you want the image to auto start
     ports:
       - "8080:8080"
     networks:
@@ -12,6 +13,7 @@ services:
 
   trainingportal:
     image: securecodingdojo/trainingportal
+    restart: "no" #change to always if you want the image to auto start
     ports:
       - "8081:8081"
     volumes:
