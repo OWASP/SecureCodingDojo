@@ -43,6 +43,6 @@ Sometimes developers change the code to ignore invalid certificates because the 
 
 What if you must be able to work with the user data in clear text? For example, you operate an online shopping or other financial site and must store the user’s name, address and credit card information to process transactions.
 
-In these cases encryption can be effective, provided that the attackers cannot retrieve the encryption keys. If encryption keys are stored on a separate server, also known as a Key Management Server or Service (KMS), then attackers must obtain access to this server as well, which complicates the attack. However if the encryption keys are stored in the same database, decrypting the data is trivial. This scenario is similar to _hiding a key under the mat_.
+In these cases encryption can be effective, provided that the attackers cannot retrieve the encryption keys. If encryption keys are stored on a separate server, also known as a Key Management Server or Service (KMS), then attackers must obtain access to this server as well, which complicates the attack. However, if the encryption keys are stored alongside the encrypted data - such as both in the same database, or both in the same folder on the file system decrypting the data is trivial. This scenario is similar to _hiding a key under the mat_.
 
 In this challenge you must examine three different examples and spot the code that correctly implements the code practices outlined below.

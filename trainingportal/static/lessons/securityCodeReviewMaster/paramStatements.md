@@ -22,8 +22,8 @@ The SQL query being passed to the database would end up being two different comm
 
     SELECT * FROM users WHERE last_name = ''; DROP TABLE users; --'
 
-While **input validation** would prevent the attack we can't use it for the last name since that would mean we would prevent single quotes in user names. 
-But there's a more elegant solution: `don't use concatenation`. Instead pass the variables to the command processor separate from the SQL query, thus effectively neutralizing characters that may influence the query. This approach is done using Parameterized Statements and it also works to mitigate other Injection scenarios such as injection in the OS command processor.
+While **input validation** would prevent the attack, we can't use it for the last name since that would mean we would prevent single quotes in user names. 
+There's a more elegant solution: `don't use concatenation`. Instead, pass the variables to the command processor separate from the SQL query, neutralizing characters that may influence the query. This is done using Parameterized Statements, and it also works to mitigate other Injection scenarios such as injection in the OS command processor.
 
 Below is the same code using parameterized statements in Java.
 
