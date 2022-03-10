@@ -29,7 +29,21 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/darcula.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic-bootstrap.min.css" crossorigin="anonymous">
-
+  <style>
+      .uppercase-transform{
+          text-transform: uppercase;
+          display: inline-block;
+          font-weight: bold;
+          background: #3D5AFE;
+          border-radius: 2px;
+      }
+      .question{
+          background: #424242;
+          padding: 5px;
+          color: white;
+          border-radius: 5px;
+      }
+  </style>
 </head>
 
 <body style="margin-top: 4rem;" class="bg-secondary" ng-app="codeReview101" ng-controller="codeReview101Ctrl">
@@ -87,7 +101,7 @@
             <p class="card-text" markdown-it ng-include="def.categoryDetails"></p>
             <span ng-repeat="q in def.questions">
                 <hr>
-                <p class="card-text"><u>Q{{$index+1}}: {{q.question}}</u></p>
+                <p class="card-text question"> Q{{$index+1}}: <span ng-bind-html="q.question | highlight:'prevents' "></span></p>
                 <div class="row">
                     <div class="col-6" ng-repeat="s in q.snippets">
                         <!--CODE SNIPPETS-->

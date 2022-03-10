@@ -169,3 +169,11 @@ app.directive("highlightCode", ['$http','$anchorScroll', function($http, $anchor
         link: linkFunc
     } 
 }])
+
+app.filter('highlight', function() {
+    return function(text, phrase) {
+        return phrase
+            ? text.replace(new RegExp('('+phrase+')', 'gi'), '<span class="uppercase-transform">$1</span>')
+            : text;
+    };
+});
