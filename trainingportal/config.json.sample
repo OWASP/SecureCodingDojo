@@ -23,6 +23,7 @@
     "slackTeamId" : "YOUR_SLACK_TEAM_ID",
     "slackTokenURL": "https://<your-enterprise-workspace>.slack.com/api/oauth.access",
     "slackAuthorizationURL": "https://<your-enterprise-workspace>.slack.com/oauth/authorize"
+    "slackLoginName": "YOUR_SLACK_WORKSPACE_NAME, example: 'AwesomeCompany Slack'"
 
     "encGoogleClientSecret":"//use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption",
     "encSlackClientSecret":"//use encryptConfigs.js to generate, configure environment variables ENC_KEY and ENC_KEY_IV with a secure crypto key to be used for encryption",
