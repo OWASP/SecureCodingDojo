@@ -198,10 +198,10 @@ app.get("/public/badge/:code",async(req,res) => {
     return util.apiResponse(req, res, 400, "Invalid code."); 
   }
     
-  let imgSrc = `/public/badge/${encodeURIComponent(code)}/image.png`
+  let imgSrc = `${config.dojoUrl}/public/badge/${encodeURIComponent(code)}/image.png`
   let html = badgeHtml;
   html = html.replace(/BADGE_IMG_SRC/g, imgSrc);
-  html = html.replace("BADGE_URL", config.dojoUrl+req.url);
+  html = html.replace(/BADGE_URL/g, config.dojoUrl+req.url);
   res.send(html);
 });
 
