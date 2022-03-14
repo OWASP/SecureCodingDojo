@@ -232,7 +232,7 @@ Which is the best way to ensure the integrity of software updates?
 </blockquote>
 <%=getOption(answers,"q10","1","Hash the software with a SHA-2 hash and ship the hash along with the update package.")%>
 <%=getOption(answers,"q10","2","Encrypt the software with a hard-coded password and download over unencrypted connection to improve performance.")%>
-<%=getOption(answers,"q10","3","Download the valid over trusted, secure connection. Reject invalid download server certificates.")%>
+<%=getOption(answers,"q10","3","Download over a trusted, secure connection. Reject invalid download server certificates.")%>
 <%=getOption(answers,"q10","4","Digitally sign the code using a certificate issued by a public trusted CA. Download over valid TLS.")%>
 <hr>
 
