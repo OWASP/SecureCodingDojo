@@ -151,8 +151,8 @@ Which of the options below best describes how to identify a user's role?
 What is the best method to avoid Authorization Bypass issues?
 </blockquote>
 <%=getOption(answers,"q3","1","Conduct static analysis scans regularly.")%>
-<%=getOption(answers,"q3","2","Refactor the code so functionality is separated according to roles.")%>
-<%=getOption(answers,"q3","3","Check the roles in each Servlet and perfom code reviews to ensure logical issues are avoided.")%>
+<%=getOption(answers,"q3","2","Refactor the code so resources are separated according to roles. Determine access to resources based on the user role.")%>
+<%=getOption(answers,"q3","3","Check the roles in each privileged section with if statements and perfom code reviews to ensure logical issues are avoided.")%>
 <%=getOption(answers,"q3","4","Using platform authentication.")%>
 <hr>
 
@@ -163,8 +163,8 @@ What is the best way to store user passwords in a database?
 </blockquote>
 <%=getOption(answers,"q4","1","Use pbkdf2 with 10000 iterations and a salt.")%>
 <%=getOption(answers,"q4","2","Use asymetric encryption, RSA with 2048 key size.")%>
-<%=getOption(answers,"q4","3","Hash the passwords with a SHA-2 algorithm")%>
-<%=getOption(answers,"q4","4","Use pbkdf5")%>
+<%=getOption(answers,"q4","3","Hash the passwords with a SHA-2 algorithm.")%>
+<%=getOption(answers,"q4","4","Use MD5.")%>
 <hr>
 
 
@@ -194,12 +194,12 @@ Which communication protocol would you select for your server configuration ?
 <h4>Question 7</h4>
 <%=getIncorrectMessage(solutions,answers,"q7")%><%=getSuccessMessage(solutions,answers,"q7")%>
 <blockquote>
-You are implementing a TLS client but your test server has a self signed certificate and the connection fails.
+You are implementing a TLS client, but your test server has a self-signed certificate and the connection fails.
 </blockquote>
-<%=getOption(answers,"q7","1","Import the self signed certificate in your Java trusted store.")%>
+<%=getOption(answers,"q7","1","Import the self-signed certificate in your trusted certificate store.")%>
 <%=getOption(answers,"q7","2","Disable certificate validation the connection is encrypted anyways.")%>
 <%=getOption(answers,"q7","3","Disable certificate validation for the time being. Re-enable it back at the end of the sprint.")%>
-<%=getOption(answers,"q7","4","Make no changes to your dev environment. Use a http:// url.")%>
+<%=getOption(answers,"q7","4","Make no changes to your dev environment. Use a `http://` URL.")%>
 <hr>
 
 
@@ -217,7 +217,7 @@ The following snippets represent an account lockout mechanism. Which of the foll
 <h4>Question 9</h4>
 <%=getIncorrectMessage(solutions,answers,"q9")%><%=getSuccessMessage(solutions,answers,"q9")%>
 <blockquote>
-Which of the following statements about account lockout is against security best practices.?
+Which of the following statements about account lockout is against security best practices?
 </blockquote>
 <%=getOption(answers,"q9","1","Two factor authentication prevents password guessing attacks.")%>
 <%=getOption(answers,"q9","2","It is the user's responsibility to configure a strong password. Brute force attacks won't work against a good password")%>
@@ -233,7 +233,7 @@ Which is the best way to ensure the integrity of software updates?
 <%=getOption(answers,"q10","1","Hash the software with a SHA-2 hash and ship the hash along with the update package.")%>
 <%=getOption(answers,"q10","2","Encrypt the software with a hard-coded password and download over unencrypted connection to improve performance.")%>
 <%=getOption(answers,"q10","3","Download the valid over trusted, secure connection. Reject invalid download server certificates.")%>
-<%=getOption(answers,"q10","4","Create a SHA-2 digest for the updates and encrypt the hash with the software provider private key. Download over valid TLS.")%>
+<%=getOption(answers,"q10","4","Digitally sign the code using a certificate issued by a public trusted CA. Download over valid TLS.")%>
 <hr>
 
 <h4>Question 11</h4>
@@ -249,7 +249,7 @@ Which of the snippets below has a security issue?
 <h4>Question 12</h4>
 <%=getIncorrectMessage(solutions,answers,"q12")%><%=getSuccessMessage(solutions,answers,"q12")%>
 <blockquote>
-Which of the following is the most effective countermeasure against XSS
+Which of the following is the most effective defense against XSS?
 </blockquote>
 <%=getOption(answers,"q12","1","Input Allow Listing")%>
 <%=getOption(answers,"q12","2","Sanitize output by removing tag symbols.")%>
@@ -302,7 +302,7 @@ Which of the following best prevents path traversal?
 <%=getOption(answers,"q16","1","Input Allow Listing")%>
 <%=getOption(answers,"q16","2","Sanitizing ../ from the user input.")%>
 <%=getOption(answers,"q16","3","Indirect object references.")%>
-<%=getOption(answers,"q16","4","Hardening linux file permissions.")%>
+<%=getOption(answers,"q16","4","Hardening Linux file permissions.")%>
 <hr>
 
 <h4>Question 17</h4>
@@ -320,9 +320,9 @@ Can XML files be used to "steal" data from system where the application is runni
 <%=getIncorrectMessage(solutions,answers,"q18")%><%=getSuccessMessage(solutions,answers,"q18")%>
 <blockquote>
 The support team has created a maintenance bash script that they have provided to many customers. 
-There are requests to productize the script so customers no longer have to SSH into the boxes. Which approach should you take?
+There are requests to productize the script, so customers no longer have to SSH into the boxes. Which approach should you take?
 </blockquote>
-<%=getOption(answers,"q18","1","Rewrite the script in Java. The application should be self contained and should not depend on shell scripts. This may take longer but it's cleaner.")%>
+<%=getOption(answers,"q18","1","Rewrite the script in Java. The application should be self-contained and should not depend on shell scripts. This may take longer but it's cleaner.")%>
 <%=getOption(answers,"q18","2","Cleanup the script, then create a servlet that takes the user input then launches the script on demand and shows the output to the user.")%>
 <%=getOption(answers,"q18","3","Implement input sanitization and filter out hazardous characters. Call the script but run with limited privileges. This will save time and it's safe.")%>
 <%=getOption(answers,"q18","4","Implement a web shell where customers can pass in any shell command they want as root.")%>
@@ -332,18 +332,18 @@ There are requests to productize the script so customers no longer have to SSH i
 <h4>Question 19</h4>
 <%=getIncorrectMessage(solutions,answers,"q19")%><%=getSuccessMessage(solutions,answers,"q19")%>
 <blockquote>
-Your application needs to run an operation with elevated privileges. Which approach should you take.
+Your application needs to run an operation with elevated privileges. Which approach should you take?
 </blockquote>
 <%=getOption(answers,"q19","1","Run the application as root always. This will make sure there are no issues.")%>
 <%=getOption(answers,"q19","2","Ask the user to execute the operation via SSH.")%>
-<%=getOption(answers,"q19","3","Use setuid flags on an program dedicated to the priviled operation only.")%>
+<%=getOption(answers,"q19","3","Use setuid flags on a program dedicated to the privileged operation only.")%>
 <%=getOption(answers,"q19","4","Add the application user to /etc/sudoers. Execute the critical functionality as a bash script that you launch with sudo.")%>
 <hr>
 
 <h4>Question 20</h4>
 <%=getIncorrectMessage(solutions,answers,"q20")%><%=getSuccessMessage(solutions,answers,"q20")%>
 <blockquote>
-You have to implement a feature that allows users to download server logs. What is the best way to implement it?
+You must implement a feature that allows users to download server logs. What is the best way to implement it?
 </blockquote>
 <%=getOption(answers,"q20","1","Change the permissions on a WebContent directory to allow tomcat to write to it. Configure the service to use that as a log directory.")%>
 <%=getOption(answers,"q20","2","Create a servlet that gets the files and sends them on the response, based on a file id. Check that the user is admin.")%>
@@ -399,12 +399,12 @@ How can you best protect against buffer overflow?
 <h4>Question 25</h4>
 <%=getIncorrectMessage(solutions,answers,"q25")%><%=getSuccessMessage(solutions,answers,"q25")%>
 <blockquote>
-What type of SANS 25 vulnerability was Heartbleed?
+Which is the best way to prevent Deserialization attacks?
 </blockquote>
-<%=getOption(answers,"q25","1","Reliance on Untrusted Inputs in a Security Decision")%>
-<%=getOption(answers,"q25","2","Format string injection.")%>
-<%=getOption(answers,"q25","3","Memory leakage")%>
-<%=getOption(answers,"q25","4","Incorrect calculation of buffer size")%>
+<%=getOption(answers,"q25","1","Use a safe data parser. Only accept input from trusted sources. Keep libraries up to date.")%>
+<%=getOption(answers,"q25","2","Input validation and output encoding.")%>
+<%=getOption(answers,"q25","3","Use only JSON, XML and YML formats.")%>
+<%=getOption(answers,"q25","4","Use base64 encoded objects.")%>
 <hr>
 
 <input type="submit" id="submit" class="btn" value="Submit">
