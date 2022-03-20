@@ -38,7 +38,7 @@
     "passport-google-oauth20": "^1.0.0",
     "passport-ldapauth": "^2.1.4",
     "passport-local": "^1.0.0",
-    "passport-saml": "^2.2.0",
+    "passport-saml": "^3.2.1",
     "passport-slack": "0.0.7",
     "popper": "^1.0.1",
     "sqlite3": "^4.2.0",
