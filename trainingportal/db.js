@@ -197,7 +197,7 @@ exports.init = async () => {
       util.log("Database tables created");
     } catch (error) {
       util.log("Database setup failed");
-      console.log(err);
+      console.log(error);
     }
     
   }
