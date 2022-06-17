@@ -92,12 +92,12 @@ If the user enters a sufficiently long value they will hit the instruction area 
 <br>
 <h4>About the Challenge</h4>
 <p>
-  You found a page which is asking for a master password. 
+  You found a page which is asking for a password. 
   It seems to be compiling and executing a C++ program under the covers. Bypass the simple hard-coded authentication below to solve the challenge.
 </p>
 <p><strong>Tip:</strong> To send <code>\0</code> (a null byte) in a url use <code>%00</code>.</p>
 <p>
-  Also here is the master password program code. See if you can spot the problems.
+  Also here is the password program code. See if you can spot the problems.
 </p>
 
 <pre>
@@ -105,13 +105,13 @@ If the user enters a sufficiently long value they will hit the instruction area 
 #include &lt;string.h&gt;
 
 int main(){
-	char MASTER_PASSWORD[9]="**REMOVED**";
+	char PASSWORD[9]="**REMOVED**";
 	char userPass[9];
 
-	printf("Enter the master password:\n");
+	printf("Enter the password:\n");
 	<mark>gets</mark>(userPass);
 
-	if(strcmp(userPass,MASTER_PASSWORD)==0){
+	if(strcmp(userPass,PASSWORD)==0){
 		printf("PASSWORD VERIFIED\n");
 	}
 	else{

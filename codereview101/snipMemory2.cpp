@@ -1,8 +1,8 @@
 
-printf("Enter the master password:\n");
+printf("Enter the password:\n");
 gets(userPass);
 
-if(strncmp(userPass,MASTER_PASSWORD,9)==0){
+if(strncmp(userPass,PASSWORD,9)==0){
     printf("PASSWORD VERIFIED\n");
 }
 

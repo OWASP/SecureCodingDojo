@@ -211,7 +211,7 @@ public class Util {
 		return unlockCode;
 	}
 	
-	public static String executeMasterPwd(String userPwd,String sourceFile) throws IOException, InterruptedException{
+	public static String executePwdProg(String userPwd,String sourceFile) throws IOException, InterruptedException{
 		StringBuilder consoleOutput = new StringBuilder();
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		InputStream is = classLoader.getResourceAsStream(sourceFile);

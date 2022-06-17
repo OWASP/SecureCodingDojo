@@ -23,25 +23,25 @@ For example if <code>userInput="%s"</code> and the code is <pre>printf(userInput
 <br>
 <h4>About the Challenge</h4>
 <p>
-  The developers of the master password app have implemented the safe function <mark>fgets</mark> so buffer overflow is no longer possible. 
+  The developers of the password app have implemented the safe function <mark>fgets</mark> so buffer overflow is no longer possible. 
   However you may be able to obtain data from the memory. You don't need to get the password, just some memory values are enough to pass the challenge.
 </p>
 
 <p>
-  Here is the master password program code. See if you can spot the problems.
+  Here is the password program code. See if you can spot the problems.
 </p>
 <pre>
 #include &lt;stdio.h&gt;
 #include &lt;string.h&gt;
 
 int main(){
-	char MASTER_PASSWORD[9]="***EDITED***";
+	char PASSWORD[9]="***EDITED***";
 	char userPass[9];
 	int x=2;
-	printf("Enter the master password:\n");
+	printf("Enter the password:\n");
 	fgets(userPass,9,stdin);
 
-	if(strcmp(userPass,MASTER_PASSWORD)==0){
+	if(strcmp(userPass,PASSWORD)==0){
 		printf("PASSWORD VERIFIED\n");
 	}
 	else{

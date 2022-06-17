@@ -2,10 +2,10 @@
 
 char userPass[5];
 
-printf("Enter the master password:\n");
+printf("Enter the password:\n");
 fgets(userPass,9,stdin);
 
-if(strncmp(userPass,MASTER_PASSWORD,BUFFER_SIZE)==0){
+if(strncmp(userPass,PASSWORD,BUFFER_SIZE)==0){
     printf("PASSWORD VERIFIED\n");
 }
 
