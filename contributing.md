@@ -12,7 +12,7 @@ https://gist.github.com/CristinaSolana/1885435
 
 Then, update your fork with the latest changes as such: 
 
-git push origin master
+git push origin main
 
 Happy Secure Coding!
 

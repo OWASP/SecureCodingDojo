@@ -8,7 +8,7 @@
 
 String GET_YOUR_CODE_MARKUP = String.format("<h3>You got it!</h3><a class='btn btn-success' href='%s'>Get your code</a><br><br>", Constants.SECRET_PAGE);
 String successMessage = "";
-String OUTPUT_PRE_FORMAT = "<label>Master password command output:</label><pre>%s</pre>";
+String OUTPUT_PRE_FORMAT = "<label>Password command output:</label><pre>%s</pre>";
 String outputPre = "";
 String alert = "";
 String pwd = request.getParameter("pwd");
@@ -20,7 +20,7 @@ if(pwd!=null){
 		alert="<div class='alert alert-danger'>Password too long! No shellcode please.</div>";
 	}
 	else{
-		String output = Util.executeMasterPwd(pwd, "insecure/inc/bufferoverflow.c");
+		String output = Util.executePwdProg(pwd, "insecure/inc/bufferoverflow.c");
 		outputPre = String.format(OUTPUT_PRE_FORMAT,output);
 		if(outputPre.contains("PASSWORD VERIFIED") && pwd.indexOf("59563376") ==-1){
 			session.setAttribute(Constants.CHALLENGE_ID,"cwe120");
@@ -73,10 +73,10 @@ if(pwd!=null){
 </nav>
 <div class="container"> 
 <h3>Welcome to cwe120 - Buffer Overflow!</h3>
-<p>Enter the master password to unlock the challenge.</p>
+<p>Enter the password to unlock the challenge.</p>
 <form action="cwe120.jsp" autocomplete="off" method="GET">
 <div class="form-group">
-  <label for="pwd">Master Password:</label>
+  <label for="pwd">Password:</label>
   <input type="password" class="form-control" id="pwd" name="pwd">
 </div>
 <input type="submit" id="submit" class="btn" value="Submit">

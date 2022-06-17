@@ -8,7 +8,7 @@ Be sure to also check the [wiki](https://github.com/OWASP/SecureCodingDojo/wiki)
 
 # Demo
 
-Download the [demo](https://github.com/OWASP/SecureCodingDojo/blob/master/demo/Secure%20Coding%20Dojo%20Demo.mp4) to get a look and feel of the training portal and the Insecure.Inc application.
+Download the [demo](https://github.com/OWASP/SecureCodingDojo/blob/main/demo/Secure%20Coding%20Dojo%20Demo.mp4) to get a look and feel of the training portal and the Insecure.Inc application.
 
 Also take a look in /screenshots
 ![Alt text](/screenshots/frontpage.png?raw=true "Secure Coding Dojo Training Portal Front Page")
