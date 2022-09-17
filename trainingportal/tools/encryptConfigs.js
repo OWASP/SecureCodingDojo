@@ -14,10 +14,10 @@ const fs = require('fs');
 console.log("======= config.json ==========");
 
 //You can use the following script from  when you update your key to a new value
-console.log(`"encDbPass":${aescrypto.encrypt(dbPass)}",`);
-console.log(`"encSlackClientSecret":${aescrypto.encrypt(slackSecret)}",`);
-console.log(`"encGoogleClientSecret":${aescrypto.encrypt(googleSecret)}",`);
-console.log(`"encBadgrToken":${aescrypto.encrypt(badgrToken)}",`);
+console.log(`"encDbPass": "${aescrypto.encrypt(dbPass)}",`);
+console.log(`"encSlackClientSecret": "${aescrypto.encrypt(slackSecret)}",`);
+console.log(`"encGoogleClientSecret": "${aescrypto.encrypt(googleSecret)}",`);
+console.log(`"encBadgrToken": "${aescrypto.encrypt(badgrToken)}",`);
 
 
 if(!util.isNullOrUndefined(config.samlProviderPvkFilePath)){
