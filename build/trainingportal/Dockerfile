@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:18-alpine
 
 RUN apk --no-cache add --update g++ gcc libgcc libstdc++ linux-headers make jpeg-dev cairo-dev giflib-dev pango-dev
 RUN apk --no-cache add --update python3 && ln -sf python3 /usr/bin/python
@@ -12,9 +12,6 @@ RUN unzip -o /tmp/*.zip -d /home/node/app/
 RUN rm -f /tmp/*.zip
 COPY config.json /home/node/app/config.json
 WORKDIR /home/node/app
-
-RUN npm install -g npm
-RUN npm install -g node-gyp
 
 RUN npm install
 
