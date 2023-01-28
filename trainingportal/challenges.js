@@ -57,8 +57,14 @@ function getModulePath(moduleId){
 }
 
 function getDefinifionsForModule(moduleId){
-    var defs = Object.freeze(require(path.join(__dirname, getModulePath(moduleId), '/definitions.json')));
-    return defs;
+
+    try {
+        var defs = Object.freeze(require(path.join(__dirname, getModulePath(moduleId), '/definitions.json')));
+        return defs;
+    } catch (error) {
+        console.log(error.message)
+    }
+    return [];
 }
 
 

@@ -267,6 +267,12 @@ app.get('/challenges/:moduleId/level', async (req, res) => {
     return util.apiResponse(req, res, 400, "Invalid module id."); 
   }
 
+  let allowed = await challenges.isPermittedModule(req.user, moduleId);
+
+  if(!allowed){
+    return util.apiResponse(req, res, 403, "Requested module id is not available."); 
+  }
+
   let userLevelForModule = await challenges.getUserLevelForModule(req.user, moduleId);
 
   res.send({"level":userLevelForModule});
