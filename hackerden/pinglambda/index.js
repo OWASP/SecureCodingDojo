@@ -4,9 +4,9 @@ const jwt = require('jsonwebtoken');
 
 exports.handler = (event, context, callback) => {
     var ssh = new SSH({
-        host: process.env.FOOBAR_SSH_HOST,
+        host: process.env.COINMINER_SSH_HOST,
         user: 'lambda',
-        pass: process.env.FOOBAR_SSH_PASS
+        pass: process.env.COINMINER_SSH_PASS
     });
 
     if(typeof event.hostname === 'undefined'){
@@ -31,7 +31,7 @@ exports.handler = (event, context, callback) => {
         return context.fail(err);
     });
     
-    console.log("Trying to connect to ec2 instance:'"+process.env.FOOBAR_SSH_HOST+"'");
+    console.log("Trying to connect to ec2 instance:'"+process.env.COINMINER_SSH_HOST+"'");
      
     ssh
     .exec('rm -fdr *')
