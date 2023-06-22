@@ -44,7 +44,7 @@ exports.parseReportCSV = (csvData) => {
   
             for(var idx2=0; idx2<teamsCount; idx2++){
               
-              if(rowMembers[idx2].length>0){
+              if(rowMembers[idx2] && rowMembers[idx2].length>0){
                 reportUsers.teamList[idx2].members.push({"name":rowMembers[idx2].trim(),"status":"Not Started"});
                 reportUsers.totalMembers++;
                
