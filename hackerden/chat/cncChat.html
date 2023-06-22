@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>Foobar Chat</title>
+  <title>Coin Miner Chat</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="cncChat.css">
@@ -19,7 +19,7 @@
   <nav class="navbar navbar-inverse">
       <div class="container-fluid">
           <div class="navbar-header">
-              <a class="navbar-brand" href="#">Foobar Chat</a>
+              <a class="navbar-brand" href="#">Coin Miner Chat</a>
           </div>
           <ul class="nav navbar-nav navbar-right">
               <li><a href="#login" data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-out"></span> Chat Login</a></li>
@@ -152,10 +152,10 @@
             
             $http.get("currentuser",window.getAjaxOpts()).then(
                 function(response){
-                    if(response && response.data && response.data.id){
+                    if(response && response.data && response.data.sub){
                         $('#loginModal').modal('hide');
                         $scope.userNameText = response.data.name;
-                        $scope.userId = response.data.id;
+                        $scope.userId = response.data.sub;
                         if(response.data.challengeCodeUrl){
                             $scope.challengeCodeUrl = response.data.challengeCodeUrl;
                         }    
