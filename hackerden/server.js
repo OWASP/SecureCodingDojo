@@ -22,8 +22,9 @@ app.get('/chat/messages.json', chatApi.getMessages)
 app.post('/code/get-code', challengeCode.validate)
 
 
-app.get('/secret.txt', function (req, res) {
-    res.send(challengeCode.getChallengeUrl("owasp2017misconfig"))
+app.get('/secret.txt',  async(req, res) => {
+    let ch = await challengeCode.getChallengeUrl("owasp2017misconfig")
+    res.send(ch)
 })
 
 
