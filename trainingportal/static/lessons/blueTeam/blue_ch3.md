@@ -3,7 +3,7 @@ Review container scanner results for a different type of vulnerability that may 
 #### Instructions for Completing the Challenge
 
 - Find the sensitive information
-- Use this information to authenticate to the Lambda funcion and sign your challenge salt
+- Use this information to authenticate to the Lambda function and sign your challenge salt
 
 ##### Tip
 To view files in the docker container you can do the following:

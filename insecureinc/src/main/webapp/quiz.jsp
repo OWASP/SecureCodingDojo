@@ -152,7 +152,7 @@ What is the best method to avoid Authorization Bypass issues?
 </blockquote>
 <%=getOption(answers,"q3","1","Conduct static analysis scans regularly.")%>
 <%=getOption(answers,"q3","2","Refactor the code so resources are separated according to roles. Determine access to resources based on the user role.")%>
-<%=getOption(answers,"q3","3","Check the roles in each privileged section with if statements and perfom code reviews to ensure logical issues are avoided.")%>
+<%=getOption(answers,"q3","3","Check the roles in each privileged section with if statements and perform code reviews to ensure logical issues are avoided.")%>
 <%=getOption(answers,"q3","4","Using platform authentication.")%>
 <hr>
 
@@ -162,7 +162,7 @@ What is the best method to avoid Authorization Bypass issues?
 What is the best way to store user passwords in a database?
 </blockquote>
 <%=getOption(answers,"q4","1","Use pbkdf2 with 10000 iterations and a salt.")%>
-<%=getOption(answers,"q4","2","Use asymetric encryption, RSA with 2048 key size.")%>
+<%=getOption(answers,"q4","2","Use asymmetric encryption, RSA with 2048 key size.")%>
 <%=getOption(answers,"q4","3","Hash the passwords with a SHA-2 algorithm.")%>
 <%=getOption(answers,"q4","4","Use MD5.")%>
 <hr>

@@ -1,4 +1,4 @@
-Use nmap to scan for open ports of the host provided at the play link below, identify applications running on each port, use Metaploit or a exploit script you find online to take advantage of the first vulnerability.
+Use nmap to scan for open ports of the host provided at the play link below, identify applications running on each port, use Metasploit or a exploit script you find online to take advantage of the first vulnerability.
 
 #### Instructions for Completing the Challenge
 
@@ -46,8 +46,8 @@ If you have Docker installed you can simply run the metasploit container image. 
 ##### Running Docker
 
 * Start Docker with: `sudo service docker start`
-* Add permissions to your userto pull and run container images: `sudo usermod -a -G docker ec2-user`
-* Logout and relogin.
+* Add permissions to your user to pull and run container images: `sudo usermod -a -G docker ec2-user`
+* Logout and re-login.
 
 ##### Running the Metasploit Image
 
@@ -79,7 +79,7 @@ If your target is running on an encrypted port then you need to enable SSL
 
 `set SSL true`
 
-Set the host IP and port for the machine running Metasploit. This machine should be publcly available and accessible over ports 4444-4450
+Set the host IP and port for the machine running Metasploit. This machine should be publicly available and accessible over ports 4444-4450
 
 `set LHOST <remote IP of Metasploit machine>`
 
@@ -120,7 +120,7 @@ Go to the project folder and install the library dependencies:
 
 `sudo gem install highline`
 
-You should be able to excute the exploit like so:
+You should be able to execute the exploit like so:
 
 `./exploit.rb {VICTIM_IP_OR_URL:VICTIM_PORT}`
 

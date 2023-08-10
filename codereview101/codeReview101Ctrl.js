@@ -56,7 +56,7 @@ app.controller("codeReview101Ctrl", function($scope, $http, $location) {
         }
     },function(errorMessage){
         console.error(errorMessage);
-        $scope.errorMessage = `An HTTP error has occured: '${errorMessage.statusText}'!`;            
+        $scope.errorMessage = `An HTTP error has occurred: '${errorMessage.statusText}'!`;            
     });
 
 

@@ -46,7 +46,7 @@ exports.foobarAuth = function(event, context) {
   https.get(process.env.CHAT_USERS_FILE, (resp) => {
       let data = '';
 
-      // A chunk of data has been recieved.
+      // A chunk of data has been received.
       resp.on('data', (chunk) => {
         data += chunk;
       });

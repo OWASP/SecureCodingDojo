@@ -18,12 +18,12 @@ But what if you still need to work with the data? For example, what if you wante
 You could transform the data in a non-reversible way. This can be done through a cryptographic operation known as hashing.
 Hashing algorithms, such as the SHA-2 class of algorithms, convert data in a way that cannot be reversed. However this doesn’t prevent one from trying a large amount of possible values in order to reach the same outcome. This is known as cracking. Cracking takes a long time and requires a lot of computing resources. Hackers maintain lists of pre-computed hashes, known as rainbow tables, in order to avoid the computing cost.
 
-The defence employed against rainbow tables is to complicate the calculation by adding a salt. A salt is a random value that is added to the data being transformed in order to alter the resulting hash.
+The defense employed against rainbow tables is to complicate the calculation by adding a salt. A salt is a random value that is added to the data being transformed in order to alter the resulting hash.
 
     "ABCDEFG" + "-32524..." -> sha256("ABCDEFG-32524...") -> 97AF3...
     original     salt
 
-Another defence against cracking is adaptive hashing. This involves re-hashing the data for a large amount of iterations, each iteration taking longer than the previous. This increases the computing time. For a single hash the time is negligible but for a cracking attack it results in millions of years. A largely adopted adaptive hashing algorithm is PBKDF2.
+Another defense against cracking is adaptive hashing. This involves re-hashing the data for a large amount of iterations, each iteration taking longer than the previous. This increases the computing time. For a single hash the time is negligible but for a cracking attack it results in millions of years. A largely adopted adaptive hashing algorithm is PBKDF2.
 
 Secure hashing may be employed for various other types of data. For example if an application needs to uniquely identify users for analytics purposes, it could construct a unique, non-reversible hash from the user name and their IP address. This process is known as **Tokenization**.
 
@@ -37,7 +37,7 @@ When a website uses clear text to communicate with its users, _man-in-the-middle
 
 Communication security protocols, indicated by `https://` URLs, prevent man-in-the-middle attacks by encrypting the transmission and verifying the identity of the two parties involved in the communication. There are many details to transmission security but one aspect that may come up during a code review is ensuring that `https://` URLs are used.
 
-Sometimes developers change the code to ignore invalid certificates because the test environment they are using does not have a valid web server certificate. This is a bad practice because it practically violates the server identity verification and allows man-in-the-middle attackers to pretend they are the target website. It is recommended to configure the development environment to trust the test certificate instead of altering the program behaviour.
+Sometimes developers change the code to ignore invalid certificates because the test environment they are using does not have a valid web server certificate. This is a bad practice because it practically violates the server identity verification and allows man-in-the-middle attackers to pretend they are the target website. It is recommended to configure the development environment to trust the test certificate instead of altering the program behavior.
 
 #####Reversible Encryption
 
