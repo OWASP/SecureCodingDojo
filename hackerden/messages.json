@@ -2,14 +2,20 @@
     "type": "userMessage",
     "user": "stinkyfish",
     "message": "aGkgdGhlcmUgYnJvdGhlcgo=",
-    "date": "6/6/2018, 5:12:36 PM"
+    "date": "2023-08-12, 3:45:02 a.m."
 }, {
     "type": "botMessage",
-    "date": "6/6/2018, 9:13:10 PM",
+    "date": "2023-08-16, 1:02:11 p.m.",
     "message": "A new bot was added: 8F47643DB6AA83075F5E71AD85E0E8B5D9C32B5A47DC173EDB54D2E7F5C88807"
 }, {
     "type": "userMessage",
     "user": "badspaghetti",
     "message": "Я поместил весь код в coinminercode bucket",
-    "date": "6/9/2018, 2:14:59 PM"
+    "date": "2023-08-19, 2:15:32 a.m."
+}, {
+    "type":"encMessage",
+    "encMess":"BhrY9djrJDVmXxLM3s407O9MpwblRWfpSrzUK1XnZdhWvxbUer5kKGe5KMjUcpdsdoFpvk27WwhegrBkoOOcXKPY2uHkqXRsfZKgP4rzmDixjHgUMb179TMhOfBGzt9vHf8p05ZCkaXOYZePw4uJzoXg/ZFXsKQaSWx0l2djm/s=",
+    "pubKey":"MIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgEIAYG3MwJKCvWbbPWQlAnIcU8KM2vRdaD03ChFepC7M/+nDlRLqFquJg08ihPeETKUD4CqN6JIaPIbwp1He/lCi395flDQW7GdZoGu2m1/eKJ0G0XxTJzL84efwJwIjLh68kFeSKWUqFFnrXhxu4MNgf1NyOvqiS4bkO2btVzCLAgMBAAE=",
+    "date":"2023-08-28, 5:14:57 p.m.",
+    "integrity":"7683fadaf7efa4549c4f9649b5093ce2f0070d9cfc8d43373a21b660c59d73ec"
 }]

@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken');
-const challengeCode = require('./challenge-code');
-const chatUsers = require('./chat/chatUsers.json');
-const crypto = require('crypto');
-
+const jwt = require('jsonwebtoken')
+const challengeCode = require('./challenge-code')
+const chatUsers = require('./chat/chatUsers.json')
+const JSEncrypt = require('nodejs-jsencrypt').default
+const crypto = require('crypto')
 let messages = require('./messages.json')
 
 authenticate = (req, resp) => {
@@ -91,13 +91,56 @@ getMessages = async(req,resp) => {
   resp.send(messages)
 }
 
+postMessage = async(req,resp) => {
+  let user = await getAuthorizedUser(req);
+  
+  if(user===null){
+    resp.status(403)
+    return resp.send("Unauthorized")
+  }
+
+  let message = JSON.parse(JSON.stringify(req.body))
+  if(message.type==='encMessage'){
+    let challengeResponse = await challengeCode.getChallengeUrl("owasp2017xss")
+    let challengeCodeUrl = challengeResponse.challengeCodeUrl
+    message = validateMessage(message, challengeCodeUrl)
+  }
+
+  messages.push(message)
+  if(messages.length>1000) messages.pop()
+  resp.send("Message received.")
+}
+
+validateMessage = (message, challengeCodeUrl) => {
+  //check integrity
+  var toHash = "<img src='https://gov.logger.good' width='0px'>"+message.pubKey;
+  var hash = crypto.createHash('sha256').update(toHash).digest('hex');
+
+  if(message.integrity===hash){
+      var encrypt = new JSEncrypt();
+      encrypt.setPublicKey(message.pubKey);
+      var re = new RegExp('.{1,40}', 'g');
+      var challengeCodeUrlParts = challengeCodeUrl.match(re);
+      var encChallengeCodeUrlParts = [];
+      challengeCodeUrlParts.forEach(part => {
+          encChallengeCodeUrlParts.push(encrypt.encrypt(part));
+      });
+      message.challengeCodeUrl = encChallengeCodeUrlParts;
+      message.nextChallenge = encrypt.encrypt("/ping");
+  }
+  else{
+      message.error = "Integrity check failed for:'"+JSON.stringify(message)+"'";
+  }
+  return message;
+}
 
 
 module.exports = {
   authenticate,
   getAuthorizedUser,
   getCurrentUser,
-  getMessages
+  getMessages,
+  postMessage
 }
 
 
