@@ -17,11 +17,11 @@ validate = async(req,resp) => {
         
         if(challengeId===null || typeof challengeId==='undefined'){
             resp.status(400)
-            return resp.send("Invalid challenge id");
+            return resp.send({"errorMessage":"Invalid challenge id"});
         }
 
         if(!req.body.codeSalt || req.body.codeSalt.length < 5){
-            return resp.send("Invalid salt");
+            return resp.send({"errorMessage":"Invalid salt"});
         }
 
         var masterSalt = "";
@@ -32,13 +32,13 @@ validate = async(req,resp) => {
         var verificationHash = crypto.createHash('sha256').update(challengeId+req.body.codeSalt+masterSalt).digest('base64');
 
         return resp.send({
-            verificationCode:verificationHash
+            "verificationCode":verificationHash
         });
 
     } catch (error) {
         console.log('Failed challenge code JWT verify');
         resp.status(400)
-        return resp.send("Invalid or expired token");
+        return resp.send({"errorMessage":"Invalid or expired token"});
     }
 
 }

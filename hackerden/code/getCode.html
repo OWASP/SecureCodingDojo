@@ -3,9 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Get Challenge Secret</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+<script src="/jquery/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
 
 <script>
 $.ajaxSetup({
@@ -43,32 +43,36 @@ function getCode(){
 }
 </script>
 </head>
-<body>
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Get Challenge Secret</a>
-    </div>
-    
-  </div>
+<body class="m-0 p-0">
+
+<div class="container-fluid m-0 p-0"> 
+
+<nav class="navbar navbar-dark bg-dark p-2">                
+    <a class="navbar-brand" href="#">Get Challenge Secret</a>
 </nav>
-<div class="container"> 
-<h1>Congratulations!!!</h1>
-<p>You solved the challenge. To validate your challenge, go to the training portal site and click the corresponding submit code button. 
-You will be given a salt which you can enter below. Then provide the resulting code on the training portal site.</p>
-<div class="form-group">
-  <label for="salt">Salt:</label>
-  <input type="text" autocomplete="off" class="form-control" id="salt" name="salt">
-</div>
-<button type="button" class="btn btn-success" onClick="getCode()">Get Code</button>
-<br><br>
-<div class="alert alert-danger" style="display:none" id="errDiv"></div>
-<div class="alert alert-info form-group form-inline" style="display:none" id="codeDiv">
-	<label for="code">The code is:</label> 
-	<input type="text" autocomplete="off" class="form-control" id="code" style="width:40%" value=""/>
-	<button type="button" class="btn btn-default" onclick="document.getElementById('code').select();document.execCommand('copy');">
-		<span class="glyphicon glyphicon-copy"></span>
-	</button>
+
+  <div class="container p-4">
+    <h1>Congratulations!!!</h1>
+    <p>You solved the challenge. To validate your challenge, go to the training portal site and click the corresponding submit code button. 
+    You will be given a salt which you can enter below. Then provide the resulting code on the training portal site.</p>
+    <form>
+      <div class="form-group">
+        <label for="salt">Salt:</label>
+        <input type="text" autocomplete="off" class="form-control" id="salt" name="salt">
+      </div>
+      <button type="button" class="btn btn-success mt-2" onClick="getCode()">Get Code</button>
+   </form>
+    <br><br>
+    <div class="alert alert-danger" style="display:none" id="errDiv"></div>
+    <div class="alert alert-info form-group form-inline" style="display:none" id="codeDiv">
+      
+    <label for="code">The code is:</label> 
+    <input type="text" autocomplete="off" class="form-control" id="code" style="width:40%" value=""/>
+    <button type="button" class="btn btn-default" onclick="document.getElementById('code').select();document.execCommand('copy');">
+      <span class="glyphicon glyphicon-copy"></span>
+    </button>
+
+  </div>
 </div>
 </div>
 </body>
