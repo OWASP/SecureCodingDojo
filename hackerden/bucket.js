@@ -1,3 +1,7 @@
+/* 
+    Copyright 2023 VMware, Inc.
+    SPDX-License-Identifier: Apache-2.0	
+*/
 listBucket = (req, res) => {
     res.setHeader('Content-type', 'text/xml');
     let responseXML = `<?xml version="1.0" encoding="UTF-8"?>

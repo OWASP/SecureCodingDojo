@@ -1,3 +1,7 @@
+/* 
+    Copyright 2023 VMware, Inc.
+    SPDX-License-Identifier: Apache-2.0	
+*/
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
  
