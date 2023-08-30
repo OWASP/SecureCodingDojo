@@ -1,3 +1,7 @@
+/* 
+    Copyright 2021 VMware, Inc.
+    SPDX-License-Identifier: Apache-2.0	
+*/
 const express = require('express')
 const bodyParser = require('body-parser');
 const path = require('path')
