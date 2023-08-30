@@ -13,28 +13,21 @@
 </p>
 <footer>From OWASP <a target="_blank" rel="noopener noreferrer" href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">A7-Cross-Site Scripting (XSS)</a></footer>
 </blockquote>
-<p>
-    For those interested in learning more about XSS you can watch the following OWASP Ottawa "Deep Dive" presentation.
-</p>
-<iframe width="300" height="169" src="https://www.youtube.com/embed/lA02ipAXPlM" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <h5>Challenge Tips and Tricks</h5>
 <ul>
-    <li>
-    Reveal the source ip of the chat users by storing a hidden image into the chat messages on that page.
+<li>
+Reveal the source ip of the chat users by storing a hidden image into the chat messages on that page.
 It must be <strong>exactly</strong> this html snippet <code>&lt;img src='https://gov.logger.good' width='0px'&gt;</code> . 
 You will find out that you can inject more than just images, but only that particular html snippet will unlock the challenge.
 </li><li>
 Analyze the source of the page carefully. You'll notice that XSS is mostly prevented by using Angular templates, except for one particular case.
 </li><li>
-There's some handy javascript functions in that page to help you out. Simply calling one of these functions from the browser console will generate the type of message you need. 
-</li><li>
 Take a look in the Network tab of your browser debugger. Some of the last entries in messages.json should be very interesting. Some messages are hidden.
 </li><li>
-Did you know that Chrome lets you copy some of the network requests as a curl command? You should be able to copy the request to put a regular message and replace the message object with the one generated from the console.
+There's some handy javascript functions in that page to help you out. Simply calling one of these functions from the browser console will generate the type of message you need. 
 </li><li>
-If you're missing <code>privKey</code> and <code>pubKey</code>, the JS Encrypt project has a handy page that can help you generate private/public key pairs to use <a target="_blank" rel="noopener noreferrer" href="http://travistidwell.com/jsencrypt/demo/index.html">here</a>. 
-Pay attention to the key names they are case sensitive.
+Did you know that your browser lets you copy some of the network requests as a curl command? You should be able to copy the request to put a regular message and replace the message object with the one generated from the console.
 </li><li>
 If your challenge code expires, simply resubmit the curl request and reload the messages. Confirm that you have a new challenge code.
 </li>

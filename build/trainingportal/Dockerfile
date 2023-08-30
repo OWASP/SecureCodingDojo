@@ -14,6 +14,7 @@ COPY config.json /home/node/app/config.json
 WORKDIR /home/node/app
 
 RUN npm install
+RUN npm install pm2@latest -g
 
 EXPOSE 8081
-ENTRYPOINT ["node","/home/node/app/server.js"]
+ENTRYPOINT ["pm2","start","/home/node/app/server.js","--no-daemon"]
