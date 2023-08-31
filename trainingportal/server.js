@@ -85,7 +85,7 @@ app.get("/",(req,res) => {
     res.redirect('/public/index.html');
 });
 
-app.get("/public/proxy.log",async(req,res) => {
+app.get("/static/proxy.log",async(req,res) => {
   var code = req.params.code;
 
   let logs = logfile;
