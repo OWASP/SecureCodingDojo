@@ -15,7 +15,7 @@ var liteDB = null;
 if(util.isNullOrUndefined(config.dbHost)){
   sqlite3 = require('sqlite3');
 
-  //use sqlite insted of mysql
+  //use sqlite instead of mysql
   var dbPath = "";
   var dbFileName = "securecodingdojo.db";
   var dataDir = util.getDataDir();

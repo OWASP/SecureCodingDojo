@@ -56,7 +56,7 @@ function getModulePath(moduleId){
     return path.join('static/lessons/', moduleId);
 }
 
-function getDefinifionsForModule(moduleId){
+function getDefinitionsForModule(moduleId){
 
     try {
         var defs = Object.freeze(require(path.join(__dirname, getModulePath(moduleId), '/definitions.json')));
@@ -74,7 +74,7 @@ function getDefinifionsForModule(moduleId){
 function init(){   
     modules = Object.freeze(loadModules());
     for(let moduleId in modules){
-        let moduleDefinitions = getDefinifionsForModule(moduleId);
+        let moduleDefinitions = getDefinitionsForModule(moduleId);
         var modulePath = getModulePath(moduleId);
         for(let level of moduleDefinitions){
             challengeDefinitions.push(level);
@@ -129,10 +129,10 @@ exports.isPermittedModule = async (user, moduleId) => {
 }
 
 /**
- * Get the user level based on the ammount of passed challenges
+ * Get the user level based on the amount of passed challenges
  */
 exports.getUserLevelForModule = async (user,moduleId) => {
-    let moduleDefinitions = getDefinifionsForModule(moduleId);
+    let moduleDefinitions = getDefinitionsForModule(moduleId);
     let passedChallenges =  await db.getPromise(db.fetchChallengeEntriesForUser,user);
     let userLevel=-1;
     for(let level of moduleDefinitions){
@@ -163,7 +163,7 @@ exports.getPermittedChallengesForUser = async (user, moduleId) => {
 
     var permittedLevel = await exports.getUserLevelForModule(user, moduleId) + 1;
 
-    var moduleDefinitions = getDefinifionsForModule(moduleId);
+    var moduleDefinitions = getDefinitionsForModule(moduleId);
 
     for(let level of moduleDefinitions){
         if (permittedLevel === level.level) {
@@ -186,7 +186,7 @@ exports.getChallengeDefinitionsForUser = async (user, moduleId) => {
     if(util.isNullOrUndefined(modules[moduleId])) return [];
 
     var modulePath = getModulePath(moduleId);
-    var moduleDefinitions = getDefinifionsForModule(moduleId);
+    var moduleDefinitions = getDefinitionsForModule(moduleId);
 
     for(let level of moduleDefinitions){
         for(let challenge of level.challenges) {
@@ -254,7 +254,7 @@ exports.getDescription = function (challengeId) {
  */
 exports.verifyModuleCompletion = async (user, moduleId) => {
     var userLevel = await exports.getUserLevelForModule(user, moduleId);
-    let moduleDefinitions = getDefinifionsForModule(moduleId);
+    let moduleDefinitions = getDefinitionsForModule(moduleId);
     var lastLevel = moduleDefinitions[moduleDefinitions.length-1];
 
     if(lastLevel.level===userLevel){

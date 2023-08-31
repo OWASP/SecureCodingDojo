@@ -94,7 +94,7 @@ In the same place you will setup your domain and authorized redirect URIs. For e
 # Local Authentication Setup Instructions
 For small teams or pre-configured images Slack or Google authentication may not be an option. For this scenario you can configure authentication working with a local flat file.
 
-Check the wiki for more informations.
+Check the wiki for more information.
 
 - Copy localUsers.json.sample to localUsers.json
 - Add the line in config.json which specifies the localUsersPath

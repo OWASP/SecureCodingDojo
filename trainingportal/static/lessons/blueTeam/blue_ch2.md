@@ -1,5 +1,5 @@
-The vulnerable image also contains a unkown vulnerability specific to the web application running on the second port.
-Configure your IPS policy include generic attacks suchs as the OWASP Top 10
+The vulnerable image also contains a unknown vulnerability specific to the web application running on the second port.
+Configure your IPS policy include generic attacks such as the OWASP Top 10
 
 Identify the IPS rules that prevent the following:
 

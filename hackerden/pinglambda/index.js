@@ -62,7 +62,7 @@ exports.handler = (event, context, callback) => {
                 var token = jwt.sign({"sub": challengeId}, process.env.SIGNER_SECRET, {expiresIn:5*60});
                 var challengeCodeUrl=process.env.CHALLENGE_CODE_URL+"#"+token;
                 resp = resp.replace(secret,challengeCodeUrl);
-                //remobve all secrets from response
+                //remove all secrets from response
                 resp = resp.replace(process.env.SECRET1,"");
                 resp = resp.replace(process.env.SECRET2,"");
                 resp = resp.replace(process.env.SECRET3,"");

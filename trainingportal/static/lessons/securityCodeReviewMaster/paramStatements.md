@@ -14,7 +14,7 @@ Let’s take a look at the following code snippet.
     Statement stmt = conn.createStatement();
     ResultSet rs = stmt.executeQuery(query);
 
-The variable lastName contains input coming from the user. It is `concatenated` to a constant SQL query string and the resulting command is passed to the database server. This means that a user entering O’Brien would cause an SQL syntax error, which is a bug. However a malicious user would take advantage of this behaviour. What would happen if the user entered something like the string below?
+The variable lastName contains input coming from the user. It is `concatenated` to a constant SQL query string and the resulting command is passed to the database server. This means that a user entering O’Brien would cause an SQL syntax error, which is a bug. However a malicious user would take advantage of this behavior. What would happen if the user entered something like the string below?
 
     '; DROP TABLE users; --
 

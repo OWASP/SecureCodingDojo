@@ -18,7 +18,7 @@ Happy Secure Coding!
 
 #### Git Config 
 
-If you use an enterprise or private GitHub account be careful with the global settings when pushing your code to GitHub.com as it might submit the username and email you had setup in organizatin when you commit your changes. Check your current settings via:
+If you use an enterprise or private GitHub account be careful with the global settings when pushing your code to GitHub.com as it might submit the username and email you had setup in organization when you commit your changes. Check your current settings via:
 
 `git config --global user.email`
 

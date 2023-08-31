@@ -13,7 +13,7 @@
 <p>In a deserialization vulnerability, the application accepts a serialized object as input, loads it into memory and operates on it. The potential damage depends entirely upon how the object is used.  For example, if code 
 in your application were to call System.exec() on data stored in the object, then an attacker-controlled command
 would execute on your host, under your application's privileges.   As it turns out, 
-<a targer="_blank" rel="noopener noreferer" href="https://nvd.nist.gov/vuln/search/results?form_type=Basic&results_type=overview&query=deserialization&search_type=all">some third party libraries automatically do this for you!</a>  
+<a target="_blank" rel="noopener noreferer" href="https://nvd.nist.gov/vuln/search/results?form_type=Basic&results_type=overview&query=deserialization&search_type=all">some third party libraries automatically do this for you!</a>  
 
 <p>
 The combination of using unpatched 3rd party components and the unsafe use of deserialization can be fatal. 
@@ -30,8 +30,8 @@ consistently create the malicious object and get its payload executed.
 <p>This vulnerability was originally reported against the Java-native deserialization vulnerability, but it
 doesn't end there.  Your application can have this vulnerability if it does <em>any</em> deserialization - even 
 custom deserialization of JSON objects.  If your object allows input (user input, remote systems, files or 
-database entries that anyone else may have written, etc) to arbirarially control which class your code will 
-instantiate, then you probably have a desearialization vulnerability.
+database entries that anyone else may have written, etc) to arbitrarily control which class your code will 
+instantiate, then you probably have a deserialization vulnerability.
 </p>
 
 <ul>
