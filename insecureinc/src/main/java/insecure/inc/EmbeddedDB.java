@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Random;
@@ -26,7 +25,6 @@ public class EmbeddedDB {
 		  
 		  PreparedStatement pstmt;
 		  Statement stmt;
-		  ResultSet rs = null;
 		  String createSQL = "create table users (usr varchar(30), pwd varchar(30))";
 		  
 		
