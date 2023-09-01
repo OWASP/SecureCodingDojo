@@ -12,6 +12,12 @@
         "owasp2017misconfig": "/static/proxy.log"
     },
 
+    "challengeParams" : {
+        "owasp2017misconfig" : {
+            "url" : "https://evil.local/sample-url"
+        }
+    },
+
     "dbHost" : "YOUR_DB_HOST",
     "dbName" : "YOUR_DB_NAME",
     "dbUser" : "YOUR_DB_USER",
