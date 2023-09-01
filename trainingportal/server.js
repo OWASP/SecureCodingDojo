@@ -91,13 +91,6 @@ app.get("/static/proxy.log",async(req,res) => {
   let logs = logfile;
   let evil_url_config = "EVIL_URL";
 
-  var result = req.url.match(/challengeDefinitions.json/);
-
-  // Do authN/authZ as for anything starting with "/static"
-  if (result) {
-    return res.status(403).end('403 Forbidden');
-  }
-
   if("challengeParams" in config && "owasp2017misconfig" in config.challengeParams && "url" in config.challengeParams.owasp2017misconfig) {
     evil_url_config = config.challengeParams.owasp2017misconfig.url;
   }
