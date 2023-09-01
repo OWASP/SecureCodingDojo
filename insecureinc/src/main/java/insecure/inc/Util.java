@@ -246,7 +246,6 @@ public class Util {
 	    stdIn.flush();
 	    stdIn.close();
 	    p.waitFor();
-	    StringBuilder sb = new StringBuilder();
 	    
 	    if(p.exitValue() == 0){
 		   reader = new BufferedReader(new InputStreamReader(p.getInputStream()));

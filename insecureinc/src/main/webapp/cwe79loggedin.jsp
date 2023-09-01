@@ -102,7 +102,7 @@ function getProfile(){
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">cwe79 - Cross-Site Scripting Guest</a></li>
       <!-- Hidden in the guest UI
-	  <li class="active"><a href="cwe79admin.jsp">CWE863 - Cross-Site Scripting Admin</a></li>
+	  <li class="active"><a href="cwe79admin.jsp">CWE79 - Cross-Site Scripting Admin</a></li>
 	   -->
     </ul>
   </div>

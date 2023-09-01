@@ -79,7 +79,7 @@ function getProfile(){
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">cwe352 - Cross-Site Request Forgery Guest</a></li>
       <!-- Hidden in the guest UI
-	  <li class="active"><a href="cwe352admin.jsp">CWE863 - Cross-Site Request Forgery Admin</a></li>
+	  <li class="active"><a href="cwe352admin.jsp">CWE352 - Cross-Site Request Forgery Admin</a></li>
 	   -->
     </ul>
   </div>

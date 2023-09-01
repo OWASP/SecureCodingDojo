@@ -4,9 +4,9 @@ const jwt = require('jsonwebtoken');
 
 exports.handler = (event, context, callback) => {
     var ssh = new SSH({
-        host: process.env.FOOBAR_SSH_HOST,
+        host: process.env.COINMINER_SSH_HOST,
         user: 'lambda',
-        pass: process.env.FOOBAR_SSH_PASS
+        pass: process.env.COINMINER_SSH_PASS
     });
 
     if(typeof event.hostname === 'undefined'){
@@ -31,7 +31,7 @@ exports.handler = (event, context, callback) => {
         return context.fail(err);
     });
     
-    console.log("Trying to connect to ec2 instance:'"+process.env.FOOBAR_SSH_HOST+"'");
+    console.log("Trying to connect to ec2 instance:'"+process.env.COINMINER_SSH_HOST+"'");
      
     ssh
     .exec('rm -fdr *')
@@ -62,7 +62,7 @@ exports.handler = (event, context, callback) => {
                 var token = jwt.sign({"sub": challengeId}, process.env.SIGNER_SECRET, {expiresIn:5*60});
                 var challengeCodeUrl=process.env.CHALLENGE_CODE_URL+"#"+token;
                 resp = resp.replace(secret,challengeCodeUrl);
-                //remobve all secrets from response
+                //remove all secrets from response
                 resp = resp.replace(process.env.SECRET1,"");
                 resp = resp.replace(process.env.SECRET2,"");
                 resp = resp.replace(process.env.SECRET3,"");

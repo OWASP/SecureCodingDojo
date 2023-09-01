@@ -157,7 +157,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                 }
             },function(errorResponse){
                     $scope.isTeamSaveError = true;
-                    $scope.teamSaveErrorMessage = "A http error has occured.";
+                    $scope.teamSaveErrorMessage = "A http error has occurred.";
                     
             });
         }
@@ -239,7 +239,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                     }
                 },function(errorResponse){
                     $scope.isTeamSaveError = true;
-                    $scope.teamSaveErrorMessage = "A http error has occured.";
+                    $scope.teamSaveErrorMessage = "A http error has occurred.";
                     
                 });
             }
@@ -270,7 +270,7 @@ app.controller('mainCtrl', ['$rootScope','$http','$location','dataSvc', function
                     }
                 },function(errorResponse){
                     $scope.isTeamSaveError = true;
-                    $scope.teamSaveErrorMessage = "An http error has occured.";
+                    $scope.teamSaveErrorMessage = "An http error has occurred.";
                     
                 });
         }

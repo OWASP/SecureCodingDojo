@@ -520,7 +520,7 @@ app.post('/api/teams', auth.ensureApiAuth, (req, res) => {
         //team was created get the newly created team by name and return it in the response also update the user
         db.getTeamWithMembersByName(teamName,
           function(){
-            util.apiResponse(req, res, 500, "An error occured fetching the newly created team, Check the logs.");
+            util.apiResponse(req, res, 500, "An error occurred fetching the newly created team, Check the logs.");
           },
           function(team){
             req.user.teamId = team.id;

@@ -11,16 +11,12 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Handles Crypto functions
  */
 public class Crypto {
 	private static final String HASH_ALG="SHA-256";
-	private static SecretKeySpec key = null;
-	private static IvParameterSpec iv = null;
 	private static String masterSalt = "";
 	
 	private static Crypto instance = null;

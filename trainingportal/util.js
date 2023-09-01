@@ -98,7 +98,7 @@ exports.isAlphanumericOrUnderscore = (string) => {
 }
 
 /**
- * Util function to conver markdown to html
+ * Util function to convert markdown to html
  */
 exports.parseMarkdown = (text) => {
   let html = markdown.toHTML(text);

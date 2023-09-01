@@ -28,7 +28,7 @@ else{
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">CWE862 - Missing Authorization Guest</a></li>
       <!-- Hidden in the guest UI
-	  <li class="active"><a href="cwe862admin.jsp">CWE863 - Missing Authorization Admin</a></li>
+	  <li class="active"><a href="cwe862admin.jsp">CWE862 - Missing Authorization Admin</a></li>
 	   -->
     </ul>
     <ul class="nav navbar-nav navbar-right">
