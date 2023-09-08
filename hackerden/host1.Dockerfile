@@ -1,5 +1,5 @@
 FROM alpine:latest
-RUN apk add --update --no-cache openssh 
+RUN apk add --update --no-cache openssh curl
 RUN apk upgrade
 
 RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config

@@ -1,5 +1,3 @@
-version: "3.7"
-
 services:
   host1:
     image: securecodingdojo/hackerden-host1
@@ -12,7 +10,8 @@ services:
       - "22"
     networks:
       hden:
-        ipv4_address: 192.168.10.20
+        aliases:
+          - host1
 
   front:
     image: securecodingdojo/hackerden-front
@@ -25,16 +24,13 @@ services:
        - CHALLENGE_MASTER_SALT
        - HDEN_SIGN_SECRET
        - HDEN_AUTH_SECRET
-       - COINMINER_SSH_HOST=192.168.0.10
+       - COINMINER_SSH_HOST=host1
     networks:
       hden:
-        ipv4_address: 192.168.10.10
+        aliases:
+          - front
+
 
 
 networks:
   hden:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.10.0/24
-          gateway: 192.168.10.1
