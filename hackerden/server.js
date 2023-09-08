@@ -8,7 +8,9 @@ const path = require('path')
 const bucket = require('./bucket')
 const challengeCode = require('./challenge-code')
 const chatApi = require('./chat-api')
+const netUtil = require('./network-utils')
 const app = express()
+
 app.use(bodyParser.json());
 
 app.use('/jquery', express.static(path.join(__dirname,'node_modules/jquery/dist')))
@@ -38,5 +40,10 @@ app.get('/secret.txt',  async(req, res) => {
     res.send(ch)
 })
 
+app.get('/ping', (req,res) => {
+    res.send({"errorMessage":"Missing body parameter 'hostname'"})
+})
+
+app.post('/ping', netUtil.ping)
 
 app.listen(3000)
