@@ -1,7 +1,10 @@
+version: "3.8"
+
 services:
   host1:
     image: securecodingdojo/hackerden-host1
     build:
+      context: .
       dockerfile: host1.Dockerfile
     restart: "always" 
     environment:
@@ -16,6 +19,7 @@ services:
   front:
     image: securecodingdojo/hackerden-front
     build:
+      context: .
       dockerfile: front.Dockerfile
     restart: "always" 
     ports:
