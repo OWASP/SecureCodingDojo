@@ -48,7 +48,7 @@ getAuthorizedUser = async(req) => {
         if(req.path.indexOf(perm) > -1) return decoded
       }
     } catch (error) {        
-      console.log('failed jwt verify: ', err, 'auth: ', idToken);
+      console.log('failed jwt verify: ', error, 'auth: ', idToken);
       return null
     }
   }

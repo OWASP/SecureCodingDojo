@@ -1,0 +1,3 @@
+**/node_modules/
+docker-compose.yml
+package-lock.json

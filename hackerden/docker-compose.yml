@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+  host1:
+    image: securecodingdojo/hackerden-host1
+    build:
+      dockerfile: host1.Dockerfile
+    restart: "always" 
+    environment:
+       - CHALLENGE_MASTER_SALT
+    expose:
+      - "22"
+    networks:
+      hden:
+        ipv4_address: 192.168.10.20
+
+  front:
+    image: securecodingdojo/hackerden-front
+    build:
+      dockerfile: front.Dockerfile
+    restart: "always" 
+    ports:
+      - "3000:3000"
+    environment:
+       - CHALLENGE_MASTER_SALT
+       - HDEN_SIGN_SECRET
+       - HDEN_AUTH_SECRET
+       - COINMINER_SSH_HOST=192.168.0.10
+    networks:
+      hden:
+        ipv4_address: 192.168.10.10
+
+
+networks:
+  hden:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.10.0/24
+          gateway: 192.168.10.1
