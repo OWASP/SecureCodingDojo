@@ -1,1 +1,0 @@
-docker build --network host -t securecodingdojo/hackerden-host1 .
