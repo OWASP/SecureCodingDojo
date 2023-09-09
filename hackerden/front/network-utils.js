@@ -50,11 +50,11 @@ ping = (req,res)=> {
 
             stream.on('close', async(code,signal)=>{
                 
-                if(stderr !== ""){
-                    return res.send(stderr)
-                }
+                var out = ""
+            
+                out += stderr
                 
-                var out = stdout.trim()+"\n";
+                out += stdout.trim()+"\n";
                 
                 var challengeId = null;
                 var secret = null;
