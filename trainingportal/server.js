@@ -34,6 +34,7 @@ const report = require(path.join(__dirname, 'report'));
 var mainHtml = fs.readFileSync(path.join(__dirname, 'static/main.html'),'utf8');
 const badge = require(path.join(__dirname, 'badge'));
 var badgeHtml = fs.readFileSync(path.join(__dirname, 'static/badge.html'),'utf8');
+var logfile = fs.readFileSync(path.join(__dirname, 'static/proxy.log.template'),'utf8');
 
 
 
@@ -82,6 +83,26 @@ app.use(fileUpload({
 
 app.get("/",(req,res) => {
     res.redirect('/public/index.html');
+});
+
+app.get("/static/proxy.log",async(req,res) => {
+  var code = req.params.code;
+
+  let logs = logfile;
+  let evil_url_config = "EVIL_URL";
+
+  if("challengeParams" in config && "owasp2017misconfig" in config.challengeParams && "url" in config.challengeParams.owasp2017misconfig) {
+    evil_url_config = config.challengeParams.owasp2017misconfig.url;
+  }
+  let date = new Date();
+  date.setDate(date.getDate() - 1);
+
+  let yesterday = date.toJSON().split("T")[0];
+
+  logs = logs.replace(/EVIL_URL/g, evil_url_config);
+  logs = logs.replace(/ISODATE/g, yesterday);
+
+  res.setHeader('Content-Type', 'application/data').send(logs);
 });
 
 app.get('/favicon.ico', (req, res) => {
