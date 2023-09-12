@@ -3,35 +3,28 @@
 <hr>
 <h5>About the vulnerabilities</h5>
 <p>
-   <strong>Broken Authentication</strong>
-   is the failure of an authentication mechanism to correctly identify a user. Spoofing 
-   attacks to session identifiers, missing cookie headers and brute force attacks on passwords are part of this category.<br>
+   <strong>Identification and Authentication failures</strong> include session identifiers that can be compromised, missing cookie headers and brute force attacks on passwords.<br>
    
-   <strong>Broken Access Control</strong>
-   is the failure of an application to restrict access to resources. Authorization flaws, 
-    privilege escalation, reliance on client side and path traversal facilitate attacks in this category.<br>
+   The <strong>Broken Access Control</strong> category includes 
+   authorization flaws, privilege escalation, reliance on client side and path traversal flaws.<br>
 </p>
 
-<blockquote>
+<blockquote class="blockquote m-4">
 <p>
-    <i>Attackers have access to hundreds of millions of valid username and password combinations for credential stuffing, 
-        default administrative account lists, automated brute force, and dictionary attack tools. 
-        Session management attacks are well understood, particularly in relation to unexpired session tokens.</i>
+    <i>Confirmation of the user's identity, authentication, and session management is critical to protect against authentication-related attacks. </i>
 </p>
-<footer>From OWASP <a target="_blank" rel="noopener noreferrer" href="https://www.owasp.org/index.php/Top_10-2017_A2-Broken_Authentication">A2-Broken Authentication</a></footer>
+<footer class="blockquote-footer">From OWASP Top 10 2021 <a target="_blank" rel="noopener noreferrer" href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/">A07 - Identification and Authentication Failures</a></footer>
 </blockquote>
-<blockquote>
+<blockquote class="blockquote m-4">
 <p>
-    <i>Access control weaknesses are common due to the lack of automated detection, and lack of effective functional testing by application developers.
-            Access control detection is not typically amenable to automated static or dynamic testing...</i>
+    <i>Access control enforces policy such that users cannot act outside of their intended permissions. Failures typically lead to unauthorized information disclosure, modification, or destruction of all data or performing a business function outside the user's limits.</i>
 </p>
-<footer>From OWASP <a target="_blank" rel="noopener noreferrer" href="https://www.owasp.org/index.php/Top_10-2017_A5-Broken_Access_Control">A5-Broken Access Control</a></footer>
+<footer class="blockquote-footer">From OWASP Top 10 2021<a target="_blank" rel="noopener noreferrer" href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">A01 - Broken Access Control</a></footer>
 </blockquote>
 <h5>Challenge Tips and Tricks</h5>
 <p>
     In the previous challenge you have broken into the test account. In this challenge you must perform an authorization attack by changing
-    from the test account to one of the hackers' accounts. You can achieve that by attacking the session identifier (which is a case of 
-    broken authentication). The JWT token is stored in the browser session storage.
+    from the test account to one of the hackers' accounts. You can achieve that by attacking the session identifier. The JWT token is stored in the browser session storage.
     <br> <br>
     The application is using JWT for authentication. JWT contains a JSON object signed with a secret or RSA private key in the best cases.
     Getting a hold of the JWT secret can prove devastating because attackers can impersonate anyone and can generate 'eternal' session identifiers
