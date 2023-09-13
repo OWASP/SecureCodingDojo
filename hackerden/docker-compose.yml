@@ -8,7 +8,7 @@ services:
     image: securecodingdojo/hackerden-host1
     build:
       context: .
-      dockerfile: host1.Dockerfile
+      dockerfile: Dockerfile.host1
     restart: "always" 
     environment:
        - CHALLENGE_MASTER_SALT
@@ -22,8 +22,8 @@ services:
   host2:
     image: securecodingdojo/hackerden-host2
     build:
-      context: ./commandproc
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Dockerfile.host2
     restart: "always"
     environment:
     expose:
@@ -37,7 +37,7 @@ services:
     image: securecodingdojo/hackerden-front
     build:
       context: .
-      dockerfile: front.Dockerfile
+      dockerfile: Dockerfile.front
     restart: "always" 
     ports:
       - "3000:3000"
