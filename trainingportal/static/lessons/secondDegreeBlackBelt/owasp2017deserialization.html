@@ -45,6 +45,9 @@ The Open Source project <a href="https://github.com/frohoff/ysoserial">ysoserial
 <p>
 Once you are logged in you will notice that the application accepts serialized command objects. You can use ysoserial to generate a
 base64 encoded object and you can use curl to send the object to the application. 
+<br>
+Tip: Review the Incorrect Deserialization Black Belt solution for instructions on how to use ysoserial.
+<br>
 <pre class="pre-scrollable">
 curl -H 'Cookie:JSESSIONID=_YOUR_SESSION_ID_' '_COMMAND_PROC_URL_SUBMIT_COMMAND' -H 'Content-Type: multipart/form-data; boundary=----123' --data-binary '------123\r\nContent-Disposition: form-data; name=\"object\"\r\n\r\nrO0ABXNyAApzZXJpYWwuQ2F0mJizcryhARMCAAFMAARuYW1ldAASTGphdmEvbGFuZy9TdHJpbmc7eHB0AApTZXJpYWwgQ2F0\r\n------123--\r\n' -L
 </pre>
@@ -62,5 +65,5 @@ Use the command <code>openssl enc -aes-256-ecb -in _AUTH_CODE_FILE_ -out /tmp/_Y
 Then you can use the XXE login request (save that in a Burp repeater Tab or Postman tab) to list the contents of <code>file://tmp/</code> and download your encrypted file.
 Be careful to remove the \n inserted by API Gateway in the response to the pinger request.
 <br><br>
-The command  <code>openssl enc -aes-256-ecb -in /_YOUR_FILE_NAME.enc -base64 -k _YOUR_SECRET_ -d -md md5|base64</code> will decrypt the authentication code to a base64 string.
+The command  <code>openssl enc -aes-256-ecb -in /_YOUR_FILE_NAME.enc -base64 -k _YOUR_SECRET_ -d|base64</code> will decrypt the authentication code to a base64 string.
 </p>
