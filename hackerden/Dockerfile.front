@@ -3,7 +3,7 @@
 FROM node:18-alpine
 
 RUN apk upgrade
-ADD front /home/node/app
+COPY front /home/node/app
 WORKDIR /home/node/app
 
 RUN npm install
