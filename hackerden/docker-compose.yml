@@ -23,9 +23,6 @@ services:
       context: .
       dockerfile: Dockerfile.host2
     restart: "always"
-    environment:
-      - SECRET2=FLAG-xxe
-      - SECRET3=FLAG-deserialization
     expose:
       - "8080"
     networks:

@@ -1,5 +1,7 @@
 FROM tomcat:8.5-jre8
 COPY commandproc/commandproc.war /usr/local/tomcat/webapps
-RUN echo "user=coinminer" > /etc/credentials.properties
+RUN echo "user=admin" > /etc/credentials.properties
 RUN echo password=$(openssl rand -hex 32) >> /etc/credentials.properties
+RUN echo "SECRET2=FLAG-xxe" >> /usr/local/tomcat/conf/catalina.properties
+RUN echo "SECRET3=FLAG-deserialization" >> /usr/local/tomcat/conf/catalina.properties
 EXPOSE 8080
