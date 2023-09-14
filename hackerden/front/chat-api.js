@@ -69,18 +69,27 @@ getCurrentUser = async(req, resp) => {
 
   var challengeId = null;
   
-  switch(user.sub){
-    case "test": challengeId = "owasp2017sensitive"; break;
-    case "badspaghetti": challengeId = "owasp2017brokenauth"; break;
-    case "stinkyfish": challengeId = "owasp2017brokenauth"; break;
+  if(user.permissions && user.permissions.length > 0 && user.permissions.length < 10){
+    for(let perm of user.permissions){
+      if(perm.indexOf("currentuser")){
+        challengeId = "owasp2017sensitive"
+      } 
+      else if(perm.indexOf("messages")){
+        challengeId = "owasp2017brokenauth"
+        break
+      }
+    }
   }
-  
       
   if(challengeId!==null){
     let challengeResponse = await challengeCode.getChallengeUrl(challengeId)
     user.challengeCodeUrl = challengeResponse.challengeCodeUrl
     resp.send(user)
      
+  }
+  else{
+    resp.status(403)
+    return resp.send("Unauthorized")
   }
 }
 
