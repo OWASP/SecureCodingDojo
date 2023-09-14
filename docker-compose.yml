@@ -26,9 +26,53 @@ services:
        - ENC_KEY_IV
        - DATA_DIR=/dojofiles
 
+  host1:
+    image: securecodingdojo/hackerden-host1
+    build:
+      context: hackerden
+      dockerfile: hackerden/Dockerfile.host1
+    restart: "always" 
+    expose:
+      - "22"
+    networks:
+      hden:
+        aliases:
+          - host1
+
+  host2:
+    image: securecodingdojo/hackerden-host2
+    build:
+      context: hackerden
+      dockerfile: hackerden/Dockerfile.host2
+    restart: "always"
+    expose:
+      - "8080"
+    networks:
+      hden:
+        aliases:
+          - host2
+
+  front:
+    image: securecodingdojo/hackerden-front
+    build:
+      context: hackerden
+      dockerfile: hackerden/Dockerfile.front
+    restart: "always" 
+    ports:
+      - "3000:3000"
+    environment:
+       - CHALLENGE_MASTER_SALT
+       - COINMINER_SSH_HOST=host1
+       - COMMAND_PROC_URL=http://host2:8080/commandproc
+    networks:
+      hden:
+        aliases:
+          - front
+
 volumes:
   dojofiles:
 
 networks:
   portal:
   insecure:
+  hden:
