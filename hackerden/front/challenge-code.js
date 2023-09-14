@@ -2,20 +2,20 @@
     Copyright 2023 VMware, Inc.
     SPDX-License-Identifier: Apache-2.0	
 */
-const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
- 
+const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
+const HDEN_SIGN_SECRET = crypto.randomBytes(64).toString("hex")
 
 //issue challenge tokens and redirect to challenge code signer
 getChallengeUrl = async(challengeId) => {
-    var token = await jwt.sign({"sub": challengeId}, process.env.HDEN_SIGN_SECRET, {expiresIn:15*60});
+    var token = await jwt.sign({"sub": challengeId}, HDEN_SIGN_SECRET, {expiresIn:15*60});
     return {"message":"YOU GOT IT!","challengeCodeUrl":"/code/getCode.html#"+token, "challengeId":challengeId};
 }
 
 validate = async(req,resp) => {
     //validate the token 
     try {
-        let decoded = await jwt.verify(req.body.token, process.env.HDEN_SIGN_SECRET)
+        let decoded = await jwt.verify(req.body.token, HDEN_SIGN_SECRET)
         console.log('authorized:', decoded);
         var challengeId = decoded.sub;
         
@@ -41,7 +41,6 @@ validate = async(req,resp) => {
 
     } catch (error) {
         console.log('Failed challenge code JWT verify');
-        resp.status(400)
         return resp.send({"errorMessage":"Invalid or expired token"});
     }
 
