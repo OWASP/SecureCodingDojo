@@ -75,10 +75,10 @@ getCurrentUser = async(req, resp) => {
   
   if(user.permissions && user.permissions.length > 0 && user.permissions.length < 10){
     for(let perm of user.permissions){
-      if(perm.indexOf("currentuser")){
+      if(perm.indexOf("currentuser") >= 0){
         challengeId = "owasp2017sensitive"
       } 
-      else if(perm.indexOf("messages")){
+      else if(perm.indexOf("messages") >= 0){
         challengeId = "owasp2017brokenauth"
         break
       }
