@@ -9,13 +9,12 @@ RUN apk --no-cache add --update git
 RUN apk upgrade
 
 
-ADD public /home/node/app/public
-ADD static /home/node/app/static 
-ADD sql /home/node/app/sql 
+ADD public /home/node/app/public/
+ADD static /home/node/app/static/ 
+ADD sql /home/node/app/sql/ 
 
-COPY *.js /home/node/app
-COPY *.sql /home/node/app
-COPY package.json /home/node/app
+COPY *.js /home/node/app/
+COPY package.json /home/node/app/
 COPY config.json.docker /home/node/app/config.json
 
 WORKDIR /home/node/app
