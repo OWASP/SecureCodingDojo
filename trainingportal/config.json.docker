@@ -5,9 +5,18 @@
         "securityCodeReviewMaster":"https://owasp.org/SecureCodingDojo/codereview101/?fromPortal"
     },
 
-    "disabledModules":["secondDegreeBlackBelt","redTeam","blueTeam"],
+    "playLinks" : {
+        "owasp2017misconfig" : "/static/proxy.log"
+    },
 
-    "playLinks" : {},
+    "challengeParams" : {
+        "owasp2017misconfig" : {
+            "url":"http://localhost:3000"
+        }
+    },
+
+    "disabledModules":["redTeam","blueTeam"],
+
 
     "localUsersPath" : "localUsers.json"
 }

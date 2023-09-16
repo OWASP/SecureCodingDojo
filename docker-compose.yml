@@ -3,7 +3,10 @@ version: "3.7"
 services:
   insecureinc:
     image: securecodingdojo/insecure.inc
-    restart: "no" #change to always if you want the image to auto start
+    build:
+      context: ./insecureinc
+      dockerfile: Dockerfile.insecureinc
+    restart: "always" #change to always if you want the image to auto start
     ports:
       - "8080:8080"
     networks:
@@ -13,7 +16,10 @@ services:
 
   trainingportal:
     image: securecodingdojo/trainingportal
-    restart: "no" #change to always if you want the image to auto start
+    restart: "always" #change to always if you want the image to auto start
+    build:
+      context: ./trainingportal
+      dockerfile: Dockerfile.trainingportal
     ports:
       - "8081:8081"
     volumes:
@@ -29,8 +35,8 @@ services:
   host1:
     image: securecodingdojo/hackerden-host1
     build:
-      context: hackerden
-      dockerfile: hackerden/Dockerfile.host1
+      context: ./hackerden
+      dockerfile: Dockerfile.host1
     restart: "always" 
     expose:
       - "22"
@@ -42,8 +48,8 @@ services:
   host2:
     image: securecodingdojo/hackerden-host2
     build:
-      context: hackerden
-      dockerfile: hackerden/Dockerfile.host2
+      context: ./hackerden
+      dockerfile: Dockerfile.host2
     restart: "always"
     expose:
       - "8080"
@@ -55,8 +61,8 @@ services:
   front:
     image: securecodingdojo/hackerden-front
     build:
-      context: hackerden
-      dockerfile: hackerden/Dockerfile.front
+      context: ./hackerden
+      dockerfile: Dockerfile.front
     restart: "always" 
     ports:
       - "3000:3000"
