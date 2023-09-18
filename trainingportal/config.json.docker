@@ -18,5 +18,7 @@
     "disabledModules":["redTeam","blueTeam"],
 
 
-    "localUsersPath" : "localUsers.json"
+    "localUsersPath" : "localUsers.json",
+
+    "enableProjectFooter" : true
 }

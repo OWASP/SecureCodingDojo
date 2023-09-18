@@ -59,6 +59,8 @@
 
    
     "encBadgrToken" : "//configure to enable Badgr.io integration to issue Open Badges for challenge completion; see https://api.badgr.io",
-    "defaultTeam" : "<Optional use this team name to register all new participants to a particular team>"
+    "defaultTeam" : "<Optional use this team name to register all new participants to a particular team>",
+
+    "enableProjectFooter" : true
 
 }

@@ -248,6 +248,9 @@ app.get('/logout', auth.logout);
 
 app.get('/main', (req, res) => {
   let updatedHtml = auth.addCsrfToken(req, mainHtml);
+  if(config.enableProjectFooter) {
+    updatedHtml = updatedHtml.replace('<footer style="display:none"','<footer')
+  }
   res.send(updatedHtml);
 });
 
