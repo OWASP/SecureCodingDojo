@@ -34,15 +34,7 @@ var lastChallengeId = "cwe862";
 
 //calculate the hash
 var mockSalt = "1234";
-var masterSalt = "";
-if(util.isNullOrUndefined(process.env.CHALLENGE_MASTER_SALT)){
-    util.log("WARNING. CHALLENGE_MASTER_SALT not set. Challenges may be bypassed.");
-}
-else{
-    masterSalt=process.env.CHALLENGE_MASTER_SALT;
-}
-
-
+masterSalt=process.env.CHALLENGE_MASTER_SALT;
 var mockHash = crypto.createHash('sha256').update(lastChallengeId+mockSalt+masterSalt).digest('base64');
 
 var mockRequest = {
@@ -183,7 +175,7 @@ describe('challengeTests', function() {
 
         it('should verify correct badge code',  () => {
         
-            let parsed = challenges.verifyBadgeCode("eyJiYWRnZUluZm8iOnsibGluZTEiOiJTZWN1cmUgQ29kaW5nIiwibGluZTIiOiJCbGFjayBCZWx0IiwiYmciOiJibGFjayJ9LCJnaXZlbk5hbWUiOiJGaXJzdExldmVsVXAiLCJmYW1pbHlOYW1lIjoiTGFzdExldmVsVXAiLCJjb21wbGV0aW9uIjoiVGh1IEZlYiAxMSAyMDIxIDIyOjQzOjMxIEdNVC0wNTAwIChFYXN0ZXJuIFN0YW5kYXJkIFRpbWUpIiwiaWRIYXNoIjoiOGQyN2JhMzdjNSJ9.309a1/l6E5rEE1IZ9P1Z/1MAUE+MbqbX19VIZ2+jp54=");
+            let parsed = challenges.verifyBadgeCode("eyJiYWRnZUluZm8iOnsibGluZTEiOiJTZWN1cmUgQ29kaW5nIiwibGluZTIiOiJCbGFjayBCZWx0IiwibGluZTMiOiIiLCJiZyI6ImJsYWNrIn0sImdpdmVuTmFtZSI6IkZpcnN0TGV2ZWxVcCIsImZhbWlseU5hbWUiOiJMYXN0TGV2ZWxVcCIsImNvbXBsZXRpb24iOiJUaHUgRmViIDExIDIwMjEgMjI6NDM6MzEgR01ULTA1MDAgKEVhc3Rlcm4gU3RhbmRhcmQgVGltZSkiLCJpZEhhc2giOiJlODNiYjJmNzI5In0%3D.rIyuJBgsIhdUi4Hq180vZUwBZhm9scj5CYonSVln7NY%3D");
             
             assert.notEqual(null, parsed.badgeInfo, "code.info.badgeInfo should not be null")
             assert.notEqual(null, parsed.givenName, "code.info.givenName should not be null")
