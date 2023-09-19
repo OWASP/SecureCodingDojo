@@ -8,6 +8,10 @@ const chatUsers = require('./chat/chatUsers.json')
 const JSEncrypt = require('nodejs-jsencrypt').default
 const crypto = require('crypto')
 let messages = require('./messages.json')
+const AUTH_SECRET_INDEX = Math.floor(Math.random() * 10)
+const AUTH_SECRETS = ["123456","12345","123456789","Password","iloveyou","princess","rockyou","1234567","12345678","abc123"]
+const HDEN_AUTH_SECRET = AUTH_SECRETS[AUTH_SECRET_INDEX]
+
 
 authenticate = (req, resp) => {
   var user = chatUsers[req.body.userName]; //get the user entry from the db
@@ -23,7 +27,7 @@ authenticate = (req, resp) => {
 
     let tokenInfo = {"sub": req.body.userName,"name": user.name, "permissions":permissions}
     
-    var token = jwt.sign(tokenInfo, process.env.HDEN_AUTH_SECRET);
+    var token = jwt.sign(tokenInfo, HDEN_AUTH_SECRET);
     resp.send({"token": token});
   }
   else{
@@ -42,7 +46,7 @@ getAuthorizedUser = async(req) => {
   if(authToken && authToken.split(' ')[0] === 'Bearer') {
     let idToken = authToken.split(' ')[1];
     try {
-      let decoded = await jwt.verify(idToken, process.env.HDEN_AUTH_SECRET)
+      let decoded = await jwt.verify(idToken, HDEN_AUTH_SECRET)
 
       for(let perm of decoded.permissions){
         if(req.path.indexOf(perm) > -1) return decoded
@@ -69,18 +73,27 @@ getCurrentUser = async(req, resp) => {
 
   var challengeId = null;
   
-  switch(user.sub){
-    case "test": challengeId = "owasp2017sensitive"; break;
-    case "badspaghetti": challengeId = "owasp2017brokenauth"; break;
-    case "stinkyfish": challengeId = "owasp2017brokenauth"; break;
+  if(user.permissions && user.permissions.length > 0 && user.permissions.length < 10){
+    for(let perm of user.permissions){
+      if(perm.indexOf("currentuser") >= 0){
+        challengeId = "owasp2017sensitive"
+      } 
+      else if(perm.indexOf("messages") >= 0){
+        challengeId = "owasp2017brokenauth"
+        break
+      }
+    }
   }
-  
       
   if(challengeId!==null){
     let challengeResponse = await challengeCode.getChallengeUrl(challengeId)
     user.challengeCodeUrl = challengeResponse.challengeCodeUrl
     resp.send(user)
      
+  }
+  else{
+    resp.status(403)
+    return resp.send("Unauthorized")
   }
 }
 

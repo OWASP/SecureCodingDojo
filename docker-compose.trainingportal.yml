@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  trainingportal:
+    image: securecodingdojo/trainingportal
+    restart: "always" #change to always if you want the image to auto start
+    build:
+      context: ./trainingportal
+      dockerfile: Dockerfile.trainingportal
+    ports:
+      - "8081:8081"
+    volumes:
+       - "${DATA_DIR}:/dojofiles:consistent"
+    networks:
+       - portal
+    environment:
+       - CHALLENGE_MASTER_SALT
+       - ENC_KEY
+       - ENC_KEY_IV
+       - DATA_DIR=/dojofiles
+
+
+volumes:
+  dojofiles:
+
+networks:
+  portal:

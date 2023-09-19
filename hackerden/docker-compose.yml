@@ -1,3 +1,6 @@
+# Copyright 2023 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0	
+
 version: "3.8"
 
 services:
@@ -5,10 +8,8 @@ services:
     image: securecodingdojo/hackerden-host1
     build:
       context: .
-      dockerfile: host1.Dockerfile
+      dockerfile: Dockerfile.host1
     restart: "always" 
-    environment:
-       - CHALLENGE_MASTER_SALT
     expose:
       - "22"
     networks:
@@ -16,11 +17,24 @@ services:
         aliases:
           - host1
 
+  host2:
+    image: securecodingdojo/hackerden-host2
+    build:
+      context: .
+      dockerfile: Dockerfile.host2
+    restart: "always"
+    expose:
+      - "8080"
+    networks:
+      hden:
+        aliases:
+          - host2
+
   front:
     image: securecodingdojo/hackerden-front
     build:
       context: .
-      dockerfile: front.Dockerfile
+      dockerfile: Dockerfile.front
     restart: "always" 
     ports:
       - "3000:3000"
@@ -29,6 +43,7 @@ services:
        - HDEN_SIGN_SECRET
        - HDEN_AUTH_SECRET
        - COINMINER_SSH_HOST=host1
+       - COMMAND_PROC_URL=http://host2:8080/commandproc
     networks:
       hden:
         aliases:

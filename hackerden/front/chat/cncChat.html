@@ -78,7 +78,7 @@
             </form>
         </div>
         <div class="panel-body">
-            <div class="alert alert-danger" ng-if="chatError" id="chatErrorDiv">Unable to get chat messages for current user.</div>
+            <div class="alert alert-danger" ng-if="chatError" id="chatErrorDiv">Current user does not have messages permissions.</div>
             <div class="alert alert-danger" style="display:none"  ng-model="chatAlertDiv" id="chatAlertDiv"></div>
             <div class="alert alert-success" ng-if="messageSuccess">
                 <p>The page is now sending a request to gov.logger.good. Check the Network tab of the browser debugger!</p>

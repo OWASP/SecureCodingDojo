@@ -1,0 +1,24 @@
+{
+    "dojoUrl" : "http://localhost:8081",
+    "moduleUrls" : {
+        "blackBelt":"http://localhost:8080",
+        "securityCodeReviewMaster":"https://owasp.org/SecureCodingDojo/codereview101/?fromPortal"
+    },
+
+    "playLinks" : {
+        "owasp2017misconfig" : "/static/proxy.log"
+    },
+
+    "challengeParams" : {
+        "owasp2017misconfig" : {
+            "url":"http://localhost:3000"
+        }
+    },
+
+    "disabledModules":["redTeam","blueTeam"],
+
+
+    "localUsersPath" : "localUsers.json",
+
+    "enableProjectFooter" : true
+}

@@ -5,12 +5,18 @@ RUN apk --no-cache add --update python3 && ln -sf python3 /usr/bin/python
 RUN apk --no-cache add msttcorefonts-installer fontconfig && \
     update-ms-fonts && \
     fc-cache -f
+RUN apk --no-cache add --update git
 RUN apk upgrade
 
-COPY *.DOCKER.zip /tmp
-RUN unzip -o /tmp/*.zip -d /home/node/app/
-RUN rm -f /tmp/*.zip
-COPY config.json /home/node/app/config.json
+
+ADD public /home/node/app/public/
+ADD static /home/node/app/static/ 
+ADD sql /home/node/app/sql/ 
+
+COPY *.js /home/node/app/
+COPY package.json /home/node/app/
+COPY config.json.docker /home/node/app/config.json
+
 WORKDIR /home/node/app
 
 RUN npm install

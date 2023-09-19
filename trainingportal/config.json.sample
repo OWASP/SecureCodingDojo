@@ -7,7 +7,16 @@
 
     "disabledModules":["moduleId"],
 
-    "playLinks" : {"challengeId":"URL //for those cases when absolute links are specific to your environment"},
+    "playLinks" : {
+        "challengeId":"URL //for those cases when absolute links are specific to your environment",
+        "owasp2017misconfig": "/static/proxy.log"
+    },
+
+    "challengeParams" : {
+        "owasp2017misconfig" : {
+            "url" : "https://evil.local/sample-url"
+        }
+    },
 
     "dbHost" : "YOUR_DB_HOST",
     "dbName" : "YOUR_DB_NAME",
@@ -50,6 +59,8 @@
 
    
     "encBadgrToken" : "//configure to enable Badgr.io integration to issue Open Badges for challenge completion; see https://api.badgr.io",
-    "defaultTeam" : "<Optional use this team name to register all new participants to a particular team>"
+    "defaultTeam" : "<Optional use this team name to register all new participants to a particular team>",
+
+    "enableProjectFooter" : true
 
 }

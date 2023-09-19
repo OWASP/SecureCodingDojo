@@ -1,3 +1,5 @@
+# Copyright 2023 VMware, Inc.
+# SPDX-License-Identifier: Apache-2.0	
 FROM alpine:latest
 RUN apk add --update --no-cache openssh curl
 RUN apk upgrade

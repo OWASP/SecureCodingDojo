@@ -29,7 +29,7 @@
     "secondDegreeBlackBelt":{
         "name":"Second Degree Black Belt",
         "summary":"Cloud software exploitation techniques",
-        "description":"Have some fun with this Capture the Flag module which is based on OWASP Top 10 (v2017). Your goal is to take down the cloud applications used in a worldwide malware campaign.",
+        "description":"Have some fun with this Capture the Flag module which is based on OWASP Top 10. Your goal is to take down the cloud applications used in a worldwide malware campaign.",
         "badgeInfo":{
             "line1":"Secure Coding",
             "line2":"2nd Degree",

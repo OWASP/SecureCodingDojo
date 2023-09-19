@@ -7,12 +7,16 @@
   ('Cross-site Scripting'). Please review that section to refresh your memory and also the OWASP link below.
 </p>
 
-<blockquote>
+<blockquote class="blockquote m-4">
 <p>
     <i>XSS is the second most prevalent issue in the OWASP Top 10, and is found in around two thirds of all applications.</i>
 </p>
-<footer>From OWASP <a target="_blank" rel="noopener noreferrer" href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">A7-Cross-Site Scripting (XSS)</a></footer>
+<footer class="blockquote-footer">From OWASP Top 10 2017 <a target="_blank" rel="noopener noreferrer" href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">A7-Cross-Site Scripting (XSS)</a></footer>
 </blockquote>
+
+<p>
+<strong>Note: </strong> Starting with OWASP Top 10 2021, Cross-Site Scripting is being classified as a form of Injection.
+</p>
 
 <h5>Challenge Tips and Tricks</h5>
 <ul>
@@ -25,7 +29,7 @@ Analyze the source of the page carefully. You'll notice that XSS is mostly preve
 </li><li>
 Take a look in the Network tab of your browser debugger. Some of the last entries in messages.json should be very interesting. Some messages are hidden.
 </li><li>
-There's some handy javascript functions in that page to help you out. Simply calling one of these functions from the browser console will generate the type of message you need. 
+There are some handy javascript functions in that page to help you out. Simply calling one of these functions from the browser console will generate the type of message you need. 
 </li><li>
 Did you know that your browser lets you copy some of the network requests as a curl command? You should be able to copy the request to put a regular message and replace the message object with the one generated from the console.
 </li><li>
