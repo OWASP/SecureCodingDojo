@@ -17,7 +17,7 @@
         "name":"Black Belt",
         "summary":"Common software security flaws",
         "description":"This module is based on the SANS Top 25 - Most Dangerous Software Flaws. Lessons are entry level difficulty aimed at introducing the concepts of vulnerability, exploit and software defense.",
-        "description2":"Includes 22 lessons. Estimated duration 4 hours.",
+        "description2":"Includes 23 lessons. Estimated duration 4 hours.",
         "badgeInfo":{
             "line1":"Secure Coding",
             "line2":"Black Belt",

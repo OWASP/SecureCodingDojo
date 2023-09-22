@@ -39,6 +39,16 @@
                 "codeBlockIds":["resourceSeparation"]
             },
             {
+                "id":"cwe287",
+                "name":"Improper Authentication", 
+                "description": "cwe287.html",
+                "attackGram":"improperauth.png",
+                "solution":"cwe287.sol.md",
+                "playLink":"/cwe287.jsp",
+                "mission":"Authenticate to the application without entering credentials.",
+                "codeBlockIds":["serverSideValidation"]
+            },
+            {
                 "id":"cwe306",
                 "name":"Missing Authentication for Critical Function",
                 "description": "cwe306.md",

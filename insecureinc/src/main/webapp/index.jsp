@@ -60,6 +60,7 @@ body {
 		          <li><a href="ch1.jsp">Missing Authentication for Critical Function</a></li>
 		          <li><a href="ch2.jsp">Reliance on Untrusted Inputs in a Security Decision </a></li>
 		          <li><a href="cwe862.jsp">Missing Authorization</a></li>
+              <li><a href="cwe287.jsp">Improper Authentication</a></li>
 		          <li><a href="cwe311.jsp">Missing Encryption for Sensitive Data</a></li>
 		          <li><a href="cwe327.jsp">Use of a Broken or Risky Cryptographic Algorithm</a></li>
 		          <li><a href="cwe759.jsp">Use of a One-Way Hash without a Salt</a></li>
