@@ -78,7 +78,7 @@
             </form>
         </div>
         <div class="panel-body">
-            <div class="alert alert-danger" ng-if="chatError" id="chatErrorDiv">Current user does not have messages permissions.</div>
+            <div class="alert alert-danger" ng-if="chatError" id="chatErrorDiv">Current user does not have messages permission.</div>
             <div class="alert alert-danger" style="display:none"  ng-model="chatAlertDiv" id="chatAlertDiv"></div>
             <div class="alert alert-success" ng-if="messageSuccess">
                 <p>The page is now sending a request to gov.logger.good. Check the Network tab of the browser debugger!</p>
@@ -110,37 +110,20 @@
     var encrypt = new JSEncrypt.JSEncrypt();
 
     encryptText=function(messageText){
-        var pubKey = window.sessionStorage.getItem("pubKey")
-        if(!pubKey){ 
-            pubKey = encrypt.getPublicKeyB64()
-            window.sessionStorage.setItem("pubKey",pubKey)
-        }
-        
-        encrypt.setPublicKey(pubKey);
+        var pubKey = encrypt.getPublicKeyB64()
         var messageObj = {
             "type":"encMessage",
             "encMess":encrypt.encrypt(messageText),
-            "pubKey":pubKey,
+            "pubKey": pubKey,
             "date":new Date().toLocaleString(),
             "integrity":CryptoJS.SHA256(messageText+pubKey).toString()
         }
-        return JSON.stringify(messageObj);
-       
+        return JSON.stringify(messageObj);       
     }
 
     decryptText=function(messageCipher){
-        var privKey = window.sessionStorage.getItem("privKey")
-        if(!privKey){ 
-            privKey = encrypt.getPrivateKeyB64()
-            window.sessionStorage.setItem("privKey",privKey)
-        }
-
-        encrypt.setPublicKey(privKey);
         return encrypt.decrypt(messageCipher);
-
     }
-
-
 
     window.getAjaxOpts = function(){
        var opts =  {
@@ -196,40 +179,39 @@
             $http.get("messages.json?"+Math.random(),window.getAjaxOpts()).then(
                 function(response){
                     if(response && response.data){
-                       if($scope.chatMessages.length<response.data.length){
                         
-                            if($scope.chatError){
-                                $scope.chatError = false;   
-                                return $scope.getCurrentUser();
-                            }
-                            else{
-                                $scope.chatMessages = response.data;
-                            }
-                            
+                        if($scope.chatError){
+                            $scope.chatError = false;   
+                            return $scope.getCurrentUser();
+                        }
+                        else{
+                            $scope.chatMessages = response.data;
+                        }
+                        
 
-                            $scope.chatMessages.forEach(function(message) {
-                                if(message.type==='encMessage' && message.encMess){
-                                    chatAlertDiv.style.display="none";
-                                    var text = decryptText(message.encMess);
-                                    if(typeof text !== 'undefined' && text!==null && text!==false){
-                                        chatAlertDiv.style.display="";
-                                        chatAlertDiv.innerHTML = text;
-                                        if(message.challengeCodeUrl && message.challengeCodeUrl.length > 0){
-                                            $scope.messageSuccess = true;
-                                            //construct the challenge code url
-                                            let decUrl = "";
-                                            message.challengeCodeUrl.forEach(function(part){
-                                                decUrl+=decryptText(part);
-                                            });
-                                            $scope.xssChallengeCodeUrl = decUrl;
-                                            $scope.challengeCodeUrl = ""; 
-                                            $scope.nextChallenge = decryptText(message.nextChallenge);
-                                        }
+                        $scope.chatMessages.forEach(function(message) {
+                            if(message.type==='encMessage' && message.encMess){
+                                chatAlertDiv.style.display="none";
+                                var text = decryptText(message.encMess);
+                                if(typeof text !== 'undefined' && text!==null && text!==false){
+                                    chatAlertDiv.style.display="";
+                                    chatAlertDiv.innerHTML = text;
+                                    if(message.challengeCodeUrl && message.challengeCodeUrl.length > 0){
+                                        $scope.messageSuccess = true;
+                                        //construct the challenge code url
+                                        let decUrl = "";
+                                        message.challengeCodeUrl.forEach(function(part){
+                                            decUrl+=decryptText(part);
+                                        });
+                                        $scope.xssChallengeCodeUrl = decUrl;
+                                        $scope.challengeCodeUrl = ""; 
+                                        $scope.nextChallenge = decryptText(message.nextChallenge);
                                     }
-                                   
                                 }
-                            });
-                       }
+                                
+                            }
+                        });
+                       
                     }
                     else{
                         $scope.chatError = true;

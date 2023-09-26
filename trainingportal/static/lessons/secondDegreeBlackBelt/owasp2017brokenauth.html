@@ -26,8 +26,8 @@
 </blockquote>
 <h5>Challenge Tips and Tricks</h5>
 <p>
-    In the previous challenge you have broken into the test account. In this challenge you must perform an authorization attack by changing
-    from the test account to one of the hackers' accounts. You can achieve that by attacking the session identifier. The JWT token is stored in the browser session storage.
+    In the previous challenge you have broken into the test account. In this challenge you must perform an authorization attack by obtaining more permissions. You can achieve that by attacking the session identifier. 
+    The JWT token is stored in the browser session storage.
     <br> <br>
     The application is using JWT for authentication. JWT contains a JSON object signed with a secret or RSA private key in the best cases.
     Getting a hold of the JWT secret can prove devastating because attackers can impersonate anyone and can generate 'eternal' session identifiers
@@ -50,12 +50,11 @@
 
         };
     </pre>
-
-    Pay attention to the structure of the decoded test account. Change the properties of the javascript object to an account with more permissions. 
+    Pay attention to the structure of the decoded test account. Change the properties of the javascript object to include more permissions. 
     <br>
-    Have a look at the Network tab of your browser debugger. Some requests are returning an unauthorized status code. Alter permissions to be able to access those requests.
-
+    Have a look at the Network tab of your browser debugger. Some requests are returning an unauthorized status code. Alter the permissions to make all the requests accessible.
     <br>
+
     In Node.JS you can generate JWT tokens with a script like this:
     <pre class="pre-scrollable">
             const jwt = require('jsonwebtoken');

@@ -75,7 +75,7 @@ getCurrentUser = async(req, resp) => {
   
   if(user.permissions && user.permissions.length > 0 && user.permissions.length < 10){
     for(let perm of user.permissions){
-      if(perm.indexOf("currentuser") >= 0){
+      if(perm.indexOf("currentuser") >= 0 && user.sub === "test"){
         challengeId = "owasp2017sensitive"
       } 
       else if(perm.indexOf("messages") >= 0){
@@ -88,13 +88,8 @@ getCurrentUser = async(req, resp) => {
   if(challengeId!==null){
     let challengeResponse = await challengeCode.getChallengeUrl(challengeId)
     user.challengeCodeUrl = challengeResponse.challengeCodeUrl
-    resp.send(user)
-     
   }
-  else{
-    resp.status(403)
-    return resp.send("Unauthorized")
-  }
+  resp.send(user)
 }
 
 getMessages = async(req,resp) => {
@@ -121,10 +116,15 @@ postMessage = async(req,resp) => {
     let challengeResponse = await challengeCode.getChallengeUrl("owasp2017xss")
     let challengeCodeUrl = challengeResponse.challengeCodeUrl
     message = validateMessage(message, challengeCodeUrl)
+    if(message.error){
+      resp.status(400)
+      return resp.send(message.error)
+    }
   }
 
+  if(messages.length>1000) messages.splice(4,1)
   messages.push(message)
-  if(messages.length>1000) messages.pop()
+
   resp.send("Message received.")
 }
 
@@ -146,7 +146,7 @@ validateMessage = (message, challengeCodeUrl) => {
       message.nextChallenge = encrypt.encrypt("/ping");
   }
   else{
-      message.error = "Integrity check failed for:'"+JSON.stringify(message)+"'";
+      message.error = "Invalid encrypted message.";
   }
   return message;
 }
