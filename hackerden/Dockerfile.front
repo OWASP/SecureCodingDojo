@@ -8,6 +8,7 @@ WORKDIR /home/node/app
 
 RUN npm install
 RUN npm install pm2@latest -g
+RUN npm test
 
 USER node
 

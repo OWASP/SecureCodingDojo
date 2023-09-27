@@ -14,8 +14,12 @@ const HDEN_AUTH_SECRET = AUTH_SECRETS[AUTH_SECRET_INDEX]
 
 
 authenticate = (req, resp) => {
-  var user = chatUsers[req.body.userName]; //get the user entry from the db
-  var userPassHash = user.passHash;
+  if(!req.body || !req.body.userName || !req.body.userPass){
+    resp.status(400)
+    return resp.send("Missing userName and/or userPass")
+  }
+  var user = chatUsers[req.body.userName]
+  var userPassHash = user.passHash
   var vfHash = crypto.createHash('sha1').update(req.body.userPass).digest('hex');
   if(userPassHash===vfHash){
     //generate JWT to identify this user
@@ -25,9 +29,8 @@ authenticate = (req, resp) => {
       permissions.add("messages")
     }
 
-    let tokenInfo = {"sub": req.body.userName,"name": user.name, "permissions":permissions}
-    
-    var token = jwt.sign(tokenInfo, HDEN_AUTH_SECRET);
+    let userInfo = {"sub": req.body.userName,"name": user.name, "permissions":permissions}
+    let token = sign(userInfo)
     resp.send({"token": token});
   }
   else{
@@ -35,6 +38,11 @@ authenticate = (req, resp) => {
     resp.send("Invalid credentials");
   }
 
+}
+
+sign = (userInfo) => {
+  var token = jwt.sign(userInfo, HDEN_AUTH_SECRET);
+  return token
 }
 
 getAuthorizedUser = async(req) => {
@@ -62,13 +70,17 @@ getAuthorizedUser = async(req) => {
 
 
 getCurrentUser = async(req, resp) => {
-  //validate the token 
+  if(!req.headers || (!req.headers.Authorization && !req.headers.authorization)){
+    resp.status(400)
+    return resp.send("Missing authorization header.")
+  }
 
+  //validate the token 
   let user = await getAuthorizedUser(req);
   
   if(user===null){
     resp.status(403)
-    return resp.send("Unauthorized")
+    return resp.send("No access to requested resource")
   }
 
   var challengeId = null;
@@ -93,6 +105,11 @@ getCurrentUser = async(req, resp) => {
 }
 
 getMessages = async(req,resp) => {
+  if(!req.headers || (!req.headers.Authorization && !req.headers.authorization)){
+    resp.status(400)
+    return resp.send("Missing authorization header.")
+  }
+
   let user = await getAuthorizedUser(req);
   
   if(user===null){
@@ -104,6 +121,11 @@ getMessages = async(req,resp) => {
 }
 
 postMessage = async(req,resp) => {
+  if(!req.headers || !req.body || (!req.headers.Authorization && !req.headers.authorization)){
+    resp.status(400)
+    return resp.send("Invalid request.")
+  }
+
   let user = await getAuthorizedUser(req);
   
   if(user===null){
@@ -154,6 +176,7 @@ validateMessage = (message, challengeCodeUrl) => {
 
 module.exports = {
   authenticate,
+  sign,
   getAuthorizedUser,
   getCurrentUser,
   getMessages,

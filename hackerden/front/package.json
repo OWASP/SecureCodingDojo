@@ -8,5 +8,11 @@
     "jsonwebtoken": "^9.0.0",
     "nodejs-jsencrypt": "^3.0.0-rc.1",
     "ssh2": "^1.14.0"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0"
+  },
+  "scripts":{
+    "test": "mocha"
   }
 }
