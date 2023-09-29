@@ -22,16 +22,22 @@
     You have a proxy log captured from one of the affected devices in your network. Review the traffic to determine if there are any pointers that can lead you to the cyber criminals' command and control infrastructure.        
 </p>
 <hr>
+<div class="alert alert-info">
 <h5>Before you begin</h5>
 <p>
+<br>This is a white box security assessment. You can access the source code of the vulnerable applications because the Secure Coding Dojo is an open source project.
+<br>You can pull the Dojo and run the vulnerable applications on your machine as well. While this is not needed to pass the challenges, it will make it significantly easier.
+
+<br>
 Install the following if you don't have them already:
+<br>- Postman, OWASP ZAP Proxy or Burp. These tools will be needed to interact directly with APIs. While you can use curl, the curl commands will get too complicated.
 <br>- Bash or Git Bash
 <br>- NodeJS 
-<br>- VS Code - optional
-<br>- OWASP ZAP Proxy or if you prefer Burp or Postman 
+<br>- VS Code or your IDE of choice - optional
 <br>- OpenSSL
-<br>- Ysoserial (pen-test tool for deserialization attacks). Ysoserial can also be run with "docker run --entrypoint sh -it frohoff/ysoserial".
+<br>- Ysoserial (pen-test tool for deserialization attacks). Ysoserial can also be run with "docker run --entrypoint sh -it frohoff/ysoserial". For that you will need to install Docker.
 </p>
+</div>
 <hr>
 <h5>About the vulnerabilities: Security Misconfiguration</h5>
 <p>
@@ -45,7 +51,9 @@ Install the following if you don't have them already:
 </p>
 <footer class="blockquote-footer">From OWASP Top 10 2021 <a target="_blank" rel="noopener noreferrer" href="https://owasp.org/Top10/A05_2021-Security_Misconfiguration/">A05 - Security Misconfiguration</a></footer>
 </blockquote>
+<div class="alert alert-info">
 <h5>Challenge Tips and Tricks</h5>
 <p>
     View the 'secret' file that was left around in the bucket to pass this challenge. What else can you see in there?
 </p>
+</div>

@@ -24,12 +24,13 @@
 </p>
 <footer class="blockquote-footer">From OWASP Top 10 2021 <a target="_blank" rel="noopener noreferrer" href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/">A01 - Broken Access Control</a></footer>
 </blockquote>
+<div class="alert alert-info">
 <h5>Challenge Tips and Tricks</h5>
 <p>
-    In the previous challenge you have broken into the test account. In this challenge you must perform an authorization attack by obtaining more permissions. You can achieve that by attacking the session identifier. 
-    The JWT token is stored in the browser session storage.
+    In the previous challenge you have broken into the test account. In this challenge you must perform an authorization attack by obtaining more permissions. You can achieve that by attacking the authorization token. 
+    The token is stored in the browser session storage.
     <br> <br>
-    The application is using JWT for authentication. JWT contains a JSON object signed with a secret or RSA private key in the best cases.
+    The application is using JWT for authentication. JWT contains a JSON object signed with a secret.
     Getting a hold of the JWT secret can prove devastating because attackers can impersonate anyone and can generate 'eternal' session identifiers
     (which never expire).
     The JWT secret in this case is very weak so you can easily crack it by writing a script that tries some of the most insecure passwords.
@@ -56,11 +57,13 @@
     <br>
 
     In Node.JS you can generate JWT tokens with a script like this:
+    <br>
     <pre class="pre-scrollable">
             const jwt = require('jsonwebtoken');
             var token = jwt.sign(userObject, "SECRET");
             console.log(token);
     </pre>
-
-
+    <br>
+    IMPORTANT: Once you successfully replaced the authentication token have a look at some of the first messages in the chat. They may help you in your future challenges.
 </p>
+</div>

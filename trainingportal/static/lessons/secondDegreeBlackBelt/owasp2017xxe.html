@@ -18,16 +18,22 @@
     <strong>Note: </strong> Starting with OWASP Top 10 2021, XXE is classified as a form of Security Misconfiguration.
 </p>
 
-
+<div class="alert alert-info">
 <h5>Challenge Tips and Tricks</h5>
 <p>
-    The internal application controlling all the bots uses an XML authentication document. 
-    You will have to leverage the Command injection in the pinger host in order to send a specially crafted XML and exfiltrate information from the system.
+<br>- The internal application controlling all the bots uses an XML authentication document. 
+<br>- You will have to leverage the Command injection in the pinger host in order to send a specially crafted XML and exfiltrate information from the system.
 <br>
 The CURL command that you can use to send the document looks like this:
+<br>
 <pre class="pre-scrollable">
-curl '_COMMAND_PROC_HOST_LOGIN_ENDPOINT_' -H 'Content-Type: multipart/form-data; boundary=----123' --data-binary '------123\r\nContent-Disposition: form-data; name=\"document\"\r\n\r\n&lt;?xml version=\"1.0\"?&gt;&lt;credentials&gt;&lt;user&gt;admin&lt;/user&gt;&lt;password&gt;&lt;/password&gt;&lt;/credentials&gt;\r\n------123--\r\n' -i -L
+
+curl '_COMMAND_PROC_HOST_LOGIN_FORM_ACTION_URL_' -H 'Content-Type: multipart/form-data' --form-string 'document=&lt;?xml version=\"1.0\"?&gt;&lt;credentials&gt;&lt;user&gt;admin&lt;/user&gt;&lt;password&gt;&lt;/password&gt;&lt;/credentials&gt;'
+
 </pre>
-You can also save the response of the login page to an HTML file to see how it looks.
-Once you get the password copy the JSESSIONID returned after a successful login and add it as a header like this <code>-H 'Cookie:JSESSIONID=_VALUE_'</code>
+- You can also save the response of the login page to an HTML file to see how it looks.
+<br>- Once you get the password copy the JSESSIONID returned after a successful login and add it as a header like this: <pre>-H 'Cookie:JSESSIONID=_VALUE_'</pre>
+- At this point you should move to using POSTMAN or a proxy tool. 
+<br>- Construct each request and save them as you will need to reuse them later. For example, save the home page request and update this request with the JSESSIONID value returned by the login form request.
 </p>
+</div>
