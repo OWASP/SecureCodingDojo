@@ -54,7 +54,7 @@
         "encBindCredentials": "<GENERATE WITH ENCRYPT CONFIGS>",
         "searchBase": "DC=company,DC=org",
         "caCertPath": "caCert.pem", 
-        "searchFilter": "(sAMAccountName={{username}}" 
+        "searchFilter": "(sAMAccountName={{username}})" 
     },
 
    
