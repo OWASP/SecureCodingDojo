@@ -19,12 +19,14 @@ ping = (req,res)=> {
     if(typeof hostname === 'undefined'){
         return res.send({"errorMessage":"Malformed JSON. Missing hostname."});
     }
-    if(hostname.indexOf(FLAG1) > -1||
-       hostname.indexOf(FLAG2) > -1||
-       hostname.indexOf(FLAG3) > -1||
+    hostname = hostname.replace("''","")    
+    hostname = hostname.replace('""',"")
+    if(hostname.indexOf("FLAG") > -1||
        hostname.indexOf("passwd") > -1||
        hostname.indexOf("xxd") > -1||
        hostname.indexOf("echo") > -1||
+       hostname.indexOf("sed ") > -1||
+       hostname.indexOf("print") > -1||
        hostname.indexOf("tomcat") > -1||
        hostname.indexOf("base64") > -1||
        hostname.indexOf("rm ") > -1||
