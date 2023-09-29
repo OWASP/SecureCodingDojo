@@ -57,7 +57,9 @@
 
                             <h4>Play Link and Instructions</h4>
                             <p ng-if="challenge.mission">
-                                <code> <strong>Mission:</strong>  {{challenge.mission}} </code>
+                                <div class="alert alert-warning" style="color: black;">
+                                    <strong>Mission:</strong>  {{challenge.mission}} 
+                                </div>
                             </p>
                             <span ng-if="challenge.playLink">
                                 <p>
