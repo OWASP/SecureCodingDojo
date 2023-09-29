@@ -56,11 +56,11 @@
                         <span ng-if="userLevel+1>=level.level">
 
                             <h4>Play Link and Instructions</h4>
-                            <p ng-if="challenge.mission">
+                            <span ng-if="challenge.mission">
                                 <div class="alert alert-warning" style="color: black;">
                                     <strong>Mission:</strong>  {{challenge.mission}} 
                                 </div>
-                            </p>
+                            </span>
                             <span ng-if="challenge.playLink">
                                 <p>
                                     Click the button below to access the play link. 
