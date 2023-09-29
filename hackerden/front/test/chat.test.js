@@ -148,7 +148,7 @@ describe('Chat', function () {
     it('should pass challenge for the correct encrypted message', async function () {
         let mockResp = new MockResponse()
         let jwt = chatApi.sign({"sub":"unit_test","permissions":["currentuser","messages"]})
-        let body = {"type":"encMessage","encMess":"POfd9XEsUxuKJBm1kFpzj0k8yv2XzaIhfm3O3r4eanM3Gf/8hdt21hXx4dZUyriGA+VwS9qRw3EBAnjG0pLRu6Tg8IEIlFL0tEvWMhOKkhOYigdfHLe4dMDv4SmB0+zI9VZSf3Bkq/eu4TRJsbul1nE4XPegF3XT0RO2Rahzb4c=","pubKey":"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCi35NVRl7A9xbNgH6nhKLjqpFPAgCyFlEq14+0L5bzvqMAH2dFQfCBKM1VO+6wQR0UbHA0/AoP1+ypl9zfwhUNtMwFghVtaq1AY08/BXf3dfQ6VcE2pi8H/W7HC/JimW9HzYdnDsQ4f8FZn5Zy/ZHVWMcT+Cw/NLLhZurD9/XrLQIDAQAB","date":"2023-09-26, 8:26:07 p.m.","integrity":"468486678c89cbb2d9a3aa8e5dd34cd9dc5041f5eca12562ae1543f86d9439b6"}
+        let body = {"type":"encMessage","encMess":"OHqH+QeS1rUXqJ+l+DFGzao3XwyuU8PIm2TxcZzkq2AaCte3P6rwJtkPX8BBSQ5WzeP2H8Z9cASgM4BgXRi10IshIHw7J+5DeAYs5MkvVCXodSVSyjZatSstUdjWEiL+YWVhbgH7Yy41+CjufU/dKmV56Phmsgnj1ba270qwlEM=","pubKey":"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCm/+WgoP8bEMtSk2XInAM4O7i+Tylrrh+1G4LmyLElbyfZUyqBcvGFrBn7rbX2FxZ6xGegTEjzqcNlnTMACM0CeSyPVZ0dSO13eduhwYFY/IMZ/78JYGLu9H045gVB9Ati+2nRfr/Qlxg7W2WO4Lf1eWOVRX/i46outeXhJo3XdwIDAQAB","date":"2023-09-28, 8:40:43 p.m.","integrity":"e745bbd9037587dead485b997be1d7dba1cfdb6f855ae8d7746828f8c587c1c2"}
 
         await chatApi.postMessage({"body":body, "path":"/messages", "headers":{"authorization":`Bearer ${jwt}`}}, mockResp)
         assert.equal(mockResp.statusCode, 200)
