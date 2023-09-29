@@ -13,7 +13,7 @@ services:
     expose:
       - "22"
     networks:
-      hden:
+      hden_internal:
         aliases:
           - host1
 
@@ -26,7 +26,7 @@ services:
     expose:
       - "8080"
     networks:
-      hden:
+      hden_internal:
         aliases:
           - host2
 
@@ -40,16 +40,17 @@ services:
       - "3000:3000"
     environment:
        - CHALLENGE_MASTER_SALT
-       - HDEN_SIGN_SECRET
-       - HDEN_AUTH_SECRET
        - COINMINER_SSH_HOST=host1
        - COMMAND_PROC_URL=http://host2:8080/commandproc
     networks:
-      hden:
+      hden_external:
+      hden_internal:
         aliases:
           - front
 
 
 
 networks:
-  hden:
+  hden_external:
+  hden_internal:
+    internal: true
