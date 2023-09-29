@@ -7,8 +7,8 @@ const challengeCode = require('./challenge-code')
 
 
 const FLAG1 = "FLAG-injection"
-const FLAG2 = "FLAG-xxe"
-const FLAG3 = "FLAG-deserialization"
+const FLAG2 = "FLAG-xxe-"+process.env.FLAG_SECRET
+const FLAG3 = "FLAG-deserialization-"+process.env.FLAG_SECRET
 
 
 
