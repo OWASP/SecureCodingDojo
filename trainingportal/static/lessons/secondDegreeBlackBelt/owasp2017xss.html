@@ -18,21 +18,26 @@
 <strong>Note: </strong> Starting with OWASP Top 10 2021, Cross-Site Scripting is being classified as a form of Injection.
 </p>
 
+<div class="alert alert-info">
 <h5>Challenge Tips and Tricks</h5>
 <ul>
 <li>
-Reveal the source ip of the chat users by storing a hidden image into the chat messages on that page.
-It must be <strong>exactly</strong> this html snippet <code>&lt;img src='https://gov.logger.good' width='0px'&gt;</code> . 
-You will find out that you can inject more than just images, but only that particular html snippet will unlock the challenge.
+Reveal the source ip of the chat users and steal their authentication token by using the specially crafted html code provided in the challenge mission. 
+Only that particular html snippet will unlock the challenge. 
 </li><li>
-Analyze the source of the page carefully. You'll notice that XSS is mostly prevented by using Angular templates, except for one particular case.
+Analyze the source of the page carefully. You'll notice that XSS is mostly prevented except for one particular case.
 </li><li>
-Take a look in the Network tab of your browser debugger. Some of the last entries in messages.json should be very interesting. Some messages are hidden.
+Use the browser debugger to insert breakpoints and step into the code.
+</li><li>
+Take a look in the Network tab of your browser debugger. Some of the last entries in messages.json should be very interesting. Some messages are not shown.
 </li><li>
 There are some handy javascript functions in that page to help you out. Simply calling one of these functions from the browser console will generate the type of message you need. 
 </li><li>
-Did you know that your browser lets you copy some of the network requests as a curl command? You should be able to copy the request to put a regular message and replace the message object with the one generated from the console.
+Did you know that your browser lets you copy some of the network requests as a curl command? You should be able to copy the request to put a regular message and replace the message object with the one generated from the console. 
+You can also use Postman or your favorite AppSec proxy tool.
 </li><li>
 If your challenge code expires, simply resubmit the curl request and reload the messages. Confirm that you have a new challenge code.
 </li>
+</ul>
 </p>
+</div>
