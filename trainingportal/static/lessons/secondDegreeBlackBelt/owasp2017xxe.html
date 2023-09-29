@@ -28,7 +28,7 @@ The CURL command that you can use to send the document looks like this:
 <br>
 <pre class="pre-scrollable">
 
-curl '_COMMAND_PROC_HOST_LOGIN_FORM_ACTION_URL_' -H 'Content-Type: multipart/form-data' --form-string 'document=&lt;?xml version=\"1.0\"?&gt;&lt;credentials&gt;&lt;user&gt;admin&lt;/user&gt;&lt;password&gt;&lt;/password&gt;&lt;/credentials&gt;'
+curl '_COMMAND_PROC_HOST_LOGIN_FORM_ACTION_URL_' -i -H 'Content-Type: multipart/form-data' --form-string 'document=&lt;?xml version=\"1.0\"?&gt;&lt;credentials&gt;&lt;user&gt;admin&lt;/user&gt;&lt;password&gt;&lt;/password&gt;&lt;/credentials&gt;'
 
 </pre>
 - You can also save the response of the login page to an HTML file to see how it looks.
