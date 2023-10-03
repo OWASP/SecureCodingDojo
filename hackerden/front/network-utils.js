@@ -36,7 +36,7 @@ ping = (req,res)=> {
     ssh.on('ready',()=>{    
         var stdout = ""
         var stderr = ""
-        var cmd = `rm -fr -- *;echo ${FLAG1} > secret.txt; echo "curl ${process.env.COMMAND_PROC_URL} -i -L" > connecttocommandproc.sh; ping -c 1 ${hostname}`
+        var cmd = `rm -fr -- *;echo ${FLAG1} > secret.txt; echo "#run with docker run -it -p 8080:8080 securecodingdojo/hackerden-host2\ncurl ${process.env.COMMAND_PROC_URL} -i -L" > connecttocommandproc.sh; ping -c 1 ${hostname}`
         ssh.exec(cmd, 
         (err,stream) => {
 
