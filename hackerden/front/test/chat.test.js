@@ -111,9 +111,18 @@ describe('Chat', function () {
         assert.equal(mockResp.statusCode, 400)
     })
 
+    it('should return 400 for invalid content-type', async function () {
+        let mockResp = new MockResponse()
+        let jwt = chatApi.sign({"sub":"unit_test","permissions":["currentuser","messages"]})
+        let body = {message:"test"}
+        await chatApi.postMessage({"body":body, "path":"/messages", "headers":{"authorization":`Bearer ${jwt}`}}, mockResp)
+        assert.equal(mockResp.statusCode, 400)
+        assert.equal(mockResp.responseBody,"Invalid content-type.")
+    })
+
     it('should return 403 for incorrect authorization header', async function () {
         let mockResp = new MockResponse()
-        await chatApi.postMessage({path:"/messages ","body":{},"headers":{"authorization":"INVALID"}}, mockResp)
+        await chatApi.postMessage({path:"/messages ","body":{},"headers":{"authorization":"INVALID", "content-type":"application/json"}}, mockResp)
         assert.equal(mockResp.statusCode, 403)
     })
 
@@ -121,7 +130,7 @@ describe('Chat', function () {
         let mockResp = new MockResponse()
         let jwt = chatApi.sign({"sub":"unit_test","permissions":["currentuser","messages"]})
         let body = {message:"test"}
-        await chatApi.postMessage({"body":body, "path":"/messages", "headers":{"authorization":`Bearer ${jwt}`}}, mockResp)
+        await chatApi.postMessage({"body":body, "path":"/messages", "headers":{"authorization":`Bearer ${jwt}`, "content-type":"application/json"}}, mockResp)
         assert.equal(mockResp.statusCode, 200)
         assert.equal(mockResp.responseBody,"Message received.")
     })
@@ -130,7 +139,7 @@ describe('Chat', function () {
         let mockResp = new MockResponse()
         let jwt = chatApi.sign({"sub":"unit_test","permissions":["currentuser","messages"]})
         let body = {"type":"encMessage"}
-        await chatApi.postMessage({"body":body, "path":"/messages", "headers":{"authorization":`Bearer ${jwt}`}}, mockResp)
+        await chatApi.postMessage({"body":body, "path":"/messages", "headers":{"authorization":`Bearer ${jwt}`, "content-type":"application/json"}}, mockResp)
         assert.equal(mockResp.statusCode, 400)
         assert.equal(mockResp.responseBody,"Invalid encrypted message.")
     })
@@ -140,7 +149,7 @@ describe('Chat', function () {
         let jwt = chatApi.sign({"sub":"unit_test","permissions":["currentuser","messages"]})
         let body = {"type":"encMessage","encMess":"dMkn3lmTYAhyVLCsSV4sK8Z67jKT6CBuUMLT1Dn6hl51y4i+mg3XJaKQmvF+aYxJmUl4pCRG6z413WEhnhOpfHkuCEo3Awn+qJofQfsBblfkzsT4aeLUjJrPsXt60l43uB+gAWnd2K1LHJ+KrgA6jMnlRiPNwzEPt471gp8t5YM=","pubKey":"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCi35NVRl7A9xbNgH6nhKLjqpFPAgCyFlEq14+0L5bzvqMAH2dFQfCBKM1VO+6wQR0UbHA0/AoP1+ypl9zfwhUNtMwFghVtaq1AY08/BXf3dfQ6VcE2pi8H/W7HC/JimW9HzYdnDsQ4f8FZn5Zy/ZHVWMcT+Cw/NLLhZurD9/XrLQIDAQAB","date":"2023-09-26, 8:23:20 p.m.","integrity":"565280e5e80e2b37aef2b9b2f3253d2640d0df7ff4e2153faad42edcdce942e0"}
 
-        await chatApi.postMessage({"body":body, "path":"/messages", "headers":{"authorization":`Bearer ${jwt}`}}, mockResp)
+        await chatApi.postMessage({"body":body, "path":"/messages", "headers":{"authorization":`Bearer ${jwt}`, "content-type":"application/json"}}, mockResp)
         assert.equal(mockResp.statusCode, 400)
         assert.equal(mockResp.responseBody,"Invalid encrypted message.")
     })
@@ -149,13 +158,13 @@ describe('Chat', function () {
         let mockResp = new MockResponse()
         let jwt = chatApi.sign({"sub":"unit_test","permissions":["currentuser","messages"]})
         let body = {"type":"encMessage","encMess":"IMVeI6CzUuGCPlmLkC0R4egENfq3jQfXyHnkUSjHz82vDbjXmdWTa7yPMFU3cHkY9dHV8HsboAb+UXJk3JQKkStNa1sgk2R7AmIUHlnv0y8piXvVetUXA5xsqpk5MA251XBjxb4+KVAzRv5EG3B3i0rdg+nwv6WOgzAlq5fGIPo=","pubKey":"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCWedriMgCBBBChO6WRXRk0nKPrfwrou/kW8MprApyARm9Xk3gU5z5Zlikr3CCp0B+pJx4wzYGSedX4pEXCRDuDhn6KJ7R1vFjX0T+LTBdcMXlNgXkExXjRqWoryeQZJG3MxmOnZ1aikIn4QbIcBxIRyzNBFd5zr7lo5dn/1ahSpQIDAQAB","date":"9/28/2023, 9:01:26 PM","integrity":"779f4468eeb46a5a44848be3da3701ed29098f96170199b51d853b0d52bb8b6f"}
-        await chatApi.postMessage({"body":body, "path":"/messages", "headers":{"authorization":`Bearer ${jwt}`}}, mockResp)
+        await chatApi.postMessage({"body":body, "path":"/messages", "headers":{"authorization":`Bearer ${jwt}`, "content-type":"application/json"}}, mockResp)
         assert.equal(mockResp.statusCode, 200)
         assert.equal(mockResp.responseBody,"Message received.")
 
         mockResp = new MockResponse()
 
-        await chatApi.getMessages({"path":"/currentuser", "headers":{"authorization":`Bearer ${jwt}`}}, mockResp)
+        await chatApi.getMessages({"path":"/currentuser", "headers":{"authorization":`Bearer ${jwt}`, "content-type":"application/json"}}, mockResp)
         assert.equal(mockResp.statusCode, 200)
         let messages = mockResp.responseBody
         let len = messages.length
