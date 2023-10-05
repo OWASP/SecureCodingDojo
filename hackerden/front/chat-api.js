@@ -126,6 +126,12 @@ postMessage = async(req,resp) => {
     return resp.send("Invalid request.")
   }
 
+  var contentType = req.headers["content-type"];
+  if(!contentType || contentType!="application/json"){
+    resp.status(400)
+    return resp.send("Invalid content-type.")
+  }
+
   let user = await getAuthorizedUser(req);
   
   if(user===null){
