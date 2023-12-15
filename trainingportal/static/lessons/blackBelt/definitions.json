@@ -99,7 +99,17 @@
                 "solution":"cwe759.sol.md",
                 "playLink":"/cwe759.jsp",
                 "codeBlockIds":["useStrongDataEncryption"]
-            }  
+            },
+            {
+                "id":"cwe209",
+                "name":"Generation of Error Message Containing Sensitive Information", 
+                "description": "cwe209.html",
+                "attackGram":"errormessage.png",
+                "solution":"cwe209.sol.md",
+                "playLink":"/cwe209.jsp",
+                "mission":"Authenticate to the website using credentials discovered in detailed error messages.",
+                "codeBlockIds":["displayGenericErrorMessages"]
+            }
         ]
     },
     {
