@@ -78,6 +78,21 @@ Check out the [wiki](https://github.com/OWASP/SecureCodingDojo/wiki/Running-Inse
 
 More info on the [wiki](https://github.com/OWASP/SecureCodingDojo/wiki/Running-the-training-portal).
 
+Updating the contents of [wiki](https://github.com/OWASP/SecureCodingDojo/wiki/Running-the-training-portal). As the previous **securityCodeReviewMaster** url is no longer working, added a new working url.\
+Here's the updated sample config.json configuration. Save this file to the $DATA_DIR
+
+```
+{
+    "dojoUrl" : "YOUR_DOJO_PUBLIC_URL",
+    "moduleUrls" : {
+        "blackBelt":"YOUR_INSECURE_INC_PUBLIC_URL",
+        "securityCodeReviewMaster":"https://owasp.org/SecureCodingDojo/codereview101/?fromPortal"
+    },
+
+    "localUsersPath" : "localUsers.json",
+}
+```
+
 # Slack Setup Instructions
 You will need to create a Slack app for authentication.
 - Go to https://api.slack.com/
