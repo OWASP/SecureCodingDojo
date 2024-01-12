@@ -22,12 +22,10 @@ ping = (req,res)=> {
     //this deny list can likely be bypassed, is mainly here to make it harder to cheat than to pass the real challenges
     hostname = hostname.replace("''","")    
     hostname = hostname.replace('""',"")
-    if(hostname.match("FLAG") ||
-       hostname.match("passwd|shadow") ||
-       hostname.match("echo|\\bsed\\b|print|base64|\\bxxd\\b") ||
-       hostname.match("\\b(chmod|rm|mv|cp)\\b")){
-        console.log(`Bypass attempt with ${hostname}`)
-        res.status(400)
+    const disallowedPatterns = /(FLAG|passwd|shadow|echo|\bsed\b|print|base64|\bxxd\b|\b(chmod|rm|mv|cp)\b)/;
+    if (disallowedPatterns.test(hostname)) {
+        console.log(`Bypass attempt with ${hostname}`);
+        res.status(400);
         return res.send("Certain commands have been disallowed. There is a better way.");
     }
     
