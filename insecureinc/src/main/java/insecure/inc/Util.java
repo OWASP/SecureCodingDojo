@@ -96,19 +96,19 @@ public class Util {
 
 		// permit simple arithmetic expressions
 		Pattern calculatorPattern = Pattern.compile("^[0-9+\\-*\\/]*$");
-    	Matcher calculatorPatternMatcher = calculatorPattern.matcher(command);
+    		Matcher calculatorPatternMatcher = calculatorPattern.matcher(command);
 
 		// permit "password"
 		Pattern passwordPattern = Pattern.compile("^password$");
-    	Matcher passwordPatternMatcher = passwordPattern.matcher(command);
+    		Matcher passwordPatternMatcher = passwordPattern.matcher(command);
 
 		// permit a call to the function deleteHistory, providing the correct password
 		Pattern exploitPattern = Pattern.compile("^deleteHistory\\(['\\\"`]{1}Sup3rS3cr3t['\\\"`]{1}\\);*$");
-    	Matcher exploitPatternMatcher = exploitPattern.matcher(command);
+    		Matcher exploitPatternMatcher = exploitPattern.matcher(command);
 
 		// permit a call to the function deleteHistory, providing the incorrect password
 		Pattern exploitPatternWrongPassword = Pattern.compile("^deleteHistory\\(['\\\"`]{1}.*['\\\"`]{1}\\);*$");
-    	Matcher exploitPatternWrongPasswordMatcher = exploitPatternWrongPassword.matcher(command);
+    		Matcher exploitPatternWrongPasswordMatcher = exploitPatternWrongPassword.matcher(command);
 
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine engine = manager.getEngineByName("JavaScript");
@@ -123,7 +123,7 @@ public class Util {
 		}
 
 		// Only allow a limited possibility for executable code to pass through, so as to protect the SecureCodingDojo instance
-    	if (calculatorPatternMatcher.find() || passwordPatternMatcher.find()) {
+    		if (calculatorPatternMatcher.find() || passwordPatternMatcher.find()) {
 			try {
 				// Don't display this in code snippet - they are just dummy functions that ensure the JavaScript code all loads
 				engine.eval("function authenticate(password) { return false; }");
