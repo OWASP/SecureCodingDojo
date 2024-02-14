@@ -3,6 +3,14 @@ version: "3.7"
 services:
   insecureinc:
     image: securecodingdojo/insecure.inc
+    deploy:
+      resources:
+        limits:
+          cpus: "0.9"
+          memory: 512M
+        reservations:
+          cpus: "0.9"
+          memory: 512M
     build:
       context: ./insecureinc
       dockerfile: Dockerfile.insecureinc
