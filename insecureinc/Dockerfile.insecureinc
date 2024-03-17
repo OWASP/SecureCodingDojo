@@ -11,4 +11,11 @@ RUN rm -rf /var/lib/apt/lists/* && \
 RUN rm -rf /usr/local/tomcat/webapps/ROOT
 # Copying insecure-inc-1.0.war from the build_image phase, rest everyting from last phase is discarded
 COPY --from=build_image /insecureinc/target/insecure-inc-1.0.war /usr/local/tomcat/webapps/ROOT.war
+COPY start-insecureinc.sh /usr/local/tomcat/start-insecureinc.sh 
+RUN chmod +x /usr/local/tomcat/start-insecureinc.sh 
+RUN chown -R www-data:www-data /usr/local/tomcat/logs
+RUN chown -R www-data:www-data /usr/local/tomcat/webapps
+RUN chown -R www-data:www-data /usr/local/tomcat/work
+
 EXPOSE 8080
+ENTRYPOINT ["/bin/bash","-c","/usr/local/tomcat/start-insecureinc.sh" ]
