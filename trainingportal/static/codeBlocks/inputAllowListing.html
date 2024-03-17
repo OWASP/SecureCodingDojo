@@ -16,13 +16,13 @@
     </ul>
 </p>
 <br>
-<h5>Input Allow Listing vs. Input Block Listing</h5>
+<h5>Input Allow Listing vs. Input Deny Listing</h5>
 <p>
-    The choice of using the term 'Allow Listing' instead of 'Validation' or 'Sanitization' was made to differentiate from the bad kind of validation: 'Block Listing'.
+    The choice of using the term 'Allow Listing' instead of 'Validation' or 'Sanitization' was made to differentiate from the bad kind of validation: 'Deny Listing'.
 </p>
 <p>
-    Block listing involves blocking certain strings or characters. It can almost always be defeated by skilled attackers. 
-    You'd think it's better than nothing but you'd be wrong. Block listing masks vulnerabilities for automated tools and testers that are less skilled.
+    Deny listing involves blocking certain strings or characters. It can almost always be defeated by skilled attackers. 
+    You'd think it's better than nothing but you'd be wrong. Deny listing masks vulnerabilities for automated tools and testers that are less skilled.
 </p>
 <p>
     The example below tries to prevent a command injection attack (inspired from a real life scenario, the <a href="https://imagetragick.com/">ImageTragik bug</a> - translated to Java from C++)
