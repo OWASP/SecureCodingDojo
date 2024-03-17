@@ -142,6 +142,16 @@
                 "solution":"cwe494.sol.md",
                 "playLink":"/cwe494.jsp",
                 "codeBlockIds":["integrityVerification","useStrongDataEncryption"]
+            },
+            {
+                "id":"cwe94",
+                "name":"Improper Control of Generation of Code ('Code Injection')", 
+                "description": "cwe94.html",
+                "attackGram":"codeinjection.png",
+                "solution":"cwe94.sol.md",
+                "playLink":"/cwe94.jsp",
+                "mission":"Invoke the server side utility `deleteHistory`.",
+                "codeBlockIds":["inputAllowListing", "serverSideValidation"]
             }
         ]
     },
