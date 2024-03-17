@@ -1,10 +1,10 @@
 # Please use buildImage.sh script to build this image.
 # This stage is compiling the code and packaging war file in target folder
-FROM maven:3.8.1-openjdk-8 as build_image
+FROM maven:3.9.6-eclipse-temurin-21-alpine as build_image
 ADD . /insecureinc
 RUN cd /insecureinc && mvn clean install
 
-FROM tomcat:8.5-jre8
+FROM tomcat:11.0-jre21
 RUN rm -rf /var/lib/apt/lists/* && \
     apt-get update --fix-missing &&\
     apt-get -y install gcc
