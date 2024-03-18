@@ -55,7 +55,7 @@ catch(ex){/*Do nothing*/}
 
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
-var SlackStrategy = require('passport-slack').Strategy;
+var SlackStrategy = require('passport-slack-oauth2').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var SamlStrategy = require('passport-saml').Strategy;
 var LdapStrategy = require('passport-ldapauth').Strategy;
