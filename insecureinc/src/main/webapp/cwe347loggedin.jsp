@@ -58,14 +58,9 @@ if(authCookieValue != null) {
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">Guest</a></li>
-	        <!-- Hidden in the guest UI
-	  <li class="active"><a href="cwe327admin.jsp">Admin</a></li>
-	   -->
-	 
     </ul>
     
     <ul class="nav navbar-nav navbar-right">
-        
         <li><a href="cwe347loggedin.jsp?logout=true"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
     </ul>
     
