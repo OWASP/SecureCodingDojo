@@ -35,4 +35,4 @@ jobs:
           context: trainingportal
           file: trainingportal/Dockerfile.trainingportal
           push: true
-          tags: ghcr.io/${{ steps.prep-repo-name.outputs.IMAGE_REPOSITORY }}:${{ github.sha }}
+          tags: ghcr.io/${{ steps.prep-repo-name.outputs.IMAGE_REPOSITORY }}/trainingportal:${{ github.sha }}
