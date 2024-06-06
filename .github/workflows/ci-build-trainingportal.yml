@@ -14,25 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Prepare Repo Name
-        id: prep-repo-name
-        run: |
-          echo "IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
-
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: trainingportal
           file: trainingportal/Dockerfile.trainingportal
           push: true
-          tags: ghcr.io/${{ steps.prep-repo-name.outputs.IMAGE_REPOSITORY }}/trainingportal:${{ github.sha }}
+          tags: ${{ secrets.ECR_ARN }}:${{ github.sha }}
