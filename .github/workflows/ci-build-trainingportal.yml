@@ -14,10 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: PrepareRegNames
+      - name: PrepareRepoName
         run: |
-          echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_OUTPUT
-          echo IMAGE_TAG=$(echo ${{ github.sha }} | tr '[:upper:]' '[:lower:]' | awk '{split($0,a,"/"); print a[3]}') >> $GITHUB_OUTPUT
+          echo "::set-output name=IMAGE_REPOSITORY::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -35,4 +34,4 @@ jobs:
           context: .
           file: trainingportal/Dockerfile.trainingportal
           push: true
-          tags: ghcr.io/${{ steps.PrepareRegNames.outputs.IMAGE_REPOSITORY }}:${{ steps.PrepareRegNames.outputs.IMAGE_TAG }}
+          tags: ghcr.io/${{ steps.PrepareRepoName.outputs.IMAGE_REPOSITORY }}:${{ github.sha }}
