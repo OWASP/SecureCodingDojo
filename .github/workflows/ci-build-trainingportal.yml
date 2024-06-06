@@ -35,4 +35,4 @@ jobs:
           context: .
           file: trainingportal/Dockerfile.trainingportal
           push: true
-          tags: ghcr.io/${{ env.IMAGE_REPOSTIORY }}:${{ env.IMAGE_TAG }}
+          tags: ghcr.io/$IMAGE_REPOSTIORY:$IMAGE_TAG
