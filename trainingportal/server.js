@@ -129,7 +129,7 @@ app.get("/public/providers",(req,res) => {
     if("slackLoginName" in config) slackLoginDisplayName = config.slackLoginName;
     providers.push({"name":slackLoginDisplayName,"url":"/public/provider/slack"});
   }
-  if("samlCert" in config) providers.push({"name":"ADFS SAML","url":"/public/provider/saml"});
+  if("samlCert" in config) providers.push({"name":"SAML","url":"/public/provider/saml"});
   if("localUsersPath" in config) providers.push({"name":"Local","url":"/public/provider/local"});
   if("ldapServer" in config) providers.push({"name":"LDAP","url":"/public/provider/ldap"});
 
@@ -569,7 +569,7 @@ app.delete('/api/user/team',  (req, res) => {
 //get a salt for the challenge code
 app.get('/api/salt',  (req, res) => {
   req.user.codeSalt = uid.sync(8);
-  res.send(req.user.codeSalt);
+  res.setHeader('Content-Type', 'text/plain').send(req.user.codeSalt);
 });
 
 //upload CSV for user report
