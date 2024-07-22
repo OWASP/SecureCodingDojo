@@ -29,6 +29,15 @@
                 "solution":"cwe352.sol.md",
                 "playLink":"/cwe352.jsp",
                 "codeBlockIds":["requestForgeryPrevention"]
+            },
+            {
+                "id":"cwe347",
+                "name":"Improper Verification of Cryptographic Signature", 
+                "description": "cwe347.md",
+                "attackGram":"cryptosignature.png",
+                "solution":"cwe347.sol.md",
+                "playLink":"/cwe347.jsp",
+                "codeBlockIds":["serverSideValidation"]
             }
         ]
     },
