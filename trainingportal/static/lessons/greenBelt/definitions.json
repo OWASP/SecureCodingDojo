@@ -1,0 +1,139 @@
+[
+    {
+        "level":0,
+        "name":"White Belt",
+        "challenges":[]
+    },
+    {
+        "level":1,
+        "name":"Yellow Belt",
+        "challenges":[
+            {
+                "id":"cwe807",
+                "name":"Reliance on Untrusted Inputs in a Security Decision", 
+                "description": "cwe807.html",
+                "attackGram":"reliance.png",
+                "solution":"cwe807.sol.md",
+                "playLink":"/ch2.jsp",
+                "mission":"Access the admin page from the account of the 'demo' user.",
+                "codeBlockIds":["serverSideValidation"]
+            },
+            {
+                "id":"cwe862",
+                "name":"Missing Authorization", 
+                "description": "cwe862.html",
+                "attackGram":"missingauthz.png",
+                "solution":"cwe862.sol.md",
+                "playLink":"/cwe862.jsp",
+                "mission":"Access the admin page from the account of the 'demo' user.",
+                "codeBlockIds":["resourceSeparation"]
+            },
+            {
+                "id":"cwe798",
+                "name":"Use of Hard-coded Credentials", 
+                "description": "cwe798.html",
+                "attackGram":"hardcodedpassword.png",
+                "solution":"cwe798.sol.md",
+                "playLink":"/cwe798.jsp",
+                "mission":"Authenticate to the website using the Insecure Inc. service account credentials WITHOUT running the jar file.",
+                "codeBlockIds":["enforceSafeConfig"]
+            },
+            {
+                "id":"cwe306",
+                "name":"Missing Authentication for Critical Function",
+                "description": "cwe306.md",
+                "attackGram":"authbypass.png",
+                "solution":"cwe306.sol.md",
+                "playLink":"/ch1.jsp",
+                "codeBlockIds":["authenticationByDefault"],
+                "mission":"Access the admin page for this challenge without knowing any password."
+            }
+        ]
+    },
+    {
+        "level":2,
+        "name":"Orange Belt",
+        "challenges":[
+            {
+                "id":"cwe311",
+                "name":"Missing Encryption of Sensitive Data", 
+                "description": "cwe311.html",
+                "attackGram":"missingenc.png",
+                "solution":"cwe311.sol.md",
+                "playLink":"/cwe311.jsp",
+                "codeBlockIds":["useStrongDataEncryption"]
+            },
+            {
+                "id":"cwe327",
+                "name":"Use of a Broken or Risky Cryptographic Algorithm", 
+                "description": "cwe327.html",
+                "attackGram":"brokencrypto.png",
+                "solution":"cwe327.sol.md",
+                "playLink":"/cwe327.jsp",
+                "codeBlockIds":["useStrongDataEncryption"]
+            },
+            {
+                "id":"cwe759",
+                "name":"Use of a One-Way Hash without a Salt", 
+                "description": "cwe759.html",
+                "attackGram":"unsaltedhash.png",
+                "solution":"cwe759.sol.md",
+                "playLink":"/cwe759.jsp",
+                "codeBlockIds":["useStrongDataEncryption"]
+            },
+            {
+                "id":"cwe209",
+                "name":"Generation of Error Message Containing Sensitive Information", 
+                "description": "cwe209.html",
+                "attackGram":"errormessage.png",
+                "solution":"cwe209.sol.md",
+                "playLink":"/cwe209.jsp",
+                "mission":"Authenticate to the website using credentials discovered in detailed error messages.",
+                "codeBlockIds":["displayGenericErrorMessages"]
+            }
+        ]
+    },
+    {
+        "level":3,
+        "name":"Green Belt",
+        "challenges":[
+            {
+                "id":"cwe307",
+                "name":"Password Guessing Attack", 
+                "description": "cwe307.html",
+                "attackGram":"passguessing.png",
+                "solution":"cwe307.sol.md",
+                "playLink":"/cwe307.jsp",
+                "codeBlockIds":["loginBestPractices"]
+            },
+            {
+                "id":"cwe190",
+                "name":"Integer Overflow or Wraparound", 
+                "description": "cwe190.html",
+                "attackGram":"intoverflow.png",
+                "solution":"cwe190.sol.md",
+                "playLink":"/cwe190.jsp",
+                "codeBlockIds":["checkBoundaries"]
+            },
+            {
+                "id":"cwe494",
+                "name":"Download of Code Without Integrity Check", 
+                "attackGram":"downloadnocheck.png",
+                "description": "cwe494.html",
+                "solution":"cwe494.sol.md",
+                "playLink":"/cwe494.jsp",
+                "codeBlockIds":["integrityVerification","useStrongDataEncryption"]
+            },
+            {
+                "id":"cwe94",
+                "name":"Improper Control of Generation of Code ('Code Injection')", 
+                "description": "cwe94.html",
+                "attackGram":"codeinjection.png",
+                "solution":"cwe94.sol.md",
+                "playLink":"/cwe94.jsp",
+                "mission":"Invoke the server side utility `deleteHistory`.",
+                "codeBlockIds":["inputAllowListing", "serverSideValidation"]
+            }
+        ]
+    }
+]
