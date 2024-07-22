@@ -170,10 +170,10 @@ app.get( '/public/google/callback', passport.authenticate( 'google', {
 
 
 // path for slack auth
-app.get('/public/slack', passport.authenticate('slack'));
+app.get('/public/slack', passport.authenticate('Slack'));
  
 // OAuth callback url 
-app.get( '/public/slack/callback', passport.authenticate( 'slack', { 
+app.get( '/public/slack/callback', passport.authenticate( 'Slack', { 
 		successRedirect: '/main',
 		failureRedirect: '/public/authFail.html'
 }));
