@@ -42,7 +42,7 @@ if(usr!=null && pwd!=null){
 </nav>
 <div class="container"> 
 <h3>Welcome!</h3>
-<p> You should have the admin credentials from the brute force challenge, login and see if you can take over the server now.</p>
+<p> You should have the admin credentials from the Green Belt Password Guessing challenge, login and see if you can take over the server now.</p>
 <form action="cwe78.jsp" autocomplete="off" method="POST">
 <div class="form-group">
   <label for="usr">Name:</label>

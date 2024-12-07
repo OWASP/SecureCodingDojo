@@ -43,7 +43,7 @@ if(usr!=null && pwd!=null){
 </nav>
 <div class="container"> 
 <h3>Welcome!</h3>
-<p> Try to brute force the admin password (which is one of the top 5 insecure passwords - see the brute force challenge), login and see if you can take over the server now.</p>
+<p> Try to brute force the admin password (which is one of the top 5 insecure passwords - see the Green Belt Password Guessing challenge), login and see if you can take over the server now.</p>
 <form action="cwe502.jsp" autocomplete="off" method="POST">
 <div class="form-group">
   <label for="usr">Name:</label>
