@@ -25,6 +25,7 @@ ping = (req,res)=> {
     if(hostname.match("FLAG") ||
        hostname.match("passwd|shadow") ||
        hostname.match("echo|\\bsed\\b|print|base64|\\bxxd\\b") ||
+       hostname.match("tomcat\/logs") ||
        hostname.match("\\b(chmod|rm|mv|cp)\\b")){
         console.log(`Bypass attempt with ${hostname}`)
         res.status(400)
