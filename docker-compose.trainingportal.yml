@@ -3,6 +3,14 @@ version: "3.7"
 services:
   trainingportal:
     image: securecodingdojo/trainingportal
+    deploy:
+      resources:
+        limits:
+          cpus: "0.9"
+          memory: 512M
+        reservations:
+          cpus: "0.9"
+          memory: 512M
     restart: "always" #change to always if you want the image to auto start
     build:
       context: ./trainingportal

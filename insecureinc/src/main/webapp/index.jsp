@@ -64,7 +64,9 @@ body {
 		          <li><a href="cwe327.jsp">Use of a Broken or Risky Cryptographic Algorithm</a></li>
 		          <li><a href="cwe759.jsp">Use of a One-Way Hash without a Salt</a></li>
               		  <li><a href="cwe798.jsp">Use of Hard-coded Credentials</a></li>
-                    <li><a href="cwe209.jsp">Generation of Error Message Containing Sensitive Information</a></li>
+                    	  <li><a href="cwe209.jsp">Generation of Error Message Containing Sensitive Information</a></li>
+                    	  <li><a href="cwe94.jsp">Improper Control of Generation of Code ('Code Injection')</a></li>
+                          <li><a href="cwe347.jsp">Improper Verification of Cryptographic Signature</a></li>
 		          <li><a href="cwe307.jsp">Improper Restriction of Excessive Authentication Attempts</a></li>
 		          <li><a href="cwe190.jsp">Integer Overflow or Wraparound</a></li>
 		          <li><a href="cwe494.jsp">Download of Code Without Integrity Check</a></li>

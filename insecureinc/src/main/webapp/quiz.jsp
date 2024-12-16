@@ -241,7 +241,7 @@ Which is the best way to ensure the integrity of software updates?
 <blockquote>
 Which of the snippets below has a security issue?
 </blockquote>
-<%=getOption(answers,"q11","1","<pre>response.sendRedirect(\"http://google.com\");</pre>")%>
+<%=getOption(answers,"q11","1","<pre>response.sendRedirect(\"https://google.com\");</pre>")%>
 <%=getOption(answers,"q11","2","<pre>response.sendRedirect(request.getParameter(\"redirect\"));</pre>")%>
 <%=getOption(answers,"q11","3","<pre>response.sendRedirect(UrlResourceManager.get(request.getParameter(\"pageId\")));</pre>")%>
 <hr>

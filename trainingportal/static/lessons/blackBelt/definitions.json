@@ -1,152 +1,6 @@
 [
     {
         "level":0,
-        "name":"White Belt",
-        "challenges":[]
-    },
-    {
-        "level":1,
-        "name":"Yellow Belt",
-        "badgrInfo":
-        {
-            "issuer":"Insert <issuer id> from https://badgr.io/issuer/issuers/<issuer id>",
-            "badge_class":"Insert <badge class id> from https://badgr.io/issuer/issuers/<issuer id>/badges/<badge id>",
-            "recipient_type":"email",
-            "recipient_identifier":"",
-            "narrative":"Badge issued for completing the Secure Coding Dojo:Yellow Belt.",
-            "create_notification":true,
-            "evidence_items":[]
-        },
-        "challenges":[
-            {
-                "id":"cwe807",
-                "name":"Reliance on Untrusted Inputs in a Security Decision", 
-                "description": "cwe807.html",
-                "attackGram":"reliance.png",
-                "solution":"cwe807.sol.md",
-                "playLink":"/ch2.jsp",
-                "mission":"Access the admin page from the account of the 'demo' user.",
-                "codeBlockIds":["serverSideValidation"]
-            },
-            {
-                "id":"cwe862",
-                "name":"Missing Authorization", 
-                "description": "cwe862.html",
-                "attackGram":"missingauthz.png",
-                "solution":"cwe862.sol.md",
-                "playLink":"/cwe862.jsp",
-                "mission":"Access the admin page from the account of the 'demo' user.",
-                "codeBlockIds":["resourceSeparation"]
-            },
-            {
-                "id":"cwe798",
-                "name":"Use of Hard-coded Credentials", 
-                "description": "cwe798.html",
-                "attackGram":"hardcodedpassword.png",
-                "solution":"cwe798.sol.md",
-                "playLink":"/cwe798.jsp",
-                "mission":"Authenticate to the website using the Insecure Inc. service account credentials.",
-                "codeBlockIds":["enforceSafeConfig"]
-            },
-            {
-                "id":"cwe306",
-                "name":"Missing Authentication for Critical Function",
-                "description": "cwe306.md",
-                "attackGram":"authbypass.png",
-                "solution":"cwe306.sol.md",
-                "playLink":"/ch1.jsp",
-                "codeBlockIds":["authenticationByDefault"],
-                "mission":"Access the admin page for this challenge without knowing any password.",
-                "badgrInfo":{
-                    "issuer":"Insert <issuer id> from https://badgr.io/issuer/issuers/<issuer id>",
-                    "badge_class":"Insert <badge class id> from https://badgr.io/issuer/issuers/<issuer id>/badges/<badge id>",
-                    "recipient_type":"email",
-                    "recipient_identifier":"",
-                    "narrative":"Badge issued for completing the Secure Coding Dojo:Yellow Belt:Missing Authentication for Critical Function.",
-                    "create_notification":true,
-                    "evidence_items":[]
-                }
-            }
-        ]
-    },
-    {
-        "level":2,
-        "name":"Orange Belt",
-        "challenges":[
-            {
-                "id":"cwe311",
-                "name":"Missing Encryption of Sensitive Data", 
-                "description": "cwe311.html",
-                "attackGram":"missingenc.png",
-                "solution":"cwe311.sol.md",
-                "playLink":"/cwe311.jsp",
-                "codeBlockIds":["useStrongDataEncryption"]
-            },
-            {
-                "id":"cwe327",
-                "name":"Use of a Broken or Risky Cryptographic Algorithm", 
-                "description": "cwe327.html",
-                "attackGram":"brokencrypto.png",
-                "solution":"cwe327.sol.md",
-                "playLink":"/cwe327.jsp",
-                "codeBlockIds":["useStrongDataEncryption"]
-            },
-            {
-                "id":"cwe759",
-                "name":"Use of a One-Way Hash without a Salt", 
-                "description": "cwe759.html",
-                "attackGram":"unsaltedhash.png",
-                "solution":"cwe759.sol.md",
-                "playLink":"/cwe759.jsp",
-                "codeBlockIds":["useStrongDataEncryption"]
-            },
-            {
-                "id":"cwe209",
-                "name":"Generation of Error Message Containing Sensitive Information", 
-                "description": "cwe209.html",
-                "attackGram":"errormessage.png",
-                "solution":"cwe209.sol.md",
-                "playLink":"/cwe209.jsp",
-                "mission":"Authenticate to the website using credentials discovered in detailed error messages.",
-                "codeBlockIds":["displayGenericErrorMessages"]
-            }
-        ]
-    },
-    {
-        "level":3,
-        "name":"Green Belt",
-        "challenges":[
-            {
-                "id":"cwe307",
-                "name":"Password Guessing Attack", 
-                "description": "cwe307.html",
-                "attackGram":"passguessing.png",
-                "solution":"cwe307.sol.md",
-                "playLink":"/cwe307.jsp",
-                "codeBlockIds":["loginBestPractices"]
-            },
-            {
-                "id":"cwe190",
-                "name":"Integer Overflow or Wraparound", 
-                "description": "cwe190.html",
-                "attackGram":"intoverflow.png",
-                "solution":"cwe190.sol.md",
-                "playLink":"/cwe190.jsp",
-                "codeBlockIds":["checkBoundaries"]
-            },
-            {
-                "id":"cwe494",
-                "name":"Download of Code Without Integrity Check", 
-                "attackGram":"downloadnocheck.png",
-                "description": "cwe494.html",
-                "solution":"cwe494.sol.md",
-                "playLink":"/cwe494.jsp",
-                "codeBlockIds":["integrityVerification","useStrongDataEncryption"]
-            }
-        ]
-    },
-    {
-        "level":4,
         "name":"Purple Belt",
         "challenges":[
             {
@@ -175,11 +29,20 @@
                 "solution":"cwe352.sol.md",
                 "playLink":"/cwe352.jsp",
                 "codeBlockIds":["requestForgeryPrevention"]
+            },
+            {
+                "id":"cwe347",
+                "name":"Improper Verification of Cryptographic Signature", 
+                "description": "cwe347.md",
+                "attackGram":"cryptosignature.png",
+                "solution":"cwe347.sol.md",
+                "playLink":"/cwe347.jsp",
+                "codeBlockIds":["serverSideValidation"]
             }
         ]
     },
     {
-        "level":5,
+        "level":1,
         "name":"Blue Belt",
         "challenges":[
             {
@@ -212,7 +75,7 @@
         ]
     },
     {
-        "level":6,
+        "level":2,
         "name":"Brown Belt",
         "challenges":[
             {
@@ -245,18 +108,8 @@
         ]
     },
     {
-        "level":7,
+        "level":3,
         "name":"Black Belt",
-        "badgrInfo":
-        {
-            "issuer":"JEzPNy2zSGG1XVTsJ5JE0g",
-            "badge_class":"AIMEaNOFQUeaiGZ7gC19FQ",
-            "recipient_type":"email",
-            "recipient_identifier":"",
-            "narrative":"Badge issued for completing the Secure Coding Dojo:First Degree Black Belt.",
-            "create_notification":true,
-            "evidence_items":[]
-        },
         "challenges":[
             {
                 "id":"cwe120",
