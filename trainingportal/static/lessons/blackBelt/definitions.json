@@ -130,15 +130,6 @@
                 "codeBlockIds":["safeMemoryManagement","inputAllowListing"]
             },
             {
-                "id":"cwe502",
-                "name":"Deserialization of Untrusted Data",
-                "playLink":"/cwe502.jsp",
-                "description": "cwe502.html",
-                "attackGram":"deserialization.png",
-                "solution":"cwe502.sol.md",
-                "codeBlockIds":["enforceSafeDeserialization"]
-            },
-            {
                 "id":"quiz",
                 "name":"Quiz", 
                 "playLink":"/quiz.jsp",
