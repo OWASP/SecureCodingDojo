@@ -1,8 +1,5 @@
 name: "Tests"
-on: 
-  wokflow_dispatch:
-  pull_request:
-    branches: [main]
+on: pull_request
 
 jobs:
   tests:
