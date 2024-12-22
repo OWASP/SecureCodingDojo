@@ -46,7 +46,7 @@
         "badgeInfo":{
             "line1":"Secure Coding",
             "line2":"2nd Degree",
-            "line3":"Black Belt",
+            "line3":"Black Belt I",
             "bg":"red"
         },
         "requiredModules":["blackBelt"]
@@ -58,7 +58,7 @@
         "badgeInfo":{
             "line1":"Secure Coding",
             "line2":"2nd Degree",
-            "line3":"Black Belt",
+            "line3":"Black Belt II",
             "bg":"darkred"
         },
         "requiredModules":["secondDegreeBlackBelt1"]

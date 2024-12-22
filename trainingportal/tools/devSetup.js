@@ -22,6 +22,9 @@ async function setup(){
         await challengeUtil.passChallenges("securityCodeReviewMaster",user,[]);
         await challengeUtil.passChallenges("greenBelt",user,[]);
         await challengeUtil.passChallenges("blackBelt",user,["cwe134"]);
+        await challengeUtil.passChallenges("secondDegreeBlackBelt1",user,[]);
+        await challengeUtil.passChallenges("secondDegreeBlackBelt2",user,[]);
+
 
     } catch (error) {
         console.error(error);
