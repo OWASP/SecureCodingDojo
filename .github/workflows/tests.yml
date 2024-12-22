@@ -25,7 +25,7 @@ jobs:
       run: |
         npm install
         cp config.json.docker config.json
-        tools/devSetup.js
+        node tools/devSetup.js
 
     - name: Run Tests
       working-directory: ./trainingportal
