@@ -1,4 +1,4 @@
-name: "Tests"
+name: "Training Portal Tests"
 on:
   push:
     branches: [main]
@@ -22,6 +22,7 @@ jobs:
       - run: npm install
 
       # Setup config
+      - run: cd trainingportal
       - run: cp config.json.docker config.json
 
       # Setup local database and local user
