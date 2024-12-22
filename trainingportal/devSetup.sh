@@ -5,7 +5,7 @@ npm install
 npm audit fix
 echo
 echo "2.Applying basic configuration (see config.json.sample for more options)"
-cp ../build/trainingportal/config.json config.json
+cp config.json.docker config.json
 echo
 echo "3.Setting up a local database and local user"
 node tools/devSetup.js
