@@ -10,199 +10,181 @@ async function waitForInsertUser(){
     while(insertUserPromise === null) {} //wait for promise to get initialized
     await insertUserPromise;
 }
+describe('db', () => {
 
-
-describe('db', function() {
-    before(async() => {
+    beforeAll(async() => {
         await db.getConn().queryPromise("DELETE FROM users WHERE accountId like '%Delete%'");
     });
 
-    describe('#getVersion()', () => {
-        it('should return the correct schema version', async () => {
-            let versionPromise = db.getPromise(db.getVersion);
-            let version = await versionPromise;
-            assert.equal(version,db.SCHEMA_VERSION);
-            return versionPromise;
+    test('should return the correct schema version', async () => {
+        let versionPromise = db.getPromise(db.getVersion);
+        let version = await versionPromise;
+        assert.equal(version,db.SCHEMA_VERSION);
+        return versionPromise;
+    });
+
+    test('should insert one row without error', async () => {
+        insertUserPromise = db.getPromise(db.insertUser,{accountId:"testDeleteMe",familyName:"LastTest", givenName:"FirstTest"});
+        let result = await insertUserPromise;
+        assert.notEqual(result,null);
+        return insertUserPromise;
+    });
+
+    test('should retrieve the user without error', async () => {
+        waitForInsertUser();
+        let getUserPromise = db.getPromise(db.getUser, "testDeleteMe");
+        let user = await getUserPromise;
+        assert(user!==null,"Could not get user");
+        assert.equal(user.givenName,"FirstTest");
+        assert.equal(user.familyName,"LastTest");
+        return getUserPromise;
+    });
+
+    test('should update the user without error', function(done) {
+        waitForInsertUser();
+        async.waterfall([
+            function(cb){
+                db.getUser("testDeleteMe",
+                function(err){
+                    console.log("FAIL: getUser before update");
+                    cb(err);
+                },function(user){ 
+                    user.familyName = "UpdatedLastTest";
+                    user.givenName = "UpdatedFirstLastTest";
+                    cb(null,user);
+                });
+            },
+            //Update user
+            function(user, cb){
+                db.updateUser(user,
+                function(err){
+                    console.log("FAIL: updateUser");
+                    cb(err);
+                },function(user){ 
+                    user.familyName = "UpdatedLastTest";
+                    user.givenName = "UpdatedFirstLastTest";
+                    cb(null,user);
+                });
+            },
+            //GET user after update
+            function(result, cb){
+                db.getUser("testDeleteMe",
+                function(err){
+                    console.log("FAIL: getUser after update");
+                    cb(err);
+                },function(user){ 
+                    assert.equal(user.familyName, "UpdatedLastTest","Did not update family name!");
+                    assert.equal(user.givenName, "UpdatedFirstLastTest","Did not update first name!");
+                    done();
+                });
+            },
+        ],function(err){
+            done(err);
+        });    
+    });
+
+    test('should delete the user without error', function(done) {
+        db.deleteUser("testDeleteMe",
+        function(err){
+            done(err);
+        },function(result){ 
+            done();
+        }); 
+    });
+
+
+    test('should create a team without error', function(done) {
+        async.waterfall([
+        //this will be the account owner for the team
+            function(cb){
+                db.insertUser({accountId:"testDeleteMe1",familyName:"LastTest1", givenName:"FirstTest1"},function(err){cb(err);},function(result){cb(null,result);});
+            },
+            function(result, cb){
+                db.insertUser({accountId:"testDeleteMe2",familyName:"LastTest2", givenName:"FirstTest2"},function(err){cb(err);},function(result){cb(null,result);});
+            },
+            function(result, cb){
+                db.getConn().query("DELETE FROM teams WHERE name like '%Delete%'");
+                cb(null,null);
+            }, 
+            function(result, cb){
+                db.getUser("testDeleteMe1",function(err){cb(err);},function(result){cb(null,result);});
+            },
+            //Insert Team
+            function(user, cb){
+                assert(user!=null,"Error with test setup. Owner user is null");
+                db.insertTeam(user,{name:"testTeamDeleteMe"},
+                function(err){
+                    done(err);
+                },function(result){ 
+                    done();
+                });
+            }
+        ],function(err){
+            done(err);
         });
     });
 
-    describe('#insertUser(),getUser()', () => {
-        it('should insert one row without error', async () => {
-            insertUserPromise = db.getPromise(db.insertUser,{accountId:"testDeleteMe",familyName:"LastTest", givenName:"FirstTest"});
-            let result = await insertUserPromise;
-            assert.notEqual(result,null);
-            return insertUserPromise;
-        });
-        it('should retrieve the user without error', async () => {
-            waitForInsertUser();
-            let getUserPromise = db.getPromise(db.getUser, "testDeleteMe");
-            let user = await getUserPromise;
-            assert(user!==null,"Could not get user");
-            assert.equal(user.givenName,"FirstTest");
-            assert.equal(user.familyName,"LastTest");
-            return getUserPromise;
-        });
-    
-    
-    });
 
-
-
-    describe('#updateUser()', function() {
-        it('should update the user without error', function(done) {
-            waitForInsertUser();
-            async.waterfall([
-                function(cb){
-                    db.getUser("testDeleteMe",
-                    function(err){
-                        console.log("FAIL: getUser before update");
-                        cb(err);
-                    },function(user){ 
-                        user.familyName = "UpdatedLastTest";
-                        user.givenName = "UpdatedFirstLastTest";
-                        cb(null,user);
-                    });
-                },
-                //Update user
-                function(user, cb){
-                    db.updateUser(user,
-                    function(err){
-                        console.log("FAIL: updateUser");
-                        cb(err);
-                    },function(user){ 
-                        user.familyName = "UpdatedLastTest";
-                        user.givenName = "UpdatedFirstLastTest";
-                        cb(null,user);
-                    });
-                },
-                //GET user after update
-                function(result, cb){
-                    db.getUser("testDeleteMe",
-                    function(err){
-                        console.log("FAIL: getUser after update");
-                        cb(err);
-                    },function(user){ 
-                        assert.equal(user.familyName, "UpdatedLastTest","Did not update family name!");
-                        assert.equal(user.givenName, "UpdatedFirstLastTest","Did not update first name!");
-                        done();
-                    });
-                },
-            ],function(err){
-                done(err);
-            });    
-      });
-    });
-
-    describe('#deleteUser()', function() {
-        it('should delete the user without error', function(done) {
-            db.deleteUser("testDeleteMe",
-            function(err){
-                done(err);
-            },function(result){ 
-                done();
-            }); 
-      });
-    });
-
-    describe('#insertTeam()', function() {
-        it('should create a team without error', function(done) {
-            async.waterfall([
-               //this will be the account owner for the team
-                function(cb){
-                    db.insertUser({accountId:"testDeleteMe1",familyName:"LastTest1", givenName:"FirstTest1"},function(err){cb(err);},function(result){cb(null,result);});
-                },
-                function(result, cb){
-                    db.insertUser({accountId:"testDeleteMe2",familyName:"LastTest2", givenName:"FirstTest2"},function(err){cb(err);},function(result){cb(null,result);});
-                },
-                function(result, cb){
-                    db.getConn().query("DELETE FROM teams WHERE name like '%Delete%'");
-                    cb(null,null);
-                }, 
-                function(result, cb){
-                    db.getUser("testDeleteMe1",function(err){cb(err);},function(result){cb(null,result);});
-                },
-                //Insert Team
-                function(user, cb){
-                    assert(user!=null,"Error with test setup. Owner user is null");
-                    db.insertTeam(user,{name:"testTeamDeleteMe"},
-                    function(err){
-                        done(err);
-                    },function(result){ 
-                        done();
-                    });
-                }
-            ],function(err){
-                done(err);
-            });
-      });
-    });
-
-    describe('#fetchTeams()', function() {
-        it('should fetch an array of teams without error', function(done) {
-            db.fetchTeams(
-            function(err){
-                done(err);
-            },function(result){ 
-                assert(result.length > 0,"Team result Array is 0 or null.");
-                done();
-            });
-      });
-    });
-
-    describe('#getTeamWithMembersByName()', function() {
-        it('should fetch a team by name without error', function(done) {
-            db.getTeamWithMembersByName("testTeamDeleteMe",
-            function(err){
-                done(err);
-            },function(team){ 
-                assert.equal(team.members[0].givenName,"FirstTest1","Expected user not part of the team");
-                done();
-            });
-      });
-    });
-
-    describe('#getTeamById()', function() {
-        it('should fetch a team by id without error', function(done) {
-            async.waterfall([
-                function(cb){
-                    db.getTeamWithMembersByName("testTeamDeleteMe",
-                    function(err){
-                        cb(err);
-                    },function(team){ 
-                        cb(null,team)
-                    });
-                },
-                function(team, cb){
-                    db.getTeamById(team.id,
-                    function(err){
-                        cb(err);
-                    },function(team2){
-                        assert(team.id===team2.id,"Team ids don't match!"); 
-                        done();
-                    });
-                }
-            ],function(err){
-                done(err);
-            });    
-      });
-    });
-
-    describe('#getTeamStats()', async () => {
-        it('should get the team stats without error', async () => {
-            let promise = db.getTeamStats(null);
-            let result = await promise;
-            assert(result!==null,"Result should not be null");
-            assert(result.length > 0 ,"Result should have more than 0 rows");
-            return promise;
+    test('should fetch an array of teams without error', function(done) {
+        db.fetchTeams(
+        function(err){
+            done(err);
+        },function(result){ 
+            assert(result.length > 0,"Team result Array is 0 or null.");
+            done();
         });
     });
 
-    describe('#getTeamMembersByBadges(), #getModuleStats()', async () => {
+
+
+    test('should fetch a team by name without error', function(done) {
+        db.getTeamWithMembersByName("testTeamDeleteMe",
+        function(err){
+            done(err);
+        },function(team){ 
+            assert.equal(team.members[0].givenName,"FirstTest1","Expected user not part of the team");
+            done();
+        });
+    });
+
+
+    test('should fetch a team by id without error', function(done) {
+        async.waterfall([
+            function(cb){
+                db.getTeamWithMembersByName("testTeamDeleteMe",
+                function(err){
+                    cb(err);
+                },function(team){ 
+                    cb(null,team)
+                });
+            },
+            function(team, cb){
+                db.getTeamById(team.id,
+                function(err){
+                    cb(err);
+                },function(team2){
+                    assert(team.id===team2.id,"Team ids don't match!"); 
+                    done();
+                });
+            }
+        ],function(err){
+            done(err);
+        });    
+    });
+
+    test('should get the team stats without error', async () => {
+        let promise = db.getTeamStats(null);
+        let result = await promise;
+        assert(result!==null,"Result should not be null");
+        assert(result.length > 0 ,"Result should have more than 0 rows");
+        return promise;
+    });
+
+    describe('#getTeamMembersByBadges(), #getModuleStats()', () => {
         var team = null;
         var users = [];
         const USER_COUNT = 5;
-        before(async () => {
-
+        beforeAll(async () => {
             for(let i = 0; i < USER_COUNT; i++){
                 let acctId = `deleteMeTeamMember${i}`;
                 await db.getPromise(db.insertUser,{accountId:acctId,familyName:`LastTeamMember${i}`, givenName:`BadgeTeamFirstTeamMember${i}`});
@@ -234,7 +216,7 @@ describe('db', function() {
             
         });
 
-        it('should get the module stats without error', async () =>{
+        test('should get the module stats without error', async () =>{
             let promise = db.getModuleStats();
             let result = await promise;
             assert(result!==null,"Result should not be null");
@@ -242,7 +224,7 @@ describe('db', function() {
             return promise;
         });
     
-        it('should get the team members by badges without error', async () => {
+        test('should get the team members by badges without error', async () => {
             let promise = db.getTeamMembersByBadges(team.id);
             let result = await promise;
             assert.notStrictEqual(result, null,"Result should not be null");
@@ -262,7 +244,7 @@ describe('db', function() {
             return promise;
         });
 
-        it('should get the team members by badges without error', async () => {
+        test('should get the team members by badges without error', async () => {
             let promise = db.getTeamMembersByBadges(team.id);
             let result = await promise;
             assert.notStrictEqual(result, null,"Result should not be null");
@@ -283,7 +265,7 @@ describe('db', function() {
         });
         
         
-        it('should get the team members by badge in the last days count', async () => {
+        test('should get the team members by badge in the last days count', async () => {
             let promise = db.getTeamMembersByBadges(team.id,7);
             let result = await promise;
 
@@ -299,7 +281,7 @@ describe('db', function() {
             return promise;
         });
 
-        it('should get the all users with badges for a particular module id without error', async () => {
+        test('should get the all users with badges for a particular module id without error', async () => {
             let promise = db.getAllUsersForBadge("blackBelt");
             let result = await promise;
             assert.notStrictEqual(result, null,"Result should not be null");
@@ -312,7 +294,7 @@ describe('db', function() {
             return promise;
         });
 
-        after(async () => {
+        afterAll(async () => {
             for(let user of users){
                 await db.getConn().queryPromise("DELETE FROM users WHERE id = ?",[user.id]);
                 await db.getConn().queryPromise("DELETE FROM badges WHERE userId = ?",[user.id]);
@@ -322,8 +304,21 @@ describe('db', function() {
         });
     });
 
-    describe('#deleteTeam()', function() {
-        it('should delete a team without error', function(done) {
+    afterAll(async () => {
+        await db.getConn().queryPromise("DELETE FROM users WHERE accountId like '%Delete%'");
+        await db.getConn().queryPromise("DELETE FROM teams WHERE name like '%Delete%'");
+        
+        let promise = new Promise((resolve,reject)=>{
+            db.getConn().end();
+            resolve(null);
+        });
+        
+        return promise;
+        
+    });
+
+    describe('#deleteTeam()', () => {
+        test('should delete a team without error', function(done) {
             async.waterfall([
                 function(cb){
                     db.getTeamWithMembersByName("testTeamDeleteMe",
@@ -356,6 +351,29 @@ describe('db', function() {
       });
     });
 
+});
+
+
+/*
+
+
+describe('db', function() {
+   
+
+       
+    });
+
+    describe('#getTeamById()', function() {
+        
+    });
+
+    describe('#getTeamStats()', async () => {
+       
+    });
+
+
+   
+
     describe('#insertChallengeEntry(),#fetchChallengeEntriesForUser(),#fetchActivity(),#getChallengeStats()', function() {
 
         var user = null;
@@ -365,7 +383,7 @@ describe('db', function() {
         });
 
 
-        it('should insert a challenge entry without error', async () => {
+        test('should insert a challenge entry without error', async () => {
             await db.getPromise(db.insertChallengeEntry,[user.id, "cwe306"]);
             let promise = db.getPromise(db.fetchChallengeEntriesForUser, user);
             let challenges = await promise;
@@ -375,14 +393,14 @@ describe('db', function() {
             return promise;     
         });
 
-        it('should get the correct number of activities', async () => {
+        test('should get the correct number of activities', async () => {
             let promise = db.getPromise(db.fetchActivity, [user.givenName,10]);
             let result = await promise;
             assert.equal(result.length,1,"Incorrect number of activity entries for user");
             return promise;
         });
 
-        it('should get the challenge stats without error', async () => {
+        test('should get the challenge stats without error', async () => {
             let promise = db.getPromise(db.getChallengeStats);
             let result = await promise;
 
@@ -401,17 +419,7 @@ describe('db', function() {
     });
 
    
-    after(async () => {
-        await db.getConn().queryPromise("DELETE FROM users WHERE accountId like '%Delete%'");
-        await db.getConn().queryPromise("DELETE FROM teams WHERE name like '%Delete%'");
-        
-        let promise = new Promise((resolve,reject)=>{
-            db.getConn().end();
-            resolve(null);
-        });
-        
-        return promise;
-        
-    })
+    
 });
 
+*/

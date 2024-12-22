@@ -14,18 +14,17 @@ config.allowedAccountPattern = "authTest.*";
 describe('authTests', () => {
     
 
-    before(async () => {
+    beforeAll(async () => {
         await db.getConn().queryPromise("DELETE FROM users WHERE accountId LIKE ?",["authTest%"]);
         await db.getConn().queryPromise("DELETE FROM teams WHERE name LIKE ?",["authTest%"]);
     });
   
-    describe('#processAuthCallback', async () => {
+    describe('#processAuthCallback', () => {
 
         var teamOwner = null;
         var team = null;
 
-        before(async () => {
-
+        beforeAll(async () => {
 
             await db.getPromise(db.insertUser,{accountId:"authTestTeamOwner",familyName:"Owner", givenName:"Team"});
             teamOwner = await db.getPromise(db.getUser,"authTestTeamOwner");
@@ -33,7 +32,7 @@ describe('authTests', () => {
             team = await db.getPromise(db.getTeamWithMembersByName,"authTestTeam");
         });
        
-        it('should create a new user without a team', async () => {
+        test('should create a new user without a team', async () => {
             await db.getConn().queryPromise("DELETE FROM users WHERE accountId = ?",["authTestUser"]);
 
             config.defaultTeam = null;
@@ -50,7 +49,7 @@ describe('authTests', () => {
             return promise;
         });
 
-        it('should create a new user and assign it to the default team', async () => {
+        test('should create a new user and assign it to the default team', async () => {
             await db.getConn().queryPromise("DELETE FROM users WHERE accountId = ?",["authTestUser"]);
             config.defaultTeam = "authTestTeam";
             var promise = new Promise((resolve,reject)=>{
@@ -66,7 +65,7 @@ describe('authTests', () => {
             return promise;
         });
 
-        it('should retrieve and return an existing user', async () => {
+        test('should retrieve and return an existing user', async () => {
             await db.getConn().queryPromise("DELETE FROM users WHERE accountId = ?",["authTestUser"]);
             config.defaultTeam = "someOtherTeam";
             var promise = new Promise((resolve,reject)=>{
@@ -82,7 +81,7 @@ describe('authTests', () => {
             return promise;
         });
 
-        it('should reject a profileId if is not allowed', async () => {
+        test('should reject a profileId if is not allowed', async () => {
             var promise = new Promise((resolve,reject)=>{
                 auth.processAuthCallback("userNotMatchingAllowedPattern","A","B","c@email.local", (e, u) => {
                     resolve(e);
@@ -95,7 +94,7 @@ describe('authTests', () => {
             return promise;
         });
 
-        after(async () => {
+        afterAll(async () => {
             await db.getPromise(db.deleteTeam,[teamOwner,team.id]);
             await db.getPromise(db.deleteUser,"authTestNewUser");
             await db.getPromise(db.deleteUser,"authTestTeamOwner");
@@ -105,7 +104,7 @@ describe('authTests', () => {
     });
 
 
-    after(async()=>{
+    afterAll(async () => {
         //cleanup
         await db.getConn().queryPromise("DELETE FROM users WHERE accountId LIKE ?",["authTest%"]);
         await db.getConn().queryPromise("DELETE FROM teams WHERE name LIKE ?",["authTest%"]);
