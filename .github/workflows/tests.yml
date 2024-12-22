@@ -8,11 +8,12 @@ on:
 
 jobs:
   tests:
+    name: Portal Unit Tests
     runs-on: ubuntu-latest
 
     steps:
     - name: Repo Checkout
-    uses: actions/checkout@v2
+      uses: actions/checkout@v2
 
     - name: Setup Node
       uses: actions/setup-node@v1
@@ -20,12 +21,12 @@ jobs:
         node-version: 14
 
     - name: Setup Portal
-    working-directory: ./trainingportal
-    run: |
-      npm install
-      config.json.docker config.json
-      tools/devSetup.js
-
+      working-directory: ./trainingportal
+      run: |
+        npm install
+        config.json.docker config.json
+        tools/devSetup.js
+        
     - name: Run Tests
-    working-directory: ./trainingportal
-    run: npm test
+      working-directory: ./trainingportal
+      run: npm test
