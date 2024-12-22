@@ -9,24 +9,21 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the Repo
-      - uses: actions/checkout@v2
+      - name: Repo Checkout
+      uses: actions/checkout@v2
 
-      # Install Node 14
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 14
 
-      # Install dependencies
-      - run: npm install
+      - name: Setup Portal
+      working-directory: ./trainingportal
+      run: |
+        npm install
+        config.json.docker config.json
+        tools/devSetup.js
 
-      # Setup config
-      - run: cd trainingportal
-      - run: cp config.json.docker config.json
-
-      # Setup local database and local user
-      - run: tools/devSetup.js
-
-      # Run tests
-      - run: npm test
+      - name: Run Tests
+      working-directory: ./trainingportal
+      run: npm test
