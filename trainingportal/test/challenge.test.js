@@ -15,6 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
  */
+process.env.CHALLENGE_MASTER_SALT = "5679"
+
 const assert = require('assert');
 const crypto = require('crypto');
 
@@ -30,7 +32,7 @@ challenges.badgrCall = function(badgrInfo, user){
 };
 
 //mock request and response express objects
-var lastChallengeId = "cwe862";
+var lastChallengeId = "cwe798";
 
 //calculate the hash
 var mockSalt = "1234";
@@ -40,7 +42,7 @@ var mockHash = crypto.createHash('sha256').update(lastChallengeId+mockSalt+maste
 var mockRequest = {
     "body":{
         "challengeId":lastChallengeId,
-        "moduleId":"blackBelt",
+        "moduleId":"greenBelt",
         "challengeCode":mockHash
     },
     "user":{
@@ -58,10 +60,13 @@ var mockResponse = {
 
 
 
-describe('challengeTests', function() {
+
+
+describe('challengeTests', () => {
     var user = null;
 
-    before(async () => {
+    beforeAll(async () => {
+
         await db.getPromise(db.deleteUser,"levelUpUser");
         await db.getPromise(db.deleteUser,"apiChallengeCodeUser");
         await db.getPromise(db.insertUser,{accountId:"levelUpUser",familyName:"LastLevelUp", givenName:"FirstLevelUp"});
@@ -70,8 +75,10 @@ describe('challengeTests', function() {
         return promise;
     });
 
-    describe('#isPermittedModule()', async () => {
-        it('should return false for seconDegreeBlackBelt', async () => {
+   
+
+    describe('#isPermittedModule()', () => {
+        test('should return false for secondDegreeBlackBelt', async () => {
             assert.notEqual(user, null, "Failed test setup - user null");
             let promise = challenges.isPermittedModule(user,"secondDegreeBlackBelt");
             permitted = await promise;
@@ -82,9 +89,9 @@ describe('challengeTests', function() {
 
 
   
-    describe('#verifyModuleCompletion() - issue badge', async () => {
+    describe('#verifyModuleCompletion() - issue badge', () => {
         var user = null;
-        before(async ()=>{
+        beforeAll(async ()=>{
             //cleanup
             await db.getConn().queryPromise("DELETE FROM users WHERE accountId='secondDegreeUser'");
             await db.getPromise(db.insertUser,{accountId:"secondDegreeUser",familyName:"LastLevelUp", givenName:"FirstLevelUp"});
@@ -99,7 +106,7 @@ describe('challengeTests', function() {
 
         });
 
-        it('should  issue a badge', async () => {
+        test('should  issue a badge', async () => {
             
             let result = await challenges.verifyModuleCompletion(user, "secondDegreeBlackBelt");
             assert.equal(result,true,"Should have completed the module");
@@ -112,7 +119,7 @@ describe('challengeTests', function() {
             return promise;
         });
 
-        after(async ()=>{
+        afterAll(async ()=>{
             //cleanup
             await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
             await db.getConn().queryPromise("DELETE FROM badges WHERE userId=?",[user.id]);
@@ -120,37 +127,38 @@ describe('challengeTests', function() {
         });
     });
 
-    describe('#getUserLevelForModule()', async () => {
+    describe('#getUserLevelForModule()', () => {
         var user = null;
-        before(async ()=>{
+        beforeAll(async ()=>{
             //cleanup
             await db.getConn().queryPromise("DELETE FROM users WHERE accountId='deleteMe_getUserLevelForModule'");
             await db.getPromise(db.insertUser,{accountId:"deleteMe_getUserLevelForModule",familyName:"Last", givenName:"First"});
             user = await db.getPromise(db.getUser,"deleteMe_getUserLevelForModule");
-            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe306"]);
             await db.getPromise(db.insertChallengeEntry,[user.id, "cwe807"]);
             await db.getPromise(db.insertChallengeEntry,[user.id, "cwe862"]);
-            return db.getPromise(db.insertChallengeEntry,[user.id, "cwe311"]);
+            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe306"]);
+            return db.getPromise(db.insertChallengeEntry,[user.id, "cwe798"]);
+
         });
 
-        it('should be at the correct level for module', async () => {
+        test('should be at the correct level for module', async () => {
             
-            let promise = challenges.getUserLevelForModule(user, "blackBelt");
+            let promise = challenges.getUserLevelForModule(user, "greenBelt");
             let result = await promise;
             assert.equal(result,1,"Should be at level 1");
             //cleanup
             return promise;
         });
 
-        after(async ()=>{
+        afterAll(async ()=>{
             //cleanup
             await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
             return db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId=?",[user.id]);
         });
     });
 
-    describe('#getBadgeCode(),verifyBadgeCode',  () => {
-        it('should generate correct badge code',  () => {
+    describe('#getBadgeCode(),verifyBadgeCode', () => {
+        test('should generate correct badge code',  () => {
             
             let badgeCode = challenges.getBadgeCode({id:26,
                   moduleId:'blackBelt',
@@ -173,9 +181,14 @@ describe('challengeTests', function() {
   
         });
 
-        it('should verify correct badge code',  () => {
-        
-            let parsed = challenges.verifyBadgeCode("eyJiYWRnZUluZm8iOnsibGluZTEiOiJTZWN1cmUgQ29kaW5nIiwibGluZTIiOiJCbGFjayBCZWx0IiwibGluZTMiOiIiLCJiZyI6ImJsYWNrIn0sImdpdmVuTmFtZSI6IkZpcnN0TGV2ZWxVcCIsImZhbWlseU5hbWUiOiJMYXN0TGV2ZWxVcCIsImNvbXBsZXRpb24iOiJUaHUgRmViIDExIDIwMjEgMjI6NDM6MzEgR01ULTA1MDAgKEVhc3Rlcm4gU3RhbmRhcmQgVGltZSkiLCJpZEhhc2giOiJlODNiYjJmNzI5In0%3D.rIyuJBgsIhdUi4Hq180vZUwBZhm9scj5CYonSVln7NY%3D");
+        test('should verify correct badge code', () => {
+            let badgeCode = challenges.getBadgeCode({id:26,
+                moduleId:'blackBelt',
+                timestamp:'Thu Feb 11 2021 22:43:31 GMT-0500 (Eastern Standard Time)',
+                userId:92
+            }, user);
+
+            let parsed = challenges.verifyBadgeCode(badgeCode);
             
             assert.notEqual(null, parsed.badgeInfo, "code.info.badgeInfo should not be null")
             assert.notEqual(null, parsed.givenName, "code.info.givenName should not be null")
@@ -183,7 +196,7 @@ describe('challengeTests', function() {
 
         });
 
-        it('should return null on wrong hash',  () => {
+        test('should return null on wrong hash', () => {
         
             let parsed = challenges.verifyBadgeCode("eyJiYWRnZUluZm8iOnsibGluZTEiOiJTZWN1cmUgQ29kaW5nIiwibGluZTIiOiJCbGFjayBCZWx0IiwiYmciOiJibGFjayJ9LCJnaXZlbk5hbWUiOiJGaXJzdExldmVsVXAiLCJmYW1pbHlOYW1lIjoiTGFzdExldmVsVXAiLCJjb21wbGV0aW9uIjoiVGh1IEZlYiAxMSAyMDIxIDIyOjQzOjMxIEdNVC0wNTAwIChFYXN0ZXJuIFN0YW5kYXJkIFRpbWUpIiwiaWRIYXNoIjoiOGQyN2JhMzdjNSJ9.XYZ");
             
@@ -192,9 +205,9 @@ describe('challengeTests', function() {
         });
     });
 
-    describe('#apiChallengeCode', async () => {
+    describe('#apiChallengeCode', () => {
         var user = null;
-        before(async ()=>{
+        beforeAll(async ()=>{
             //cleanup
             await db.getConn().queryPromise("DELETE FROM users WHERE accountId='deleteMe_apiChallengeCode'");
             await db.getPromise(db.insertUser,{accountId:"deleteMe_apiChallengeCode",familyName:"Last", givenName:"First"});
@@ -203,7 +216,7 @@ describe('challengeTests', function() {
             return promise;
         });
         
-        it('should return invalid request if fields are missing',async () => {
+        test('should return invalid request if fields are missing', async () => {
             let promise = challenges.apiChallengeCode({"body":{}});
             try{
                 await promise;
@@ -216,7 +229,7 @@ describe('challengeTests', function() {
             return promise;
         });
 
-        it('should return invalid code if code is invalid',async () => {
+        test('should return invalid code if code is invalid', async () => {
             let promise = challenges.apiChallengeCode({"body":{"moduleId":"blackBelt","challengeCode":"<script>","challengeId":"ABC"}});
             try{
                 await promise;
@@ -229,7 +242,7 @@ describe('challengeTests', function() {
             return promise;
         });
 
-        it('should return invalid challenge id if challenge id is invalid',async () => {
+        test('should return invalid challenge id if challenge id is invalid',async () => {
             let promise = challenges.apiChallengeCode({"body":{"moduleId":"blackBelt","challengeCode":"QUJDCg==","challengeId":"<script>"}});
             try{
                 await promise;
@@ -243,7 +256,7 @@ describe('challengeTests', function() {
 
         });
 
-        it('should return invalid module id if module id is invalid',async () => {
+        test('should return invalid module id if module id is invalid',async () => {
             let promise = challenges.apiChallengeCode({"body":{"moduleId":"blackBelt<script>","challengeCode":"QUJDCg==","challengeId":"<script>"}});
             try{
                 await promise;
@@ -256,14 +269,14 @@ describe('challengeTests', function() {
             return promise;
         });
 
-        it('should return challenge not available for incorrect user level',async () => {
+        test('should return challenge not available for incorrect user level',async () => {
             let promise = challenges.apiChallengeCode({
                 "user":user,
                 "body":
                     {
-                        "moduleId":"blackBelt",
+                        "moduleId":"greenBelt",
                         "challengeCode":"QUJDCg==",
-                        "challengeId":"cwe79"
+                        "challengeId":"cwe209"
                     }
             });
 
@@ -280,13 +293,13 @@ describe('challengeTests', function() {
 
         });
 
-        it('should return challenge not found for incorrect user level',async () => {
+        test('should return challenge not found for incorrect user level',async () => {
             let promise = challenges.apiChallengeCode(
                 {
                     "user":user,
                     "body":
                         {
-                            "moduleId":"blackBelt",
+                            "moduleId":"greenBelt",
                             "challengeCode":"QUJDCg==",
                             "challengeId":"cwe79"
                         }
@@ -302,13 +315,13 @@ describe('challengeTests', function() {
             return promise;    
         });
 
-        it('should return invalid code for wrong hash',async () => {
+        test('should return invalid code for wrong hash',async () => {
             let promise = challenges.apiChallengeCode(
                 {
                     "user":user,
                     "body":
                         {
-                            "moduleId":"blackBelt",
+                            "moduleId":"greenBelt",
                             "challengeCode":"QUJDCg==",
                             "challengeId":"cwe807"
                         }
@@ -326,26 +339,28 @@ describe('challengeTests', function() {
         });
 
 
-        it('should return updated level for user', async () => {
-            await db.getPromise(db.insertChallengeEntry, [user.id, "cwe306"]);
-            await db.getPromise(db.insertChallengeEntry, [user.id, "cwe807"]);
+        test('should return updated level for user', async () => {
+            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe807"]);
+            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe862"]);
+            await db.getPromise(db.insertChallengeEntry,[user.id, "cwe306"]);
+
             user.codeSalt = mockSalt;
             mockRequest.user = user;
             await challenges.apiChallengeCode(mockRequest);
-            let promise = challenges.getUserLevelForModule(user,"blackBelt");
+            let promise = challenges.getUserLevelForModule(user,"greenBelt");
             let level = await promise;
             assert.equal(level,1,"Wrong level for module");
             return promise;
         });
 
-        after(async ()=>{
+        afterAll(async ()=>{
             //cleanup
             await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
             return db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId=?",[user.id]);
         });
     });
 
-    after(async () =>{
+    afterAll(async () =>{
        
         var user1 = await db.getPromise(db.getUser,"levelUpUser");
         await db.getConn().queryPromise("DELETE FROM challengeEntries WHERE userId = ?",[user1.id]);

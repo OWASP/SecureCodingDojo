@@ -25,16 +25,17 @@ describe('reportTests', () => {
     
     var user = null;
     var parsedCSV = null;
-    before(async () => {
+
+    beforeAll(async () => {
         await db.getPromise(db.deleteUser,"utilUser");
         await db.getPromise(db.insertUser,{accountId:"utilUser",familyName:"LastUtil", givenName:"FirstUtil MiddleUtil"});
         user = await db.getPromise(db.getUser,"utilUser");
         return db.insertBadge(user.id,"blackBelt");
     });
   
-    describe('#parseReportCSV', async () => {
+    describe('#parseReportCSV', () => {
        
-        it('should parse CSV', async () => {
+        test('should parse CSV', async () => {
             var promise = new Promise(function(resolve,reject){
                 var csv = "Team1, Team2\nFirstUtil LastUtil, John Smith";
                 var data = [];
@@ -55,9 +56,9 @@ describe('reportTests', () => {
         
     });
 
-    describe('#getReportForModuleId', async () => {
+    describe('#getReportForModuleId', () => {
        
-        it('should get an accurate report', async () => {
+        test('should get an accurate report', async () => {
             var promise = util.getReportForModuleId(parsedCSV, "blackBelt");
 
             let result = await promise;
@@ -78,7 +79,7 @@ describe('reportTests', () => {
     });
 
 
-    after(async()=>{
+    afterAll(async()=>{
         //cleanup
         await db.getConn().queryPromise("DELETE FROM users WHERE id=?",[user.id]);
         await db.getConn().queryPromise("DELETE FROM badges WHERE userId=?",[user.id]);
