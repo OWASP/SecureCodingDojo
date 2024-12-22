@@ -1,0 +1,30 @@
+name: "Tests"
+on: 
+  wokflow_dispatch:
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the Repo
+      - uses: actions/checkout@v2
+
+      # Install Node 14
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      # Install dependencies
+      - run: npm install
+
+      # Setup config
+      - run: cp config.json.docker config.json
+
+      # Setup local database and local user
+      - run: tools/devSetup.js
+
+      # Run tests
+      - run: npm test
