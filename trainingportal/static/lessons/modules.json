@@ -30,7 +30,7 @@
         "name":"Black Belt",
         "summary":"Common software security flaws - part 2",
         "description":"Lessons are entry level difficulty aimed at introducing the concepts of vulnerability, exploit and software defense.",
-        "description2":"Includes 14 lessons. Estimated duration 2 hours.",
+        "description2":"Includes 13 lessons. Estimated duration 2 hours.",
         "badgeInfo":{
             "line1":"Secure Coding",
             "line2":"Black Belt",
@@ -39,8 +39,20 @@
         },
         "requiredModules":["greenBelt"]
     },
-    "secondDegreeBlackBelt":{
-        "name":"Second Degree Black Belt",
+    "secondDegreeBlackBelt1":{
+        "name":"Second Degree Black Belt - Part 1",
+        "summary":"Cloud software exploitation techniques",
+        "description":"Have some fun with this Capture the Flag module which is based on OWASP Top 10. Your goal is to take down the cloud applications used in a worldwide malware campaign.",
+        "badgeInfo":{
+            "line1":"Secure Coding",
+            "line2":"2nd Degree",
+            "line3":"Black Belt",
+            "bg":"red"
+        },
+        "requiredModules":["blackBelt"]
+    },
+    "secondDegreeBlackBelt2":{
+        "name":"Second Degree Black Belt - Part 2",
         "summary":"Cloud software exploitation techniques",
         "description":"Have some fun with this Capture the Flag module which is based on OWASP Top 10. Your goal is to take down the cloud applications used in a worldwide malware campaign.",
         "badgeInfo":{
@@ -49,7 +61,7 @@
             "line3":"Black Belt",
             "bg":"darkred"
         },
-        "requiredModules":["blackBelt"]
+        "requiredModules":["secondDegreeBlackBelt1"]
     },
     "redTeam":{
         "name":"Red Team",

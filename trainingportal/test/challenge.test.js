@@ -108,13 +108,18 @@ describe('challengeTests', () => {
 
         test('should  issue a badge', async () => {
             
-            let result = await challenges.verifyModuleCompletion(user, "secondDegreeBlackBelt");
+            let result = await challenges.verifyModuleCompletion(user, "secondDegreeBlackBelt1");
             assert.equal(result,true,"Should have completed the module");
+
+            result = await challenges.verifyModuleCompletion(user, "secondDegreeBlackBelt2");
+            assert.equal(result,true,"Should have completed the module");
+
             let promise = db.fetchBadges(user.id);
             let badges = await promise;
             assert.notEqual(null, badges, "badges should NOT be null");
-            assert.equal(badges.length, 1, "Incorrect number of badges");
-            assert.equal(badges[0].moduleId, "secondDegreeBlackBelt", "Wrong badge module");
+            assert.equal(badges.length, 2, "Incorrect number of badges");
+            assert.equal(badges[0].moduleId, "secondDegreeBlackBelt1", "Wrong badge module");
+            assert.equal(badges[1].moduleId, "secondDegreeBlackBelt2", "Wrong badge module");
             //cleanup
             return promise;
         });

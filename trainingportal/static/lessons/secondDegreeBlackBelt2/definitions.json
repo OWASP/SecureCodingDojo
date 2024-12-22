@@ -1,0 +1,32 @@
+[
+    {
+        "level":0,
+        "name":"Second Degree Black Belt - Part 2",
+        "challenges":[
+            {
+                "id":"owasp2017injection",
+                "name":"Injection", 
+                "description": "owasp2017injection.html",
+                "attackGram":"commandinjection.png",
+                "codeBlockIds":["parameterizedCommands","inputAllowListing","principleOfLeastPrivilege"],
+                "mission":"Output the contents of the secret file on internal host 1."
+            },
+            {
+                "id":"owasp2017xxe",
+                "name":"XML External Entities", 
+                "description": "owasp2017xxe.html",
+                "attackGram":"xxe.png",
+                "codeBlockIds":["disableXmlExternalEntities","principleOfLeastPrivilege"],
+                "mission": "Login into the web application hosted on internal host 2."               
+            },
+            {
+                "id":"owasp2017deserialization",
+                "name":"Using Components with Known Vulnerabilities & Insecure Deserialization", 
+                "description": "owasp2017deserialization.html",
+                "attackGram":"deserialization.png",
+                "codeBlockIds":["enforceSafeDeserialization","keep3rdPartyUpToDate"],
+                "mission": "Submit a STOP command object."
+            }
+        ]
+    }
+]
