@@ -1,7 +1,12 @@
 CREATE TABLE dbInfo (
   version INTEGER
 );
-INSERT INTO dbInfo (version) VALUES (5);
+INSERT INTO dbInfo (version) VALUES (6);
+
+CREATE TABLE moduleInfo (
+  version INTEGER
+);
+INSERT INTO moduleInfo (version) VALUES (0);
 
 CREATE TABLE challengeEntries (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
