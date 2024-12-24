@@ -26,6 +26,8 @@ const uid = require('uid-safe');
 const validator = require('validator');
 
 const db = require(path.join(__dirname, 'db'));
+db.init();
+
 const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
 var config = util.getConfig();
@@ -601,7 +603,6 @@ app.get('/api/report/:moduleId',  async (req, res) => {
 
 });
 
-db.init();
 
 process.on('SIGINT', function() {
   process.exit();
