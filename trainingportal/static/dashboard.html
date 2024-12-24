@@ -30,7 +30,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="moduleStat in moduleStatList">
-                    <td style="width:75%">{{modules[moduleStat.moduleId].name}}</td>
+                    <td style="width:75%" ng-if="modules[moduleStat.moduleId]">{{modules[moduleStat.moduleId].name}}</td>
                     <td>{{moduleStat.playerCount}}</td>
                 </tr>
             </tbody>
