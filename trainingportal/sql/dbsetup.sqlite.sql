@@ -3,6 +3,11 @@ CREATE TABLE dbInfo (
 );
 INSERT INTO dbInfo (version) VALUES (5);
 
+CREATE TABLE moduleInfo (
+  version INTEGER
+);
+INSERT INTO moduleInfo (version) VALUES (0);
+
 CREATE TABLE challengeEntries (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   userId INTEGER,

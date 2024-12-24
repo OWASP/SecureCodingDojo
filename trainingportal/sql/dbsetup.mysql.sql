@@ -1,7 +1,12 @@
 CREATE TABLE `dbInfo` (
   `version` INT NULL
 ) DEFAULT CHARSET=utf8;
-INSERT INTO `dbInfo` (`version`) VALUES (5);
+INSERT INTO `dbInfo` (`version`) VALUES (6);
+
+CREATE TABLE `moduleInfo` (
+  `version` INT NULL
+) DEFAULT CHARSET=utf8;
+INSERT INTO `moduleInfo` (`version`) VALUES (0);
 
 CREATE TABLE `challengeEntries` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'The entry id',
