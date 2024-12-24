@@ -1,7 +1,7 @@
 CREATE TABLE dbInfo (
   version INTEGER
 );
-INSERT INTO dbInfo (version) VALUES (5);
+INSERT INTO dbInfo (version) VALUES (6);
 
 CREATE TABLE moduleInfo (
   version INTEGER
