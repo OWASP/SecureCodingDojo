@@ -14,6 +14,18 @@
         },
         "requiredModules":[]
     },
+    "cryptoBreaker":{
+        "name":"Crypto Breaker",
+        "summary":"Cryptography challenges",
+        "description":"Learn about encryption algorithms and cryptographic attacks.",
+        "badgeInfo":{
+            "line1":"Secure Coding Dojo",
+            "line2":"Crypto Breaker",
+            "line3":"",
+            "bg":"navy"
+        },
+        "requiredModules":[]
+    },
     "greenBelt":{
         "name":"Green Belt",
         "summary":"Common software security flaws - part 1",

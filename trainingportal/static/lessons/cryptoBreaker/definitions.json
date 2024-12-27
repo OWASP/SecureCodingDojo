@@ -1,0 +1,32 @@
+[
+    {
+        "level":0,
+        "name":"Crypto Breaker",
+        "challenges":[
+            {
+                "id":"caesar",
+                "name":"Caesar Cipher",
+                "description": "crypto_caesar.md",
+                "type":"quiz",
+                "mission":"Decode the cipher below.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"ascii",
+                "name":"ASCII Encoding",
+                "description": "crypto_ascii.md",
+                "type":"quiz",
+                "mission":"Decode the text below.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"base64",
+                "name":"Base64 Encoding",
+                "description": "crypto_base64.md",
+                "type":"quiz",
+                "mission":"Decode the text below.",
+                "codeBlockIds":[]
+            }
+        ]
+    }
+]
