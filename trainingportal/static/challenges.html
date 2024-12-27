@@ -71,15 +71,30 @@
                                     ng-href="{{targetUrl}}{{challenge.playLink}}" target="_blank" rel="noopener noreferrer" class="btn btn-warning btn-sm">Play</a>
                                 <br/><br/>
                             </span>
-                            <p ng-if="!challenge.playLink">
+                            <p ng-if="!challenge.playLink && challenge.type!=='quiz'">
                                 The play link has been provided to you when solving the previous module or challenge. 
                                 If you have missed it read the challenge description carefully and try to figure out what it is.
                             </p>
+                            <div ng-if="challenge.question" class="alert alert-info" style="color: black;">
+                                <textarea readonly style="background-color: transparent; border: 0px; width: 100%">{{challenge.question.code}}</textarea> 
+                            </div>
+
                             <span ng-if="!challenge.passed">
-                                <p>
-                                    Once you were able to complete the challenge you can generate a code which you can submit below.
-                                </p>
-                                <a ng-href="#!submitCode/{{moduleId}}/{{challenge.id}}" class="btn btn-info btn-sm" role="button"> Submit Code</a>
+
+                                <span ng-if="challenge.type !== 'quiz'">
+                                    <p>
+                                        Once you were able to complete the challenge you can generate a code which you can submit below.
+                                    </p>
+                                    <a ng-href="#!submitCode/{{moduleId}}/{{challenge.id}}/page/0" class="btn btn-info btn-sm" role="button">Submit Code</a>
+                                </span>
+
+                                <span ng-if="challenge.type === 'quiz'">
+                                    <p>
+                                        Once you were able to find the answer you can submit it below.
+                                    </p>
+                                    <a ng-href="#!submitCode/{{moduleId}}/{{challenge.id}}/quiz/{{challenge.question.digest}}" class="btn btn-info btn-sm" role="button">Submit Answer</a>
+                                </span>
+                                
                             </span>
                             <span ng-if="challenge.solution" >
                             <br/><br/>

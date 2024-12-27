@@ -87,6 +87,16 @@ describe('challengeTests', () => {
         });
     });
 
+    describe('#getChallengeDefinitions()', () => {
+        test('should return a non-zero count of challenges for securityCodeReviewMaster', async () => {
+            let defs = await challenges.getChallengeDefinitions("securityCodeReviewMaster");
+            assert(defs.length > 0,"Unexpected number of challenges returned for securityCodeReviewMaster");
+        });
+        test('should return a 0 count of challenges for nonExistentModule', async () => {
+            let defs = await challenges.getChallengeDefinitions("nonExistentModule");
+            assert(defs.length === 0,"Unexpected number of challenges returned for nonExistentModule");
+        });
+    });
 
   
     describe('#verifyModuleCompletion() - issue badge', () => {
@@ -274,6 +284,20 @@ describe('challengeTests', () => {
             return promise;
         });
 
+        test('should return invalid challenge type for wrong challenge type',async () => {
+            let promise = challenges.apiChallengeCode({"body":
+                {"moduleId":"blackBelt","challengeCode":"afd","challengeId":"ch1","challengeType":"badType"}});
+            try{
+                await promise;
+            }
+            catch(err){
+                assert.notEqual(err,null,"Error is null");
+                assert.equal(err.message,"invalidChallengeType","Wrong error code returned");
+                promise = new Promise((resolve)=>{resolve("ok");});
+            }
+            return promise;
+        });
+
         test('should return challenge not available for incorrect user level',async () => {
             let promise = challenges.apiChallengeCode({
                 "user":user,
@@ -342,6 +366,62 @@ describe('challengeTests', () => {
             }
             return promise;      
         });
+
+        test('should fail the challenge for wrong answer',async () => {
+            let mockAnswer = "1234";
+            let mockAnswerHash = crypto.createHash('sha256').update(mockAnswer+masterSalt).digest('hex');
+            let response = null;
+
+            let promise = challenges.apiChallengeCode(
+                {
+                    "user":user,
+                    "body":
+                        {
+                            "moduleId":"cryptoBreaker",
+                            "challengeCode":mockAnswerHash,
+                            "challengeId":"caesar",
+                            "challengeType":"quiz",
+                            "answer":"wrong"
+                        }
+                });
+                
+            try{
+                response = await promise;
+            }
+            catch(err){
+                assert.strictEqual(err.message,"invalidAnswer","Expected invalidCode");
+            }
+            assert.strictEqual(response,null,"Should fail for wrong answer");
+
+        });
+
+        test('should pass the challenge for correct answer',async () => {
+            let mockAnswer = "1234";
+            let mockAnswerHash = crypto.createHash('sha256').update(mockAnswer+masterSalt).digest('hex');
+            let response = null;
+
+            let promise = challenges.apiChallengeCode(
+                {
+                    "user":user,
+                    "body":
+                        {
+                            "moduleId":"cryptoBreaker",
+                            "challengeCode":mockAnswerHash,
+                            "challengeId":"caesar",
+                            "challengeType":"quiz",
+                            "answer":mockAnswer
+                        }
+                });
+                
+            try{
+                response = await promise;
+            }
+            catch(err){
+                assert.strictEqual(err,null,"Error is not null");
+            }
+            assert.strictEqual(response.data.id, "caesar", "Wrong challenge id.")
+        });
+
 
 
         test('should return updated level for user', async () => {
