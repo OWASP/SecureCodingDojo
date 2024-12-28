@@ -22,17 +22,24 @@ let getSecretText = () => {
 }
 
 let getRes = (mes, code) => {
-  let digest = crypto.createHash('sha256').update(mes+masterSalt).digest('hex');
+  let digest = crypto.createHash('sha256').update(mes.trim()+masterSalt).digest('hex');
   return res = {
     code:code,
     digest:digest, 
   }
 }
 
-let getCode = (challengeId, key) => {
-  let mes = getSecretText();
-  let code = DEFS[challengeId](mes, key);
-  return getRes(mes, code);
+let getCode = (challengeId, message, key) => {
+
+  let mes;
+  if(message){
+    mes = message;
+  }
+  else{
+    mes = getSecretText();
+  }
+
+  return DEFS[challengeId](mes, key);
 }
 
 let checkCode = (mes, digest) => {
@@ -64,23 +71,23 @@ let caesarEnc = (mes, key) => {
       shifted+= String.fromCharCode(newCode);
     }
   }
-  return shifted
+  return getRes(mes, shifted);
 }
 
 let asciiEnc = (mes) => {
   let encoding = "";
   for(let i=0;i<mes.length;i++){
-    encoding += mes.charCodeAt(i)
+    encoding += mes.charCodeAt(i);
     if(i<mes.length-1){
       encoding += " "
     }
   }
-  return encoding;
+  return getRes(mes, encoding);
 }
 
 let base64Enc = (mes) => {
   let code = util.btoa(mes);
-  return code;
+  return getRes(mes, code);
 }
 
 let hashEnc = (mes) => {
@@ -90,16 +97,37 @@ let hashEnc = (mes) => {
     let hash = crypto.createHash('md5').update(word).digest('hex');
     hashedWords.push(hash);
   }
-  return hashedWords.join("\n");
+  return getRes(mes, hashedWords.join("\n"));
 }
 
+let xorEnc = (message) => {
+  let key = message 
+  let mes = "lorem ipsum dolor sit amet"
+  key = key.substring(0, mes.length);
+  
+  let cipher = "";
+  for(let i=0; i < mes.length; i++){
+    let mCode = mes.charCodeAt(i);
+    let kCode = key.charCodeAt(i);
+    let cCode = mCode ^ kCode;
+    if(cCode < 16){
+      cipher += "0" + cCode.toString(16);
+    }
+    else{
+      cipher += cCode.toString(16);
+    }
+    if(i<mes.length-1) cipher+=" ";
+  }
+  return getRes(key, cipher);
+}
 
 
 const DEFS = {
   "caesar": caesarEnc,
   "ascii": asciiEnc,
   "base64": base64Enc,
-  "hash": hashEnc
+  "hash": hashEnc,
+  "xor": xorEnc
 }
 
 module.exports = {

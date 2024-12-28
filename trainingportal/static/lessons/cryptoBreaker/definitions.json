@@ -34,6 +34,14 @@
                 "type":"quiz",
                 "mission":"Find the text by cracking the digest of each word.",
                 "codeBlockIds":[]
+            },
+            {
+                "id":"xor",
+                "name":"XOR Encryption",
+                "description": "crypto_xor.md",
+                "type":"quiz",
+                "mission":"The input is 'lorem ipsum dolor sit amet'. Find the XOR key.",
+                "codeBlockIds":[]
             }
         ]
     }
