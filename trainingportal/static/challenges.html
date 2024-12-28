@@ -24,7 +24,6 @@
                 </div>
                 <div id="collapse{{challenge.id}}" class="panel-collapse collapse"  ng-class="{'show':!challenge.passed}">
                     <div class="card-body">
-                        <h4>Challenge Description</h4>
                     
                         <div ng-include="getDescriptionLink(challenge.id)" highlight-code></div>        
                        
@@ -55,7 +54,7 @@
                         </span>
                         <span ng-if="userLevel+1>=level.level">
 
-                            <h4>Play Link and Instructions</h4>
+                            <h4>Challenge</h4>
                             <span ng-if="challenge.mission">
                                 <div class="alert alert-warning" style="color: black;">
                                     <strong>Mission:</strong>  {{challenge.mission}} 
