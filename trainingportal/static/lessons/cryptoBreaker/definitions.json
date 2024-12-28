@@ -29,7 +29,7 @@
             },
             {
                 "id":"hash",
-                "name":"One-way crypto",
+                "name":"One-Way Hash",
                 "description": "crypto_hash.md",
                 "type":"quiz",
                 "mission":"Find the text by cracking the digest of each word.",

@@ -2,24 +2,29 @@
 A cryptographic hash function is a way of computing a code for a chunk of data. This code is also called a `digest`.
 
 A secure cryptographic hashing algorithm has the following properties:
+
 - It cannot be reversed (one-way only)
 - It consistenly produces the same digest for the same data
 - It is unique for the provided data 
 - A small change in the data produces a significantly different digest
 
 Hash functions are being used in a variety of applications: 
+
 - Validating the integrity of a file or a message
 - Storing a password 
 - Generating a cryptographic key from a password
 
 #### Algorithm
-There are several classes of hashing algorithms: MD5, SHA1, SHA2, BLAKE. MD5 and SHA1 are known to be vulnerable.
+There are several classes of hashing algorithms: MD5, SHA1, SHA2, BLAKE. 
+
+MD5 and SHA1 are known to be vulnerable.
+
 Most algorithms leverage the characteristics of the data to arrive at a unique value.
 
 ##### Example
 
-Using MD5 "ABCD" becomes cb08ca4a7bb5f9683c19133a84872ca7
-Using MD5 "ABCE" becomes 6b011b774af5377cba2ec2b8ecd0b63b
+- Using MD5 "ABCD" becomes cb08ca4a7bb5f9683c19133a84872ca7
+- Using MD5 "ABCE" becomes 6b011b774af5377cba2ec2b8ecd0b63b
 
 ##### Weaknesses
 
