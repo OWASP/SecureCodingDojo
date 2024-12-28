@@ -83,12 +83,23 @@ let base64Enc = (mes) => {
   return code;
 }
 
+let hashEnc = (mes) => {
+  let words = mes.split(" ");
+  let hashedWords = [];
+  for(let word of words){
+    let hash = crypto.createHash('md5').update(word).digest('hex');
+    hashedWords.push(hash);
+  }
+  return hashedWords.join("\n");
+}
+
 
 
 const DEFS = {
   "caesar": caesarEnc,
   "ascii": asciiEnc,
-  "base64": base64Enc
+  "base64": base64Enc,
+  "hash": hashEnc
 }
 
 module.exports = {

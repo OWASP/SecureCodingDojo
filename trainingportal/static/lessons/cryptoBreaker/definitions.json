@@ -26,6 +26,14 @@
                 "type":"quiz",
                 "mission":"Decode the text below.",
                 "codeBlockIds":[]
+            },
+            {
+                "id":"hash",
+                "name":"One-way crypto",
+                "description": "crypto_hash.md",
+                "type":"quiz",
+                "mission":"Find the text by cracking the digest of each word.",
+                "codeBlockIds":[]
             }
         ]
     }

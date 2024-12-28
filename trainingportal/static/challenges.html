@@ -76,7 +76,7 @@
                                 If you have missed it read the challenge description carefully and try to figure out what it is.
                             </p>
                             <div ng-if="challenge.question" class="alert alert-info" style="color: black;">
-                                <textarea readonly style="background-color: transparent; border: 0px; width: 100%">{{challenge.question.code}}</textarea> 
+                                <textarea rows="{{challenge.question.code.split('\n').length+1}}" readonly style="background-color: transparent; border: 0px; width: 100%">{{challenge.question.code}}</textarea> 
                             </div>
 
                             <span ng-if="!challenge.passed">
