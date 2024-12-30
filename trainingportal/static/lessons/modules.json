@@ -1,4 +1,5 @@
 {
+    "version":20241223,
     "securityCodeReviewMaster":{
         "name":"Security Code Review Ninja",
         "summary":"Integrating security into code review",

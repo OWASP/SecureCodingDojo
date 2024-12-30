@@ -1,5 +1,14 @@
 FROM drupal:8.5.0
 
+# Use sed to remove the specified lines from sources.list as these deb.debian.org returning 404 error
+RUN sed -i '/deb http:\/\/deb.debian.org\/debian stretch main/d' /etc/apt/sources.list
+RUN sed -i '/deb http:\/\/deb.debian.org\/debian stretch-updates main/d' /etc/apt/sources.list
+RUN sed -i '/deb http:\/\/security.debian.org stretch\/updates main/d' /etc/apt/sources.list
+
+# Use echo to append the repository lines to the sources.list file to fetch the packages from archive
+RUN echo "deb http://archive.debian.org/debian/ stretch main" >> /etc/apt/sources.list
+RUN echo "deb http://archive.debian.org/debian-security/ stretch/updates main" >> /etc/apt/sources.list
+
 RUN apt-get update
 RUN apt-get -y install supervisor
 RUN apt-get -y install iputils-ping

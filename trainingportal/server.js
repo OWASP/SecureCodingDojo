@@ -26,6 +26,8 @@ const uid = require('uid-safe');
 const validator = require('validator');
 
 const db = require(path.join(__dirname, 'db'));
+db.init();
+
 const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
 var config = util.getConfig();
@@ -322,17 +324,17 @@ app.get('/challenges/descriptions/:challengeId', (req,res) => {
 });
 
 
-app.get('/api/user', (req, res) => {
-   db.fetchChallengeEntriesForUser(req.user,function(){
-      res.send(req.user);
-  },function(entries){
-      var passedChallenges = [];
-      if(entries!=null){
-        passedChallenges = entries;
-      }
-      req.user.passedChallenges = passedChallenges;
-      res.send(req.user);
-  });
+app.get('/api/user', async (req, res) => {
+  
+  let entries = await db.fetchChallengeEntriesForUser(req.user);
+
+  var passedChallenges = [];
+  if(entries!=null){
+    passedChallenges = entries;
+  }
+  req.user.passedChallenges = passedChallenges;
+  res.send(req.user);
+  
 });
 
 
@@ -601,7 +603,6 @@ app.get('/api/report/:moduleId',  async (req, res) => {
 
 });
 
-db.init();
 
 process.on('SIGINT', function() {
   process.exit();
