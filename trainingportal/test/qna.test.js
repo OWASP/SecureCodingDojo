@@ -1,22 +1,42 @@
 const qna = require("../qna");
 const util = require("../util");
+const assert = require("assert");
 
 describe("qna", () => {
-  describe("base64CaesarEnc", () => {
+
+  describe("crypto", () => {
 
     test("false for incorrect code",()=>{
-      let res = qna.getCode("caesar",null,0);
-      let wrong = "1234";
-      let check = qna.checkCode(wrong, res.digest);
-      expect(check).toBeFalsy();
+      let text = "PLAIN_TEXT";
+      for(let alg in qna.DEFS){
+        let res = qna.getCode(alg,text);
+        let wrong = "1234";
+        let check = qna.checkCode(wrong, res.digest);
+        assert(check === false, `Validation passed for wrong text using ${alg}`);
+      }
+      
     });
 
     test("true for correct code",()=>{
-      let shifted = qna.getCode("caesar",null,0);
-      //shifted did not change at all because the key is 0
-      let check = qna.checkCode(shifted.code, res.digest);
-      expect(check).toBeTruthy();
+      let text = "PLAIN_TEXT";
+      for(let alg in qna.DEFS){
+        let res = qna.getCode(alg,text);
+        let check = qna.checkCode(text, res.digest);
+        assert(check === true, `Validation failed for correct text using ${alg}`);
+      }
+    });
+
+
+    test("vignere should return plain text for 'AAA'",()=>{
+      let text = "PLAIN TEXT";
+      let expected = "BYOUA HQKH"
+      let key = "MNO"
+      let res = qna.getCode("vignere",text,key);
+      assert.strictEqual(res.code, expected, "Did not result in the same cipher for key: 'MNO'");
+
     });
 
   });
+
+
 });

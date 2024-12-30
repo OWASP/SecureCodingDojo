@@ -8,7 +8,15 @@
                 "name":"Caesar Cipher",
                 "description": "crypto_caesar.md",
                 "type":"quiz",
-                "mission":"Decode the cipher below.",
+                "mission":"Decode the encrypted Latin text below.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"vignere",
+                "name":"Vignere Cipher",
+                "description": "crypto_vignere.md",
+                "type":"quiz",
+                "mission":"Decode the cipher below. As before, the plain text is in Latin.",
                 "codeBlockIds":[]
             },
             {
@@ -40,7 +48,7 @@
                 "name":"XOR Encryption",
                 "description": "crypto_xor.md",
                 "type":"quiz",
-                "mission":"The input is 'lorem ipsum dolor sit amet'. Find the XOR key.",
+                "mission":"The input is 'LOREM IPSUM DOLOR SIT AMET'. Find the XOR key.",
                 "codeBlockIds":[]
             }
         ]

@@ -18,7 +18,7 @@ let getSecretText = () => {
     secretText += dictionary[index];
     if(i<SECRET_WORD_COUNT-1) secretText += " ";
   }
-  return secretText;
+  return secretText.toUpperCase();
 }
 
 let getRes = (mes, code) => {
@@ -47,6 +47,20 @@ let checkCode = (mes, digest) => {
   return vfy === digest;
 }
 
+let shiftChar = (char, diff) => {
+  if(char === ' '){ //skip spaces
+    return ' ';
+  }
+  
+  let newCode = char.charCodeAt(0) + diff
+  if(newCode > "Z".charCodeAt(0)){
+    let diffToZ = newCode - "Z".charCodeAt(0);
+    newCode = "A".charCodeAt(0) + diffToZ - 1;
+  }
+  
+  return String.fromCharCode(newCode);
+}
+
 let caesarEnc = (mes, key) => {
   let diff;
   if(util.isNullOrUndefined(key)){
@@ -59,16 +73,37 @@ let caesarEnc = (mes, key) => {
   let shifted = "";
   for(let i=0;i<mes.length;i++){
     let char = mes.charAt(i);
-    if(char === ' '){ //skip spaces
-      shifted += ' ';
+    shifted += shiftChar(char, diff);
+    
+  }
+  return getRes(mes, shifted);
+}
+
+let vignereEnc = (mes, key) => {
+  let keyArray = [];
+  let keyLen = 3;
+
+  if(util.isNullOrUndefined(key)){
+    for(let i = 0; i<keyLen; i++){
+      keyArray.push(util.getRandomInt(10,20));
+    }  
+  }
+  else{
+    for(let i=0;i<key.length;i++){
+      keyArray.push(key.charCodeAt(i) - "A".charCodeAt(0));
     }
-    else {
-      let newCode = mes.charCodeAt(i) + diff
-      if(newCode > "z".charCodeAt(0)){
-        let diffToZ = newCode - "z".charCodeAt(0);
-        newCode = "a".charCodeAt(0) + diffToZ - 1;
-      }
-      shifted+= String.fromCharCode(newCode);
+  }
+
+  let shifted = "";
+  let kIdx = 0;
+  for(let i=0;i<mes.length;i++){
+    let char = mes.charAt(i);
+    shifted += shiftChar(char, keyArray[kIdx]);
+    if(char !== ' '){
+      kIdx++;
+    }
+    if(kIdx === keyLen){
+      kIdx = 0;
     }
   }
   return getRes(mes, shifted);
@@ -102,7 +137,7 @@ let hashEnc = (mes) => {
 
 let xorEnc = (message) => {
   let key = message 
-  let mes = "lorem ipsum dolor sit amet"
+  let mes = "LOREM IPSUM DOLOR SIT AMET"
   key = key.substring(0, mes.length);
   
   let cipher = "";
@@ -124,6 +159,7 @@ let xorEnc = (message) => {
 
 const DEFS = {
   "caesar": caesarEnc,
+  "vignere": vignereEnc,
   "ascii": asciiEnc,
   "base64": base64Enc,
   "hash": hashEnc,
@@ -131,6 +167,7 @@ const DEFS = {
 }
 
 module.exports = {
+  DEFS,
   getCode,
   checkCode
 }
