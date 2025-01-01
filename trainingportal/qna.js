@@ -109,10 +109,17 @@ let vignereEnc = (mes, key) => {
   return getRes(mes, shifted);
 }
 
+let getASCIIHexCode = (no) => {
+  if(no < 16){
+    return "0" + no.toString(16);
+  }
+  return no.toString(16).toUpperCase();
+}
+
 let asciiEnc = (mes) => {
   let encoding = "";
   for(let i=0;i<mes.length;i++){
-    encoding += mes.charCodeAt(i);
+    encoding += getASCIIHexCode(mes.charCodeAt(i));
     if(i<mes.length-1){
       encoding += " "
     }
@@ -139,23 +146,43 @@ let xorEnc = (message) => {
   let key = message 
   let mes = "LOREM IPSUM DOLOR SIT AMET"
   key = key.substring(0, mes.length);
-  
-  let cipher = "";
-  for(let i=0; i < mes.length; i++){
-    let mCode = mes.charCodeAt(i);
-    let kCode = key.charCodeAt(i);
-    let cCode = mCode ^ kCode;
-    if(cCode < 16){
-      cipher += "0" + cCode.toString(16);
-    }
-    else{
-      cipher += cCode.toString(16);
-    }
-    if(i<mes.length-1) cipher+=" ";
+  let keyArray = [];
+  for(let i=0;i<key.length;i++){
+    keyArray.push(key.charCodeAt(i));
   }
+
+  let cipher = xorOp(mes, keyArray);
   return getRes(key, cipher);
 }
 
+let xorOp = (mes, key) => {
+  let kIdx = 0;
+  let cipher = "";
+
+  for(let i=0; i < mes.length; i++){
+    let mCode = mes.charCodeAt(i);
+    let kCode = key[kIdx];
+    let cCode = mCode ^ kCode;
+    cipher += getASCIIHexCode(cCode);
+    kIdx++;
+    if(kIdx == key.length) kIdx = 0;
+    if(i<mes.length-1) cipher+=" ";
+  }
+  return cipher;
+}
+
+
+let pbkEnc = (mes) => {
+  let passwordString = "LOREM";
+  let saltString = "IPSUM";
+
+  let password = Buffer.from(passwordString);
+  let salt = Buffer.from(saltString);
+  
+  let key = crypto.pbkdf2Sync(password, salt, 1000, 32, "SHA256");
+  let cipher = xorOp(mes,key);
+  return getRes(mes, cipher);
+}
 
 const DEFS = {
   "caesar": caesarEnc,
@@ -163,12 +190,14 @@ const DEFS = {
   "ascii": asciiEnc,
   "base64": base64Enc,
   "hash": hashEnc,
-  "xor": xorEnc
+  "xor": xorEnc,
+  "pbk": pbkEnc
 }
 
 module.exports = {
   DEFS,
   getCode,
-  checkCode
+  checkCode,
+  xorOp
 }
 

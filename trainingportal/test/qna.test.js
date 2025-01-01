@@ -36,6 +36,15 @@ describe("qna", () => {
 
     });
 
+    test("xorOp should return plain text for '0x0'",()=>{
+      let text = "PLAIN TEXT";
+      let expected = "50 4C 41 49 4E 20 54 45 58 54";
+      let keyArray = [0];
+      let cipher = qna.xorOp(text,keyArray)
+      assert.strictEqual(cipher, expected, "Did not result in the same cipher for key: '0x0'");
+
+    });
+
   });
 
 

@@ -28,6 +28,6 @@ Most algorithms leverage the characteristics of the data to arrive at a unique v
 
 ##### Weaknesses
 
-Digests can be pre-calculated making them as easy to reverse as an ASCII code. Indeed websites like `crackstation.net` or `hashes.com` contain large databases of pre-calculated digests. The best way to prevent the reversing hashed words is to concatenate a random string to the text. This is known as adding a salt. Another mitigation involves hashing the message several times (adding iterations). This increases the ammount of computations necessary to compute the hash.
+Digests can be pre-calculated making them as easy to reverse as an ASCII code. Indeed websites like `crackstation.net` or `hashes.com` contain large databases of pre-calculated digests also known as rainbow tables. The best way to prevent the reversing hashed words is to concatenate a random string to the text. This is known as adding a salt. Another mitigation involves hashing the message several times (adding iterations). This increases the ammount of computations necessary to compute the hash.
 
 Hashing algorithms are also vulnerable to collision attacks. Such attacks involve altering the input to arrive at the same digest. This is particularly dangerous when using hashing functions to ensure the integrity of executable files. Both MD5 and SHA1 algorithms are vulnerable to collision attacks.

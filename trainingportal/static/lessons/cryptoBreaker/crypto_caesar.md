@@ -2,9 +2,19 @@
 #### Welcome to the Encryption module.
 In this module you will learn about various ways in which information can be encoded and decoded. 
 
-To solve challenges you will need to execute various transformations on a block of given data. Online resources such as `dCode.fr`, `crackstation.net`, `hashes.com` and others offer tools that can help you in your journey. You may also use your programming language of choice and openssl.
+To solve challenges you will need to execute various transformations on a block of given data. 
 
-Note: You're allowed to conduct offline brute force attacks, however **trying answer combinations in an automatic fashion using the portal is strictly forbidden**. 
+Online resources offer tools that can help you in your journey. 
+Here are a few recommendations:
+
+- `dCode.fr` : includes a large variety of encoding, hashing and encryption tools
+- `criptii.com` : similar to `dCode.fr`
+- `crackstation.net` : includes a large dictionary of words and numbers hashed with several different algorithms
+- `hashes.net`: similar to `crackstation.net`
+
+You may also use the `openssl` command line utility or your programming/scripting language of choice.
+
+`Important Note: You're allowed to conduct offline brute force attacks, however trying answer combinations in an automatic fashion using the portal is strictly forbidden.` 
 
 We begin with one of the oldest methods used to hide a message, known to be used by Julius Caesar.
 

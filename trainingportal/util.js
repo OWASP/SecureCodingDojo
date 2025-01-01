@@ -124,7 +124,7 @@ exports.getRandomInt = (min, max) => {
   if(min >= max) throw Error("getRandomInt min can't be greater than max");
   let innerMax = max - min;
   
-  let val = Math.floor(Math.random() * innerMax);
+  let val = Math.round(Math.random() * innerMax);
   return min + val;
 }
 
