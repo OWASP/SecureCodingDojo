@@ -484,21 +484,15 @@ let apiChallengeCode = async (req) => {
     if(util.isNullOrUndefined(modules[moduleId].skipMasterSalt) || modules[moduleId].skipMasterSalt===false){
         ms = masterSalt;
     }
+
+    if(challengeType !== "quiz"){
+        answer = challengeId+req.user.codeSalt;      
+    }
+
     //either hex or base64 formats should work
-    //we're looking at the first 10 characters only for situations where the challenge code may get truncated - pcaps, IPS logs
-    let verificationHashB64;
-    let verificationHashHex;
-
-    if(challengeType === "quiz"){
-        verificationHashB64 = crypto.createHash('sha256').update(answer+ms).digest('base64').substr(0,10);
-        verificationHashHex = crypto.createHash('sha256').update(answer+ms).digest('hex').substr(0,10);          
-    }
-    else{
-        verificationHashB64 = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+ms).digest('base64').substr(0,10);
-        verificationHashHex = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+ms).digest('hex').substr(0,10);          
-    }
-
-
+    let verificationHashB64 = crypto.createHash('sha256').update(answer+ms).digest('base64');
+    let verificationHashHex = crypto.createHash('sha256').update(answer+ms).digest('hex');
+    
     if(challengeCode.indexOf(verificationHashB64)!==0 && challengeCode.indexOf(verificationHashHex)!==0){
         if(challengeType === "quiz"){
             throw Error("invalidAnswer");            
@@ -507,6 +501,7 @@ let apiChallengeCode = async (req) => {
             throw Error("invalidCode");
         }
     } 
+
     //success update challenge
     curChallengeObj.moduleId = moduleId;
     return insertChallengeEntry(req.user, curChallengeObj, moduleId);

@@ -79,10 +79,10 @@ describe('challengeTests', () => {
 
     describe('#isPermittedModule()', () => {
         test('should return false for secondDegreeBlackBelt', async () => {
-            assert.notEqual(user, null, "Failed test setup - user null");
+            assert.notStrictEqual(user, null, "Failed test setup - user null");
             let promise = challenges.isPermittedModule(user,"secondDegreeBlackBelt");
             permitted = await promise;
-            assert.equal(permitted,false,"Shouldn't not be permitted");
+            assert.strictEqual(permitted,false,"Shouldn't not be permitted");
             return promise;
         });
     });
@@ -119,17 +119,17 @@ describe('challengeTests', () => {
         test('should  issue a badge', async () => {
             
             let result = await challenges.verifyModuleCompletion(user, "secondDegreeBlackBelt1");
-            assert.equal(result,true,"Should have completed the module");
+            assert.strictEqual(result,true,"Should have completed the module");
 
             result = await challenges.verifyModuleCompletion(user, "secondDegreeBlackBelt2");
-            assert.equal(result,true,"Should have completed the module");
+            assert.strictEqual(result,true,"Should have completed the module");
 
             let promise = db.fetchBadges(user.id);
             let badges = await promise;
-            assert.notEqual(null, badges, "badges should NOT be null");
-            assert.equal(badges.length, 2, "Incorrect number of badges");
-            assert.equal(badges[0].moduleId, "secondDegreeBlackBelt1", "Wrong badge module");
-            assert.equal(badges[1].moduleId, "secondDegreeBlackBelt2", "Wrong badge module");
+            assert.notStrictEqual(null, badges, "badges should NOT be null");
+            assert.strictEqual(badges.length, 2, "Incorrect number of badges");
+            assert.strictEqual(badges[0].moduleId, "secondDegreeBlackBelt1", "Wrong badge module");
+            assert.strictEqual(badges[1].moduleId, "secondDegreeBlackBelt2", "Wrong badge module");
             //cleanup
             return promise;
         });
@@ -160,7 +160,7 @@ describe('challengeTests', () => {
             
             let promise = challenges.getUserLevelForModule(user, "greenBelt");
             let result = await promise;
-            assert.equal(result,1,"Should be at level 1");
+            assert.strictEqual(result,1,"Should be at level 1");
             //cleanup
             return promise;
         });
@@ -181,18 +181,18 @@ describe('challengeTests', () => {
                   userId:92
               }, user);
               //verify badge code
-              assert.notEqual(null, badgeCode, "badge code should not be null")
+              assert.notStrictEqual(null, badgeCode, "badge code should not be null")
               let uriDecoded = decodeURIComponent(badgeCode);
               let parts = uriDecoded.split(".");
-              assert.equal(2,parts.length,"badge code should be split by .");
+              assert.strictEqual(2,parts.length,"badge code should be split by .");
               //verify the hash matches
               let infoHash = crypto.createHash('sha256').update(parts[0]+masterSalt).digest('base64');
-              assert.equal(infoHash, parts[1]);
+              assert.strictEqual(infoHash, parts[1]);
               let decoded = Buffer.from(parts[0],"Base64").toString();
               let parsed = JSON.parse(decoded);
-              assert.notEqual(null, parsed.badgeInfo, "code.info.badgeInfo should not be null")
-              assert.notEqual(null, parsed.givenName, "code.info.givenName should not be null")
-              assert.notEqual(null, parsed.familyName, "code.info.firstName should not be null")
+              assert.notStrictEqual(null, parsed.badgeInfo, "code.info.badgeInfo should not be null")
+              assert.notStrictEqual(null, parsed.givenName, "code.info.givenName should not be null")
+              assert.notStrictEqual(null, parsed.familyName, "code.info.firstName should not be null")
   
         });
 
@@ -205,9 +205,9 @@ describe('challengeTests', () => {
 
             let parsed = challenges.verifyBadgeCode(badgeCode);
             
-            assert.notEqual(null, parsed.badgeInfo, "code.info.badgeInfo should not be null")
-            assert.notEqual(null, parsed.givenName, "code.info.givenName should not be null")
-            assert.notEqual(null, parsed.familyName, "code.info.firstName should not be null")
+            assert.notStrictEqual(null, parsed.badgeInfo, "code.info.badgeInfo should not be null")
+            assert.notStrictEqual(null, parsed.givenName, "code.info.givenName should not be null")
+            assert.notStrictEqual(null, parsed.familyName, "code.info.firstName should not be null")
 
         });
 
@@ -215,7 +215,7 @@ describe('challengeTests', () => {
         
             let parsed = challenges.verifyBadgeCode("eyJiYWRnZUluZm8iOnsibGluZTEiOiJTZWN1cmUgQ29kaW5nIiwibGluZTIiOiJCbGFjayBCZWx0IiwiYmciOiJibGFjayJ9LCJnaXZlbk5hbWUiOiJGaXJzdExldmVsVXAiLCJmYW1pbHlOYW1lIjoiTGFzdExldmVsVXAiLCJjb21wbGV0aW9uIjoiVGh1IEZlYiAxMSAyMDIxIDIyOjQzOjMxIEdNVC0wNTAwIChFYXN0ZXJuIFN0YW5kYXJkIFRpbWUpIiwiaWRIYXNoIjoiOGQyN2JhMzdjNSJ9.XYZ");
             
-            assert.equal(null, parsed, "Expected null on wrong code")
+            assert.strictEqual(null, parsed, "Expected null on wrong code")
 
         });
     });
@@ -232,42 +232,39 @@ describe('challengeTests', () => {
         });
         
         test('should return invalid request if fields are missing', async () => {
-            let promise = challenges.apiChallengeCode({"body":{}});
+            let error = null
             try{
-                await promise;
+                await challenges.apiChallengeCode({"body":{}});
             }
             catch(err){
-                assert.notEqual(err,null,"Error is null");
-                assert.equal(err.message,"invalidRequest","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok");});
+                error = err;
             }
-            return promise;
+            assert.notStrictEqual(error,null,"Error is null");
+            assert.strictEqual(error.message,"invalidRequest","Wrong error code returned");
         });
 
         test('should return invalid code if code is invalid', async () => {
-            let promise = challenges.apiChallengeCode({"body":{"moduleId":"blackBelt","challengeCode":"<script>","challengeId":"ABC"}});
+            let error = null; 
             try{
-                await promise;
+                await challenges.apiChallengeCode({"body":{"moduleId":"blackBelt","challengeCode":"<script>","challengeId":"ABC"}});
             }
             catch(err){
-                assert.notEqual(err,null,"Error is null");
-                assert.equal(err.message,"invalidCode","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok");});
+                error = err;
             }
-            return promise;
+            assert.notStrictEqual(error,null,"Error is null");
+            assert.strictEqual(error.message,"invalidCode","Wrong error code returned");
         });
 
         test('should return invalid challenge id if challenge id is invalid',async () => {
-            let promise = challenges.apiChallengeCode({"body":{"moduleId":"blackBelt","challengeCode":"QUJDCg==","challengeId":"<script>"}});
+            let error = null 
             try{
-                await promise;
+                await challenges.apiChallengeCode({"body":{"moduleId":"blackBelt","challengeCode":"QUJDCg==","challengeId":"<script>"}});
             }
             catch(err){
-                assert.notEqual(err,null,"Error is null");
-                assert.equal(err.message,"invalidChallengeId","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok");});
+                error = err;
             }
-            return promise;
+            assert.notStrictEqual(error,null,"Error is null");
+            assert.strictEqual(error.message,"invalidChallengeId","Wrong error code returned");
 
         });
 
@@ -277,120 +274,115 @@ describe('challengeTests', () => {
                 await promise;
             }
             catch(err){
-                assert.notEqual(err,null,"Error is null");
-                assert.equal(err.message,"invalidModuleId","Wrong error code returned");
+                assert.notStrictEqual(err,null,"Error is null");
+                assert.strictEqual(err.message,"invalidModuleId","Wrong error code returned");
                 promise = new Promise((resolve)=>{resolve("ok");});
             }
             return promise;
         });
 
         test('should return invalid challenge type for wrong challenge type',async () => {
-            let promise = challenges.apiChallengeCode({"body":
-                {"moduleId":"blackBelt","challengeCode":"afd","challengeId":"ch1","challengeType":"badType"}});
+            let error = null;
             try{
-                await promise;
+                await challenges.apiChallengeCode({"body":
+                    {"moduleId":"blackBelt","challengeCode":"afd","challengeId":"ch1","challengeType":"badType"}});
             }
             catch(err){
-                assert.notEqual(err,null,"Error is null");
-                assert.equal(err.message,"invalidChallengeType","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok");});
+                error = err;
             }
-            return promise;
+            assert.notStrictEqual(error,null,"Error is null");
+            assert.strictEqual(error.message,"invalidChallengeType","Wrong error code returned");
         });
 
         test('should return challenge not available for incorrect user level',async () => {
-            let promise = challenges.apiChallengeCode({
-                "user":user,
-                "body":
-                    {
-                        "moduleId":"greenBelt",
-                        "challengeCode":"QUJDCg==",
-                        "challengeId":"cwe209"
-                    }
-            });
+            let error = null;
 
             try{
-                await promise;
+                await challenges.apiChallengeCode({
+                    "user":user,
+                    "body":
+                        {
+                            "moduleId":"greenBelt",
+                            "challengeCode":"QUJDCg==",
+                            "challengeId":"cwe209"
+                        }
+                });
             }
             catch(err){
-                assert.notEqual(err,null,"Error is null");
-                assert.equal(err.message,"challengeNotAvailable","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok");});
-
+                error = err;
             }
-            return promise;
-
+            assert.notStrictEqual(error,null,"Error is null");
+            assert.strictEqual(error.message,"challengeNotAvailable","Wrong error code returned");
         });
 
         test('should return challenge not found for incorrect user level',async () => {
-            let promise = challenges.apiChallengeCode(
-                {
-                    "user":user,
-                    "body":
-                        {
-                            "moduleId":"greenBelt",
-                            "challengeCode":"QUJDCg==",
-                            "challengeId":"cwe79"
-                        }
-                });
+            let error = null;
             try{
-                await promise;
+                await challenges.apiChallengeCode(
+                    {
+                        "user":user,
+                        "body":
+                            {
+                                "moduleId":"greenBelt",
+                                "challengeCode":"QUJDCg==",
+                                "challengeId":"cwe79"
+                            }
+                    });;
             }
             catch(err){
-                assert.notEqual(err,null,"Error is null");
-                assert.equal(err.message,"challengeNotAvailable","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok");});
+                error = err;
             }
-            return promise;    
+            assert.notStrictEqual(error,null,"Error is null");
+            assert.strictEqual(error.message,"challengeNotAvailable","Wrong error code returned");
         });
 
         test('should return invalid code for wrong hash',async () => {
-            let promise = challenges.apiChallengeCode(
-                {
-                    "user":user,
-                    "body":
-                        {
-                            "moduleId":"greenBelt",
-                            "challengeCode":"QUJDCg==",
-                            "challengeId":"cwe807"
-                        }
-                });
+            let error = null;
                 
             try{
-                await promise;
+                await challenges.apiChallengeCode(
+                    {
+                        "user":user,
+                        "body":
+                            {
+                                "moduleId":"greenBelt",
+                                "challengeCode":"QUJDCg==",
+                                "challengeId":"cwe807"
+                            }
+                    });
             }
             catch(err){
-                assert.notEqual(err,null,"Error is null");
-                assert.equal(err.message,"invalidCode","Wrong error code returned");
-                promise = new Promise((resolve)=>{resolve("ok");});
+                error = err;
             }
-            return promise;      
+            assert.notStrictEqual(error,null,"Error is null");
+            assert.strictEqual(error.message,"invalidCode","Wrong error code returned");
         });
 
         test('should fail the challenge for wrong answer',async () => {
+            let error = null;
             let mockAnswer = "1234";
             let mockAnswerHash = crypto.createHash('sha256').update(mockAnswer+masterSalt).digest('hex');
             let response = null;
-
-            let promise = challenges.apiChallengeCode(
-                {
-                    "user":user,
-                    "body":
-                        {
-                            "moduleId":"cryptoBreaker",
-                            "challengeCode":mockAnswerHash,
-                            "challengeId":"caesar",
-                            "challengeType":"quiz",
-                            "answer":"wrong"
-                        }
-                });
                 
             try{
-                response = await promise;
+                response = await challenges.apiChallengeCode(
+                    {
+                        "user":user,
+                        "body":
+                            {
+                                "moduleId":"cryptoBreaker",
+                                "challengeCode":mockAnswerHash,
+                                "challengeId":"caesar",
+                                "challengeType":"quiz",
+                                "answer":"wrong"
+                            }
+                    });;
             }
             catch(err){
-                assert.strictEqual(err.message,"invalidAnswer","Expected invalidCode");
+                error = err;
             }
+            assert.notStrictEqual(error,null,"Error is null");
+            assert.strictEqual(error.message,"invalidAnswer","Expected invalidCode");
             assert.strictEqual(response,null,"Should fail for wrong answer");
 
         });
@@ -399,26 +391,26 @@ describe('challengeTests', () => {
             let mockAnswer = "1234";
             let mockAnswerHash = crypto.createHash('sha256').update(mockAnswer+masterSalt).digest('hex');
             let response = null;
-
-            let promise = challenges.apiChallengeCode(
-                {
-                    "user":user,
-                    "body":
-                        {
-                            "moduleId":"cryptoBreaker",
-                            "challengeCode":mockAnswerHash,
-                            "challengeId":"caesar",
-                            "challengeType":"quiz",
-                            "answer":mockAnswer
-                        }
-                });
+            let error = null;
                 
             try{
-                response = await promise;
+                response = await challenges.apiChallengeCode(
+                    {
+                        "user":user,
+                        "body":
+                            {
+                                "moduleId":"cryptoBreaker",
+                                "challengeCode":mockAnswerHash,
+                                "challengeId":"caesar",
+                                "challengeType":"quiz",
+                                "answer":mockAnswer
+                            }
+                    });
             }
             catch(err){
-                assert.strictEqual(err,null,"Error is not null");
+                error = err;
             }
+            assert.strictEqual(error,null,"Error is NOT null");
             assert.strictEqual(response.data.id, "caesar", "Wrong challenge id.")
         });
 
@@ -434,7 +426,7 @@ describe('challengeTests', () => {
             await challenges.apiChallengeCode(mockRequest);
             let promise = challenges.getUserLevelForModule(user,"greenBelt");
             let level = await promise;
-            assert.equal(level,1,"Wrong level for module");
+            assert.strictEqual(level,1,"Wrong level for module");
             return promise;
         });
 
