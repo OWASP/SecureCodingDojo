@@ -39,6 +39,14 @@ If the attacker controls the input, they may easily derive the key by feeding th
 
 Even if the attacker doesn't control the input, if they can guess one message and have the cipher for that message, then they will be able to obtain the key and decrypt all subsequent messages.
 
+For example if XOR was used for encrypting HTTP traffic, the first line of an HTTP request to a website will most likely be:
+
+         GET / HTTP/2
+
+Similarly the first line of the HTTP response will be:
+
+         HTTP 200 OK
+
 The algorithm is also succeptible to frequency analysis as similar blocks will look the same encrypted.
 
 Finally if the key is poorly chosen, as in the example above, the key can be brute forced: meaning the attacker will try all possible key combinations. In the case of a key size of 1 byte, there are 256 combinations.
