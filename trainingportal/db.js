@@ -161,7 +161,9 @@ getPromise = (dbFunc, params) => {
   return promise;
 };
 
-init = async () => {
+
+
+let init = async () => {
   var con = getConn();
   var sql = "";
   var dbSetup = "";
@@ -251,6 +253,9 @@ init = async () => {
   }
 };
 
+let initSync = async() => {
+  await init()
+}
 
 //Creates a user in the database
 insertUser = function(user,errCb,doneCb){
@@ -655,6 +660,7 @@ module.exports = {
   fetchUsers,
   fetchUsersWithId,
   init,
+  initSync,
   insertBadge,
   insertChallengeEntry,
   insertUser,

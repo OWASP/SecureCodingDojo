@@ -26,7 +26,7 @@ const uid = require('uid-safe');
 const validator = require('validator');
 
 const db = require(path.join(__dirname, 'db'));
-db.init();
+db.initSync();
 
 const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));

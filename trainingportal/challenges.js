@@ -105,12 +105,22 @@ let init = async () => {
         masterSalt=process.env.CHALLENGE_MASTER_SALT;
     }
 
-    let dbModuleVersion = await db.getModuleVersion();
-    if(dbModuleVersion < moduleVer){
-        util.log("New training modules version, updating module completion for all users.")
-        recreateBadgesOnModulesUpdate();
-        db.updateModuleVersion(moduleVer);
-    } 
+    try {
+        let dbModuleVersion = await db.getModuleVersion();
+        if(dbModuleVersion < moduleVer){
+            util.log("New training modules version, updating module completion for all users.")
+            recreateBadgesOnModulesUpdate();
+            db.updateModuleVersion(moduleVer);    
+            if(dbModuleVersion < moduleVer){
+                util.log("New training modules version, updating module completion for all users.")
+                recreateBadgesOnModulesUpdate();
+                db.updateModuleVersion(moduleVer);
+            } 
+        } 
+    } catch (error) {
+        console.log(`Error handling module version ${error.message}`);
+    }
+    
 }
 
 init();
