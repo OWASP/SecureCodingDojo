@@ -48,7 +48,7 @@
                 "name":"XOR Encryption",
                 "description": "crypto_xor.md",
                 "type":"quiz",
-                "mission":"The plain text is 'LOREM IPSUM DOLOR SIT AMET'. Find the XOR key.",
+                "mission":"The plain text is 'LOREM IPSUM DOLOR SIT AMET'. Find the characters of the XOR key.",
                 "codeBlockIds":[]
             },
             {
