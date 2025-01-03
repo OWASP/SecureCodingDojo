@@ -79,9 +79,10 @@ let caesarEnc = (mes, key) => {
   return getRes(mes, shifted);
 }
 
-let vigenereEnc = (mes, key) => {
+let vigenereEnc = (m, key) => {
   let keyArray = [];
   let keyLen = 3;
+  let mes = "LOREM " + m;
 
   if(util.isNullOrUndefined(key)){
     for(let i = 0; i<keyLen; i++){

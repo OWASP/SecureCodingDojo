@@ -16,7 +16,7 @@
                 "name":"Vigenère Cipher",
                 "description": "crypto_vigenere.md",
                 "type":"quiz",
-                "mission":"Decrypt the cipher below. As before, the plain text is in Latin.",
+                "mission":"Decrypt the cipher below knowing that the first word is 'LOREM'.",
                 "codeBlockIds":[]
             },
             {

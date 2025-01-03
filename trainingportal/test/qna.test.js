@@ -21,21 +21,13 @@ describe("qna", () => {
       let text = "PLAIN TEXT";
       for(let alg in qna.DEFS){
         if(alg === "crypto_analysis") continue;
-        let res = qna.getCode(alg,text);
+        let res = qna.getCode(alg,text);        
+        if(alg === "crypto_vigenere") text = "LOREM " + text;
         let check = qna.checkCode(text, res.digest);
         assert(check === true, `Validation failed for correct text using ${alg}`);
       }
     });
 
-
-    test("vigenere should return plain text for 'AAA'",()=>{
-      let text = "PLAIN TEXT";
-      let expected = "BYOUA HQKH"
-      let key = "MNO"
-      let res = qna.getCode("crypto_vigenere",text,key);
-      assert.strictEqual(res.code, expected, "Did not result in the same cipher for key: 'MNO'");
-
-    });
 
     test("xorOp should return plain text for '0x0'",()=>{
       let text = "PLAIN TEXT";
