@@ -60,4 +60,9 @@ If the salt is known to the attacker that also makes the password easier to crac
 Using a weak hashing algorithm may allow collisions, although the attacker would need to know the final key for the collision vulnerabilities to com into play. The bigger concern is that some algorithms such as MD5 may impose a shorter length key (16 bytes). A shorter key is easier to crack and increases the avenues for cyptanalysis. 
 
 
+#### References
+
+[Wikipedia: PBKDF2](https://en.wikipedia.org/wiki/PBKDF2)
+
+
 

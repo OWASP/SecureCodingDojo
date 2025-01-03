@@ -89,7 +89,8 @@ let vignereEnc = (mes, key) => {
     }  
   }
   else{
-    for(let i=0;i<key.length;i++){
+    keyLen = key.length;
+    for(let i=0;i<keyLen;i++){
       keyArray.push(key.charCodeAt(i) - "A".charCodeAt(0));
     }
   }
@@ -111,7 +112,7 @@ let vignereEnc = (mes, key) => {
 
 let getASCIIHexCode = (no) => {
   if(no < 16){
-    return "0" + no.toString(16);
+    return "0" + no.toString(16).toUpperCase();
   }
   return no.toString(16).toUpperCase();
 }
@@ -184,14 +185,48 @@ let pbkEnc = (mes) => {
   return getRes(mes, cipher);
 }
 
+
+let analysisEnc = (mes) => {
+  let goldenKeyMaterial = mes;
+  let goldenKeyWords = goldenKeyMaterial.split(" ");
+  let goldenKeySalt = goldenKeyWords[0];
+  let goldenKeyShift = goldenKeyWords[1];
+  let goldenKeySaltHash = crypto.createHash('md5').update(goldenKeySalt).digest("hex");
+  let goldenKeyShiftHash = crypto.createHash('md5').update(goldenKeyShift).digest("hex");
+  let goldenKeyScramble = vignereEnc(goldenKeyMaterial,goldenKeyShift).code;
+  let pass = Buffer.from(goldenKeyMaterial);
+  let salt = Buffer.from(goldenKeySalt);
+  let keyBytes = 32;
+  let keyAlg = "SHA256";
+  let keyIter = 1000;
+  let goldenKey = crypto.pbkdf2Sync(pass, salt, keyIter, keyBytes, keyAlg).toString("hex");
+  let keyInfo = {
+    "keyMaterialShifted": goldenKeyScramble,
+    "goldenKeyShiftHash": goldenKeyShiftHash,
+    "goldenKeySaltHash": goldenKeySaltHash,
+    "iter":keyIter
+  }
+  let keyInfoB64 = util.btoa(JSON.stringify(keyInfo));
+  let postData = `kmb64=${keyInfoB64}`;
+  let post = `POST / HTTP/2\n`;
+  post+=`Host: finance.biznis\n`;
+  post+=`Content-length: ${postData.length}\n\n`;
+  post+= postData;
+
+  let mesKey = crypto.randomBytes(16);
+  let cipher = xorOp(post,mesKey);
+  return getRes(goldenKey, cipher);
+}
+
 const DEFS = {
-  "caesar": caesarEnc,
-  "vignere": vignereEnc,
-  "ascii": asciiEnc,
-  "base64": base64Enc,
-  "hash": hashEnc,
-  "xor": xorEnc,
-  "pbk": pbkEnc
+  "crypto_caesar": caesarEnc,
+  "crypto_vignere": vignereEnc,
+  "crypto_ascii": asciiEnc,
+  "crypto_base64": base64Enc,
+  "crypto_hash": hashEnc,
+  "crypto_xor": xorEnc,
+  "crypto_pbk": pbkEnc,
+  "crypto_analysis": analysisEnc
 }
 
 module.exports = {

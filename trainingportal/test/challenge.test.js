@@ -372,7 +372,7 @@ describe('challengeTests', () => {
                             {
                                 "moduleId":"cryptoBreaker",
                                 "challengeCode":mockAnswerHash,
-                                "challengeId":"caesar",
+                                "challengeId":"crypto_caesar",
                                 "challengeType":"quiz",
                                 "answer":"wrong"
                             }
@@ -382,7 +382,7 @@ describe('challengeTests', () => {
                 error = err;
             }
             assert.notStrictEqual(error,null,"Error is null");
-            assert.strictEqual(error.message,"invalidAnswer","Expected invalidCode");
+            assert.strictEqual(error.message,"invalidAnswer","Expected invalidAnswer");
             assert.strictEqual(response,null,"Should fail for wrong answer");
 
         });
@@ -401,7 +401,7 @@ describe('challengeTests', () => {
                             {
                                 "moduleId":"cryptoBreaker",
                                 "challengeCode":mockAnswerHash,
-                                "challengeId":"caesar",
+                                "challengeId":"crypto_caesar",
                                 "challengeType":"quiz",
                                 "answer":mockAnswer
                             }
@@ -411,7 +411,7 @@ describe('challengeTests', () => {
                 error = err;
             }
             assert.strictEqual(error,null,"Error is NOT null");
-            assert.strictEqual(response.data.id, "caesar", "Wrong challenge id.")
+            assert.strictEqual(response.data.id, "crypto_caesar", "Wrong challenge id.")
         });
 
 

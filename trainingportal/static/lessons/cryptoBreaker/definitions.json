@@ -4,7 +4,7 @@
         "name":"Crypto Breaker",
         "challenges":[
             {
-                "id":"caesar",
+                "id":"crypto_caesar",
                 "name":"Caesar Cipher",
                 "description": "crypto_caesar.md",
                 "type":"quiz",
@@ -12,7 +12,7 @@
                 "codeBlockIds":[]
             },
             {
-                "id":"vignere",
+                "id":"crypto_vignere",
                 "name":"Vignere Cipher",
                 "description": "crypto_vignere.md",
                 "type":"quiz",
@@ -20,7 +20,7 @@
                 "codeBlockIds":[]
             },
             {
-                "id":"ascii",
+                "id":"crypto_ascii",
                 "name":"ASCII Encoding",
                 "description": "crypto_ascii.md",
                 "type":"quiz",
@@ -28,7 +28,7 @@
                 "codeBlockIds":[]
             },
             {
-                "id":"base64",
+                "id":"crypto_base64",
                 "name":"Base64 Encoding",
                 "description": "crypto_base64.md",
                 "type":"quiz",
@@ -36,7 +36,7 @@
                 "codeBlockIds":[]
             },
             {
-                "id":"hash",
+                "id":"crypto_hash",
                 "name":"One-Way Hash",
                 "description": "crypto_hash.md",
                 "type":"quiz",
@@ -44,7 +44,7 @@
                 "codeBlockIds":[]
             },
             {
-                "id":"xor",
+                "id":"crypto_xor",
                 "name":"XOR Encryption",
                 "description": "crypto_xor.md",
                 "type":"quiz",
@@ -52,11 +52,19 @@
                 "codeBlockIds":[]
             },
             {
-                "id":"pbk",
+                "id":"crypto_pbk",
                 "name":"Password Based Key",
                 "description": "crypto_pbk.md",
                 "type":"quiz",
                 "mission":"Decrypt the cipher below which was XOR encrypted with a key derived with PBKDF2 from the word `LOREM` using the salt `IPSUM` and 1000 iterations.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"crypto_analysis",
+                "name":"Cryptanalysis",
+                "description": "crypto_analysis.md",
+                "type":"quiz",
+                "mission":"Obtain the golden key.",
                 "codeBlockIds":[]
             }
         ]

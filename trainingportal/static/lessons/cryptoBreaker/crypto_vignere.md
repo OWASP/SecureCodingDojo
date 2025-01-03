@@ -33,3 +33,7 @@ For example using `ABCDEFG` as key, it's becoming more difficult to recognize th
      `dqlg tf irm xmaq co eqp fibzo` <= `HIJK`
 
 Modern cryptographic algorithms use multiple rounds of transformations. Each round uses a different subkey derived from the initial key.
+
+#### References
+
+[Wikipedia: Vignere Cipher](https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher)

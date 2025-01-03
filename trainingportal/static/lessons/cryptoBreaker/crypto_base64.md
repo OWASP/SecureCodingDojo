@@ -24,4 +24,6 @@ These characters are numerals of the Base64.
 ##### Weakness
 It can be easily deciphered using the well known base64 character map, regrouping the bites in bytes and then converting to the character encoding representation.
 
+#### References
 
+[Wikipedia: Base64](https://en.wikipedia.org/wiki/Base64)

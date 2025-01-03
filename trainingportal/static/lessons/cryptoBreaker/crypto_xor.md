@@ -50,3 +50,7 @@ Similarly the first line of the HTTP response will be:
 The algorithm is also succeptible to frequency analysis as similar blocks will look the same encrypted.
 
 Finally if the key is poorly chosen, as in the example above, the key can be brute forced: meaning the attacker will try all possible key combinations. In the case of a key size of 1 byte, there are 256 combinations.
+
+#### References
+
+[Wikipedia: XOR cipher](https://en.wikipedia.org/wiki/XOR_cipher)

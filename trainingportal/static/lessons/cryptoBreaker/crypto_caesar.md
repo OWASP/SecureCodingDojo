@@ -4,7 +4,7 @@ In this module you will learn about various ways in which information can be enc
 
 To solve challenges you will need to execute various transformations on a block of given data. 
 
-Online resources offer tools that can help you in your journey. 
+There are several online resources that can help you in your journey. 
 Here are a few recommendations:
 
 - `dCode.fr` : includes a large variety of encoding, hashing and encryption tools
@@ -12,7 +12,7 @@ Here are a few recommendations:
 - `crackstation.net` : includes a large dictionary of words and numbers hashed with several different algorithms
 - `hashes.net`: similar to `crackstation.net`
 
-You may also use the `openssl` command line utility or your programming/scripting language of choice.
+You may also use your programming/scripting language of choice.
 
 `Important Note: You're allowed to conduct offline brute force attacks, however trying answer combinations in an automatic fashion using the portal is strictly forbidden.` 
 
@@ -43,5 +43,6 @@ Another aspect that can be used is the frequency of letters in a language. For e
 
 This is called `frequency analysis`.
 
+#### References
 
-
+[Wikipedia: Caesar Cipher](https://en.wikipedia.org/wiki/Caesar_cipher)
