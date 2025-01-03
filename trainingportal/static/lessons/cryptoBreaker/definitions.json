@@ -56,7 +56,7 @@
                 "name":"Password Based Key",
                 "description": "crypto_pbk.md",
                 "type":"quiz",
-                "mission":"Decrypt the cipher below which was XOR encrypted with a key derived with PBKDF2 from the word `LOREM` using the salt `IPSUM` and 1000 iterations.",
+                "mission":"Decrypt the cipher below which was XOR encrypted with a key derived with PBKDF2 from the word `LOREM` using the salt `IPSUM` and 1000 iterations of SHA256 hashes.",
                 "codeBlockIds":[]
             },
             {

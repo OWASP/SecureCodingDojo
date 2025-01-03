@@ -204,6 +204,7 @@ let analysisEnc = (mes) => {
     "keyMaterialShifted": goldenKeyScramble,
     "goldenKeyShiftHash": goldenKeyShiftHash,
     "goldenKeySaltHash": goldenKeySaltHash,
+    "hashingFunction":"SHA256",
     "iter":keyIter
   }
   let keyInfoB64 = util.btoa(JSON.stringify(keyInfo));
