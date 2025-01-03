@@ -79,7 +79,7 @@ let caesarEnc = (mes, key) => {
   return getRes(mes, shifted);
 }
 
-let vignereEnc = (mes, key) => {
+let vigenereEnc = (mes, key) => {
   let keyArray = [];
   let keyLen = 3;
 
@@ -193,7 +193,7 @@ let analysisEnc = (mes) => {
   let goldenKeyShift = goldenKeyWords[1];
   let goldenKeySaltHash = crypto.createHash('md5').update(goldenKeySalt).digest("hex");
   let goldenKeyShiftHash = crypto.createHash('md5').update(goldenKeyShift).digest("hex");
-  let goldenKeyScramble = vignereEnc(goldenKeyMaterial,goldenKeyShift).code;
+  let goldenKeyScramble = vigenereEnc(goldenKeyMaterial,goldenKeyShift).code;
   let pass = Buffer.from(goldenKeyMaterial);
   let salt = Buffer.from(goldenKeySalt);
   let keyBytes = 32;
@@ -221,7 +221,7 @@ let analysisEnc = (mes) => {
 
 const DEFS = {
   "crypto_caesar": caesarEnc,
-  "crypto_vignere": vignereEnc,
+  "crypto_vigenere": vigenereEnc,
   "crypto_ascii": asciiEnc,
   "crypto_base64": base64Enc,
   "crypto_hash": hashEnc,

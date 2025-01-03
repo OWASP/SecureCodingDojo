@@ -12,9 +12,9 @@
                 "codeBlockIds":[]
             },
             {
-                "id":"crypto_vignere",
-                "name":"Vignere Cipher",
-                "description": "crypto_vignere.md",
+                "id":"crypto_vigenere",
+                "name":"Vigenère Cipher",
+                "description": "crypto_vigenere.md",
                 "type":"quiz",
                 "mission":"Decode the cipher below. As before, the plain text is in Latin.",
                 "codeBlockIds":[]

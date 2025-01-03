@@ -28,11 +28,11 @@ describe("qna", () => {
     });
 
 
-    test("vignere should return plain text for 'AAA'",()=>{
+    test("vigenere should return plain text for 'AAA'",()=>{
       let text = "PLAIN TEXT";
       let expected = "BYOUA HQKH"
       let key = "MNO"
-      let res = qna.getCode("crypto_vignere",text,key);
+      let res = qna.getCode("crypto_vigenere",text,key);
       assert.strictEqual(res.code, expected, "Did not result in the same cipher for key: 'MNO'");
 
     });
