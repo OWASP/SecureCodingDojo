@@ -8,7 +8,7 @@
                 "name":"Caesar Cipher",
                 "description": "crypto_caesar.md",
                 "type":"quiz",
-                "mission":"Decode the encrypted Latin text below.",
+                "mission":"Decrypt the encrypted Latin text below.",
                 "codeBlockIds":[]
             },
             {
@@ -16,7 +16,7 @@
                 "name":"Vigenère Cipher",
                 "description": "crypto_vigenere.md",
                 "type":"quiz",
-                "mission":"Decode the cipher below. As before, the plain text is in Latin.",
+                "mission":"Decrypt the cipher below. As before, the plain text is in Latin.",
                 "codeBlockIds":[]
             },
             {
