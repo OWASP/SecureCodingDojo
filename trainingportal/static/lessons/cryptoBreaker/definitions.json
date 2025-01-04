@@ -40,7 +40,7 @@
                 "name":"One-Way Hash",
                 "description": "crypto_hash.md",
                 "type":"quiz",
-                "mission":"Find the text by cracking the digest of each word.",
+                "mission":"Find the text by cracking the digest of each word. Make sure the words are entered in the same order, separated by spaces.",
                 "codeBlockIds":[]
             },
             {

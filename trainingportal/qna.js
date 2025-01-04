@@ -137,11 +137,15 @@ let base64Enc = (mes) => {
 let hashEnc = (mes) => {
   let words = mes.split(" ");
   let hashedWords = [];
+  let hashes = [];
   for(let word of words){
     let hash = crypto.createHash('md5').update(word).digest('hex');
-    hashedWords.push(hash);
+    if(hashedWords.indexOf(word) === -1){
+       hashedWords.push(word);
+       hashes.push(hash);
+    }
   }
-  return getRes(mes, hashedWords.join("\n"));
+  return getRes(hashedWords.join(" "), hashes.join("\n"));
 }
 
 let xorEnc = (message) => {
