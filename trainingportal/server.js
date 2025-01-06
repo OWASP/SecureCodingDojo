@@ -26,7 +26,7 @@ const uid = require('uid-safe');
 const validator = require('validator');
 
 const db = require(path.join(__dirname, 'db'));
-db.init();
+db.initSync();
 
 const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
@@ -270,7 +270,7 @@ app.get('/challenges/:moduleId', async (req, res) => {
     return util.apiResponse(req, res, 403, "Requested module id is not available."); 
   }
 
-  var returnChallenges = await challenges.getChallengeDefinitionsForUser(req.user, moduleId);
+  var returnChallenges = await challenges.getChallengeDefinitions(moduleId);
   var response = {
     "challenges" : returnChallenges
   };
@@ -394,7 +394,9 @@ app.post('/api/user/challengeCode', async (req,res) => {
       switch(err.message){
         case "invalidRequest":util.apiResponse(req, res, 400, "Invalid request."); break;
         case "invalidCode":util.apiResponse(req, res, 400, "Invalid challenge code."); break;
+        case "invalidAnswer":util.apiResponse(req, res, 400, "Invalid answer."); break;
         case "invalidChallengeId":util.apiResponse(req, res, 400, "Invalid challenge id."); break;
+        case "invalidChallengeType":util.apiResponse(req, res, 400, "Invalid challenge type."); break;
         case "invalidModuleId":util.apiResponse(req, res, 400, "Invalid module id."); break;
         case "challengeNotAvailable":util.apiResponse(req, res, 404, "Challenge not found for the current user level"); break; 
         case "challengeSecretNotFound":util.apiResponse(req, res, 404, "Challenge secret not found."); break; 

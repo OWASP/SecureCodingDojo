@@ -17,12 +17,19 @@ app.controller("submitCodeCtrl", function($scope, $http, $routeParams) {
 
 
     $scope.init = function(){
-        $http.get("/api/salt",window.getAjaxOpts())
-        .then(function(response) {
-            if(response != null && response.data != null){
-                $scope.salt = response.data;
-            }
-        });
+        var challengeCodeValue = $routeParams.challengeCode;
+        $scope.challengeType = $routeParams.challengeType;
+        if(challengeCodeValue === '0'){ //this is the old style of challenge verification
+            $http.get("/api/salt",window.getAjaxOpts())
+            .then(function(response) {
+                if(response != null && response.data != null){
+                    $scope.salt = response.data;
+                }
+            });
+        }
+        
+        $scope.challengeCodeValue = challengeCodeValue;
+
     }
 
 
@@ -34,12 +41,24 @@ app.controller("submitCodeCtrl", function($scope, $http, $routeParams) {
     $scope.submitAnswer = function(){
         var moduleId = $routeParams.moduleId;
         var challengeId = $routeParams.challengeId;
+        var challengeType = $routeParams.challengeType;
+        var answerValue = answer.value;
+        var challengeCodeValue = "";
+        if(typeof challengeCode !== "undefined"){
+            challengeCodeValue = challengeCode.value
+        }
+        else{
+            challengeCodeValue = $routeParams.challengeCode;
+        }
+
         $scope.isCodeErrorMessage = false;
         $scope.isCodeSuccessMessage = false;
         $http.post("/api/user/challengeCode",{
             "moduleId":moduleId,
             "challengeId":challengeId,
-            "challengeCode":challengeCode.value
+            "challengeCode":challengeCodeValue,
+            "challengeType":challengeType,
+            "answer":answerValue
         }, window.getAjaxOpts()).then(function(response) {
             if(response != null && response.data != null){
                 if(response.data.status == 200){

@@ -14,6 +14,19 @@
         },
         "requiredModules":[]
     },
+    "cryptoBreaker":{
+        "name":"Crypto Breaker - Part 1",
+        "summary":"Introduction to Cryptography",
+        "description":"Learn about basic data transformation methods, a bit on the history of ciphers, common cryptographic weaknesses and how to exploit them.",
+        "description2": "Includes 8 lessons. Estimated duration 2 hours.",
+        "badgeInfo":{
+            "line1":"Secure Coding Dojo",
+            "line2":"Crypto Breaker I",
+            "line3":"",
+            "bg":"navy"
+        },
+        "requiredModules":[]
+    },
     "greenBelt":{
         "name":"Green Belt",
         "summary":"Common software security flaws - part 1",

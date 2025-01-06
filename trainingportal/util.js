@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const path = require('path');
 const fs = require('fs');
 const markdown = require('markdown').markdown;
+
 var config = null;
 
 exports.getDataDir = () => {
@@ -117,4 +118,20 @@ exports.getPrivacyHtml = () => {
   let md = fs.readFileSync(polPath,"utf-8");
   let html = exports.parseMarkdown(md);
   return html;
+}
+
+exports.getRandomInt = (min, max) => {
+  if(min >= max) throw Error("getRandomInt min can't be greater than max");
+  let innerMax = max - min;
+  
+  let val = Math.round(Math.random() * innerMax);
+  return min + val;
+}
+
+exports.btoa = (s) => {
+  return Buffer.from(s).toString('base64');
+}
+
+exports.atob = (b) => {
+  return Buffer.from(b, 'base64').toString()
 }

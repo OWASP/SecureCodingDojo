@@ -24,6 +24,7 @@ const validator = require('validator');
 const crypto = require('crypto');
 const aescrypto = require(path.join(__dirname, 'aescrypto'));
 const https = require('https');
+const qna = require(path.join(__dirname, 'qna'));
 
 var modules = {};
 var moduleVer = 0;
@@ -33,7 +34,7 @@ var solutions = [];
 var descriptions = [];
 var masterSalt = "";
 
-loadModules = () => { 
+let loadModules = () => { 
     let modsPath;
     if(!util.isNullOrUndefined(process.env.DATA_DIR)){
         modsPath = path.join(process.env.DATA_DIR, "modules.json");
@@ -58,11 +59,11 @@ loadModules = () => {
   }
   
 
-function getModulePath(moduleId){
+let getModulePath = (moduleId) => {
     return path.join('static/lessons/', moduleId);
 }
 
-function getDefinitionsForModule(moduleId){
+let getDefinitionsForModule = (moduleId) => {
 
     try {
         var defs = Object.freeze(require(path.join(__dirname, getModulePath(moduleId), '/definitions.json')));
@@ -104,21 +105,30 @@ let init = async () => {
         masterSalt=process.env.CHALLENGE_MASTER_SALT;
     }
 
-    let dbModuleVersion = await db.getModuleVersion();
-    if(dbModuleVersion < moduleVer){
-        util.log("New training modules version, updating module completion for all users.")
-        recreateBadgesOnModulesUpdate();
-        db.updateModuleVersion(moduleVer);
-    } 
+    try {
+        let dbModuleVersion = await db.getModuleVersion();
+        if(dbModuleVersion < moduleVer){
+            util.log("New training modules version, updating module completion for all users.")
+            recreateBadgesOnModulesUpdate();
+            db.updateModuleVersion(moduleVer);    
+            if(dbModuleVersion < moduleVer){
+                util.log("New training modules version, updating module completion for all users.")
+                recreateBadgesOnModulesUpdate();
+                db.updateModuleVersion(moduleVer);
+            } 
+        } 
+    } catch (error) {
+        console.log(`Error handling module version ${error.message}`);
+    }
+    
 }
 
 init();
 
-getModules = function(){ return modules; }
-getChallengeNames = function(){ return challengeNames; }
-getChallengeDefinitions = function(){ return challengeDefinitions; }
+let getModules = function(){ return modules; }
+let getChallengeNames = function(){ return challengeNames; }
 
-isPermittedModule = async (user, moduleId) => {
+let isPermittedModule = async (user, moduleId) => {
     let badges = await db.fetchBadges(user.id);
     if(util.isNullOrUndefined(modules[moduleId])){
         return false;
@@ -144,7 +154,7 @@ isPermittedModule = async (user, moduleId) => {
 /**
  * Get the user level based on the amount of passed challenges
  */
-getUserLevelForModule = async (user,moduleId) => {
+let getUserLevelForModule = async (user,moduleId) => {
     let moduleDefinitions = getDefinitionsForModule(moduleId);
     let passedChallenges =  await db.fetchChallengeEntriesForUser(user);
     let userLevel=-1;
@@ -170,7 +180,7 @@ getUserLevelForModule = async (user,moduleId) => {
 /**
  * Get permitted challenges for module
  */
-getPermittedChallengesForUser = async (user, moduleId) => {    
+let getPermittedChallengesForUser = async (user, moduleId) => {    
     if(util.isNullOrUndefined(moduleId)) return [];    
     if(util.isNullOrUndefined(modules[moduleId])) return [];
 
@@ -189,10 +199,9 @@ getPermittedChallengesForUser = async (user, moduleId) => {
 
 /**
  * Construct the challenge definitions loaded on the client side based on the users level
- * @param {Object} user The session user object
  * @param {Array} moduleIds The lesson module ids
  */
-getChallengeDefinitionsForUser = async (user, moduleId) => {
+let getChallengeDefinitions = async (moduleId) => {
     var returnChallenges = [];
     
     if(util.isNullOrUndefined(moduleId)) return [];    
@@ -209,10 +218,13 @@ getChallengeDefinitionsForUser = async (user, moduleId) => {
                 if (!util.isNullOrUndefined(playLink)) {
                     challenge.playLink = playLink;
                 }
-                var description = challenge.description;
-                if(!util.isNullOrUndefined(description) && description.indexOf(modulePath) === -1){
-                    challenge.description = path.join(modulePath, description);
-                }
+            }
+            var description = challenge.description;
+            if(!util.isNullOrUndefined(description) && description.indexOf(modulePath) === -1){
+                challenge.description = path.join(modulePath, description);
+            }
+            if(challenge.type === "quiz"){
+                challenge.question = qna.getCode(challenge.id);
             }
         }
         returnChallenges.push(level);
@@ -227,7 +239,7 @@ getChallengeDefinitionsForUser = async (user, moduleId) => {
  * Returns the solution html (converted from markdown)
  * @param {The challenge id} challengeId 
  */
-getSolution = function (challengeId) {
+let getSolution = function (challengeId) {
     var solution = solutions[challengeId];
     var solutionHtml = "";
     if(!util.isNullOrUndefined(solution)){
@@ -242,7 +254,7 @@ getSolution = function (challengeId) {
  * Returns the description html (converted from markdown if applicable)
  * @param {The challenge id} challengeId 
  */
-getDescription = function (challengeId) {
+let getDescription = function (challengeId) {
     var description = descriptions[challengeId];
     var descriptionHtml = "";
     if(util.isNullOrUndefined(description)) return "";
@@ -265,7 +277,7 @@ getDescription = function (challengeId) {
 /**
  * Checks if the user has completed the module and issue a badge
  */
-verifyModuleCompletion = async (user, moduleId) => {
+let verifyModuleCompletion = async (user, moduleId) => {
     var userLevel = await getUserLevelForModule(user, moduleId);
     let moduleDefinitions = getDefinitionsForModule(moduleId);
     var lastLevel = moduleDefinitions[moduleDefinitions.length-1];
@@ -293,7 +305,7 @@ verifyModuleCompletion = async (user, moduleId) => {
 /**
  * Iterates through the entire list of users to insert badges where needed
  */
-recreateBadgesOnModulesUpdate = async () => {
+let recreateBadgesOnModulesUpdate = async () => {
   
     let users = await db.fetchUsersWithId();
         
@@ -320,7 +332,7 @@ recreateBadgesOnModulesUpdate = async () => {
  * Retrieves a code to verify completion of the level
  * @param {Badge} badge 
  */
-getBadgeCode = (badge, user) => {
+let getBadgeCode = (badge, user) => {
     let module = modules[badge.moduleId];
 
     if(util.isNullOrUndefined(module) || util.isNullOrUndefined(module.badgeInfo)) return null;
@@ -347,7 +359,7 @@ getBadgeCode = (badge, user) => {
  * Verifies a badge code and returns parsed info
  * @param {Base64} badgeCode 
  */
-verifyBadgeCode = (badgeCode) => {
+let verifyBadgeCode = (badgeCode) => {
     urlDecoded = decodeURIComponent(badgeCode);
     let parts = urlDecoded.split(".");
     if(parts.length !== 2) return null;
@@ -370,7 +382,7 @@ verifyBadgeCode = (badgeCode) => {
  * @param {*} badgrInfo 
  * @param {*} user 
  */
-badgrCall = function(badgrInfo, user){
+let badgrCall = function(badgrInfo, user){
     if(!util.isNullOrUndefined(badgrInfo) && !util.isNullOrUndefined(config.encBadgrToken)){
       if(user.email===null){
         util.log("Cannot issue badge for this user. E-mail is null.", user);
@@ -418,26 +430,42 @@ badgrCall = function(badgrInfo, user){
 /** 
  * Logic to for the api challenge code
  */
-apiChallengeCode = async (req) => {
+let apiChallengeCode = async (req) => {
     if(util.isNullOrUndefined(req.body.challengeId) || 
         util.isNullOrUndefined(req.body.challengeCode) ||
         util.isNullOrUndefined(req.body.moduleId)){
         throw Error("invalidRequest");
     }
 
+
     var moduleId = req.body.moduleId.trim();
     var challengeId = req.body.challengeId.trim();
     var challengeCode = req.body.challengeCode.trim();
 
-    if(util.isNullOrUndefined(challengeCode) || validator.isBase64(challengeCode) == false){
+    let challengeType = "page";
+    if(!util.isNullOrUndefined(req.body.challengeType)){
+        challengeType = req.body.challengeType;
+    }
+
+    if(["page","quiz"].indexOf(challengeType) === -1){
+        throw Error("invalidChallengeType");
+    }
+
+    let answer = null;
+    if(!util.isNullOrUndefined(req.body.answer)){
+        answer = req.body.answer.trim();
+    }
+
+    if(util.isNullOrUndefined(challengeCode) || 
+    (validator.isAlphanumeric(challengeCode) === false && validator.isBase64(challengeCode) === false) ){
         throw Error("invalidCode");
     }
 
-    if(util.isNullOrUndefined(moduleId) || validator.isAlphanumeric(moduleId) == false){
+    if(util.isNullOrUndefined(moduleId) || validator.isAlphanumeric(moduleId) === false){
         throw Error("invalidModuleId");
     }
 
-    if(util.isNullOrUndefined(challengeId) || util.isAlphanumericOrUnderscore(challengeId) == false){
+    if(util.isNullOrUndefined(challengeId) || util.isAlphanumericOrUnderscore(challengeId) === false){
         throw Error("invalidChallengeId");
     }
 
@@ -466,13 +494,24 @@ apiChallengeCode = async (req) => {
     if(util.isNullOrUndefined(modules[moduleId].skipMasterSalt) || modules[moduleId].skipMasterSalt===false){
         ms = masterSalt;
     }
+
+    if(challengeType !== "quiz"){
+        answer = challengeId+req.user.codeSalt;      
+    }
+
     //either hex or base64 formats should work
-    //we're looking at the first 10 characters only for situations where the challenge code may get truncated - pcaps, IPS logs
-    var verificationHashB64 = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+ms).digest('base64').substr(0,10);
-    var verificationHashHex = crypto.createHash('sha256').update(challengeId+req.user.codeSalt+ms).digest('hex').substr(0,10);
+    let verificationHashB64 = crypto.createHash('sha256').update(answer+ms).digest('base64');
+    let verificationHashHex = crypto.createHash('sha256').update(answer+ms).digest('hex');
+    
     if(challengeCode.indexOf(verificationHashB64)!==0 && challengeCode.indexOf(verificationHashHex)!==0){
-        throw Error("invalidCode");
+        if(challengeType === "quiz"){
+            throw Error("invalidAnswer");            
+        }
+        else{
+            throw Error("invalidCode");
+        }
     } 
+
     //success update challenge
     curChallengeObj.moduleId = moduleId;
     return insertChallengeEntry(req.user, curChallengeObj, moduleId);
@@ -482,7 +521,7 @@ apiChallengeCode = async (req) => {
 /**
  * Inserts a challenge entry
  */
-insertChallengeEntry = async (user,curChallengeObj, moduleId) => {
+let insertChallengeEntry = async (user,curChallengeObj, moduleId) => {
     await db.getPromise(db.insertChallengeEntry, [user.id,curChallengeObj.id]);
     //issue badgr badge if enabled
     badgrCall(curChallengeObj.badgrInfo,user);
@@ -509,14 +548,12 @@ insertChallengeEntry = async (user,curChallengeObj, moduleId) => {
 
 
 
-
 module.exports = {
     apiChallengeCode,
     badgrCall,
     getBadgeCode,
     getChallengeNames,
     getChallengeDefinitions,
-    getChallengeDefinitionsForUser,
     getDescription,
     getModules,
     getPermittedChallengesForUser,
