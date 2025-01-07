@@ -9,10 +9,14 @@ if(!util.isNullOrUndefined(process.env.CHALLENGE_MASTER_SALT)){
   masterSalt=process.env.CHALLENGE_MASTER_SALT;
 }
 
-let getSecretText = () => {
+let getSecretText = (challengeId) => {
   let min = 0;
   let max = dictionary.length - 1;
   secretText = "";
+  if(challengeId === "crypto_vigenere"){
+    secretText = "LOREM ";
+  }
+
   for(let i=0;i<SECRET_WORD_COUNT;i++){
     let index = util.getRandomInt(min,max);
     secretText += dictionary[index];
@@ -36,7 +40,7 @@ let getCode = (challengeId, message, key) => {
     mes = message;
   }
   else{
-    mes = getSecretText();
+    mes = getSecretText(challengeId);
   }
 
   return DEFS[challengeId](mes, key);
@@ -79,10 +83,9 @@ let caesarEnc = (mes, key) => {
   return getRes(mes, shifted);
 }
 
-let vigenereEnc = (m, key) => {
+let vigenereEnc = (mes, key) => {
   let keyArray = [];
   let keyLen = 3;
-  let mes = "LOREM " + m;
 
   if(util.isNullOrUndefined(key)){
     for(let i = 0; i<keyLen; i++){

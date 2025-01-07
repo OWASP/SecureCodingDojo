@@ -22,7 +22,6 @@ describe("qna", () => {
       for(let alg in qna.DEFS){
         if(alg === "crypto_analysis") continue;
         let res = qna.getCode(alg,text);        
-        if(alg === "crypto_vigenere") text = "LOREM " + text;
         let check = qna.checkCode(text, res.digest);
         assert(check === true, `Validation failed for correct text using ${alg}`);
       }
@@ -36,6 +35,15 @@ describe("qna", () => {
       let cipher = qna.xorOp(text,keyArray)
       assert.strictEqual(cipher, expected, "Did not result in the same cipher for key: '0x0'");
 
+    });
+
+    
+    test("crypto_analysis should return the correct key",()=>{
+      let text = "LOREM IPSUM DOLOR";
+      let expected = "cfbb636cdce11fc76cdea0eec6bd98945cc025855707121df84c62fdefcbdf30";
+      let res = qna.getCode("crypto_analysis",text);        
+      let check = qna.checkCode(expected, res.digest);
+      assert(check === true, `Validation failed for correct text in crypto_analysis`);
     });
 
   });
