@@ -42,7 +42,9 @@ app.controller("submitCodeCtrl", function($scope, $http, $routeParams) {
         var moduleId = $routeParams.moduleId;
         var challengeId = $routeParams.challengeId;
         var challengeType = $routeParams.challengeType;
-        var answerValue = answer.value;
+        var answerValue = "";
+        if(typeof answer !== "undefined") answerValue = answer.value;
+
         var challengeCodeValue = "";
         if(typeof challengeCode !== "undefined"){
             challengeCodeValue = challengeCode.value
