@@ -14,11 +14,14 @@ Here are a few recommendations:
 
 You may also use your programming/scripting language of choice.
 
+**NOTE: If you decide to view the Solution, open the Solution as a new tab or Window so you don't reset the cipher.**
+
 `Important Note: You're allowed to conduct offline brute force attacks, however trying answer combinations in an automatic fashion using the portal is strictly forbidden.` 
 
 We begin with one of the oldest methods used to hide a message, known to be used by Julius Caesar.
 
 #### Algorithm
+
 Shift letters by a number of positions. The number of positions is the key. 
 
 ##### Example

@@ -217,9 +217,9 @@ let analysisEnc = (mes) => {
   }
   let keyInfoB64 = util.btoa(JSON.stringify(keyInfo));
   let postData = `kmb64=${keyInfoB64}`;
-  let post = `POST / HTTP/1.1\n`;
-  post+=`Host: finance.biznis\n`;
-  post+=`Content-length: ${postData.length}\n\n`;
+  let post = `POST / HTTP/1.1\r\n`;
+  post+=`Host: finance.biznis\r\n`;
+  post+=`Content-length: ${postData.length}\r\n\r\n`;
   post+= postData;
 
   let mesKey = crypto.randomBytes(16);

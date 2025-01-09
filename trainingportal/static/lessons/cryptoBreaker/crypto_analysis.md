@@ -22,7 +22,7 @@ In this challenge you will have to leverage all the basic data transformation me
 
 You are given an intercepted cipher text for a client/server application. The intercepted message is an `indicator` which contains information about the golden key. It is being sent periodically to transmit a new the golden key which is then used to digitally sign transactions. The developers of the application have decided to implement a lightweigh message encryption algorithm because the application is used in financial transactions and has to have minimum latency.
 
-**NOTE: Writing your own encryption algorithm or using known weak ciphers to improve performance is a known fallacy. Cryptographic algorithms such as AES 256, at this point in time, have a very strong mathematic foundation and have evolved over multiple iterations to optimize performance and resilience to attacks.**
+**NOTE: Writing your own encryption algorithm or using known weak ciphers to improve performance is a known fallacy. Cryptographic algorithms such as AES, at this point in time, have a very strong mathematic foundation and have evolved over multiple iterations to optimize performance and resilience to attacks.**
 
 You know that the application uses HTTP for communication. Having this insight you must determine the key and extract a randomly generated golden key from the message. 
 
@@ -31,32 +31,13 @@ The golden key is wrapped in several layers of encoding so you will need to reco
 #### Challenge Tips
 
 - Go back and read some of the previous lessons. They contain information that will help with this challenge.
-- HTTP is a well known communication protocol, there are many common words. Keep trying until you reconstruct most of the key.
-- If you recover part of the encryption key, pad the missing bytes with 0x0. This way when the key repeats you can uncover more of the message.
+- HTTP is a well known communication protocol, there are many common words. Request lines for HTTP messages that send data often look like this: `POST / HTTP/1.1\r\n`
 - In one of the previous lessons you've decrypted a key using the plain text and the cipher. That should point you to what algorithm is being used.
-- Once you uncover more of the message, or you are able to infer the text, add the correct bytes to the key. Then copy the resulting longer key to a file and identify the repeating bytes.
 
-Example:
-
-     //You uncovered the following key bytes: `1 2 3 4`. Now the message looks like this
-     "PLAIJ#UB]S"
-     //Add a 0 to the key: `1 2 3 4 0`. Now the message looks like this
-     "PLAIK TEXQ"
-     //Now you can probably guess the message but let's assume for the sake of the example that you only know 'TEXT' which gives you the last byte in the sequence `5`. Write all the bytes together
-     `1 2 3 4 0 1 2 3 4 5`
-     //Now identify the repeating bytes
-     `1 2 3 4 0`
-     `1 2 3 4 5`
-     //Replace `0` with `5` and apply the new key below to the cipher.
-     `1 2 3 4 5 1 2 3 4 5`
-     //Now you are able to decrypt the message
-     "PLAIN TEXT"
-     //Note that you don't need to repeat the byte sequence. You can simply use `1 2 3 4 5` as the key.
-    
-In our example we used a 5 byte key, however key sizes are usually multiples of 2: 16 bytes, 32 bytes, 64 bytes. Start with 16 and go to higher lengths if needed.
-
+**NOTE: If you decide to use the Solution, open the Solution as a new tab or Window so you don't reset the cipher.**
 
 #### References
 
 - [Wikipedia: Cryptanalysis](https://en.wikipedia.org/wiki/Cryptanalysis)
 - [Wikipedia: Cryptanalysis of the Enigma](https://en.wikipedia.org/wiki/Cryptanalysis_of_the_Enigma)
+
