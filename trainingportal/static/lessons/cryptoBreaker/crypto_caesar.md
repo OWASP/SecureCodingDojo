@@ -14,7 +14,7 @@ Here are a few recommendations:
 
 You may also use your programming/scripting language of choice.
 
-**NOTE: If you decide to view the Solution, open the Solution as a new tab or Window so you don't reset the cipher.**
+**NOTE: If you decide to view the solution, open the solution as a new tab or window so you don't reset the cipher.**
 
 `Important Note: You're allowed to conduct offline brute force attacks, however trying answer combinations in an automatic fashion using the portal is strictly forbidden.` 
 

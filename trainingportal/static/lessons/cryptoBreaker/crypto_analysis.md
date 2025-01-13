@@ -34,7 +34,7 @@ The golden key is wrapped in several layers of encoding so you will need to reco
 - HTTP is a well known communication protocol, there are many common words. Request lines for HTTP messages that send data often look like this: `POST / HTTP/1.1\r\n`
 - In one of the previous lessons you've decrypted a key using the plain text and the cipher. That should point you to what algorithm is being used.
 
-**NOTE: If you decide to use the Solution, open the Solution as a new tab or Window so you don't reset the cipher.**
+**NOTE: If you decide to use the solution, open the solution as a new tab or window so you don't reset the cipher.**
 
 #### References
 

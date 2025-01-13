@@ -110,7 +110,7 @@ Using an online tool generate a PBKDF2 key using the parameters associated with 
 For our example:
 
        Password:   VIVAMUS LOREM DICTUM AUGUE CURSUS EROS MORBI TORTOR LIBERO LIBERO
-       Algortithm: SHA256
+       Algorithm:  SHA256
        Salt:       VIVAMUS
        Iterations: 1000
 
