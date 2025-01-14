@@ -5,14 +5,9 @@ In this module you will learn about various ways in which information can be enc
 To solve challenges you will need to execute various transformations on a block of given data. 
 
 There are several online resources that can help you in your journey. 
-Here are a few recommendations:
-
-- `dCode.fr` : includes a large variety of encoding, hashing and encryption tools
-- `criptii.com` : similar to `dCode.fr`
-- `crackstation.net` : includes a large dictionary of words and numbers hashed with several different algorithms
-- `hashes.net`: similar to `crackstation.net`
-
-You may also use your programming/scripting language of choice.
+For example `dCode.fr` : includes a large variety of encoding, hashing and encryption tools.
+`hashes.com` includes a large collection of hashes. 
+There are many online resources that you can use besides these sites. You may also use your programming/scripting language of choice.
 
 **NOTE: If you decide to view the solution, open the solution as a new tab or window so you don't reset the cipher.**
 
