@@ -1,0 +1,37 @@
+<p>
+    The purpose of this challenge is to demonstrate the MITRE Top 25 programming flaw: 'Improper Control of Generation of Code ('Code Injection')'. 
+  <br><br>
+  
+  <blockquote>
+    <p>
+         <i>The product constructs all or part of a code segment using externally-influenced input from an upstream component, but it does not neutralize or incorrectly neutralizes special elements that could modify the syntax or behavior of the intended code segment.</i>
+    </p>
+    <footer>From MITRE <a target="_blank" rel="noopener noreferrer" href="https://cwe.mitre.org/data/definitions/94.html">CWE 94</a></footer>
+  </blockquote>
+  <p>
+    The developer of this part of the site has implemented a server side calculator that expects a mathematical expression from the user to calculate.
+    The issue is that the server side code runs the user input through eval(), which means that any input is treated as executable code.
+  </p>
+  <p>
+    Below is a portion of the application code. You will see the developers are also loading some other unrelated backend utility code into the runtime environment. See if you can determine a way to exploit this.
+  </p>
+  <p>
+    Your task is to invoke the existing `deleteHistory` utility loaded into the runtime environment, likely causing issues to data stored somewhere on the server side.
+  </p>
+  <pre class="pre-scrollable">
+    public static String calculate(String mathematicalExpression) {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("JavaScript");
+        String result = "";
+
+        engine.eval("var password = '" + PASSWORD + "';");
+        engine.eval("function deleteHistory(password) { if (authenticate(password)) { clearDatabase(); } else { return 'wrong password'; } }");
+        Object outcome = engine.eval(mathematicalExpression);
+
+        if (outcome != null) {
+            result = command + " = " + outcome.toString();
+        }
+
+        return result;
+    }
+    </pre>

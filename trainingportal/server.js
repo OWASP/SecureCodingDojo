@@ -26,6 +26,8 @@ const uid = require('uid-safe');
 const validator = require('validator');
 
 const db = require(path.join(__dirname, 'db'));
+db.initSync();
+
 const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
 var config = util.getConfig();
@@ -129,7 +131,7 @@ app.get("/public/providers",(req,res) => {
     if("slackLoginName" in config) slackLoginDisplayName = config.slackLoginName;
     providers.push({"name":slackLoginDisplayName,"url":"/public/provider/slack"});
   }
-  if("samlCert" in config) providers.push({"name":"ADFS SAML","url":"/public/provider/saml"});
+  if("samlCert" in config) providers.push({"name":"SAML","url":"/public/provider/saml"});
   if("localUsersPath" in config) providers.push({"name":"Local","url":"/public/provider/local"});
   if("ldapServer" in config) providers.push({"name":"LDAP","url":"/public/provider/ldap"});
 
@@ -170,10 +172,10 @@ app.get( '/public/google/callback', passport.authenticate( 'google', {
 
 
 // path for slack auth
-app.get('/public/slack', passport.authenticate('slack'));
+app.get('/public/slack', passport.authenticate('Slack'));
  
 // OAuth callback url 
-app.get( '/public/slack/callback', passport.authenticate( 'slack', { 
+app.get( '/public/slack/callback', passport.authenticate( 'Slack', { 
 		successRedirect: '/main',
 		failureRedirect: '/public/authFail.html'
 }));
@@ -268,7 +270,7 @@ app.get('/challenges/:moduleId', async (req, res) => {
     return util.apiResponse(req, res, 403, "Requested module id is not available."); 
   }
 
-  var returnChallenges = await challenges.getChallengeDefinitionsForUser(req.user, moduleId);
+  var returnChallenges = await challenges.getChallengeDefinitions(moduleId);
   var response = {
     "challenges" : returnChallenges
   };
@@ -322,17 +324,17 @@ app.get('/challenges/descriptions/:challengeId', (req,res) => {
 });
 
 
-app.get('/api/user', (req, res) => {
-   db.fetchChallengeEntriesForUser(req.user,function(){
-      res.send(req.user);
-  },function(entries){
-      var passedChallenges = [];
-      if(entries!=null){
-        passedChallenges = entries;
-      }
-      req.user.passedChallenges = passedChallenges;
-      res.send(req.user);
-  });
+app.get('/api/user', async (req, res) => {
+  
+  let entries = await db.fetchChallengeEntriesForUser(req.user);
+
+  var passedChallenges = [];
+  if(entries!=null){
+    passedChallenges = entries;
+  }
+  req.user.passedChallenges = passedChallenges;
+  res.send(req.user);
+  
 });
 
 
@@ -392,7 +394,9 @@ app.post('/api/user/challengeCode', async (req,res) => {
       switch(err.message){
         case "invalidRequest":util.apiResponse(req, res, 400, "Invalid request."); break;
         case "invalidCode":util.apiResponse(req, res, 400, "Invalid challenge code."); break;
+        case "invalidAnswer":util.apiResponse(req, res, 400, "Invalid answer."); break;
         case "invalidChallengeId":util.apiResponse(req, res, 400, "Invalid challenge id."); break;
+        case "invalidChallengeType":util.apiResponse(req, res, 400, "Invalid challenge type."); break;
         case "invalidModuleId":util.apiResponse(req, res, 400, "Invalid module id."); break;
         case "challengeNotAvailable":util.apiResponse(req, res, 404, "Challenge not found for the current user level"); break; 
         case "challengeSecretNotFound":util.apiResponse(req, res, 404, "Challenge secret not found."); break; 
@@ -569,7 +573,7 @@ app.delete('/api/user/team',  (req, res) => {
 //get a salt for the challenge code
 app.get('/api/salt',  (req, res) => {
   req.user.codeSalt = uid.sync(8);
-  res.send(req.user.codeSalt);
+  res.setHeader('Content-Type', 'text/plain').send(req.user.codeSalt);
 });
 
 //upload CSV for user report
@@ -601,7 +605,6 @@ app.get('/api/report/:moduleId',  async (req, res) => {
 
 });
 
-db.init();
 
 process.on('SIGINT', function() {
   process.exit();

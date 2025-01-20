@@ -1,0 +1,59 @@
+
+<hr>
+<h5>Intro to the Hacker's Den</h5>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 172 156" xmlns="http://www.w3.org/2000/svg" style="height:10%;width:10%">
+ <path d="m0 100c0-9.4 5.6-7.6 5.6-14.6 0-8.2-4.4-6.4-4.4-13.4 0-3.6 6-6.8 13.2-6.8 2.2 12.4 4.8 16 12.6 19.8l16 22c-18-7-23-7-43-7zm17.6 38.2c0-5 3.6-8.4 7.6-8.4 8.6 0 20.2-2.8 30.8-8.8l2.8 10 5.6 4.2c-19.4 7.8-18.2 20.8-27.4 20.8-7.8 0-2.2-14-19.4-17.8zm14.4-56.2 6.6-9.6-4.6-37.4c0-18 30-35 52-35s52 17 52 35l-4.6 37.4 6.6 9.6-17.4 24-11 2-1.6 8.6-15 8.4h-18l-15-8.4-1.6-8.6-11-2zm16-6.2c0 11.2 2.6 17.4 7.4 17.4 11.2 0 23.8-5.4 23.8-16.2 0-6.2-17.8-11-20.6-11-7.4 0-10.6 3.2-10.6 9.8zm14 44.4 6 3.4v6.8l-4-3zm8 11.2v-6.6l6 3v6.8zm7-26 4 3 5-3 5 3 4-3-9-16zm1 29.6v-7h7v7h-7zm9 0v-7h7v7h-7zm5.8-58c0 10.8 12.6 16.2 23.8 16.2 4.8 0 7.4-6.2 7.4-17.4 0-6.6-3.2-9.8-10.6-9.8-2.8 0-20.6 4.8-20.6 11zm3.2 57.6v-6.8l6-3v6.6zm8-4.2v-6.8l6-3.4-2 7.2zm3.6 4.8 5.6-4.2 2.8-10c10.6 6 22.2 8.8 30.8 8.8 4 0 7.6 3.4 7.6 8.4-17.2 3.8-11.6 17.8-19.4 17.8-9.2 0-8-13-27.4-20.8zm21.4-28.2 16-22c7.8-3.8 10.4-7.4 12.6-19.8 7.2 0 13.2 3.2 13.2 6.8 0 7-4.4 5.2-4.4 13.4 0 7 5.6 5.2 5.6 14.6-20 0-25 0-43 7z"/>
+</svg>
+
+<p>
+    You work for the cyber security division of a government agency. 
+    A digital currency mining malware, which takes advantage of an OS vulnerability, is loose across the world causing all kind of mayhem. 
+    The malware spreads through a flaw in a well-known network protocol but initially is being distributed via malicious e-mail attachments. 
+    Your task is to investigate the malware Command and Control infrastructure and if possible dismantle it from the source in order to prevent further damage 
+    to millions of devices worldwide. 
+    <br><br>
+    You don’t have time to wait for the service provider, you must hack into the service on your own and send the <strong>stop</strong> command
+    to millions of bots worldwide.
+    <br><br>     
+    Luckily hackers are not very much into secure coding, so there are many OWASP Top 10 vulnerabilities that you can take advantage of. 
+    Each exploit that you do will give you additional information and bring you closer to the end goal.
+    <br><br>     
+    You have a proxy log captured from one of the affected devices in your network. Review the traffic to determine if there are any pointers that can lead you to the cyber criminals' command and control infrastructure.        
+</p>
+<hr>
+<div class="alert alert-info">
+<h5>Before you begin</h5>
+<p>
+<br>This is a white box security assessment. You can access the source code of the vulnerable applications because the Secure Coding Dojo is an open source project.
+<br>You can pull the Dojo and run the vulnerable applications on your machine as well. While this is not needed to pass the challenges, it will make it significantly easier.
+
+<br>
+Install the following if you don't have them already:
+<br>- Postman, OWASP ZAP Proxy or Burp. These tools will be needed to interact directly with APIs. While you can use curl, the curl commands will get too complicated.
+<br>- Bash or Git Bash
+<br>- NodeJS 
+<br>- VS Code or your IDE of choice - optional
+<br>- OpenSSL
+<br>- Ysoserial (pen-test tool for deserialization attacks). Ysoserial can also be run with "docker run --entrypoint sh -it frohoff/ysoserial". For that you will need to install Docker.
+</p>
+</div>
+<hr>
+<h5>About the vulnerabilities: Security Misconfiguration</h5>
+<p>
+   Public S3 buckets have been in the news a lot. The common misconfiguration is that they were made public instead of being protected.
+   The Security Misconfiguration category includes many other flaws such as left over test accounts, default credentials or incorrect file system permissions.
+</p>
+
+<blockquote class="blockquote m-4">
+<p>
+    <i>Scenario #2: Directory listing is not disabled on the server. An attacker discovers they can simply list directories. The attacker finds and downloads the compiled Java classes, which they decompile and reverse engineer to view the code. The attacker then finds a severe access control flaw in the application.</i>
+</p>
+<footer class="blockquote-footer">From OWASP Top 10 2021 <a target="_blank" rel="noopener noreferrer" href="https://owasp.org/Top10/A05_2021-Security_Misconfiguration/">A05 - Security Misconfiguration</a></footer>
+</blockquote>
+<div class="alert alert-info">
+<h5>Challenge Tips and Tricks</h5>
+<p>
+    View the 'secret' file that was left around in the bucket to pass this challenge. What else can you see in there?
+</p>
+</div>

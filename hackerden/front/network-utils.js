@@ -7,8 +7,8 @@ const challengeCode = require('./challenge-code')
 
 
 const FLAG1 = "FLAG-injection"
-const FLAG2 = "FLAG-xxe"
-const FLAG3 = "FLAG-deserialization"
+const FLAG2 = "FLAG-xxe-"+process.env.FLAG_SECRET
+const FLAG3 = "FLAG-deserialization-"+process.env.FLAG_SECRET
 
 
 
@@ -19,18 +19,17 @@ ping = (req,res)=> {
     if(typeof hostname === 'undefined'){
         return res.send({"errorMessage":"Malformed JSON. Missing hostname."});
     }
-    if(hostname.indexOf(FLAG1) > -1||
-       hostname.indexOf(FLAG2) > -1||
-       hostname.indexOf(FLAG3) > -1||
-       hostname.indexOf("passwd") > -1||
-       hostname.indexOf("xxd") > -1||
-       hostname.indexOf("echo") > -1||
-       hostname.indexOf("tomcat") > -1||
-       hostname.indexOf("base64") > -1||
-       hostname.indexOf("rm ") > -1||
-       hostname.indexOf("chmod  ") > -1||
-       hostname.indexOf("mv ") > -1){
-        return res.send("CLEVER!. Not allowed :)");
+    //this deny list can likely be bypassed, is mainly here to make it harder to cheat than to pass the real challenges
+    hostname = hostname.replace("''","")    
+    hostname = hostname.replace('""',"")
+    if(hostname.match("FLAG") ||
+       hostname.match("passwd|shadow") ||
+       hostname.match("echo|\\bsed\\b|print|base64|\\bxxd\\b") ||
+       hostname.match("tomcat\/logs") ||
+       hostname.match("\\b(chmod|rm|mv|cp)\\b")){
+        console.log(`Bypass attempt with ${hostname}`)
+        res.status(400)
+        return res.send("Certain commands have been disallowed. There is a better way.");
     }
     
     
@@ -38,7 +37,7 @@ ping = (req,res)=> {
     ssh.on('ready',()=>{    
         var stdout = ""
         var stderr = ""
-        var cmd = `rm -fr *;echo ${FLAG1} > secret.txt; echo "curl ${process.env.COMMAND_PROC_URL} -i -L" > connecttocommandproc.sh; ping -c 1 ${hostname}`
+        var cmd = `rm -fr -- *;echo ${FLAG1} > secret.txt; echo "#run with docker run -it -p 8080:8080 securecodingdojo/hackerden-host2\ncurl ${process.env.COMMAND_PROC_URL} -i -L" > connecttocommandproc.sh; ping -c 1 ${hostname}`
         ssh.exec(cmd, 
         (err,stream) => {
 

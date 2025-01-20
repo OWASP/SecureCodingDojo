@@ -3,6 +3,14 @@ version: "3.7"
 services:
   insecureinc:
     image: securecodingdojo/insecure.inc
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 256M
+        reservations:
+          cpus: "0.3"
+          memory: 256M
     build:
       context: ./insecureinc
       dockerfile: Dockerfile.insecureinc
@@ -16,6 +24,14 @@ services:
 
   trainingportal:
     image: securecodingdojo/trainingportal
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 256M
+        reservations:
+          cpus: "0.3"
+          memory: 256M
     restart: "always" #change to always if you want the image to auto start
     build:
       context: ./trainingportal
@@ -34,6 +50,14 @@ services:
 
   host1:
     image: securecodingdojo/hackerden-host1
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 128M
+        reservations:
+          cpus: "0.1"
+          memory: 128M
     build:
       context: ./hackerden
       dockerfile: Dockerfile.host1
@@ -47,6 +71,14 @@ services:
 
   host2:
     image: securecodingdojo/hackerden-host2
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 128M
+        reservations:
+          cpus: "0.1"
+          memory: 128M
     build:
       context: ./hackerden
       dockerfile: Dockerfile.host2
@@ -60,6 +92,14 @@ services:
 
   front:
     image: securecodingdojo/hackerden-front
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 128M
+        reservations:
+          cpus: "0.2"
+          memory: 128M
     build:
       context: ./hackerden
       dockerfile: Dockerfile.front

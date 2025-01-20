@@ -8,18 +8,19 @@
     "url": "git@github.com:trendmicro/SecureCodingDojo.git"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "jest"
+  },
+  "jest": {
+    "verbose": true
   },
   "author": "Paul Ionescu",
   "license": "Apache-2.0",
   "dependencies": {
     "angular": "^1.8.2",
     "angular-route": "^1.8.2",
-    "atob": "^2.1.2",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.6.0",
     "bootswatch": "^4.6.0",
-    "btoa": "^1.2.1",
     "canvas": "^2.8.0",
     "canvas-confetti": "^1.4.0",
     "captchapng": "0.0.1",
@@ -31,22 +32,22 @@
     "highlightjs": "^9.16.2",
     "jquery": "^3.6.0",
     "markdown": "^0.5.0",
-    "mysql2": "^1.7.0",
+    "mysql2": "^3.11.5",
     "node-truncate": "^0.1.0",
     "open-iconic": "^1.1.1",
-    "passport": "^0.4.1",
+    "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "passport-ldapauth": "^2.1.4",
     "passport-local": "^1.0.0",
-    "passport-saml": "^2.2.0",
+    "passport-saml": "^3.1.2",
     "passport-slack": "0.0.7",
-    "popper": "^1.0.1",
+    "passport-slack-oauth2": "^1.2.0",
     "sqlite3": "^5.1.2",
     "uid-safe": "^2.1.4",
     "validator": "^13.6.0"
   },
   "devDependencies": {
-    "chai": "^4.3.4",
-    "mocha": "^6.2.2"
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.9"
   }
 }

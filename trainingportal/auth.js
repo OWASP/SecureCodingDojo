@@ -55,7 +55,7 @@ catch(ex){/*Do nothing*/}
 
 
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
-var SlackStrategy = require('passport-slack').Strategy;
+var SlackStrategy = require('passport-slack-oauth2').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
 var SamlStrategy = require('passport-saml').Strategy;
 var LdapStrategy = require('passport-ldapauth').Strategy;
@@ -281,10 +281,11 @@ let processAuthCallback = async(profileId, givenName, familyName, email, cb) => 
             user.email = email;
             let modules = challenges.getModules();
             for(let moduleId in modules){
-                let promise = challenges.verifyModuleCompletion(user, moduleId);
-                promise.catch((err) => {
+                try {
+                    await challenges.verifyModuleCompletion(user, moduleId);
+                } catch (error) {
                     util.log("Error with badge verification.", user);
-                });
+                }
             }
         }
         else{
@@ -556,10 +557,12 @@ let ensureApiAuth = function (req, res, next) {
 }
 
 //logs the user out and kills the session
-let logoutAndKillSession = function (req, res, redirect){
-    req.logout();
-    req.session.destroy(() => {
-        res.redirect(redirect);
+let logoutAndKillSession = (req, res, redirect) => {
+    req.logout(() =>
+    {
+        req.session.destroy(() => {
+            res.redirect(redirect);
+        });
     }); 
 }
 

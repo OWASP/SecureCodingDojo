@@ -1,0 +1,80 @@
+[
+    {
+        "level":0,
+        "name":"Crypto Breaker",
+        "challenges":[
+            {
+                "id":"crypto_caesar",
+                "name":"Caesar Cipher",
+                "description": "crypto_caesar.md",
+                "solution": "crypto_caesar.sol.md",
+                "type":"quiz",
+                "mission":"Decrypt the encrypted Latin text below.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"crypto_vigenere",
+                "name":"Vigenère Cipher",
+                "description": "crypto_vigenere.md",
+                "solution": "crypto_vigenere.sol.md",
+                "type":"quiz",
+                "mission":"Decrypt the cipher below knowing that the first word is 'LOREM'.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"crypto_ascii",
+                "name":"ASCII Encoding",
+                "description": "crypto_ascii.md",
+                "solution": "crypto_ascii.sol.md",
+                "type":"quiz",
+                "mission":"Decode the text below using hexadecimal ASCII encoding.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"crypto_base64",
+                "name":"Base64 Encoding",
+                "description": "crypto_base64.md",
+                "solution": "crypto_base64.sol.md",
+                "type":"quiz",
+                "mission":"Decode the text below.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"crypto_hash",
+                "name":"One-Way Hash",
+                "description": "crypto_hash.md",
+                "solution": "crypto_hash.sol.md",
+                "type":"quiz",
+                "mission":"Find the text by cracking the digest of each word. Make sure the words are entered in the same order, separated by spaces.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"crypto_xor",
+                "name":"XOR Encryption",
+                "description": "crypto_xor.md",
+                "solution": "crypto_xor.sol.md",
+                "type":"quiz",
+                "mission":"The plain text is 'LOREM IPSUM DOLOR SIT AMET'. Find the characters of the XOR key.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"crypto_pbk",
+                "name":"Password Based Key",
+                "description": "crypto_pbk.md",
+                "solution": "crypto_pbk.sol.md",
+                "type":"quiz",
+                "mission":"Decrypt the cipher below which was XOR encrypted with a key derived with PBKDF2 from the word `LOREM` using the salt `IPSUM` and 1000 iterations of SHA256 hashes.",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"crypto_analysis",
+                "name":"Cryptanalysis",
+                "description": "crypto_analysis.md",
+                "solution": "crypto_analysis.sol.md",
+                "type":"quiz",
+                "mission":"Obtain the golden key.",
+                "codeBlockIds":[]
+            }
+        ]
+    }
+]

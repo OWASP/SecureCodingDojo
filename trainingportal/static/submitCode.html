@@ -3,15 +3,21 @@
         <button type="button" class="close" ng-click="hideError()">&times;</button>
         {{codeErrorMessage}}
     </div>
-    <h4>When you have solved the challenge, take the salt below to obtain the verification code.</h4>
+    <h4 ng-if="challengeCodeValue === '0'">When you have solved the challenge, take the salt below to obtain the verification code.</h4>
     <br>
     <form autocomplete="off">
-        <div class="form-group form-inline">
-            <label for="salt">Salt:</label> &nbsp;
-            <input type="text" autocomplete="off" class="form-control" id="saltEl" value="{{salt}}"/><button type="button" class="btn btn-default" onclick="document.getElementById('saltEl').select();document.execCommand('copy');">
-                    <span class="oi oi-clipboard"></span>
+        <div ng-if="challengeType === 'quiz'" class="form-group form-inline">
+            <label for="answer">Answer:</label> &nbsp;
+            <input type="text" autocomplete="off" class="form-control" style="width: 100%;" id="answer" value=""/>
         </div>
-        <div class="form-group ">
+        <div ng-if="challengeCodeValue === '0'" class="form-group form-inline">
+            <label for="salt">Salt:</label> &nbsp;
+            <input type="text" autocomplete="off" class="form-control" id="saltEl" value="{{salt}}"/>
+            <button type="button" class="btn btn-default" onclick="document.getElementById('saltEl').select();document.execCommand('copy');">
+                    <span class="oi oi-clipboard"></span>
+            </button>
+        </div>
+        <div ng-if="challengeCodeValue === '0'" class="form-group ">
             <label for="challengeCode">Challenge code:</label>        
             <input type="text" autocomplete="off" class="form-control" id="challengeCode">  
         </div>

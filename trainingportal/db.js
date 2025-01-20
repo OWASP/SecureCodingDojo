@@ -1,5 +1,4 @@
-const SCHEMA_VERSION = 5;
-module.exports.SCHEMA_VERSION = SCHEMA_VERSION;
+const SCHEMA_VERSION = 6;
 const path = require('path');
 const util = require(path.join(__dirname, 'util'));
 const config = util.getConfig();
@@ -7,7 +6,6 @@ const aesCrypto = require(path.join(__dirname, 'aescrypto'));
 const mysql = require('mysql2');
 var sqlite3 = null;
 const fs = require('fs');
-const async = require('async');
 
 var MYSQL_CONFIG = null;
 var liteDB = null;
@@ -122,11 +120,10 @@ var connection = new Connection();
  * @param {*} errCb 
  * @param {*} doneCb 
  */
-function getConn(){
+getConn = () => {
   return connection;
 }
 
-exports.getConn = getConn;
 
 /**
  * Utility function to handle errors
@@ -150,7 +147,7 @@ function handleDone(doneCb,result){
 /**
  * Utility function to get a promise from a db function 
  */
-exports.getPromise = function(dbFunc, params){
+getPromise = (dbFunc, params) => {
   let promise = new Promise((resolve,reject) => {
       if(util.isNullOrUndefined(params)) params = [];
       if(!Array.isArray(params)) params = [params];
@@ -164,7 +161,9 @@ exports.getPromise = function(dbFunc, params){
   return promise;
 };
 
-exports.init = async () => {
+
+
+let init = async () => {
   var con = getConn();
   var sql = "";
   var dbSetup = "";
@@ -207,7 +206,7 @@ exports.init = async () => {
     let version = null;
     try
     {
-      version = await exports.getPromise(exports.getVersion);
+      version = await getPromise(getVersion);
     }
     catch(err){
       console.log(err);
@@ -241,21 +240,25 @@ exports.init = async () => {
           //in version 4 badges were introduced, insert badges for all users that are level 7 and level 8
           let users = await con.queryPromise("SELECT * FROM users WHERE level > 6");
           for(let user of users){
-            await exports.insertBadge(user.id, "blackBelt");
+            await insertBadge(user.id, "blackBelt");
             if(user.level > 7){
-              await exports.insertBadge(user.id, "secondDegreeBlackBelt");
+              await insertBadge(user.id, "secondDegreeBlackBelt");
             }
           }
           console.log("Badges created for all users");
         }
+
       }
     }
   }
 };
 
+let initSync = async() => {
+  await init()
+}
 
 //Creates a user in the database
-exports.insertUser = function(user,errCb,doneCb){
+insertUser = function(user,errCb,doneCb){
   var con = getConn();
   var sql = "INSERT INTO users (id, accountId, teamId, familyName, givenName) VALUES (null, ?, ?, ?, ?)";
   
@@ -266,7 +269,7 @@ exports.insertUser = function(user,errCb,doneCb){
 };
 
 //gets the database schema version
-exports.getVersion = function(errCb,doneCb){
+getVersion = function(errCb,doneCb){
   var con = getConn();
   var sql = "SELECT version FROM dbInfo";
   con.query(sql, function (err, result) {
@@ -279,8 +282,22 @@ exports.getVersion = function(errCb,doneCb){
   });
 };
 
+getModuleVersion = async() => {
+  var con = getConn();
+  var sql = "SELECT version FROM moduleInfo";
+  var result = await con.queryPromise(sql);
+  if(result && result.length >= 1) return result[0].version;
+  return -1;
+};
+
+updateModuleVersion = async(ver) => {
+  var con = getConn();
+  var sql = "UPDATE moduleInfo SET version = ?";
+  await con.queryPromise(sql,[ver]);
+};
+
 //fetches a user from the database
-exports.getUser = function(accountId,errCb,doneCb){
+getUser = function(accountId,errCb,doneCb){
   var con = getConn();
   var sql = "SELECT * FROM users WHERE accountId = ? ";
   con.query(sql, [accountId], function (err, result) {
@@ -294,7 +311,7 @@ exports.getUser = function(accountId,errCb,doneCb){
 };
 
 //fetches a user from the database by id
-exports.getUserById = async (userId) => {
+getUserById = async (userId) => {
   var con = getConn();
   var sql = "SELECT * FROM users WHERE id = ? ";
   let user = await con.queryPromise(sql,[userId]);
@@ -302,7 +319,7 @@ exports.getUserById = async (userId) => {
 };
 
 //deletes a user from the database
-exports.deleteUser = function(accountId,errCb,doneCb){
+deleteUser = function(accountId,errCb,doneCb){
   var con = getConn();
   var sql = "DELETE FROM users WHERE accountId = ? ";
   con.query(sql, [accountId], function (err, result) {
@@ -312,7 +329,7 @@ exports.deleteUser = function(accountId,errCb,doneCb){
 };
 
 //updates the properties of a user in the database
-exports.updateUser = function(user,errCb,doneCb){
+updateUser = function(user,errCb,doneCb){
   var con = getConn();
   var sql = "UPDATE users SET accountId = ?, teamId = ?, familyName = ?, givenName = ? WHERE id = ?";
   con.query(sql, [user.accountId, user.teamId, user.familyName, user.givenName, user.id], function (err, result) {
@@ -323,7 +340,7 @@ exports.updateUser = function(user,errCb,doneCb){
 };
 
 //fetches the list of users from the database only with public info
-exports.fetchUsers = function(errCb,doneCb){
+fetchUsers = function(errCb,doneCb){
   var con = getConn();
   var sql = "SELECT givenName,familyName,teamId FROM users";
   con.query(sql, function (err, result) {
@@ -334,51 +351,33 @@ exports.fetchUsers = function(errCb,doneCb){
   });
 };
 
-//Creates a team in the database
-exports.insertTeam = function(user,team,errCb,doneCb){
+//fetches the list of users from the database including their id
+fetchUsersWithId = async() => {
   var con = getConn();
-  var sql = "INSERT INTO teams (id, name, ownerid) VALUES (null, ?, ?);";
-  async.waterfall([
-    //Execute insert statement
-    function(cb){
-      con.query(sql, [team.name, user.id], function (err, result) {
-        if(err) cb(err);
-        else{
-          cb(null,result);
-        }
-      });
-    },
-    //Query for the team in the db
-    function(result,cb){
-      exports.getTeamWithMembersByName(team.name, 
-        function(err){
-          cb(err);
-        }, 
-        function(team){
-          user.teamId = team.id;
-          cb(null,[user,team]);
-        });
-    },
-    //update the user with the team id
-    function(result,cb){
-      exports.updateUser(user, 
-        function(err){
-          cb(err);
-        }, 
-        function(result){
-          handleDone(doneCb,result);
-        });
-    }
-  ], 
-  function(err){
-    util.log('Failed to insert team');
-    handleErr(errCb,err);
-  });
+  var sql = "SELECT id,accountId,givenName,familyName,teamId FROM users";
+  let result = await con.queryPromise(sql,[]);
+  return result;
+};
+
+//Creates a team in the database
+insertTeam = async(user,team,errCb,doneCb) => {
+  let result = null
+  try {
+    var con = getConn();
+    var sql = "INSERT INTO teams (id, name, ownerid) VALUES (null, ?, ?);";
+    await con.queryPromise(sql, [team.name, user.id]);
+    let t = await getPromise(getTeamWithMembersByName,team.name);
+    user.teamId = t.id;
+    result = await getPromise(updateUser,user);
+  } catch (error) {
+    handleErr(errCb,error);
+  }
+  handleDone(doneCb,result);
 };
 
 
 //fetches the list of teams from the database
-exports.fetchTeams = function(errCb,doneCb){
+fetchTeams = function(errCb,doneCb){
   var con = getConn();
   var sql = "SELECT * FROM teams order by name";
   con.query(sql, function (err, result) {
@@ -390,7 +389,7 @@ exports.fetchTeams = function(errCb,doneCb){
 };
 
 //fetches a team and its members from the database by its name (unique)
-exports.getTeamWithMembersByName = function(name,errCb,doneCb){
+getTeamWithMembersByName = function(name,errCb,doneCb){
   var con = getConn();
   var sql = "SELECT * FROM teams WHERE name = ? ";
   con.query(sql, [name], function (err, result) {
@@ -414,7 +413,7 @@ exports.getTeamWithMembersByName = function(name,errCb,doneCb){
 };
 
 //fetches a team from the database by id
-exports.getTeamById = function(id,errCb,doneCb){
+getTeamById = function(id,errCb,doneCb){
   var con = getConn();
   var sql = "SELECT * FROM teams WHERE id = ? ";
   con.query(sql, [id], function (err, result) {
@@ -429,7 +428,7 @@ exports.getTeamById = function(id,errCb,doneCb){
 };
 
 //updates the properties of a team in the database
-exports.updateTeam = function(user, team, errCb,doneCb){
+updateTeam = function(user, team, errCb,doneCb){
   var con = getConn();
   var sql = "UPDATE teams SET name = ?, description = ? WHERE id = ? and ownerId = ?";
   con.query(sql, [team.name, team.description, team.id, user.id], function (err, result) {
@@ -440,7 +439,7 @@ exports.updateTeam = function(user, team, errCb,doneCb){
 };
 
 //deletes a team from the database
-exports.deleteTeam = function(user,teamId,errCb,doneCb){
+deleteTeam = function(user,teamId,errCb,doneCb){
   var con = getConn();
   var sql = "DELETE FROM teams WHERE id = ? and ownerId = ?";
   con.query(sql, [teamId, user.id], function (err, result) {
@@ -460,7 +459,7 @@ exports.deleteTeam = function(user,teamId,errCb,doneCb){
 /**
  * Gets a team members with completed modules
  */
-exports.getTeamMembersByBadges = async (teamId, days) => {
+getTeamMembersByBadges = async (teamId, days) => {
   let con = getConn();
   let sql = "SELECT badges.moduleId, badges.timestamp, users.givenName, users.familyName FROM users LEFT JOIN badges on badges.userId=users.id";
   let args = [];
@@ -487,7 +486,7 @@ exports.getTeamMembersByBadges = async (teamId, days) => {
 /**
  * Gets a list of users for a module id
  */
-exports.getAllUsersForBadge = async (moduleId) => {
+getAllUsersForBadge = async (moduleId) => {
   let con = getConn();
   let sql = "SELECT badges.moduleId, users.givenName, users.familyName FROM users INNER JOIN badges on badges.userId=users.id WHERE badges.moduleId = ? "+
   " order by badges.moduleId, users.givenName, users.familyName";
@@ -496,7 +495,7 @@ exports.getAllUsersForBadge = async (moduleId) => {
 };
 
 //Creates a user in the database
-exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
+insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
   var con = getConn();
   var sql = "DELETE FROM challengeEntries WHERE userId = ? and challengeId = ?";
   con.query(sql, [userId,challengeId], function (err, result) {
@@ -515,7 +514,7 @@ exports.insertChallengeEntry = function(userId, challengeId, errCb, doneCb){
 /**
  * Inserts a badge for a completed training module
  */
-exports.insertBadge = async (userId, moduleId) => {
+insertBadge = async (userId, moduleId) => {
   var con = getConn();
 
   var sql = "DELETE FROM badges WHERE userId = ? and moduleId = ?"; //in the unlikely situation they exist replace badges for the same module
@@ -530,7 +529,7 @@ exports.insertBadge = async (userId, moduleId) => {
 /**
  * Returns the badges for the specified user
  */
-exports.fetchBadges = async (userId) => {
+fetchBadges = async (userId) => {
   let con = getConn();
 
   let sql = "SELECT * FROM badges WHERE userId = ?"; 
@@ -539,15 +538,11 @@ exports.fetchBadges = async (userId) => {
 };
 
 //fetches the list of teams from the database
-exports.fetchChallengeEntriesForUser = function(user,errCb,doneCb){
+fetchChallengeEntriesForUser = async(user) => {
   var con = getConn();
   var sql = "SELECT * FROM challengeEntries WHERE userId = ?";
-  con.query(sql, [user.id], function (err, result) {
-      if(err) handleErr(errCb,err);
-      else{
-        handleDone(doneCb,result);
-    }
-  });
+  let result = await con.queryPromise(sql,[user.id]);
+  return result;
 };
 
 
@@ -557,7 +552,7 @@ exports.fetchChallengeEntriesForUser = function(user,errCb,doneCb){
  * @param {*} errCb 
  * @param {*} doneCb 
  */
-exports.fetchActivity = function(query,limit,errCb,doneCb){
+fetchActivity = function(query,limit,errCb,doneCb){
   var con = getConn();
   var sql = "";
   var args = [];
@@ -589,7 +584,7 @@ exports.fetchActivity = function(query,limit,errCb,doneCb){
  * @param {*} errCb 
  * @param {*} doneCb 
  */
-exports.getChallengeStats = function(errCb,doneCb){
+getChallengeStats = function(errCb,doneCb){
   var con = getConn();
   var sql = "SELECT challengeId,count(*) as achieved from challengeEntries group by challengeId order by achieved asc;";
   var args = [];
@@ -606,7 +601,7 @@ exports.getChallengeStats = function(errCb,doneCb){
  * @param {*} errCb 
  * @param {*} doneCb 
  */
-exports.getModuleStats = async () => {
+getModuleStats = async () => {
   var con = getConn();
   var sql = "SELECT badges.moduleId, count(*) as playerCount FROM badges group by badges.moduleId";
   var args = [];
@@ -619,7 +614,7 @@ exports.getModuleStats = async () => {
  * @param {*} errCb 
  * @param {*} doneCb 
  */
-exports.getTeamStats= async (limit) => {
+getTeamStats= async (limit) => {
   var con = getConn();
 
   let result = await con.queryPromise("select * from users");
@@ -641,5 +636,37 @@ exports.getTeamStats= async (limit) => {
   
 };
 
-
+module.exports = {
+  SCHEMA_VERSION,
+  deleteUser,
+  getAllUsersForBadge,
+  getChallengeStats,
+  getConn,
+  getPromise,
+  getModuleStats,
+  getModuleVersion,
+  getTeamById,
+  getTeamMembersByBadges,
+  getTeamStats,
+  getTeamWithMembersByName,
+  getUser,
+  getUserById,
+  getVersion,
+  deleteTeam,
+  fetchActivity,
+  fetchChallengeEntriesForUser,
+  fetchBadges,
+  fetchTeams,
+  fetchUsers,
+  fetchUsersWithId,
+  init,
+  initSync,
+  insertBadge,
+  insertChallengeEntry,
+  insertUser,
+  insertTeam,
+  updateModuleVersion,
+  updateTeam,
+  updateUser
+}
 

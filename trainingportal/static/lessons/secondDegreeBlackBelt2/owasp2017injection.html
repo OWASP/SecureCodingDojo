@@ -1,0 +1,36 @@
+
+
+<hr>
+<h5>About the vulnerabilities: Injection</h5>
+<p>
+  Injection is discussed and demonstrated in detail under
+   <strong>Brown Belt: Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection') and related flaws</strong>
+    and under
+    <strong>Brown Belt: Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')</strong>
+    <br>Please review those sections to refresh your memory and also the OWASP link below.
+</p>
+
+<blockquote class="blockquote m-4">
+<p>
+    <i>An application is vulnerable to attack when:
+
+        User-supplied data is not validated, filtered, or sanitized by the application.
+    
+        Dynamic queries or non-parameterized calls without context-aware escaping are used directly in the interpreter.
+    
+        Hostile data is used within object-relational mapping (ORM) search parameters to extract additional, sensitive records.
+    
+        Hostile data is directly used or concatenated. The SQL or command contains the structure and malicious data in dynamic queries, commands, or stored procedures.
+    </i>
+</p>
+<footer class="blockquote-footer">From OWASP Top 10 2021 <a target="_blank" rel="noopener noreferrer" href="https://owasp.org/Top10/A03_2021-Injection">A03 - Injection</a></footer>
+</blockquote>
+<div class="alert alert-info">
+<h5>Challenge Tips and Tricks</h5>
+- The attackers have built in a service that can execute requests inside the CnC environment, such as a ping request to test whether a host is up.
+<br>- Very similar to the challenge under brown belt, the host name here allows more than it should.
+<br>- Look for the 'secret' file on the file system of the 'pinger' host.
+<br>- Besides the 'secret' file you will find the coordinates of an internal application, located on a different host, which is used to control the bots. 
+<br>- The pinger will become your "beachhead" in interacting with this application.
+
+</div>

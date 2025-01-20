@@ -1,4 +1,5 @@
 {
+    "version":20241223,
     "securityCodeReviewMaster":{
         "name":"Security Code Review Ninja",
         "summary":"Integrating security into code review",
@@ -13,30 +14,68 @@
         },
         "requiredModules":[]
     },
+    "cryptoBreaker":{
+        "name":"Crypto Breaker - Part 1",
+        "summary":"Introduction to Cryptography",
+        "description":"Learn about basic data transformation methods, a bit on the history of ciphers, common cryptographic weaknesses and how to exploit them.",
+        "description2": "Includes 8 lessons. Estimated duration 2 hours.",
+        "badgeInfo":{
+            "line1":"Secure Coding Dojo",
+            "line2":"Crypto Breaker I",
+            "line3":"",
+            "bg":"navy"
+        },
+        "requiredModules":[]
+    },
+    "greenBelt":{
+        "name":"Green Belt",
+        "summary":"Common software security flaws - part 1",
+        "description":"Lessons are entry level difficulty aimed at introducing the concepts of vulnerability, exploit and software defense.",
+        "description2":"Includes 12 lessons. Estimated duration 2 hours.",
+        "badgeInfo":{
+            "line1":"Secure Coding",
+            "line2":"Green Belt",
+            "line3":"",
+            "bg":"darkgreen"
+        },
+        "requiredModules":[]
+    },
     "blackBelt":{
         "name":"Black Belt",
-        "summary":"Common software security flaws",
-        "description":"This module is based on the SANS Top 25 - Most Dangerous Software Flaws. Lessons are entry level difficulty aimed at introducing the concepts of vulnerability, exploit and software defense.",
-        "description2":"Includes 22 lessons. Estimated duration 4 hours.",
+        "summary":"Common software security flaws - part 2",
+        "description":"Lessons are entry level difficulty aimed at introducing the concepts of vulnerability, exploit and software defense.",
+        "description2":"Includes 13 lessons. Estimated duration 2 hours.",
         "badgeInfo":{
             "line1":"Secure Coding",
             "line2":"Black Belt",
             "line3":"",
             "bg":"black"
         },
-        "requiredModules":[]
+        "requiredModules":["greenBelt"]
     },
-    "secondDegreeBlackBelt":{
-        "name":"Second Degree Black Belt",
+    "secondDegreeBlackBelt1":{
+        "name":"Second Degree Black Belt - Part 1",
         "summary":"Cloud software exploitation techniques",
         "description":"Have some fun with this Capture the Flag module which is based on OWASP Top 10. Your goal is to take down the cloud applications used in a worldwide malware campaign.",
         "badgeInfo":{
             "line1":"Secure Coding",
             "line2":"2nd Degree",
-            "line3":"Black Belt",
-            "bg":"darkred"
+            "line3":"Black Belt I",
+            "bg":"red"
         },
         "requiredModules":["blackBelt"]
+    },
+    "secondDegreeBlackBelt2":{
+        "name":"Second Degree Black Belt - Part 2",
+        "summary":"Cloud software exploitation techniques",
+        "description":"Have some fun with this Capture the Flag module which is based on OWASP Top 10. Your goal is to take down the cloud applications used in a worldwide malware campaign.",
+        "badgeInfo":{
+            "line1":"Secure Coding",
+            "line2":"2nd Degree",
+            "line3":"Black Belt II",
+            "bg":"darkred"
+        },
+        "requiredModules":["secondDegreeBlackBelt1"]
     },
     "redTeam":{
         "name":"Red Team",

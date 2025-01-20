@@ -6,6 +6,14 @@ version: "3.8"
 services:
   host1:
     image: securecodingdojo/hackerden-host1
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 128M
+        reservations:
+          cpus: "0.2"
+          memory: 128M
     build:
       context: .
       dockerfile: Dockerfile.host1
@@ -13,25 +21,43 @@ services:
     expose:
       - "22"
     networks:
-      hden:
+      hden_internal:
         aliases:
           - host1
 
   host2:
     image: securecodingdojo/hackerden-host2
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 128M
+        reservations:
+          cpus: "0.2"
+          memory: 128M
     build:
       context: .
       dockerfile: Dockerfile.host2
     restart: "always"
     expose:
       - "8080"
+    environment:
+      - FLAG_SECRET
     networks:
-      hden:
+      hden_internal:
         aliases:
           - host2
 
   front:
     image: securecodingdojo/hackerden-front
+    deploy:
+      resources:
+        limits:
+          cpus: "0.6"
+          memory: 256M
+        reservations:
+          cpus: "0.6"
+          memory: 256M    
     build:
       context: .
       dockerfile: Dockerfile.front
@@ -40,16 +66,18 @@ services:
       - "3000:3000"
     environment:
        - CHALLENGE_MASTER_SALT
-       - HDEN_SIGN_SECRET
-       - HDEN_AUTH_SECRET
        - COINMINER_SSH_HOST=host1
        - COMMAND_PROC_URL=http://host2:8080/commandproc
+       - FLAG_SECRET
     networks:
-      hden:
+      hden_external:
+      hden_internal:
         aliases:
           - front
 
 
 
 networks:
-  hden:
+  hden_external:
+  hden_internal:
+    internal: true

@@ -1,0 +1,32 @@
+name: "Training Portal Tests"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  tests:
+    name: Portal Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Repo Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14
+
+    - name: Setup Portal
+      working-directory: ./trainingportal
+      run: |
+        npm install
+        cp config.json.docker config.json
+        node tools/devSetup.js
+
+    - name: Run Tests
+      working-directory: ./trainingportal
+      run: npm test

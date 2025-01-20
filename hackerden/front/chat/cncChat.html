@@ -62,7 +62,7 @@
 
       <div id="chat" ng-if="showChat" class="bg-white p-4 m-4">
         <div class="panel-heading">
-            <h4>Foobar Chat Messages</h4> 
+            <h4>Chat Messages</h4> 
             <p>
                 <strong>Current user:</strong> <span id="userName">{{userNameText}}</span> ( <a id="challengeCodeUrl" ng-href="{{challengeCodeUrl}}" target="_blank" rel="noopener noreferrer">{{challengeCodeUrl}}</a>)
             </p>
@@ -78,10 +78,10 @@
             </form>
         </div>
         <div class="panel-body">
-            <div class="alert alert-danger" ng-if="chatError" id="chatErrorDiv">Current user does not have messages permissions.</div>
+            <div class="alert alert-danger" ng-if="chatError" id="chatErrorDiv">Current user does not have messages permission.</div>
             <div class="alert alert-danger" style="display:none"  ng-model="chatAlertDiv" id="chatAlertDiv"></div>
             <div class="alert alert-success" ng-if="messageSuccess">
-                <p>The page is now sending a request to gov.logger.good. Check the Network tab of the browser debugger!</p>
+                <p>The page is now sending a request to the xss.tracker host. Check the Network tab of the browser debugger!</p>
                 <p>Here's your challenge code url: <a ng-href="{{xssChallengeCodeUrl}}" target="_blank" rel="noopener noreferrer">{{xssChallengeCodeUrl}}</a>
                 </p>
 
@@ -107,45 +107,58 @@
 
 
   <script type="text/javascript">
-    var encrypt = new JSEncrypt.JSEncrypt();
+    var encrypt = new JSEncrypt.JSEncrypt({default_key_size:512});
+    var privKey = localStorage.getItem("privKey") 
+    var pubKey = localStorage.getItem("pubKey") 
+    if(!privKey){
+        var key = encrypt.getKey()
+        privKey = key.getPrivateBaseKeyB64()
+        localStorage.setItem("privKey", privKey)
+        pubKey = key.getPublicBaseKeyB64()
+        localStorage.setItem("pubKey", pubKey)
+    }
+    
+    encrypt.setKey(privKey)
 
     encryptText=function(messageText){
-        var pubKey = window.sessionStorage.getItem("pubKey")
-        if(!pubKey){ 
-            pubKey = encrypt.getPublicKeyB64()
-            window.sessionStorage.setItem("pubKey",pubKey)
+        var re = new RegExp('.{1,40}', 'g');
+        var messParts = messageText.match(re);
+        var encMess = []
+        var integrityVal = messageText+pubKey
+        var integrity = CryptoJS.SHA256(integrityVal).toString()
+        for(let part of messParts){
+            encMess.push((encrypt.encrypt(part)))
         }
-        
-        encrypt.setPublicKey(pubKey);
         var messageObj = {
             "type":"encMessage",
-            "encMess":encrypt.encrypt(messageText),
-            "pubKey":pubKey,
+            "encMess":encMess,
+            "pubKey": pubKey,
             "date":new Date().toLocaleString(),
-            "integrity":CryptoJS.SHA256(messageText+pubKey).toString()
+            "integrity":integrity
         }
-        return JSON.stringify(messageObj);
-       
+        return JSON.stringify(messageObj);       
     }
 
-    decryptText=function(messageCipher){
-        var privKey = window.sessionStorage.getItem("privKey")
-        if(!privKey){ 
-            privKey = encrypt.getPrivateKeyB64()
-            window.sessionStorage.setItem("privKey",privKey)
+    decryptText=function(cipherText){
+        var decrypted = ""
+        if(Array.isArray(cipherText)){
+            for(let part of cipherText){
+                decryptedPart = encrypt.decrypt(part)
+                if(decryptedPart) decrypted+=decryptedPart
+                else return false
+            }
         }
-
-        encrypt.setPublicKey(privKey);
-        return encrypt.decrypt(messageCipher);
-
+        else{
+            decrypted = encrypt.decrypt(cipherText)
+        }
+        return decrypted
     }
-
-
 
     window.getAjaxOpts = function(){
        var opts =  {
            headers:{
-               "Authorization":'Bearer '+window.sessionStorage.getItem("token")
+               "Authorization":'Bearer '+window.sessionStorage.getItem("token"),
+               "Content-Type":"application/json"
            }
        }
        return opts;
@@ -196,40 +209,39 @@
             $http.get("messages.json?"+Math.random(),window.getAjaxOpts()).then(
                 function(response){
                     if(response && response.data){
-                       if($scope.chatMessages.length<response.data.length){
                         
-                            if($scope.chatError){
-                                $scope.chatError = false;   
-                                return $scope.getCurrentUser();
-                            }
-                            else{
-                                $scope.chatMessages = response.data;
-                            }
-                            
+                        if($scope.chatError){
+                            $scope.chatError = false;   
+                            return $scope.getCurrentUser();
+                        }
+                        else{ 
+                            if($scope.chatMessages.length !== response.data.length) $scope.chatMessages = response.data
+                            else return
+                        }
+                        
 
-                            $scope.chatMessages.forEach(function(message) {
-                                if(message.type==='encMessage' && message.encMess){
+                        $scope.chatMessages.forEach(function(message) {
+                            if(message.type==='encMessage' && message.encMess && message.pubKey === pubKey){
+                                try {
                                     chatAlertDiv.style.display="none";
                                     var text = decryptText(message.encMess);
-                                    if(typeof text !== 'undefined' && text!==null && text!==false){
+                                    if(typeof text !== 'undefined' && text!==null && text!==false && text!==""){
                                         chatAlertDiv.style.display="";
                                         chatAlertDiv.innerHTML = text;
                                         if(message.challengeCodeUrl && message.challengeCodeUrl.length > 0){
                                             $scope.messageSuccess = true;
-                                            //construct the challenge code url
-                                            let decUrl = "";
-                                            message.challengeCodeUrl.forEach(function(part){
-                                                decUrl+=decryptText(part);
-                                            });
-                                            $scope.xssChallengeCodeUrl = decUrl;
+                                            $scope.xssChallengeCodeUrl = decryptText(message.challengeCodeUrl);
                                             $scope.challengeCodeUrl = ""; 
                                             $scope.nextChallenge = decryptText(message.nextChallenge);
                                         }
                                     }
-                                   
+                                    
+                                } catch (error) {
+                                    console.error(error)
                                 }
-                            });
-                       }
+                            }
+                        });
+                       
                     }
                     else{
                         $scope.chatError = true;
@@ -268,12 +280,12 @@
             },window.getAjaxOpts()).then(
                 function(response){
                     messageInput.value="";    
-                    setTimeout($scope.getChatMessages,3*1000);               
                 },()=>{
                     alert("Disalowed")
                 });
         }
 
+        setInterval($scope.getChatMessages,1000); 
 
         $scope.getCurrentUser();
 

@@ -17,10 +17,14 @@ async function setup(){
         await db.getPromise(db.insertUser, dojoUserInfo);
         auth.createUpdateUserInternal("dojouser", dojoUserInfo, "SecureCodingDojo");
 
-        util.log("Unlocking all challenges for 'dojouser'");
+        util.log("Unlocking challenges for 'dojouser'");
         let user = await db.getPromise(db.getUser,"Local_dojouser");
-        await challengeUtil.passChallenges("securityCodeReviewMaster",user,["codereview101_indirectReferences"]);
-        await challengeUtil.passChallenges("blackBelt",user,["cwe502"]);
+        await challengeUtil.passChallenges("securityCodeReviewMaster",user,[]);
+        await challengeUtil.passChallenges("greenBelt",user,[]);
+        await challengeUtil.passChallenges("blackBelt",user,["cwe134"]);
+        await challengeUtil.passChallenges("secondDegreeBlackBelt1",user,[]);
+        await challengeUtil.passChallenges("secondDegreeBlackBelt2",user,[]);
+
 
     } catch (error) {
         console.error(error);

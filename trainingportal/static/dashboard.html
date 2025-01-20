@@ -29,9 +29,9 @@
             </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="moduleStat in moduleStatList">
-                    <td style="width:75%">{{modules[moduleStat.moduleId].name}}</td>
-                    <td>{{moduleStat.playerCount}}</td>
+                <tr ng-repeat="moduleStat in moduleStatList" ng-if="modules[moduleStat.moduleId]">
+                        <td style="width:75%">{{modules[moduleStat.moduleId].name}}</td>
+                        <td>{{moduleStat.playerCount}}</td>
                 </tr>
             </tbody>
         </table>

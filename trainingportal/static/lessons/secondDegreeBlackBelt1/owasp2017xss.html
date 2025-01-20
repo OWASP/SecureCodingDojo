@@ -1,0 +1,43 @@
+
+
+<hr>
+<h5>About the vulnerabilities: Cross-Site Scripting</h5>
+<p>
+  Cross-Site Scripting is discussed and demonstrated in detail under Purple Belt: Improper Neutralization of Input During Web Page Generation 
+  ('Cross-site Scripting'). Please review that section to refresh your memory and also the OWASP link below.
+</p>
+
+<blockquote class="blockquote m-4">
+<p>
+    <i>XSS is the second most prevalent issue in the OWASP Top 10, and is found in around two thirds of all applications.</i>
+</p>
+<footer class="blockquote-footer">From OWASP Top 10 2017 <a target="_blank" rel="noopener noreferrer" href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">A7-Cross-Site Scripting (XSS)</a></footer>
+</blockquote>
+
+<p>
+<strong>Note: </strong> Starting with OWASP Top 10 2021, Cross-Site Scripting is being classified as a form of Injection.
+</p>
+
+<div class="alert alert-info">
+<h5>Challenge Tips and Tricks</h5>
+<ul>
+<li>
+Reveal the source ip of the chat users and steal their authentication token by using the specially crafted html code provided in the challenge mission. 
+Only that particular html snippet will unlock the challenge. 
+</li><li>
+Analyze the source of the page carefully. You'll notice that XSS is mostly prevented except for one particular case.
+</li><li>
+Use the browser debugger to insert breakpoints and step into the code.
+</li><li>
+Take a look in the Network tab of your browser debugger. Some of the last entries in messages.json should be very interesting. Some messages are not shown.
+</li><li>
+There are some handy javascript functions in that page to help you out. Simply calling one of these functions from the browser console will generate the type of message you need. 
+</li><li>
+Did you know that your browser lets you copy some of the network requests as a curl command? You should be able to copy the request to put a regular message and replace the message object with the one generated from the console. 
+You can also use Postman or your favorite AppSec proxy tool.
+</li><li>
+If your challenge code expires, simply resubmit the curl request and reload the messages. Confirm that you have a new challenge code.
+</li>
+</ul>
+</p>
+</div>
