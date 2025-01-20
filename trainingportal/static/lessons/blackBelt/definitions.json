@@ -71,6 +71,15 @@
                 "playLink":"/cwe22.jsp",
                 "description": "cwe22.html",
                 "codeBlockIds":["indirectObjectReferences","inputAllowListing","principleOfLeastPrivilege"]
+            },
+            {
+                "id":"cwe20",
+                "name":"Improper Input Validation", 
+                "description": "cwe20.md",
+                "attackGram":"improperinputvalidation.png",
+                "solution":"cwe20.sol.md",
+                "playLink":"/cwe20.jsp",
+                "codeBlockIds":["serverSideValidation","inputAllowListing"]
             }
         ]
     },
