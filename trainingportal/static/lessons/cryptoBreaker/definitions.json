@@ -72,7 +72,7 @@
                 "description": "crypto_analysis.md",
                 "solution": "crypto_analysis.sol.md",
                 "type":"quiz",
-                "mission":"Obtain the golden key.",
+                "mission":"Obtain the golden key in hexadecimal format, all lowercase characters",
                 "codeBlockIds":[]
             }
         ]
