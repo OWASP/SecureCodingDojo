@@ -82,13 +82,13 @@
             <div class="alert alert-danger" style="display:none"  ng-model="chatAlertDiv" id="chatAlertDiv"></div>
             <div class="alert alert-success" ng-if="messageSuccess">
                 <p>The page is now sending a request to the xss.tracker host. Check the Network tab of the browser debugger!</p>
-                <p>Here's your challenge code url: <a ng-href="{{xssChallengeCodeUrl}}" target="_blank" rel="noopener noreferrer">{{xssChallengeCodeUrl}}</a>
+                <p>Here's your challenge code url: <a ng-href="{{xssChallengeCodeUrl}}" target="_blank" rel="noopener noreferrer">{{xssChalng-repeatlengeCodeUrl}}</a>
                 </p>
 
             </div>
             <div class="alert alert-success" ng-if="messageSuccess">Here's your next challenge: {{nextChallenge}}</div>
 
-            <div ng-repeat="message in chatMessages | reverse" ng-if="message.type!=='encMessage'" ng-class="{'panel panel-primary': message.type === 'userMessage','panel panel-success': message.type !== 'userMessage'}">
+            <div ng-repeat="message in chatMessages track by $index" ng-if="message.type!=='encMessage'" ng-class="{'panel panel-primary': message.type === 'userMessage','panel panel-success': message.type !== 'userMessage'}">
 
 
                 <div class="card m-4">
