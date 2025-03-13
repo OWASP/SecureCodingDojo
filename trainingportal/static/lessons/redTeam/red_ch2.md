@@ -13,7 +13,7 @@ Your security tests should include the following attack types based on OWASP top
 9. Excluded, was part of first challenge - Using Components with Known Vulnerabilities
 10. Excluded, not an attack - Insufficient Logging & Monitoring
 
-The following example is using the [OWASP Zed Attack Proxy](https://owasp.org/www-project-zap/) (ZAP). 
+The following example is using the [Zed Attack Proxy](https://www.zaproxy.org/) (ZAP). 
 
 1.  Install ZAP.  A number of native [installers](https://www.zaproxy.org/download/) are offered, as well as a [docker image](https://www.zaproxy.org/docs/docker/) that allows accessing the UI through your [browser](https://www.zaproxy.org/docs/docker/webswing/) (watch for port conflict on port 8080).
 2.  Launch ZAP.
