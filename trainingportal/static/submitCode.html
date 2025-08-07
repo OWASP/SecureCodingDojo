@@ -6,24 +6,21 @@
     <h4 ng-if="challengeCodeValue === '0'">When you have solved the challenge, take the salt below to obtain the verification code.</h4>
     <br>
     <form autocomplete="off">
-        <div ng-if="challengeType === 'quiz'" class="form-group form-inline">
-            <label for="answer">Answer:</label> &nbsp;
-            <input type="text" autocomplete="off" class="form-control" style="width: 100%;" id="answer" value=""/>
-        </div>
-        <div ng-if="challengeCodeValue === '0'" class="form-group form-inline">
+        <div ng-if="challengeType !== 'quiz'" class="form-group form-inline">
             <label for="salt">Salt:</label> &nbsp;
             <input type="text" autocomplete="off" class="form-control" id="saltEl" value="{{salt}}"/>
             <button type="button" class="btn btn-default" onclick="document.getElementById('saltEl').select();document.execCommand('copy');">
                     <span class="oi oi-clipboard"></span>
             </button>
         </div>
-        <div ng-if="challengeCodeValue === '0'" class="form-group ">
+        <div ng-if="challengeType !== 'quiz'" class="form-group ">
             <label for="challengeCode">Challenge code:</label>        
             <input type="text" autocomplete="off" class="form-control" id="challengeCode">  
         </div>
     </form>
-    <button class="btn btn-primary" ng-click="submitAnswer()">Submit</button>
-    <button class="btn btn-secondary" onclick="window.history.back()">Back</button>
+    <button ng-if="challengeType !== 'quiz'" class="btn btn-primary" ng-click="submitAnswer()">Submit</button>
+    <button ng-if="challengeType !== 'quiz'" class="btn btn-secondary" onclick="window.history.back()">Back</button>
+    <button ng-if="challengeType === 'quiz'" class="btn btn-secondary" ng-click="goBack()">Back</button>
 
 
             <!-- Code Block Dialog -->

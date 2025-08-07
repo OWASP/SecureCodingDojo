@@ -25,8 +25,12 @@ let getSecretText = (challengeId) => {
   return secretText.toUpperCase();
 }
 
+let getDigest = (val) => {
+  return crypto.createHash('sha256').update(val.trim().toLowerCase() + masterSalt).digest('hex');
+}
+
 let getRes = (mes, code) => {
-  let digest = crypto.createHash('sha256').update(mes.trim()+masterSalt).digest('hex');
+  let digest = getDigest(mes);
   return res = {
     code:code,
     digest:digest, 
@@ -241,6 +245,7 @@ const DEFS = {
 module.exports = {
   DEFS,
   getCode,
+  getDigest,
   checkCode,
   xorOp
 }

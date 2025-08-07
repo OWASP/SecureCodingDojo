@@ -14,6 +14,19 @@
         },
         "requiredModules":[]
     },
+    "cvss":{
+        "name":"Vulnerability Investigator",
+        "summary":"Understanding vulnerability severity",
+        "description":"This module covers the most important aspects of the Common Vulnerability Scoring System (CVSS)",
+        "description2": "Includes <TBD> lessons. Estimated duration 2 hours.",
+        "badgeInfo":{
+            "line1":"Secure Coding Dojo",
+            "line2":"Vulnerability Investigator",
+            "line3":"",
+            "bg":"darkorange"
+        },
+        "requiredModules":[]
+    },
     "cryptoBreaker":{
         "name":"Crypto Breaker - Part 1",
         "summary":"Introduction to Cryptography",

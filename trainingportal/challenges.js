@@ -84,7 +84,6 @@ let init = async () => {
         let moduleDefinitions = getDefinitionsForModule(moduleId);
         var modulePath = getModulePath(moduleId);
         for(let level of moduleDefinitions){
-            challengeDefinitions.push(level);
             for(let challenge of level.challenges){
                 if(!util.isNullOrUndefined(challengeNames[challenge.id])){
                     throw new Error(`Duplicate challenge id: '${challenge.id}'!`);
@@ -206,6 +205,7 @@ let getChallengeDefinitions = async (moduleId) => {
     
     if(util.isNullOrUndefined(moduleId)) return [];    
     if(util.isNullOrUndefined(modules[moduleId])) return [];
+    if(!util.isNullOrUndefined(challengeDefinitions[moduleId])) return challengeDefinitions[moduleId];
 
     var modulePath = getModulePath(moduleId);
     var moduleDefinitions = getDefinitionsForModule(moduleId);
@@ -224,12 +224,17 @@ let getChallengeDefinitions = async (moduleId) => {
                 challenge.description = path.join(modulePath, description);
             }
             if(challenge.type === "quiz"){
-                challenge.question = qna.getCode(challenge.id);
+                if(util.isNullOrUndefined(challenge.options)){
+                    challenge.question = qna.getCode(challenge.id);
+                }
+                else if(!util.isNullOrUndefined(challenge.answer)){
+                    challenge.question = { "digest": qna.getDigest(challenge.answer)}
+                }
             }
         }
         returnChallenges.push(level);
     }
-        
+    challengeDefinitions[moduleId] = returnChallenges;    
     return returnChallenges;
 }
 
@@ -452,8 +457,8 @@ let apiChallengeCode = async (req) => {
     }
 
     let answer = null;
-    if(!util.isNullOrUndefined(req.body.answer)){
-        answer = req.body.answer.trim();
+    if(!util.isNullOrUndefined(req.body.answer) && typeof req.body.answer === "string"){
+        answer = req.body.answer.trim().toLowerCase();
     }
 
     if(util.isNullOrUndefined(challengeCode) || 
