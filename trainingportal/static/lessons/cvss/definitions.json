@@ -1,34 +1,30 @@
 [
     {
         "level":0,
-        "name":"Vulnerability Investigator",
+        "name":"CVSS",
         "challenges":[
             {
                 "id":"cvss_intro",
-                "name":"About CVSS",
+                "name":"Introduction",
                 "description": "cvss_intro.md",
                 "solution": "cvss_intro.sol.md",
                 "type":"quiz",
-                "mission":"Choose the correct option",
+                "mission":"Which organization is responsible for the CVSS specification?",
                 "options":[
                     {
-                        "display":"Confidentiality: High, Integrity: High, Availability: High",
-                        "value":"CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"
+                        "display":"FIRST - Forum of Incident Response and Security Teams (https://www.first.org/)",
+                        "value":"1"
                     },
                     {
-                        "display":"Confidentiality: High, Integrity: High, Availability: None",
-                        "value":"CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N"
+                        "display":"NVD - National Vulnerability Database (https://nvd.nist.gov/)",
+                        "value":"2"
                     },
                     {
-                        "display":"Confidentiality: High, Integrity: None, Availability: None",
-                        "value":"CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N"
-                    },
-                    {
-                        "display":"Confidentiality: None, Integrity: None, Availability: None",
-                        "value":"CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:N/SI:N/SA:N"
+                        "display":"OWASP - Open Worldwide Application Security Project (https://owasp.org/)",
+                        "value":"3"
                     }
                 ],
-                "answer":"CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+                "answer":"1",
                 "codeBlockIds":[]
             }
         ]
