@@ -26,6 +26,38 @@
                 ],
                 "answer":"1",
                 "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_case_studies",
+                "name":"Case Studies",
+                "description": "cvss_case_studies.md",
+                "solution": "cvss_case_studies.sol.md",
+                "type":"quiz",
+                "mission":"Which CVSS metric covers the following exploitation prerequisite: \"Attacker needs to trick a victim into ...\"",
+                "options":[
+                    {
+                        "display": "Attack Vector (AV)",
+                        "value":"1"
+                    },
+                    {
+                        "display":"Attack Complexity (AC)",
+                        "value":"2"
+                    },
+                    {
+                        "display":"Attack Requirements (AT)",
+                        "value":"3"
+                    },
+                    {
+                        "display":"Privileges Required (PR)",
+                        "value":"4"
+                    },
+                    {
+                        "display":"User Interaction (UI)",
+                        "value":"5"
+                    }
+                ],
+                "answer":"5",
+                "codeBlockIds":[]
             }
         ]
     }
