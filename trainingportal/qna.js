@@ -231,6 +231,10 @@ let analysisEnc = (mes) => {
   return getRes(goldenKey, cipher);
 }
 
+let cvss_score_1 = () => {
+  return {"digest": getDigest("CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:L/VI:N/VA:N/SC:N/SI:N/SA:N")};
+}
+
 const DEFS = {
   "crypto_caesar": caesarEnc,
   "crypto_vigenere": vigenereEnc,
@@ -239,7 +243,8 @@ const DEFS = {
   "crypto_hash": hashEnc,
   "crypto_xor": xorEnc,
   "crypto_pbk": pbkEnc,
-  "crypto_analysis": analysisEnc
+  "crypto_analysis": analysisEnc,
+  "cvss_score_1": cvss_score_1
 }
 
 module.exports = {

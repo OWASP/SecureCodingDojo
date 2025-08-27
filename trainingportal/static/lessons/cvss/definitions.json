@@ -58,6 +58,15 @@
                 ],
                 "answer":"5",
                 "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_score_1",
+                "name":"Score Vulnerability 1",
+                "description": "cvss_score_1.md",
+                "solution": "cvss_score_1.sol.md",
+                "type":"quiz",
+                "mission":"Enter the CVSS v4 string (Base Score)",
+                "codeBlockIds":[]
             }
         ]
     }
