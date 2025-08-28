@@ -4,10 +4,10 @@
         "name":"CVSS",
         "challenges":[
             {
-                "id":"cvss_intro",
+                "id":"cvss_1_intro",
                 "name":"Introduction",
-                "description": "cvss_intro.md",
-                "solution": "cvss_intro.sol.md",
+                "description": "cvss_1_intro.md",
+                "solution": "cvss_1_intro.sol.md",
                 "type":"quiz",
                 "mission":"Which organization is responsible for the CVSS specification?",
                 "options":[
@@ -28,10 +28,10 @@
                 "codeBlockIds":[]
             },
             {
-                "id":"cvss_case_studies",
+                "id":"cvss_2_case_studies",
                 "name":"Case Studies",
-                "description": "cvss_case_studies.md",
-                "solution": "cvss_case_studies.sol.md",
+                "description": "cvss_2_case_studies.md",
+                "solution": "cvss_2_case_studies.sol.md",
                 "type":"quiz",
                 "mission":"Which CVSS metric covers the following exploitation prerequisite: \"Attacker needs to trick a victim into ...\"",
                 "options":[
@@ -60,19 +60,19 @@
                 "codeBlockIds":[]
             },
             {
-                "id":"cvss_score_1",
+                "id":"cvss_3_score_1",
                 "name":"Score Vulnerability 1",
-                "description": "cvss_score_1.md",
-                "solution": "cvss_score_1.sol.md",
+                "description": "cvss_3_score_1.md",
+                "solution": "cvss_3_score_1.sol.md",
                 "type":"quiz",
                 "mission":"Enter the CVSS v4 string (Base Score)",
                 "codeBlockIds":[]
             },
             {
-                "id":"cvss_score_2",
+                "id":"cvss_4_score_2",
                 "name":"Score Vulnerability 2",
-                "description": "cvss_score_2.md",
-                "solution": "cvss_score_2.sol.md",
+                "description": "cvss_4_score_2.md",
+                "solution": "cvss_4_score_2.sol.md",
                 "type":"quiz",
                 "mission":"Enter the CVSS v4 string (Base Score)",
                 "codeBlockIds":[]
