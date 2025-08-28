@@ -1,3 +1,12 @@
+High-level analysis:
+
+- Prerequisites:
+    - None
+- Impact:
+    - Some limited amount data is exposed
+
+---
+
 - Attack Vector (AV): Network (N)
 - Attack Complexity (AC): Low (L)
 - Attack Requirements (AT): None (N)

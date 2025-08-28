@@ -1,3 +1,13 @@
+High-level analysis:
+
+- Prerequisites:
+    - Knowledge of a 128-bit userid of a victim
+    - Valid login session
+- Impact:
+    - Full impact on all information related to the user, including sensitive data
+
+---
+
 - Attack Vector (AV): Network (N)
 - Attack Complexity (AC): High (H)
 - Attack Requirements (AT): None (N)

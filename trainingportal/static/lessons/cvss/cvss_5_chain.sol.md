@@ -1,9 +1,17 @@
+High-level analysis:
+
+- Prerequisites:
+    - Previous prerequisite of "Knowledge of a 128-bit userid of a victim" is now easily satisfied by Vulnerability 1
+    - Valid login session
+- Impact:
+    - Full impact on all information related to **any** user, including sensitive data
+
+---
+
 - Attack Vector: Network (N)
 - Attack Complexity: Low (L)
-    - The requirement on knowing the unique userid is still present, however vulnerability 1 allows the attacker to easily obtain these for all users.
 - Attack Requirements: None (N)
 - Privileges Required: Low (L)
-    - The attacker still needs to be authenticated user in order to perform the second part of the attack i.e. obtain sensitive data.
 - User Interaction: None (N)
 - Vulnerable System Confidentiality: High (H)
 - Vulnerable System Integrity: None (N)
