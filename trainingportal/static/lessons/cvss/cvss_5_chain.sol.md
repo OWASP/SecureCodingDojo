@@ -1,0 +1,13 @@
+- Attack Vector: Network (N)
+- Attack Complexity: Low (L)
+    - The requirement on knowing the unique userid is still present, however vulnerability 1 allows the attacker to easily obtain these for all users.
+- Attack Requirements: None (N)
+- Privileges Required: Low (L)
+    - The attacker still needs to be authenticated user in order to perform the second part of the attack i.e. obtain sensitive data.
+- User Interaction: None (N)
+- Vulnerable System Confidentiality: High (H)
+- Vulnerable System Integrity: None (N)
+- Vulnerable System Availability: None (N)
+- Subsequent System Confidentiality: None (N)
+- Subsequent System Integrity: None (N)
+- Subsequent System Availability: None (N)

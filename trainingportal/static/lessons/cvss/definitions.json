@@ -76,6 +76,15 @@
                 "type":"quiz",
                 "mission":"Enter the CVSS v4 string (Base Score)",
                 "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_5_chain",
+                "name":"Chaining Vulnerabilities",
+                "description": "cvss_5_chain.md",
+                "solution": "cvss_5_chain.sol.md",
+                "type":"quiz",
+                "mission":"Enter the CVSS v4 string (Base Score)",
+                "codeBlockIds":[]
             }
         ]
     }
