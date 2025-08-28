@@ -7,6 +7,8 @@ High-level analysis:
 
 ---
 
+CVSS:
+
 - Attack Vector (AV): Network (N)
 - Attack Complexity (AC): Low (L)
 - Attack Requirements (AT): None (N)
