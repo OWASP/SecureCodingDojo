@@ -150,6 +150,8 @@ CVSS Base metrics go into 2 broad categories:
             - [regreSSHion CVE-2024-6387](https://www.first.org/cvss/v4-0/examples#regreSSHion-CVE-2024-6387)
                 - Attackers must defeat memory safety defenses in order to achieve code execution
 
+**NOTE**: It is important to note that Attack Complexity is **not** related to exploit complexity. A proof-of-concept for exploiting a vulnerability may be a sophisticated piece of code itself, but that does not necessarily have effect on the Attack Complexity metric. You should ask not "How hard would it be for someone to design the exploit code?", but instead ask "How hard would it be for someone having access to the exploit code to overcome the security conditions in order for this attack to work?"
+
 #### [Attack Requirements (AT)](https://www.first.org/cvss/v4-0/specification-document#Attack-Requirements-AT)
 
 - **Question**: Are there any non-security-specific conditions that need to be overcome?
@@ -226,7 +228,7 @@ Impact is only measured in terms of what is gained by exploiting a vulnerability
 
 CVSS v4 introduces separate impact scores for the Vulnerable (`V`) system and Subsequent (`S`) systems (previously in CVSS v3 this used to be marked by a Scope (`S`) metric).
 
-The CVSS documentation includes a [User Guide](https://www.first.org/cvss/v4-0/user-guide#Vulnerable-System-and-Subsequent-System) with some examples on scope scoring.
+The CVSS documentation includes a [CVSS User Guide](https://www.first.org/cvss/v4-0/user-guide#Vulnerable-System-and-Subsequent-System) with some examples on scope scoring.
 
 Examples of change of scope (vulnerable to subsequent) for impact:
 
