@@ -251,6 +251,10 @@ let cvss_7_score_4 = () => {
   return {"digest": getDigest("CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:H/SI:N/SA:N")};
 }
 
+let cvss_8_score_5 = () => {
+  return {"digest": getDigest("CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:L/SC:N/SI:N/SA:N")};
+}
+
 const DEFS = {
   "crypto_caesar": caesarEnc,
   "crypto_vigenere": vigenereEnc,
@@ -264,7 +268,8 @@ const DEFS = {
   "cvss_4_score_2": cvss_4_score_2,
   "cvss_5_chain": cvss_5_chain,
   "cvss_6_score_3": cvss_6_score_3,
-  "cvss_7_score_4": cvss_7_score_4
+  "cvss_7_score_4": cvss_7_score_4,
+  "cvss_8_score_5": cvss_8_score_5
 }
 
 module.exports = {

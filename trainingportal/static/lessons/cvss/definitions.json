@@ -103,6 +103,15 @@
                 "type":"quiz",
                 "mission":"Enter the CVSS v4 string (Base Score)",
                 "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_8_score_5",
+                "name":"Score Vulnerability 5",
+                "description": "cvss_8_score_5.md",
+                "solution": "cvss_8_score_5.sol.md",
+                "type":"quiz",
+                "mission":"Enter the CVSS v4 string (Base Score)",
+                "codeBlockIds":[]
             }
         ]
     }
