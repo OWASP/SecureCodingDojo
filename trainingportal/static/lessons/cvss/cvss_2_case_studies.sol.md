@@ -1,0 +1,1 @@
+The [User Interaction (UI)](https://www.first.org/cvss/v4-0/specification-document#User-Interaction-UI) metric covers "the requirement for a human user, other than the attacker, to participate in the successful compromise of the vulnerable system".

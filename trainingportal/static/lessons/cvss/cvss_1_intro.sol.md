@@ -1,0 +1,1 @@
+The CVSS specification is available at [https://www.first.org/cvss/](https://www.first.org/cvss/).

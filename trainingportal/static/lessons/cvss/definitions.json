@@ -1,34 +1,125 @@
 [
     {
         "level":0,
-        "name":"Vulnerability Investigator",
+        "name":"CVSS",
         "challenges":[
             {
-                "id":"cvss_intro",
-                "name":"About CVSS",
-                "description": "cvss_intro.md",
-                "solution": "cvss_intro.sol.md",
+                "id":"cvss_1_intro",
+                "name":"Introduction",
+                "description": "cvss_1_intro.md",
+                "solution": "cvss_1_intro.sol.md",
                 "type":"quiz",
-                "mission":"Choose the correct option",
+                "mission":"Which organization is responsible for the CVSS specification?",
                 "options":[
                     {
-                        "display":"Confidentiality: High, Integrity: High, Availability: High",
-                        "value":"CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N"
+                        "display":"FIRST - Forum of Incident Response and Security Teams (https://www.first.org/)",
+                        "value":"1"
                     },
                     {
-                        "display":"Confidentiality: High, Integrity: High, Availability: None",
-                        "value":"CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N"
+                        "display":"NVD - National Vulnerability Database (https://nvd.nist.gov/)",
+                        "value":"2"
                     },
                     {
-                        "display":"Confidentiality: High, Integrity: None, Availability: None",
-                        "value":"CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:N/VA:N/SC:N/SI:N/SA:N"
-                    },
-                    {
-                        "display":"Confidentiality: None, Integrity: None, Availability: None",
-                        "value":"CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:N/VA:N/SC:N/SI:N/SA:N"
+                        "display":"OWASP - Open Worldwide Application Security Project (https://owasp.org/)",
+                        "value":"3"
                     }
                 ],
-                "answer":"CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N",
+                "answer":"1",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_2_case_studies",
+                "name":"Case Studies",
+                "description": "cvss_2_case_studies.md",
+                "solution": "cvss_2_case_studies.sol.md",
+                "type":"quiz",
+                "mission":"Which CVSS metric covers the following exploitation prerequisite: \"Attacker needs to trick a victim into ...\"",
+                "options":[
+                    {
+                        "display": "Attack Vector (AV)",
+                        "value":"1"
+                    },
+                    {
+                        "display":"Attack Complexity (AC)",
+                        "value":"2"
+                    },
+                    {
+                        "display":"Attack Requirements (AT)",
+                        "value":"3"
+                    },
+                    {
+                        "display":"Privileges Required (PR)",
+                        "value":"4"
+                    },
+                    {
+                        "display":"User Interaction (UI)",
+                        "value":"5"
+                    }
+                ],
+                "answer":"5",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_3_score_1",
+                "name":"Score Vulnerability 1",
+                "description": "cvss_3_score_1.md",
+                "solution": "cvss_3_score_1.sol.md",
+                "type":"quiz",
+                "mission":"Enter the CVSS v4 string (Base Score)",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_4_score_2",
+                "name":"Score Vulnerability 2",
+                "description": "cvss_4_score_2.md",
+                "solution": "cvss_4_score_2.sol.md",
+                "type":"quiz",
+                "mission":"Enter the CVSS v4 string (Base Score)",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_5_chain",
+                "name":"Chaining Vulnerabilities",
+                "description": "cvss_5_chain.md",
+                "solution": "cvss_5_chain.sol.md",
+                "type":"quiz",
+                "mission":"Enter the CVSS v4 string (Base Score)",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_6_score_3",
+                "name":"Score Vulnerability 3",
+                "description": "cvss_6_score_3.md",
+                "solution": "cvss_6_score_3.sol.md",
+                "type":"quiz",
+                "mission":"Enter the CVSS v4 string (Base Score)",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_7_score_4",
+                "name":"Score Vulnerability 4",
+                "description": "cvss_7_score_4.md",
+                "solution": "cvss_7_score_4.sol.md",
+                "type":"quiz",
+                "mission":"Enter the CVSS v4 string (Base Score)",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_8_score_5",
+                "name":"Score Vulnerability 5",
+                "description": "cvss_8_score_5.md",
+                "solution": "cvss_8_score_5.sol.md",
+                "type":"quiz",
+                "mission":"Enter the CVSS v4 string (Base Score)",
+                "codeBlockIds":[]
+            },
+            {
+                "id":"cvss_9_score_6",
+                "name":"Score Vulnerability 6",
+                "description": "cvss_9_score_6.md",
+                "solution": "cvss_9_score_6.sol.md",
+                "type":"quiz",
+                "mission":"Enter the CVSS v4 string (Base Score)",
                 "codeBlockIds":[]
             }
         ]
