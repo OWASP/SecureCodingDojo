@@ -65,7 +65,7 @@
                 "description": "cvss_3_score_1.md",
                 "solution": "cvss_3_score_1.sol.md",
                 "type":"quiz",
-                "mission":"Enter the CVSS v4 string (Base Score)",
+                "mission":"Enter the CVSS v4 Vector string (i.e. CVSS:4.0/AV:x/AC:x/AT:x/PR:x/UI:x/VC:x/VI:x/VA:x/SC:x/SI:x/SA:x) which can be copied by clicking on the green CVSS Vector box in the CVSS calculator",
                 "codeBlockIds":[]
             },
             {
@@ -74,7 +74,7 @@
                 "description": "cvss_4_score_2.md",
                 "solution": "cvss_4_score_2.sol.md",
                 "type":"quiz",
-                "mission":"Enter the CVSS v4 string (Base Score)",
+                "mission":"Enter the CVSS v4 Vector string (i.e. CVSS:4.0/AV:x/AC:x/AT:x/PR:x/UI:x/VC:x/VI:x/VA:x/SC:x/SI:x/SA:x) which can be copied by clicking on the green CVSS Vector box in the CVSS calculator",
                 "codeBlockIds":[]
             },
             {
@@ -83,7 +83,7 @@
                 "description": "cvss_5_chain.md",
                 "solution": "cvss_5_chain.sol.md",
                 "type":"quiz",
-                "mission":"Enter the CVSS v4 string (Base Score)",
+                "mission":"Enter the CVSS v4 Vector string (i.e. CVSS:4.0/AV:x/AC:x/AT:x/PR:x/UI:x/VC:x/VI:x/VA:x/SC:x/SI:x/SA:x) which can be copied by clicking on the green CVSS Vector box in the CVSS calculator",
                 "codeBlockIds":[]
             },
             {
@@ -92,7 +92,7 @@
                 "description": "cvss_6_score_3.md",
                 "solution": "cvss_6_score_3.sol.md",
                 "type":"quiz",
-                "mission":"Enter the CVSS v4 string (Base Score)",
+                "mission":"Enter the CVSS v4 Vector string (i.e. CVSS:4.0/AV:x/AC:x/AT:x/PR:x/UI:x/VC:x/VI:x/VA:x/SC:x/SI:x/SA:x) which can be copied by clicking on the green CVSS Vector box in the CVSS calculator",
                 "codeBlockIds":[]
             },
             {
@@ -101,7 +101,7 @@
                 "description": "cvss_7_score_4.md",
                 "solution": "cvss_7_score_4.sol.md",
                 "type":"quiz",
-                "mission":"Enter the CVSS v4 string (Base Score)",
+                "mission":"Enter the CVSS v4 Vector string (i.e. CVSS:4.0/AV:x/AC:x/AT:x/PR:x/UI:x/VC:x/VI:x/VA:x/SC:x/SI:x/SA:x) which can be copied by clicking on the green CVSS Vector box in the CVSS calculator",
                 "codeBlockIds":[]
             },
             {
@@ -110,7 +110,7 @@
                 "description": "cvss_8_score_5.md",
                 "solution": "cvss_8_score_5.sol.md",
                 "type":"quiz",
-                "mission":"Enter the CVSS v4 string (Base Score)",
+                "mission":"Enter the CVSS v4 Vector string (i.e. CVSS:4.0/AV:x/AC:x/AT:x/PR:x/UI:x/VC:x/VI:x/VA:x/SC:x/SI:x/SA:x) which can be copied by clicking on the green CVSS Vector box in the CVSS calculator",
                 "codeBlockIds":[]
             },
             {
@@ -119,7 +119,7 @@
                 "description": "cvss_9_score_6.md",
                 "solution": "cvss_9_score_6.sol.md",
                 "type":"quiz",
-                "mission":"Enter the CVSS v4 string (Base Score)",
+                "mission":"Enter the CVSS v4 Vector string (i.e. CVSS:4.0/AV:x/AC:x/AT:x/PR:x/UI:x/VC:x/VI:x/VA:x/SC:x/SI:x/SA:x) which can be copied by clicking on the green CVSS Vector box in the CVSS calculator",
                 "codeBlockIds":[]
             }
         ]

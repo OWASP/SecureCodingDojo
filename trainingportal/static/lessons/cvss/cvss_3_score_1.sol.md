@@ -3,7 +3,7 @@ High-level analysis:
 - Prerequisites:
     - None
 - Impact:
-    - Some limited amount data is exposed
+    - Some limited amount of data is exposed
 
 ---
 
