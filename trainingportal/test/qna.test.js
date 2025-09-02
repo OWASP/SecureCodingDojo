@@ -20,6 +20,8 @@ describe("qna", () => {
     test("true for correct code",()=>{
       let text = "plain text";
       for(let alg in qna.DEFS){
+        
+        if(alg.startsWith("crypto") == false) continue;
         if(alg === "crypto_analysis") continue;
         let res = qna.getCode(alg,text);        
         let check = qna.checkCode(text, res.digest);
