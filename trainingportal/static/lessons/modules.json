@@ -21,8 +21,8 @@
         "description2": "Includes 9 lessons. Estimated duration 2 hours.",
         "badgeInfo":{
             "line1":"Secure Coding Dojo",
-            "line2":"Vulnerability Investigator",
-            "line3":"",
+            "line2":"Vulnerability",
+            "line3":"Investigator",
             "bg":"darkorange"
         },
         "requiredModules":[]
