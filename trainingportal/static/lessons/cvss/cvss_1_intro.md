@@ -261,7 +261,7 @@ Examples of change of scope (vulnerable to subsequent) for impact:
     - None (`N`)
         - No impact
     - Low (`L`)
-        - Read access to some restricted data:
+        - Write access to some restricted data:
             - No control over which data
             - Amount/kind is limited
         - **Examples**:
