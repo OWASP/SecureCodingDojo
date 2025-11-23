@@ -91,7 +91,7 @@
 
             {
                 "questionId":"memory.q3",
-                "lineToHighlight":7,
+                "lineToHighlight":9,
                 "language":"C++",
                 "question":"Off-by-one is introduced when employing incorrect comparison operators. Which snippet prevents this type of flaw?",
                 "snippets":[
