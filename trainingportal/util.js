@@ -105,6 +105,9 @@ exports.parseMarkdown = (text) => {
   let html = markdown.toHTML(text);
   //made code tag non bindable by angular
   html = html.replace(/<code/g,"<code ng-non-bindable ");
+
+  //Keep explicit newlines in markdown written as `<br>`
+  html = html.replace(/&lt;br&gt;/g,"<br>");
   return html
 }
 

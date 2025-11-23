@@ -19,6 +19,15 @@ app.controller("submitCodeCtrl", function($scope, $http, $routeParams) {
     $scope.init = function(){
         var challengeCodeValue = $routeParams.challengeCode;
         $scope.challengeType = $routeParams.challengeType;
+
+        let answerString = localStorage.getItem("dojo.current.answer");   
+
+        if(answerString){
+            localStorage.removeItem("dojo.current.answer");
+            $scope.answer = answerString;
+            $scope.submitAnswer()
+        }
+
         if(challengeCodeValue === '0'){ //this is the old style of challenge verification
             $http.get("/api/salt",window.getAjaxOpts())
             .then(function(response) {
@@ -37,13 +46,19 @@ app.controller("submitCodeCtrl", function($scope, $http, $routeParams) {
         $scope.isCodeErrorMessage = false;
     }
 
+    $scope.goBack = () => {
+        let challengeHref = localStorage.getItem("dojo.current.challenge"); 
+        if(challengeHref){
+            localStorage.removeItem("dojo.current.challenge");
+            window.location.href = challengeHref;
+        }
+    }
 
     $scope.submitAnswer = function(){
         var moduleId = $routeParams.moduleId;
         var challengeId = $routeParams.challengeId;
         var challengeType = $routeParams.challengeType;
-        var answerValue = "";
-        if(typeof answer !== "undefined") answerValue = answer.value;
+        var answerValue = $scope.answer
 
         var challengeCodeValue = "";
         if(typeof challengeCode !== "undefined"){

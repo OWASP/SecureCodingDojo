@@ -24,6 +24,36 @@ app.controller("challengesCtrl", function($scope, $http, $routeParams) {
 
     }
 
+    $scope.submitOption = function(id, digest){
+        let answer = null;
+        let options = document.getElementsByClassName(`option-${id}`);
+        for(let op of options){
+            if(op.checked){
+                answer = op.value
+                break;
+            }
+        }
+        $scope.saveAnswer(answer,id,digest);   
+    }
+
+    $scope.submitAnswer = function(id, digest){
+        let answer = null;
+        let el = document.getElementById(`answer-${id}`);
+        if(el){
+            answer = el.value;
+        }
+        $scope.saveAnswer(answer,id,digest);
+    }
+
+    $scope.saveAnswer = function(answer, id, digest){
+        if(answer !== null){
+            localStorage.setItem("dojo.current.answer", answer);
+            localStorage.setItem("dojo.current.challenge", window.location.href);
+            window.location.href = `#!submitCode/${$scope.moduleId}/${id}/quiz/${digest}`;
+        }
+    }
+
+
     $scope.loadChallenges = function(){
         $http.get(`/challenges/${$scope.moduleId}`)
         .then(function(response) {
