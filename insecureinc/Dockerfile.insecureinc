@@ -8,6 +8,9 @@ FROM tomcat:11.0-jre21
 RUN rm -rf /var/lib/apt/lists/* && \
     apt-get update --fix-missing &&\
     apt-get -y install gcc
+RUN mv /usr/bin/gcc /usr/bin/gcc.real \
+ && printf '#!/bin/sh\nexec /usr/bin/gcc.real -std=gnu99 "$@"\n' > /usr/bin/gcc \
+ && chmod +x /usr/bin/gcc
 RUN rm -rf /usr/local/tomcat/webapps/ROOT
 # Copying insecure-inc-1.0.war from the build_image phase, rest everyting from last phase is discarded
 COPY --from=build_image /insecureinc/target/insecure-inc-1.0.war /usr/local/tomcat/webapps/ROOT.war
