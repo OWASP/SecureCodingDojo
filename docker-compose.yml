@@ -85,6 +85,8 @@ services:
     restart: "always"
     expose:
       - "8080"
+    environment:
+      - FLAG_SECRET
     networks:
       hden:
         aliases:
@@ -110,6 +112,7 @@ services:
        - CHALLENGE_MASTER_SALT
        - COINMINER_SSH_HOST=host1
        - COMMAND_PROC_URL=http://host2:8080/commandproc
+       - FLAG_SECRET
     networks:
       hden:
         aliases:
